@@ -1,0 +1,86 @@
+{
+  "headerData": {
+    "info": [
+      {
+        "infoSale": "Розпродаж садового асортименту до -60%",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "infoSale": "Дні матраців та ковдр. Знижки до 60%",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "infoSale": "Чудова пропозиція для вашого дому. Знижки до 50%",
+        "urlpage": "https://jysk.ua/"
+      }
+    ],
+
+    "hyggyLogo": {
+      "width": "100",
+      "height": "100",
+      "url": "/images/Logo.png"
+    },
+
+    "menuPhoto": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/Menu.png"
+    },
+
+    "menuSearch": {
+      "text": "Шукати товар або категорію"
+    },
+
+    "userPhoto": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/user.png"
+    },
+
+    "basketPhoto": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/basket.png"
+    },
+
+    "GeoPhoto": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/Geo.png"
+    },
+
+    "GeoKursor": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/Geokursor.png"
+    },
+
+    "navBar": [
+      {
+        "nameMenu": "Натхнення",
+        "url": "https://jysk.ua/",
+        "alt": "Hyggy"
+      },
+      {
+        "nameMenu": "Акції",
+        "url": "https://jysk.ua/",
+        "alt": "Hyggy"
+      },
+      {
+        "nameMenu": "Магазини",
+        "url": "https://jysk.ua/",
+        "alt": "Hyggy"
+      },
+      {
+        "nameMenu": "Питання-відповідь",
+        "url": "https://jysk.ua/",
+        "alt": "Hyggy"
+      },
+      {
+        "nameMenu": "Робота",
+        "url": "https://jysk.ua/",
+        "alt": "Hyggy"
+      }
+    ]
+  }
+}

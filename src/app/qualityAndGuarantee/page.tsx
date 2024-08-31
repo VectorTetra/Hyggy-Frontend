@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Layout from "../sharedComponents/Layout";
 
 // Імпорт JSON-файлу
 import jsonData from "./structure.json";
@@ -65,10 +66,12 @@ export default function QualityAndGuarantee() {
   };
 
   return (
-    <main className={styles.main}>
-      {data.structure.map((component: any, index: any) =>
-        renderComponent(component, index)
-      )}
-    </main>
+    <Layout headerType="header1">
+      <div className={styles.main}>
+        {data.structure.map((component: any, index: any) =>
+          renderComponent(component, index)
+        )}
+      </div>
+    </Layout>
   );
 }
