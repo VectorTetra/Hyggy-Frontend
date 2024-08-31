@@ -1,6 +1,6 @@
 import React from 'react';
-import MainPageFooter from '../mainPageJsx/jsx-Footer/MainPageFooter.jsx';
-import footerData from '../mainPageJson/mainPageFooter.json';
+import MainPageFooter from '../MainPageFiles/jsx/jsx-Footer/MainPageFooter.jsx';
+import footerData from '../MainPageFiles/json/mainPageFooter.json';
 const Footer1 = () => {
   return (
     <footer>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import styles from "../../mainPageStyles/MainPageHeader-styles.module.css";
+import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageSale(props) {
     const [currentIndex, setCurrentIndex] = React.useState(0);
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import MainPageHeader from '../mainPageJsx/jsx-Header/MainPageHeader.jsx';
-import headerData from '../mainPageJson/mainPageHeaderInfo.json';
+import MainPageHeader from '../MainPageFiles/jsx/jsx-Header/MainPageHeader.jsx';
+import headerData from '../MainPageFiles/json/mainPageHeaderInfo.json';
 const Header1 = () => {
   console.log(headerData);
   return (

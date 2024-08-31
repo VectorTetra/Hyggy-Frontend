@@ -11,8 +11,9 @@
 
 .imageContainer {
   position: relative;
-  width: 100%; /* or any specific width */
-  height: 450px; /* or any specific height */
+  width: 100%; 
+  height: 75vh;
+  /* height: 450px;  */
 }
 
 .h1 {

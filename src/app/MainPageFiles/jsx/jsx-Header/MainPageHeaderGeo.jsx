@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import styles from "../../mainPageStyles/MainPageHeader-styles.module.css";
+import styles from '../../styles/MainPageHeader-styles.module.css';
 
 function MainPageHeaderGeo(props) {
   return (

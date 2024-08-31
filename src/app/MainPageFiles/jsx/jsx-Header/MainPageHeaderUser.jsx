@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import styles from "../../mainPageStyles/MainPageHeader-styles.module.css";
+import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderUser(props) {
     return (
         <div id={styles.mainPageHeaderLogoContainer}> 

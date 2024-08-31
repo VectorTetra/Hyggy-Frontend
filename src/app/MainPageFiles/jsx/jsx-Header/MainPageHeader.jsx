@@ -7,7 +7,7 @@ import MainPageHeaderBasket from './MainPageHeaderBasket';
 import MainPageHeaderGeo from './MainPageHeaderGeo';
 import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
-import styles from '../../mainPageStyles/MainPageHeader-styles.module.css';
+import styles from '../../styles/MainPageHeader-styles.module.css';
 
 function MainPageHeader(props) {
 	//console.log("MainPageHeader props header data:",props.headerData.headerData.hyggyLogo);

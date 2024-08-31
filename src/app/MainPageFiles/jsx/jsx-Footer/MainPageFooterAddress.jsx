@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../../mainPageStyles/MainPageFooter-styles.module.css";
+import styles from '../../styles/MainPageFooter-styles.module.css';
 function MainPageFooterAddress(props) {
   
   return (

@@ -18,7 +18,9 @@ export default function QualityAndGuarantee() {
               src="https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/header-basic_plus_gold.jpg"
               alt="Header"
               layout="fill"
+              quality={100} // Optional: Adjusts the quality of the image
               objectFit="cover" // Optional: Adjusts how the image should be resized to fit the container
+              priority={true} // Optional: Prioritizes loading of the image
             />
           </div>
         );
@@ -66,7 +68,7 @@ export default function QualityAndGuarantee() {
   };
 
   return (
-    <Layout headerType="header1">
+    <Layout headerType="header1" footerType = 'footer1'>
       <div className={styles.main}>
         {data.structure.map((component: any, index: any) =>
           renderComponent(component, index)
