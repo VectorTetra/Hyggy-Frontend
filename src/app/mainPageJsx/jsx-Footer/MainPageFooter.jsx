@@ -8,8 +8,6 @@ function MainPageFooter(props) {
 			<div>
 			<MainPageFooterList text={props.footerData.category} footerData={props.footerData}/>
 			</div>
-
-			
 		</div>		
 	)
 }
