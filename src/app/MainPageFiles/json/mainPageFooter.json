@@ -1,0 +1,128 @@
+{
+  "footerData": {
+    "category": [
+      {
+        "nameCategory": "Категорії товарів",
+        "listCategory": [
+          {
+            "name": "Спальня",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Спальня"
+          },
+          {
+            "name": "Ванна",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Ванна"
+          },
+          {
+            "name": "Офіс",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Офіс"
+          },
+          {
+            "name": "Вітальня",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Вітальня"
+          },
+          {
+            "name": "Кухня та їдальня",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Кухня та їдальня"
+          },
+          {
+            "name": "Зберігання",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Зберігання"
+          },
+          {
+            "name": "Для вікон",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Для вікон"
+          },
+          {
+            "name": "Для саду",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Для саду"
+          },
+          {
+            "name": "Для дому",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Для дому"
+          },
+          {
+            "name": "Всі категорії",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "Всі категорії"
+          }
+        ]
+      },
+      {
+        "nameCategory": "Інформація",
+        "listCategory": [
+          {
+            "name": "Відділ по роботі з клієнтами",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "job"
+          },
+          {
+            "name": "Магазини та графіки роботи",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "shops"
+          },
+          {
+            "name": "Доставка",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "delivery"
+          },
+          {
+            "name": "Повернення",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "return"
+          }
+        ]
+      },
+      {
+        "nameCategory": "HYGGY",
+        "listCategory": [
+          {
+            "name": "Про нас",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "about us"
+          },
+          {
+            "name": "Робота в Hyggy",
+            "urlcategory": "https://jysk.ua/",
+            "alt": "shops"
+          }
+        ]
+      }
+    ],
+    "address": {
+      "caption": "ЦЕНТРАЛЬНИЙ ОФІС",
+      "city": "м. Київ",
+      "address": "вул. Іоанна Павла, 21"
+    },
+    "messenger": [
+      {
+        "urlimages": "../images/messenger/fb.png",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "urlimages": "../images/messenger/LogoInstagram.png",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "urlimages": "../images/messenger/LogoTelegram.png",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "urlimages": "../images/messenger/LogoViber.png",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "urlimages": "../images/messenger/LogoWhatsapp.png",
+        "urlpage": "https://jysk.ua/"
+      }
+    ]
+  }
+}

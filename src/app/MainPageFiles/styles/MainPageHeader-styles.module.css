@@ -1,0 +1,119 @@
+/* =====================> Shared Styles<===================== */
+/*body{
+	font-family: sans-serif;
+	min-height: 0;
+}*/
+/* =====================> MainPageHeader Styles<===================== */
+#mainPageHeader{
+	display: flex;
+	flex-direction: column; 
+}
+
+#mainPageSale{
+	background-color: blue;
+    text-align: center;
+	width: 100%;
+	border-top-left-radius: 10px;  /* Закругление верхнего левого угла */
+    border-top-right-radius: 10px; /* Закругление верхнего правого угла */
+    line-height: 30px; 
+}
+
+
+#mainPageSale a {
+    color: white; 
+    text-decoration: none;     
+}
+
+#mainPageHeaderLogoContainer{
+	display: flex;
+    flex-direction: row;
+	text-align: center;
+	align-items: center;     
+}
+
+#mainPageHeaderLogo{
+	width: clamp(50px, 10vw, 70px);
+	aspect-ratio: 1 / 1;
+	padding: 10px;
+	margin-left: 100px;
+}
+
+#horizontalBar {
+    border: none; 
+    height: 1px; 
+    background-color: rgb(202, 200, 200); 
+    width: 100%; 
+    margin: 0; 
+}
+
+#horizontalBar2 {
+    border: none; 
+    height: 2px; 
+    background-color: rgb(202, 200, 200); 
+    width: 100%; 
+    margin: 0; 
+	box-shadow: 0 2px 4px rgb(163, 163, 163);
+}
+
+#mainPageHeaderMenu{
+	width: clamp(40px, 10vw, 40px);
+	margin: 10px; 
+	margin-left: 20px;
+}
+
+#mainPageHeaderLogoContainer a {
+    color: rgb(11, 3, 33); 
+	font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;     
+}
+
+#mainPageHeaderLogoContainer a:hover {
+    color: rgb(231, 120, 120);  
+}
+
+
+#mainPageHeaderLogoContainer input {
+	background-color: rgb(232, 230, 230);
+	border: 2px solid black;
+    width: 500px;
+	height: 30px;
+	font-size: 14px;
+	margin-left: 100px; 
+	padding: 5px;  
+}
+
+#mainPageHeaderUserPhoto{
+	width: clamp(25px, 10vw, 25px);
+	margin-left: 220px; 
+	margin-right: 15px;
+}
+
+#mainPageHeaderBasketPhoto{
+	width: clamp(30px, 10vw, 30px);
+	margin-left: 50px; 
+	margin-right: 10px;
+}
+
+#mainPageHeaderGeoPhoto{
+	width: clamp(25px, 10vw, 25px);
+	margin-left: 90px; 
+	padding: 15px;
+}
+
+#mainPageHeaderGeoKursor{
+	width: clamp(15px, 10vw, 15px);
+	margin-left: 3px; 
+	margin-right: 10px;
+}
+
+.geoText{
+	color: rgb(11, 3, 33); 
+	font-size: 16px;
+    text-decoration: none;   
+}
+
+.menuText{
+	font-size: 12px;
+	padding: 10px; 
+}

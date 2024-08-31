@@ -1,0 +1,170 @@
+{
+	"structure":
+	[
+		{
+			"objectType":"image",
+			"src":"https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/header-basic_plus_gold.jpg",
+			"alt":"Консультант пропонує комплект постільної білизни та діти стрибають на ліжку",
+			"title":"Консультант пропонує комплект постільної білизни та діти стрибають на ліжку"
+		},
+		{
+			"objectType":"h1",
+			"text":"Якість і гарантія",
+			"font-size":"28px",
+			"font-weight":600,
+			"line-height":"30px",
+			"margin":"20px 0 20px 0"
+		},
+		{
+			"objectType":"h2 strong",
+			"text":"BASIC, PLUS and GOLD",
+			"font-size":"22px",
+			"font-weight":700,
+			"line-height":"26px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Велика кількість наших основних продуктів, зокрема матраців, ковдр, подушок, простирадл та рушників, розділено на категорії BASIC, PLUS і GOLD. Таким чином ми позначаємо різні цінові категорії товарів.",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h3",
+			"text":"BASIC - HAЙKPAЩA ЦIHA",
+			"font-size":"18px",
+			"font-weight":600,
+			"line-height":"22px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Виберіть товари категорії BASIC, що завжди мають чудову цінову пропозицію.",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h3",
+			"text":"PLUS - KOMФOPT & ЯKICTЬ",
+			"font-size":"18px",
+			"font-weight":600,
+			"line-height":"22px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Виберіть товари категорії PLUS, що представлені широким асортиментом, мають кращу якість та прийнятні ціни.",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h3",
+			"text":"GOLD - EКCКЛЮЗИВНА ЯКІСТЬ",
+			"font-size":"18px",
+			"font-weight":600,
+			"line-height":"22px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Виберіть товари категорії GOLD, що мають найвищу якість, виготовлені з найкращих матеріалів та мають доступні ціни.",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h2",
+			"text":"ЗАВЖДИ НИЗЬКА ЦІНА",
+			"font-size":"22px",
+			"font-weight":600,
+			"line-height":"26px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"ЗАВЖДИ НИЗЬКА ЦІНА це гарна пропозиція за найнижчою ціною. Ми відібрали широкий асортимент товарів, на яких встановили найнижчу ціну - незмінно привабливі ціни щодня!",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h2 strong",
+			"text":"Подовжені гарантії на матраци",
+			"font-size":"22px",
+			"font-weight":700,
+			"line-height":"26px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Для деяких матраців ми надаємо подовжену гарантію на 15 або 25 років:",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"ul",
+			"line-height": "22.85px",
+			"font-size": "16px",
+			"margin":"0 0 16px 0",
+			"items":[
+				{
+					"text":"Пружинні матраци: 15-річна гарантія на категорію PLUS та 25-річна гарантія на категорію GOLD."
+				},
+				{
+					"text":"Безпружинні матраци: 25-річна гарантія на категорію GOLD."
+				},
+				{
+					"text":"Континентальні ліжка: 15-річна гарантія на категорію PLUS та 25-річна гарантія на категорію GOLD."
+				}
+			]
+		},
+		{
+			"objectType":"p",
+			"text":"Наша гарантія на пружинні матраци, континентальні ліжка покриває виробничий брак і дефекти матеріалу у пружинах.",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"p",
+			"text":"Наша гарантія на безпружинні матраци покриває піноматеріал, пружність якого не має впасти нижче нормального рівня просідання піноматеріалу. ",
+			"font-size":"14px",
+			"word-break": "break-word",
+			"line-height":"20px",
+			"margin":"0 0 20px 0"
+		},
+		{
+			"objectType":"h2",
+			"text":"Подовжена гарантія на ковдри",
+			"font-size":"22px",
+			"font-weight":600,
+			"line-height":"26px",
+			"margin":"30px 0 10px 0"
+		},
+		{
+			"objectType":"ul",
+			"line-height": "22.85px",
+			"font-size": "16px",
+			"margin":"0 0 16px 0",
+			"items":[
+				{
+					"text":"Ковдри у категорії PLUS: 5-річна гарантія (з натуральним або штучним наповненням)."
+				},
+				{
+					"text":"Ковдри у категорії GOLD: 10-річна гарантія (з натуральним або штучним наповненням)."
+				}
+			]
+		}
+	]
+}
