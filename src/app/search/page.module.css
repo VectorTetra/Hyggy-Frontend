@@ -1,0 +1,41 @@
+#tabBarList {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.tabBarItem {
+	margin: 0;
+}
+
+.tabBarLink {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.575rem 0.9375rem;
+  
+  position: relative;
+  text-decoration: none;
+}
+.activeLink {
+  color: #143c8a !important;
+  border-bottom: 3px solid #143c8a;
+}
+.nonActiveLink {
+  color: #737373 !important;
+  border-bottom: 3px solid#737373;
+}
+
+#tabBar {
+  /* color: #737373; */
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+}
+
+#tabBarContainer {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 20px 0;
+}
