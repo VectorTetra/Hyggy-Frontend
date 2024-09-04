@@ -1,6 +1,7 @@
-//src/app/search
-"use client";
+//page.tsx
+"use client"; // Завжди на стороні клієнта
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // Імпортуємо useRouter
 import styles from "./page.module.css";
 import Layout from "../sharedComponents/Layout";
 import axios from "axios";
@@ -10,6 +11,7 @@ import TabBar from "./tsx/TabBar";
 import SearchHeader from "./tsx/SearchHeader";
 import FilterBar from "./tsx/FilterBar";
 import convertLayout from "convert-layout";
+import Loading from "./loading"; // Імпортуємо компонент Loading
 
 async function translateText(text: string, targetLang: string) {
   const response = await axios.post(
@@ -48,6 +50,7 @@ function searchWaresAndArticles(query: string) {
 
 export default function SearchPage() {
   const [activeTab, setActiveTab] = useState("wares");
+  const [loading, setLoading] = useState(true); // Стан завантаження
 
   interface Ware {
     id: number;
@@ -75,10 +78,20 @@ export default function SearchPage() {
     foundArticles: [],
   });
 
-  const [query, setQuery] = useState("lamp");
+  const searchParams = useSearchParams(); // Отримуємо доступ до параметрів запиту через useRouter
+  const [query, setQuery] = useState<string>("");
+
+  useEffect(() => {
+    const receivedQuery = searchParams?.get("query") ?? "";
+    setQuery(receivedQuery);
+  }, []);
 
   useEffect(() => {
     async function performSearch() {
+      if (!query) return;
+
+      setLoading(true); // Встановлюємо стан завантаження перед початком пошуку
+
       try {
         let foundWares: Ware[] = [];
         let foundArticles: Article[] = [];
@@ -96,31 +109,34 @@ export default function SearchPage() {
           console.log("Translated Text (EN to UA):", translatedText);
 
           const translatedResults = searchWaresAndArticles(translatedText);
-          foundWares = [...foundWares, ...translatedResults.foundWares];
-          foundArticles = [...foundArticles, ...translatedResults.foundArticles];
+          foundWares = translatedResults.foundWares;
+          foundArticles = translatedResults.foundArticles;
           console.log("Translated foundWares:", foundWares);
           console.log("Translated foundArticles:", foundArticles);
         }
-        // Якщо все ще нічого не знайдено, спробувати з конвертацією розкладки
+
+        // // Якщо все ще нічого не знайдено, спробувати з конвертацією розкладки
+        // if (foundWares.length === 0 && foundArticles.length === 0) {
+        //   const convertedQuery = convertLayout.en.toUk(query);
+
+        //   const convertedResults = searchWaresAndArticles(convertedQuery);
+        //   foundWares = convertedResults.foundWares;
+        //   foundArticles = convertedResults.foundArticles;
+        //   console.log("Converted foundWares:", foundWares);
+        //   console.log("Converted foundArticles:", foundArticles);
+        // }
+
+        // Якщо знову нічого не знайдено, спробувати з використанням LanguageTool через API
         if (foundWares.length === 0 && foundArticles.length === 0) {
-          const convertedQuery = convertLayout.ru.toEn(query);
-
-          const convertedResults = searchWaresAndArticles(convertedQuery);
-          foundWares = [...foundWares, ...convertedResults.foundWares];
-          foundArticles = [...foundArticles, ...convertedResults.foundArticles];
-          console.log("Converted foundWares:", foundWares);
-          console.log("Converted foundArticles:", foundArticles);
-        }
-
-        // Якщо знову нічого не знайдено, спробувати з використанням typo-js через API
-        if (foundWares.length === 0 && foundArticles.length === 0) {
-          const correctedQuery = await spellCheck(query);
-
-          const correctedResults = searchWaresAndArticles(correctedQuery);
-          foundWares = [...foundWares, ...correctedResults.foundWares];
-          foundArticles = [...foundArticles, ...correctedResults.foundArticles];
-          console.log("Corrected foundWares:", foundWares);
-          console.log("Corrected foundArticles:", foundArticles);
+          const correctedResults = await spellCheck(query);
+			console.log("Corrected Results:", correctedResults);	
+          correctedResults.map((item: string) => {
+            searchWaresAndArticles(item);
+            foundWares = correctedResults.foundWares;
+            foundArticles = correctedResults.foundArticles;
+            console.log("Corrected foundWares:", foundWares);
+            console.log("Corrected foundArticles:", foundArticles);
+          });
         }
 
         // Видалення повторів
@@ -136,12 +152,24 @@ export default function SearchPage() {
         setResults({ foundWares, foundArticles });
       } catch (error) {
         console.error("Error during search:", error);
+      } finally {
+        setLoading(false); // Завершення завантаження після виконання пошуку
       }
     }
 
     performSearch(); // Виклик функції пошуку
   }, [query]);
 
+  // Показуємо компонент loading, доки триває пошук
+  if (loading) {
+    return (
+      <Layout headerType="header1" footerType="footer1">
+        <Loading />
+      </Layout>
+    );
+  }
+
+  // Показуємо основний вміст після завершення пошуку
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.main}>
@@ -150,13 +178,13 @@ export default function SearchPage() {
           pagesQuantity={results.foundArticles.length}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          query={query}
+          query={query} // Передаємо query як пропс
         />
         <SearchHeader
           resultsQuantity={
             results.foundWares.length + results.foundArticles.length
           }
-          query={query}
+          query={query} // Передаємо query як пропс
         />
         <FilterBar />
       </div>
