@@ -73,7 +73,7 @@ export default function WareGrid(props: any) {
                 src={ware.imageSrc}
                 alt={ware.longName}
                 className={styles.wareImage}
-                layout='responsive'
+                layout='contain'
                 width={300}
                 height={400}
               />

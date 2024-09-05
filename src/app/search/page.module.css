@@ -165,7 +165,8 @@
   max-width: 100%;
   border-radius: 8px;
   display: flex;
-  flex: 0.4;
+  flex: 0.4 1;
+  width: fit-content;
 }
 
 .wareInfo h3 {
@@ -261,14 +262,15 @@
   flex-direction: column;
   justify-content: center;
   padding: 20% 10%;
+  align-items: center;
 }
 
 .wareStickersContainer {
   position: absolute;
-  left: 10px;
+  left: 0;
   background-color: transparent;
   padding: 5px;
-  bottom: 10px;
+  bottom: 0;
   gap: 5px;
   display: flex;
   flex-direction: column;
@@ -278,16 +280,20 @@
   border-radius: 4px;
   color: #ffffff;
   /* Червоний колір для знижки */
-  background-color: #ff0000;
+  background-color: #c02931;
   font-weight: bold;
+  width: fit-content;
+  padding: 0 5px;
 }
 
 .newSticker {
   border-radius: 4px;
   color: #fff;
   /* Зелений колір для новинки */
-  background-color: #00ff00;
+  background-color: #239343;
   font-weight: bold;
+  width: fit-content;
+  padding: 0 5px;
 }
 
 .lowPriceSticker {
@@ -296,14 +302,18 @@
   /* Жовтий колір для низької ціни */
   background-color: #000000;
   font-weight: bold;
+  width: fit-content;
+  padding: 0 5px;
 }
 
 .saleSticker {
   border-radius: 4px;
   color: #fff;
   /* Оранжевий колір для пропозицій */
-  background-color: #1b2fdd;
+  background-color: #143c8a;
   font-weight: bold;
+  width: fit-content;
+  padding: 0 5px;
 }
 
 /* Responsive Styles */
