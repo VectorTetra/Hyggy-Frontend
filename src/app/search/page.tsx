@@ -1,4 +1,3 @@
-//page.tsx
 "use client"; // Завжди на стороні клієнта
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation"; // Імпортуємо useRouter
@@ -12,6 +11,8 @@ import SearchHeader from "./tsx/SearchHeader";
 import FilterBar from "./tsx/FilterBar";
 import convertLayout from "convert-layout";
 import Loading from "./loading"; // Імпортуємо компонент Loading
+import WareGrid from "./tsx/WareGrid";
+import ArticleGrid from "./tsx/ArticleGrid";
 
 async function translateText(text: string, targetLang: string) {
   const response = await axios.post(
@@ -43,7 +44,7 @@ function searchWaresAndArticles(query: string) {
   const foundArticles = jsonArticles.filter(
     (article) =>
       article.title.toLowerCase().includes(query.toLowerCase()) ||
-      article.keywords.includes(query)
+      article.keywords.some(keyword => keyword.toLowerCase().includes(query.toLowerCase()))
   );
   return { foundWares, foundArticles };
 }
@@ -84,69 +85,67 @@ export default function SearchPage() {
   useEffect(() => {
     const receivedQuery = searchParams?.get("query") ?? "";
     setQuery(receivedQuery);
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     async function performSearch() {
-      if (!query) return;
-
       setLoading(true); // Встановлюємо стан завантаження перед початком пошуку
 
       try {
         let foundWares: Ware[] = [];
         let foundArticles: Article[] = [];
 
-        // Пошук за первинним запитом
-        const initialResults = searchWaresAndArticles(query);
-        foundWares = [...initialResults.foundWares];
-        foundArticles = [...initialResults.foundArticles];
-        console.log("Initial foundWares:", foundWares);
-        console.log("Initial foundArticles:", foundArticles);
+        if (query === "") {
+          // Показуємо всі товари і статті, коли запит порожній
+          foundWares = jsonWares;
+          foundArticles = jsonArticles;
+        } else {
+          // Пошук за первинним запитом
+          const initialResults = searchWaresAndArticles(query);
+          foundWares = [...initialResults.foundWares];
+          foundArticles = [...initialResults.foundArticles];
 
-        // Якщо нічого не знайдено, переклад запиту на українську та повторний пошук
-        if (foundWares.length === 0 && foundArticles.length === 0) {
-          const translatedText = await translateText(query, "uk");
-          console.log("Translated Text (EN to UA):", translatedText);
+          // Якщо нічого не знайдено, переклад запиту на українську та повторний пошук
+          if (foundWares.length === 0 && foundArticles.length === 0) {
+            const translatedText = await translateText(query, "uk");
+            const translatedResults = searchWaresAndArticles(translatedText);
+            foundWares = translatedResults.foundWares;
+            foundArticles = translatedResults.foundArticles;
+          }
 
-          const translatedResults = searchWaresAndArticles(translatedText);
-          foundWares = translatedResults.foundWares;
-          foundArticles = translatedResults.foundArticles;
-          console.log("Translated foundWares:", foundWares);
-          console.log("Translated foundArticles:", foundArticles);
+          // Якщо все ще нічого не знайдено, спробувати з використанням LanguageTool через API
+          if (foundWares.length === 0 && foundArticles.length === 0) {
+            const correctedResults = await spellCheck(query);
+            let additionalWares: Ware[] = [];
+            let additionalArticles: Article[] = [];
+
+            // Обробка кожного виправленого запиту
+            for (const item of correctedResults) {
+              const iteratedResults = searchWaresAndArticles(item);
+              additionalWares = [
+                ...additionalWares,
+                ...iteratedResults.foundWares,
+              ];
+              additionalArticles = [
+                ...additionalArticles,
+                ...iteratedResults.foundArticles,
+              ];
+            }
+
+            // Об'єднання старих і нових результатів
+            foundWares = [...foundWares, ...additionalWares];
+            foundArticles = [...foundArticles, ...additionalArticles];
+          }
+
+          // Видалення повторів
+          foundWares = Array.from(new Set(foundWares.map((item) => item.id))).map(
+            (id) => foundWares.find((item) => item.id === id)!
+          );
+
+          foundArticles = Array.from(
+            new Set(foundArticles.map((item) => item.title))
+          ).map((title) => foundArticles.find((item) => item.title === title)!);
         }
-
-        // // Якщо все ще нічого не знайдено, спробувати з конвертацією розкладки
-        // if (foundWares.length === 0 && foundArticles.length === 0) {
-        //   const convertedQuery = convertLayout.en.toUk(query);
-
-        //   const convertedResults = searchWaresAndArticles(convertedQuery);
-        //   foundWares = convertedResults.foundWares;
-        //   foundArticles = convertedResults.foundArticles;
-        //   console.log("Converted foundWares:", foundWares);
-        //   console.log("Converted foundArticles:", foundArticles);
-        // }
-
-        // Якщо знову нічого не знайдено, спробувати з використанням LanguageTool через API
-        if (foundWares.length === 0 && foundArticles.length === 0) {
-          const correctedResults = await spellCheck(query);
-			console.log("Corrected Results:", correctedResults);	
-          correctedResults.map((item: string) => {
-            searchWaresAndArticles(item);
-            foundWares = correctedResults.foundWares;
-            foundArticles = correctedResults.foundArticles;
-            console.log("Corrected foundWares:", foundWares);
-            console.log("Corrected foundArticles:", foundArticles);
-          });
-        }
-
-        // Видалення повторів
-        foundWares = Array.from(new Set(foundWares.map((item) => item.id))).map(
-          (id) => foundWares.find((item) => item.id === id)!
-        );
-
-        foundArticles = Array.from(
-          new Set(foundArticles.map((item) => item.title))
-        ).map((title) => foundArticles.find((item) => item.title === title)!);
 
         // Оновлення результатів
         setResults({ foundWares, foundArticles });
@@ -175,7 +174,7 @@ export default function SearchPage() {
       <div className={styles.main}>
         <TabBar
           waresQuantity={results.foundWares.length}
-          pagesQuantity={results.foundArticles.length}
+          articlesQuantity={results.foundArticles.length}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           query={query} // Передаємо query як пропс
@@ -186,7 +185,9 @@ export default function SearchPage() {
           }
           query={query} // Передаємо query як пропс
         />
-        <FilterBar />
+        <FilterBar/>
+        {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
+        {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
       </div>
     </Layout>
   );

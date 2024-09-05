@@ -1,16 +1,16 @@
 import styles from "../page.module.css";
 import Link from "next/link";
 
-export default function TabBar({ waresQuantity, pagesQuantity, activeTab, setActiveTab, query }: any) {
+export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
 	// Об'єкти для Link з шляхами та параметрами
 	const waresLink = {
 		pathname: "/search",
 		query: { type: "wares", quantity: waresQuantity, query: query },
 	};
 
-	const pagesLink = {
+	const articlesLink = {
 		pathname: "/search",
-		query: { type: "pages", quantity: pagesQuantity, query: query },
+		query: { type: "articles", quantity: articlesQuantity, query: query },
 	};
 
 	return (
@@ -29,16 +29,16 @@ export default function TabBar({ waresQuantity, pagesQuantity, activeTab, setAct
 							</Link>
 						</li>
 					)}
-					{pagesQuantity > 0 && (
+					{articlesQuantity > 0 && (
 						<li className={styles.tabBarItem}>
 							<Link
-								href={pagesLink}
+								href={articlesLink}
 								className={`${styles.tabBarLink} ${
-									activeTab === "pages" ? styles.activeLink : styles.nonActiveLink
+									activeTab === "articles" ? styles.activeLink : styles.nonActiveLink
 								}`}
-								onClick={() => setActiveTab("pages")}
+								onClick={() => setActiveTab("articles")}
 							>
-								Сторінки ({pagesQuantity})
+								Сторінки ({articlesQuantity})
 							</Link>
 						</li>
 					)}
