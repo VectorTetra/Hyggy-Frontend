@@ -81,6 +81,16 @@ export default function SearchPage() {
 
   const searchParams = useSearchParams(); // Отримуємо доступ до параметрів запиту через useRouter
   const [query, setQuery] = useState<string>("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(["Ціна 90-100"]);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleFilterRemove = (filter: string) => {
+    setSelectedFilters(selectedFilters.filter((f) => f !== filter));
+  };
 
   useEffect(() => {
     const receivedQuery = searchParams?.get("query") ?? "";
