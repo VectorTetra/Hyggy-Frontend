@@ -1,5 +1,7 @@
 [
   {
+    "id": 1,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-07/Teaser-A-weighted-duvet-can-help-improve-your-sleep-.jpg",
     "title": "Як вибрати найкращі подушки для комфортного сну",
     "keywords": [
       "подушка",
@@ -11,6 +13,8 @@
     ]
   },
   {
+    "id": 2,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-07/Teaser-Duvet%20and%20pillow%20with%20plant%20based%20fabric.jpg",
     "title": "Подушки для різних типів сну: вибір для кожного",
     "keywords": [
       "подушка",
@@ -22,6 +26,8 @@
     ]
   },
   {
+    "id": 3,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2022-01/image-teaser_care%20duvets%20and%20pillows.png",
     "title": "Чому важливо регулярно змінювати подушки",
     "keywords": [
       "подушка",
@@ -33,66 +39,203 @@
     ]
   },
   {
+    "id": 4,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_31.jpg",
     "title": "Як організувати зберігання тумб у маленьких приміщеннях",
-    "keywords": ["тумба", "тумби", "тумб", "тумбі", "тумбами", "тумбах"]
+    "keywords": [
+      "тумба",
+      "тумби",
+      "тумб",
+      "тумбі",
+      "тумбами",
+      "тумбах"
+    ]
   },
   {
+    "id": 5,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2020-03/Teaser-image-.jpg",
     "title": "Ідеї для декорування з використанням тумб",
-    "keywords": ["тумба", "тумби", "тумб", "тумбі", "тумбами", "тумбах"]
+    "keywords": [
+      "тумба",
+      "тумби",
+      "тумб",
+      "тумбі",
+      "тумбами",
+      "тумбах"
+    ]
   },
   {
+    "id": 6,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2019-04/teaser-image-.jpg",
     "title": "Як вибрати ідеальні тумби для спальні",
-    "keywords": ["тумба", "тумби", "тумб", "тумбі", "тумбами", "тумбах"]
+    "keywords": [
+      "тумба",
+      "тумби",
+      "тумб",
+      "тумбі",
+      "тумбами",
+      "тумбах"
+    ]
   },
   {
+    "id": 7,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-08/teaser.jpg",
     "title": "Дивани для вітальні: Як вибрати найкращий варіант",
-    "keywords": ["диван", "дивани", "диванів", "дивану", "диваном", "диванах"]
+    "keywords": [
+      "диван",
+      "дивани",
+      "диванів",
+      "дивану",
+      "диваном",
+      "диванах"
+    ]
   },
   {
+    "id": 8,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-03/Teaser-Three%20in%20one%20lounge%20sofa%20and%20other%20small%20balcony%20ideas.jpg",
     "title": "5 причин придбати кутовий диван для вашого дому",
-    "keywords": ["диван", "дивани", "диванів", "дивану", "диваном", "диванах"]
+    "keywords": [
+      "диван",
+      "дивани",
+      "диванів",
+      "дивану",
+      "диваном",
+      "диванах"
+    ]
   },
   {
+    "id": 9,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2020-12/NE-Teaser-Sofa%20%E2%80%9Chygge%E2%80%9D%20in%20the%20living%20room.jpg",
     "title": "Як правильно доглядати за диванами з тканинною обивкою",
-    "keywords": ["диван", "дивани", "диванів", "дивану", "диваном", "диванах"]
+    "keywords": [
+      "диван",
+      "дивани",
+      "диванів",
+      "дивану",
+      "диваном",
+      "диванах"
+    ]
   },
   {
+    "id": 10,
+    "image": "https://jysk.ua/sites/jysk.ua/files/spalnya-tizer.jpg",
     "title": "Обираємо шафи для невеликих приміщень",
-    "keywords": ["шафа", "шафи", "шаф", "шафі", "шафами", "шафах"]
+    "keywords": [
+      "шафа",
+      "шафи",
+      "шаф",
+      "шафі",
+      "шафами",
+      "шафах"
+    ]
   },
   {
+    "id": 11,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_80.jpg",
     "title": "Як оптимально організувати простір в шафі",
-    "keywords": ["шафа", "шафи", "шаф", "шафі", "шафами", "шафах"]
+    "keywords": [
+      "шафа",
+      "шафи",
+      "шаф",
+      "шафі",
+      "шафами",
+      "шафах"
+    ]
   },
   {
+    "id": 12,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2020-05/Teaser-image.jpg",
     "title": "Різновиди шаф: Що підійде саме вам",
-    "keywords": ["шафа", "шафи", "шаф", "шафі", "шафами", "шафах"]
+    "keywords": [
+      "шафа",
+      "шафи",
+      "шаф",
+      "шафі",
+      "шафами",
+      "шафах"
+    ]
   },
   {
+    "id": 13,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-12/Teaser-Sleeping-01-2024.jpg",
     "title": "Як вибрати зручне ліжко для здорового сну",
-    "keywords": ["ліжко", "ліжка", "ліжок", "ліжку", "ліжком", "ліжках"]
+    "keywords": [
+      "ліжко",
+      "ліжка",
+      "ліжок",
+      "ліжку",
+      "ліжком",
+      "ліжках"
+    ]
   },
   {
+    "id": 14,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_98.jpg",
     "title": "Поради щодо догляду за ліжками з дерева",
-    "keywords": ["ліжко", "ліжка", "ліжок", "ліжку", "ліжком", "ліжках"]
+    "keywords": [
+      "ліжко",
+      "ліжка",
+      "ліжок",
+      "ліжку",
+      "ліжком",
+      "ліжках"
+    ]
   },
   {
+    "id": 15,
+    "image": "https://jysk.ua/sites/jysk.ua/files/spalnya-tizer.jpg",
     "title": "Як обрати ліжко для невеликої спальні",
-    "keywords": ["ліжко", "ліжка", "ліжок", "ліжку", "ліжком", "ліжках"]
+    "keywords": [
+      "ліжко",
+      "ліжка",
+      "ліжок",
+      "ліжку",
+      "ліжком",
+      "ліжках"
+    ]
   },
   {
+    "id": 16,
+    "image": "https://jysk.ua/sites/jysk.ua/files/styles/full_optimized/public/image/tooltips/2021-04/3600235-ASPERUP.webp?itok=9PhVQvph",
     "title": "Як вибрати офісне крісло для дому",
-    "keywords": ["крісло", "крісла", "крісел", "кріслі", "кріслами", "кріслах"]
+    "keywords": [
+      "крісло",
+      "крісла",
+      "крісел",
+      "кріслі",
+      "кріслами",
+      "кріслах"
+    ]
   },
   {
+    "id": 17,
+    "image": "https://jysk.ua/sites/jysk.ua/files/styles/full_optimized/public/image/tooltips/2021-04/3629922-SKODSBORG.webp?itok=6xKzikp7",
     "title": "5 порад для вибору ергономічного крісла",
-    "keywords": ["крісло", "крісла", "крісел", "кріслі", "кріслами", "кріслах"]
+    "keywords": [
+      "крісло",
+      "крісла",
+      "крісел",
+      "кріслі",
+      "кріслами",
+      "кріслах"
+    ]
   },
   {
+    "id": 18,
+    "image": "https://jysk.ua/sites/jysk.ua/files/styles/full_optimized/public/image/tooltips/2021-04/3620089-TJELE.webp?itok=dixiSCL9",
     "title": "Як доглядати за шкіряним кріслом",
-    "keywords": ["крісло", "крісла", "крісел", "кріслі", "кріслами", "кріслах"]
+    "keywords": [
+      "крісло",
+      "крісла",
+      "крісел",
+      "кріслі",
+      "кріслами",
+      "кріслах"
+    ]
   },
   {
+    "id": 19,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-08/Landing%20page_topbanner_SA%20colour-Recovered_0.jpg",
     "title": "Як вибрати постільну білизну з натуральних матеріалів",
     "keywords": [
       "білизна",
@@ -104,6 +247,8 @@
     ]
   },
   {
+    "id": 20,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2022-05/Teaser-image_How-to-reduce-bedroom-allergies_0.jpg",
     "title": "Як правильно прати постільну білизну",
     "keywords": [
       "білизна",
@@ -115,6 +260,8 @@
     ]
   },
   {
+    "id": 21,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2024-07/Teaser%20image%20-%20The%20Buyer%27s%20favourite%20bed%20linen%20BERIT%2025-06-2024.jpg",
     "title": "Топ порад з вибору постільної білизни для вашого дому",
     "keywords": [
       "білизна",
@@ -126,18 +273,47 @@
     ]
   },
   {
+    "id": 22,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-04/Teaser-Guide-Choice-of-home-office-desk.jpg",
     "title": "Як вибрати ідеальний стіл для роботи з дому",
-    "keywords": ["стіл", "столи", "столів", "столу", "столом", "столах"]
+    "keywords": [
+      "стіл",
+      "столи",
+      "столів",
+      "столу",
+      "столом",
+      "столах"
+    ]
   },
   {
+    "id": 23,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2019-12/Teaser-image_1.jpg",
     "title": "5 креативних ідей для декорування столів",
-    "keywords": ["стіл", "столи", "столів", "столу", "столом", "столах"]
+    "keywords": [
+      "стіл",
+      "столи",
+      "столів",
+      "столу",
+      "столом",
+      "столах"
+    ]
   },
   {
+    "id": 24,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-11/Teaser-Cozy%20Christmas%20table%20ideas%202023.jpg",
     "title": "Переваги розкладних столів для невеликих приміщень",
-    "keywords": ["стіл", "столи", "столів", "столу", "столом", "столах"]
+    "keywords": [
+      "стіл",
+      "столи",
+      "столів",
+      "столу",
+      "столом",
+      "столах"
+    ]
   },
   {
+    "id": 25,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-03/Teaser%202021s%20most%20trendy%20garden%20chairs.jpg",
     "title": "Як вибрати стільці для їдальні: Головні поради",
     "keywords": [
       "стілець",
@@ -149,6 +325,8 @@
     ]
   },
   {
+    "id": 26,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-07/Teaser%20image%20-%20JONSTRUP%20shell%20chair.jpg",
     "title": "Матеріали стільців: Що обрати для вашого дому",
     "keywords": [
       "стілець",
@@ -160,6 +338,8 @@
     ]
   },
   {
+    "id": 27,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2024-03/Teaser%20image%20-%20Choose%20the%20right%20garden%20chairs.jpg",
     "title": "Стільці для відкритих терас: Як вибрати правильний матеріал",
     "keywords": [
       "стілець",
@@ -171,38 +351,112 @@
     ]
   },
   {
+    "id": 28,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2019-12/Teaser-image_2.jpg",
     "title": "Як вибрати ідеальні лампи для кожної кімнати",
-    "keywords": ["лампа", "лампи", "ламп", "лампі", "лампою", "лампах"]
+    "keywords": [
+      "лампа",
+      "лампи",
+      "ламп",
+      "лампі",
+      "лампою",
+      "лампах"
+    ]
   },
   {
+    "id": 29,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/Teaser-image_See-your-home-in-a-new-light.jpg",
     "title": "Освітлення: Як лампи можуть змінити настрій кімнати",
-    "keywords": ["лампа", "лампи", "ламп", "лампі", "лампою", "лампах"]
+    "keywords": [
+      "лампа",
+      "лампи",
+      "ламп",
+      "лампі",
+      "лампою",
+      "лампах"
+    ]
   },
   {
+    "id": 30,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/Teaser-image_See-your-home-in-a-new-light.jpg",
     "title": "Поради з вибору енергоефективних ламп для дому",
-    "keywords": ["лампа", "лампи", "ламп", "лампі", "лампою", "лампах"]
+    "keywords": [
+      "лампа",
+      "лампи",
+      "ламп",
+      "лампі",
+      "лампою",
+      "лампах"
+    ]
   },
   {
+    "id": 31,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-08/Teaser-Choose%20the%20right%20chest%20of%20drawers.jpg",
     "title": "Як вибрати комод для зберігання речей",
-    "keywords": ["комод", "комоди", "комодів", "комоду", "комодом", "комодах"]
+    "keywords": [
+      "комод",
+      "комоди",
+      "комодів",
+      "комоду",
+      "комодом",
+      "комодах"
+    ]
   },
   {
+    "id": 32,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_19.jpg",
     "title": "Дизайнерські комоди для сучасного інтер'єру",
-    "keywords": ["комод", "комоди", "комодів", "комоду", "комодом", "комодах"]
+    "keywords": [
+      "комод",
+      "комоди",
+      "комодів",
+      "комоду",
+      "комодом",
+      "комодах"
+    ]
   },
   {
+    "id": 33,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image-teaser_5.jpg",
     "title": "Як організувати простір в комоді: Поради і трюки",
-    "keywords": ["комод", "комоди", "комодів", "комоду", "комодом", "комодах"]
+    "keywords": [
+      "комод",
+      "комоди",
+      "комодів",
+      "комоду",
+      "комодом",
+      "комодах"
+    ]
   },
   {
+    "id": 34,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2020-01/%D0%B2%D0%B8%D0%B4%D0%B0%D0%BB%D0%B8%D1%82%D0%B8%20%D0%BF%D0%BB%D1%8F%D0%BC%D0%B8%20%D0%B7%20%D0%BA%D0%B8%D0%BB%D0%B8%D0%BC%D0%B0%20teaser.jpg",
     "title": "Як вибрати ідеальний килим для вашої вітальні",
-    "keywords": ["килим", "килими", "килимів", "килиму", "килимом", "килимах"]
+    "keywords": [
+      "килим",
+      "килими",
+      "килимів",
+      "килиму",
+      "килимом",
+      "килимах"
+    ]
   },
   {
+    "id": 35,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_36.jpg",
     "title": "Матеріали килимів: Що обрати для вашого дому",
-    "keywords": ["килим", "килими", "килимів", "килиму", "килимом", "килимах"]
+    "keywords": [
+      "килим",
+      "килими",
+      "килимів",
+      "килиму",
+      "килимом",
+      "килимах"
+    ]
   },
   {
+    "id": 36,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/image-teaser_choosing%20curtains.png",
     "title": "Як правильно вибрати штори для вашої оселі",
     "keywords": [
       "штора",
@@ -215,6 +469,8 @@
     ]
   },
   {
+    "id": 37,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2023-05/Teaser%20image%20-%20How%20to%20stop%20your%20mattress%20topper%20from%20sliding.jpg",
     "title": "Рекомендації по вибору ортопедичних матраців для здорового сну",
     "keywords": [
       "матрац",
@@ -227,6 +483,8 @@
     ]
   },
   {
+    "id": 38,
+    "image": "https://jysk.ua/sites/jysk.ua/files/image/blog/2021-12/image-teaser-duvet-guide.png",
     "title": "Як вибрати теплу ковдру для зимового сезону",
     "keywords": [
       "ковдра",
@@ -239,6 +497,8 @@
     ]
   },
   {
+    "id": 39,
+    "image": "https://jysk.ua/sites/jysk.ua/files/teaser-image_64.jpg",
     "title": "Ідеї для стильних покривал: затишок та естетика у вашій спальні",
     "keywords": [
       "покривало",

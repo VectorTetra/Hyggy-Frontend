@@ -1,4 +1,4 @@
-import styles from "../page.module.css";
+import styles from "../css/TabBar.module.css";
 import Link from "next/link";
 
 export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
@@ -33,9 +33,8 @@ export default function TabBar({ waresQuantity, articlesQuantity, activeTab, set
 						<li className={styles.tabBarItem}>
 							<Link
 								href={articlesLink}
-								className={`${styles.tabBarLink} ${
-									activeTab === "articles" ? styles.activeLink : styles.nonActiveLink
-								}`}
+								className={`${styles.tabBarLink} ${activeTab === "articles" ? styles.activeLink : styles.nonActiveLink
+									}`}
 								onClick={() => setActiveTab("articles")}
 							>
 								Сторінки ({articlesQuantity})

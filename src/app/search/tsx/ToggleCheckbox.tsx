@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from "../page.module.css";
+import styles from "../css/ToggleCheckbox.module.css";
 
 const ToggleCheckbox = () => {
   const [isChecked, setIsChecked] = useState(false);

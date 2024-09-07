@@ -85,11 +85,16 @@ export default function SearchPage() {
   useEffect(() => {
     const receivedQuery = searchParams?.get("query") ?? "";
     setQuery(receivedQuery);
+    const receivedType = searchParams?.get("type") ?? "wares";
+    setActiveTab(receivedType);
   }, [searchParams]);
 
   useEffect(() => {
     async function performSearch() {
-      setLoading(true); // Встановлюємо стан завантаження перед початком пошуку
+      if (!loading) {
+        setLoading(true); // Встановлюємо стан завантаження перед початком пошуку
+      }
+
 
       try {
         let foundWares: Ware[] = [];
@@ -180,12 +185,16 @@ export default function SearchPage() {
           query={query} // Передаємо query як пропс
         />
         <SearchHeader
-          resultsQuantity={
-            results.foundWares.length + results.foundArticles.length
+          foundWaresQuantity={
+            results.foundWares.length
           }
+          foundArticlesQuantity={
+            results.foundArticles.length
+          }
+          activeTab={activeTab}
           query={query} // Передаємо query як пропс
         />
-        <FilterBar/>
+        <FilterBar />
         {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
         {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
       </div>

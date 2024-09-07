@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../page.module.css";
+import styles from "../css/FilterBar.module.css";
 import Link from "next/link";
 import FilterButton from "./FilterButton";
 import ToggleCheckbox from "./ToggleCheckbox";
