@@ -1,0 +1,22 @@
+.starRating {
+	display: flex;
+}
+
+.fullStar {
+	color: black;
+}
+
+.partialStarContainer {
+	position: relative;
+	display: inline-block;
+}
+
+.partialStar {
+	position: absolute;
+	overflow: hidden;
+	color: black;
+}
+
+.emptyStar {
+	color: lightgray;
+}

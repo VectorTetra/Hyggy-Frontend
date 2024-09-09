@@ -5,8 +5,8 @@ function MainPageHeaderNavbar(props) {
     return (
 			<div style={{ marginLeft: 'auto' }} > 
 				{
-					props.navBar.map(item => (
-					<Link className={styles.menuText} href = {item.url}>
+					props.navBar.map((item,index) => (
+					<Link key={index} className={styles.menuText} href = {item.url}>
                     {item.nameMenu}
                     </Link>
 					))

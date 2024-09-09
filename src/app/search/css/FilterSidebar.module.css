@@ -1,0 +1,21 @@
+.backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 100;
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 300px;
+	height: 100vh;
+	background-color: white;
+	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+	z-index: 101;
+	padding: 20px;
+}

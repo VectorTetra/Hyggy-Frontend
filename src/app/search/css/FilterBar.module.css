@@ -1,0 +1,73 @@
+/* Filter Bar Styles */
+#filterToggleBar {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+#filterBar {
+	display: flex;
+	gap: 10px;
+}
+
+#toggleBar {
+	display: flex;
+	justify-content: end;
+}
+
+/* 
+  @media screen and (max-width: 1000px) and (min-width: 768px) {}
+  @media screen and (max-width: 768px) and (min-width: 550px) {}
+  @media screen and (max-width: 550px) {} */
+
+@media screen and (max-width: 1000px) and (min-width: 768px) {
+	#filterToggleBar {
+		flex-direction: column;
+	}
+
+	#filterBar {
+		flex-direction: row-reverse;
+	}
+
+	#toggleBar {
+		width: 100%;
+		display: flex;
+		align-items: end;
+		margin-left: 0;
+	}
+
+}
+
+@media screen and (max-width: 768px) and (min-width: 550px) {
+	#filterToggleBar {
+		flex-direction: column;
+	}
+
+	#filterBar {
+		flex-direction: row-reverse;
+	}
+
+	#toggleBar {
+		width: 100%;
+		display: flex;
+		align-items: end;
+		margin-left: 0;
+	}
+}
+
+@media screen and (max-width: 550px) {
+	#filterToggleBar {
+		flex-direction: column;
+	}
+
+	#filterBar {
+		flex-direction: column-reverse;
+	}
+
+	#toggleBar {
+		width: 100%;
+		display: flex;
+		align-items: end;
+		margin-left: 0;
+	}
+}
