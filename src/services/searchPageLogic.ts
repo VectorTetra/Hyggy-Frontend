@@ -10,7 +10,7 @@ export function searchWaresAndArticles(query: string) {
 		ware.longName.toLowerCase().includes(query.toLowerCase())
 	);
 	const foundArticles: Article[] = jsonArticles.filter((article) =>
-		article.title.toLowerCase().includes(query.toLowerCase())
+		article.title.toLowerCase().includes(query.toLowerCase()) || article.keywords.includes(query.toLowerCase())
 	);
 	return { foundWares, foundArticles };
 }

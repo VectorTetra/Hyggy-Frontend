@@ -1,37 +1,42 @@
-import { FC, useState } from "react";
-import styles from "./FilterSidebar.module.css";
+import { useEffect } from "react";
+import { FC } from "react";
+import styles from "../css/FilterSidebar.module.css";
+import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
+import PriceRange from "./PriceRange";
 
-interface FilterSidebarProps {
-	isOpen: boolean;
-	onClose: () => void;
-	selectedFilters: string[];
-	onFilterRemove: (filter: string) => void;
-}
+const FilterSidebar: FC = () => {
+	const { isSidebarOpen, setIsSidebarOpen, selectedFilters, removeFilter } = useSearchStore();
 
-const FilterSidebar: FC<FilterSidebarProps> = ({ isOpen, onClose, selectedFilters, onFilterRemove }) => {
-	if (!isOpen) return null;
+	const onClose = () => setIsSidebarOpen(false);
+
+	// Використовуємо useEffect для блокування/розблокування скролу
+	useEffect(() => {
+		if (isSidebarOpen) {
+			// Блокуємо скрол
+			document.body.style.overflow = "hidden";
+		} else {
+			// Відновлюємо скрол
+			document.body.style.overflow = "";
+		}
+
+		// Повертаємо початковий стан при розмонтуванні компонента
+		return () => {
+			document.body.style.overflow = "";
+		};
+	}, [isSidebarOpen]);
 
 	return (
 		<>
-			<div className={styles.backdrop} onClick={onClose}></div> {/* Затемнення фону */}
-			<div className={styles.sidebar}>
-				<h2>Фільтри</h2>
-				<div>
-					{/* Тут можна відобразити вибрані фільтри */}
-					{selectedFilters.length > 0 ? (
-						<ul>
-							{selectedFilters.map((filter, index) => (
-								<li key={index}>
-									{filter}
-									<button onClick={() => onFilterRemove(filter)}>Видалити</button>
-								</li>
-							))}
-						</ul>
-					) : (
-						<p>Фільтри не вибрані</p>
-					)}
-				</div>
-				<button onClick={onClose}>Закрити фільтри</button>
+			<div
+				className={`${styles.backdrop} ${isSidebarOpen ? styles.open : ""}`}
+				onClick={onClose}
+			></div>
+			<div
+				className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}
+			>
+				<h2 className={styles.sidebarHeader}>Фільтри</h2>
+				<hr className={styles.sidebarHr} />
+				<PriceRange />
 			</div>
 		</>
 	);

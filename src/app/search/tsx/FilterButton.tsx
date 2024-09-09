@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function FilterButton(props: any) {
   return (
-    <button
+    <button onClick={props.onClick}
       className={`${styles.filterButton} ${props.dissappearOnAdapt === true ? styles.dissappearOnAdapt : null
         }`}
     >

@@ -1,16 +1,25 @@
 import styles from "../css/TabBar.module.css";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
-	// Об'єкти для Link з шляхами та параметрами
-	const waresLink = {
-		pathname: "/search",
-		query: { type: "wares", quantity: waresQuantity, query: query },
-	};
+	const router = useRouter();
+	const searchParams = useSearchParams();
 
-	const articlesLink = {
-		pathname: "/search",
-		query: { type: "articles", quantity: articlesQuantity, query: query },
+	// Функція для оновлення URL з параметрами
+	const updateUrl = (type: string) => {
+		// Створюємо нові параметри, зберігаючи існуючі
+		const params = new URLSearchParams(searchParams as any);
+
+		// Додаємо або змінюємо тип і кількість
+		params.set("type", type);
+
+		// Залишаємо інші параметри, зберігаючи query
+		if (query) {
+			params.set("query", query);
+		}
+
+		// Пушимо новий URL з оновленими параметрами
+		router.push(`?${params.toString()}`);
 	};
 
 	return (
@@ -19,26 +28,29 @@ export default function TabBar({ waresQuantity, articlesQuantity, activeTab, set
 				<ul id={styles.tabBarList}>
 					{waresQuantity > 0 && (
 						<li className={styles.tabBarItem}>
-							<Link
-								href={waresLink}
+							<a
 								className={`${styles.tabBarLink} 
 								${activeTab === "wares" ? styles.activeLink : styles.nonActiveLink}`}
-								onClick={() => setActiveTab("wares")}
+								onClick={() => {
+									setActiveTab("wares");
+									updateUrl("wares");
+								}}
 							>
 								Товари ({waresQuantity})
-							</Link>
+							</a>
 						</li>
 					)}
 					{articlesQuantity > 0 && (
 						<li className={styles.tabBarItem}>
-							<Link
-								href={articlesLink}
-								className={`${styles.tabBarLink} ${activeTab === "articles" ? styles.activeLink : styles.nonActiveLink
-									}`}
-								onClick={() => setActiveTab("articles")}
+							<a
+								className={`${styles.tabBarLink} ${activeTab === "articles" ? styles.activeLink : styles.nonActiveLink}`}
+								onClick={() => {
+									setActiveTab("articles");
+									updateUrl("articles");
+								}}
 							>
 								Сторінки ({articlesQuantity})
-							</Link>
+							</a>
 						</li>
 					)}
 				</ul>

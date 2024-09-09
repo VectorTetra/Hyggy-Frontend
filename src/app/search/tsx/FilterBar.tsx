@@ -1,9 +1,13 @@
+//FilterBar.tsx
 import { useState } from "react";
 import styles from "../css/FilterBar.module.css";
 import Link from "next/link";
 import FilterButton from "./FilterButton";
 import ToggleCheckbox from "./ToggleCheckbox";
+import useSearchStore from "@/store/search"; // Імпортуємо Zustand store  
+
 export default function FilterBar(props: any) {
+  const { isSidebarOpen, setIsSidebarOpen, selectedFilters, removeFilter } = useSearchStore();
   // Встановлюємо стан для відстеження активної вкладки
   return (
     <div id={styles.filterToggleBar}>
@@ -32,6 +36,7 @@ export default function FilterBar(props: any) {
           text="Всі фільтри"
           beforeImageSrc="/images/search/filter.png"
           dissappearOnAdapt={false}
+          onClick={() => { setIsSidebarOpen(true) }}
         />
       </div>
       <div id={styles.toggleBar}>

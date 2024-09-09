@@ -6,6 +6,7 @@
 	border: 1px solid #a3a3a3;
 	padding: 0.625rem 1.125rem 0.625rem 1.25rem;
 	justify-content: space-evenly;
+	cursor: pointer;
 }
 
 @media screen and (max-width: 1000px) and (min-width: 768px) {
