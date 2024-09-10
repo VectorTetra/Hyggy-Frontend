@@ -9,6 +9,7 @@ export interface Ware {
 	storeAvailability: string;
 	rating: number;
 	imageSrc: string;
+	category: string;
 }
 
 export interface Article {

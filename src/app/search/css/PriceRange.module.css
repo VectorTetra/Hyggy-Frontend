@@ -1,6 +1,5 @@
 .container {
 	padding: 0 15px;
-	transition: transform 0.3s ease;
 }
 
 .track {
@@ -79,7 +78,7 @@
 }
 
 .priceRange {
-
+	padding-top: 10px;
 	max-height: 0;
 	/* Стискування */
 	overflow: hidden;
@@ -91,6 +90,7 @@
 }
 
 .priceRangeOpen {
+	padding-top: 10px;
 	max-height: 500px;
 	/* Встановіть достатнє значення для розкриття */
 	opacity: 1;
@@ -103,4 +103,5 @@
 	cursor: pointer;
 	user-select: none;
 	font-size: 14px;
+	margin: 0;
 }
