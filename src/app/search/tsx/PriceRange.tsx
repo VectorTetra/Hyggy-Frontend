@@ -14,16 +14,17 @@ const PriceRange = () => {
 
 	// Ініціалізуємо значення слайдера з URL або з Zustand при першому рендері
 	useEffect(() => {
-		const minFromUrl = searchParams?.get("min") ?? minPossible;
-		const maxFromUrl = searchParams?.get("max") ?? maxPossible;
-		setValues([Number(minFromUrl), Number(maxFromUrl)]);
+		const priceParams = searchParams?.get("f_0");
+		if (priceParams) {
+			const [min, max] = priceParams.split("_").map(Number);
+			setValues([min, max]);
+		}
 	}, [searchParams, minPossible, maxPossible]);
 
 	// Дебаунсимо зміну URL щоб не було миттєвого оновлення
 	const updateUrlWithDebounce = debounce((newValues: number[]) => {
 		const params = new URLSearchParams(searchParams as any);
-		params.set("min", newValues[0].toString());
-		params.set("max", newValues[1].toString());
+		params.set("f_0", `${newValues[0]}_${newValues[1]}`);
 		router.push(`?${params.toString()}`);
 	}, 300); // Затримка в 300 мс
 
@@ -39,8 +40,7 @@ const PriceRange = () => {
 		<div className={styles.container}>
 			<h2 onClick={() => { setIsPriceRangeOpen(!isPriceRangeOpen) }} className={styles.priceRangeHeader}>Ціна</h2>
 
-			<div className={`${isPriceRangeOpen ? styles.priceRangeOpen : styles.priceRange}`}
-			>
+			<div className={`${isPriceRangeOpen ? styles.priceRangeOpen : styles.priceRange}`}>
 				<Range
 					disabled={!isPriceRangeOpen}
 					values={values}
@@ -81,7 +81,10 @@ const PriceRange = () => {
 							value={values[0]}
 							min={MIN}
 							max={MAX}
-							onChange={(e) => setValues([Math.min(Number(e.target.value), values[1]), values[1]])} // Оновлюємо локальний стан
+							onChange={(e) => {
+								const value = Math.max(Number(e.target.value), MIN);
+								setValues([Math.min(value, values[1]), values[1]]);
+							}}
 							onBlur={handleBlur} // Оновлюємо URL при блюрі
 						/>
 					</div>
@@ -93,13 +96,15 @@ const PriceRange = () => {
 							value={values[1]}
 							min={MIN}
 							max={MAX}
-							onChange={(e) => setValues([values[0], Math.max(Number(e.target.value), values[0])])} // Оновлюємо локальний стан
+							onChange={(e) => {
+								const value = Math.min(Number(e.target.value), MAX);
+								setValues([values[0], Math.max(value, values[0])]);
+							}}
 							onBlur={handleBlur} // Оновлюємо URL при блюрі
 						/>
 					</div>
 				</div>
 			</div>
-			<hr style={{ width: "100%", color: "rgb(163, 163, 163)", margin: "0" }}></hr>
 		</div>
 	);
 };

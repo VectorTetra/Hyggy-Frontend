@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import { Ware, Article } from "@/types/searchTypes";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import Layout from "../sharedComponents/Layout";
 import TabBar from "./tsx/TabBar";
 import SearchHeader from "./tsx/SearchHeader";
@@ -13,9 +13,10 @@ import WareGrid from "./tsx/WareGrid";
 import ArticleGrid from "./tsx/ArticleGrid";
 import FilterSidebar from "./tsx/FilterSidebar";
 import { handleSearch } from "@/services/searchPageLogic";
-import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
+import useSearchStore, { Filter } from "@/store/search"; // Імпортуємо Zustand store
 
 export default function SearchPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<{
     foundWares: Ware[];
@@ -27,7 +28,7 @@ export default function SearchPage() {
 
   const searchParams = useSearchParams();
 
-  const { setMinPossible, setMaxPossible, isSidebarOpen, setIsSidebarOpen, activeTab, setActiveTab } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
+  const { selectedFilters, setMinPossible, setMaxPossible, isSidebarOpen, setIsSidebarOpen, activeTab, setActiveTab } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
@@ -36,6 +37,10 @@ export default function SearchPage() {
     const receivedType = searchParams?.get("type") ?? "wares";
     setActiveTab(receivedType);
   }, [searchParams]);
+
+  // useEffect(() => {
+
+  // }, [selectedFilters]);
 
   useEffect(() => {
     async function performSearch() {
@@ -55,20 +60,27 @@ export default function SearchPage() {
         setMaxPossible(maxPrice);
 
         // Отримуємо ціновий діапазон з URL параметрів
-        const minPriceFromUrl = searchParams?.get("min");
-        const maxPriceFromUrl = searchParams?.get("max");
+        const priceFromUrl = searchParams?.get("f_0");
 
         // Фільтруємо товари на основі цінового діапазону з URL
-        if (minPriceFromUrl && maxPriceFromUrl) {
-          const minUrlPrice = Number(minPriceFromUrl);
-          const maxUrlPrice = Number(maxPriceFromUrl);
+        if (priceFromUrl) {
+          const minUrlPrice = Number(priceFromUrl.split("_")[0]);
+          const maxUrlPrice = Number(priceFromUrl.split("_")[1]);
 
           foundWares = foundWares.filter((ware) => {
             const price = Math.ceil(ware.price * ((100 - ware.discount) / 100));
             return price >= minUrlPrice && price <= maxUrlPrice;
           });
         }
-
+        //console.log("waresBeforeCategories", waresBeforeCategories);
+        const categoriesFromUrl = (searchParams?.get("f_1")?.split("|") || []).filter(Boolean);
+        console.log(categoriesFromUrl);
+        // Фільтруємо товари на основі категорій з URL
+        if (categoriesFromUrl.length > 0) {
+          foundWares = foundWares.filter((ware) => {
+            return categoriesFromUrl.includes(ware.category);
+          });
+        }
         setResults({ foundWares, foundArticles });
       } catch (error) {
         console.error("Error during search:", error);
@@ -78,11 +90,6 @@ export default function SearchPage() {
     }
     performSearch();
   }, [query, searchParams, setMinPossible, setMaxPossible]);
-
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   if (loading) {
     return (
@@ -108,12 +115,12 @@ export default function SearchPage() {
           activeTab={activeTab}
           query={query}
         />
-        {activeTab === "wares" && <FilterBar toggleSidebar={toggleSidebar} />}
+        {activeTab === "wares" && <FilterBar />}
 
         {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
         {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
 
-        <FilterSidebar />
+        <FilterSidebar wares={results.foundWares} />
       </div>
     </Layout>
   );

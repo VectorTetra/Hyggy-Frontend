@@ -7,7 +7,7 @@ import ToggleCheckbox from "./ToggleCheckbox";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store  
 
 export default function FilterBar(props: any) {
-  const { isSidebarOpen, setIsSidebarOpen, selectedFilters, removeFilter } = useSearchStore();
+  const { setIsSidebarOpen, setIsCategoryOpen, setIsPriceRangeOpen, setIsTrademarksOpen, setIsSortingSidebarOpen } = useSearchStore();
   // Встановлюємо стан для відстеження активної вкладки
   return (
     <div id={styles.filterToggleBar}>
@@ -16,27 +16,61 @@ export default function FilterBar(props: any) {
           text="Ціна"
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={true}
+          onClick={() => {
+            setIsSidebarOpen(true);
+            setIsPriceRangeOpen(true);
+            setIsCategoryOpen(false);
+            setIsTrademarksOpen(false);
+            setIsSortingSidebarOpen(false);
+          }}
         />
         <FilterButton
           text="Категорія"
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={true}
+          onClick={() => {
+            setIsSidebarOpen(true);
+            setIsCategoryOpen(true);
+            setIsPriceRangeOpen(false);
+            setIsTrademarksOpen(false);
+            setIsSortingSidebarOpen(false);
+          }}
         />
         <FilterButton
           text="Торгова марка"
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={true}
+          onClick={() => {
+            setIsSidebarOpen(true);
+            setIsTrademarksOpen(true);
+            setIsCategoryOpen(false);
+            setIsPriceRangeOpen(false);
+            setIsSortingSidebarOpen(false);
+          }}
         />
         <FilterButton
           text="Сортувати"
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={false}
+          onClick={() => {
+            setIsSortingSidebarOpen(true);
+            setIsCategoryOpen(false);
+            setIsPriceRangeOpen(false);
+            setIsTrademarksOpen(false);
+            setIsSidebarOpen(false);
+          }}
         />
         <FilterButton
           text="Всі фільтри"
           beforeImageSrc="/images/search/filter.png"
           dissappearOnAdapt={false}
-          onClick={() => { setIsSidebarOpen(true) }}
+          onClick={() => {
+            setIsSidebarOpen(true);
+            setIsCategoryOpen(false);
+            setIsPriceRangeOpen(false);
+            setIsTrademarksOpen(false);
+            setIsSortingSidebarOpen(false);
+          }}
         />
       </div>
       <div id={styles.toggleBar}>
