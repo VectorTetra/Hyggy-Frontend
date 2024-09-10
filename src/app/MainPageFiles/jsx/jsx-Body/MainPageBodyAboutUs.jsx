@@ -1,15 +1,19 @@
+import styles from "./../../styles/MainPageBody-styles.module.css";
+
 function MainPageBodyAboutUs(props) {
     return (
-        <div className="brand-container"> 
-            {props.aboutus.map(item => (
-                <div className="brand-item">
+        <div className={styles["brand-container"]}>
+            {props.aboutus.map((item, index) => (
+                <div key={index} className={styles["brand-item"]}>
                     <a style={{ textDecoration: "none" }} href={item.urlpage}>
-                        <img className="imageaboutus" src={item.urlimage} />
-                    <div className="aboutus-textcaption">{item.captoin}</div>
-                    <div className="aboutus-text">{item.text}</div>
+                        <img className={styles["imageaboutus"]} src={item.urlimage} alt={item.captoin} />
+                        <div className={styles["aboutus-textcaption"]}>{item.captoin}</div>
+                        <div className={styles["aboutus-text"]}>{item.text}</div>
                     </a>
                 </div>
             ))}
         </div>
     );
 }
+
+export default MainPageBodyAboutUs;

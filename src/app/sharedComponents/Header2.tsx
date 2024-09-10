@@ -3,7 +3,6 @@ import React from 'react';
 const Header2 = () => {
   return (
     <header>
-      {/* Вставте HTML та стилі іншої шапки */}
       <div>
         <h1>Шапка 2</h1>
         <nav>

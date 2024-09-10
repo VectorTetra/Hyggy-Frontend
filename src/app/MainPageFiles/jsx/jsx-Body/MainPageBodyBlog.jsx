@@ -1,15 +1,17 @@
-function MainPageBodyBlog(props) {
+import styles from "./../../styles/MainPageBody-styles.module.css";
+
+export default function MainPageBodyBlog(props) {
     return (
-        <div className="blog-container"> 
+        <div className={styles["blog-container"]}>
             {props.blog.map(item => (
-                <div className="blog-item" key={item.urlpage}>
+                <div className={styles["blog-item"]} key={item.urlpage}>
                     <a href={item.urlpage}>
-                        <img src={item.urlimage} alt={item.alt} className="blog-image"/>
-                        <div className="blog-caption">{item.textblog.textcaption}</div>
+                        <img src={item.urlimage} alt={item.alt} className={styles["blog-image"]} />
+                        <div className={styles["blog-caption"]}>{item.textblog.textcaption}</div>
                     </a>
-                    <div className="blog-text">{item.textblog.text}</div>                  
+                    <div className={styles["blog-text"]}>{item.textblog.text}</div>
                 </div>
             ))}
         </div>
-    )
+    );
 }
