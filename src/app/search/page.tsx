@@ -100,6 +100,16 @@ export default function SearchPage() {
           });
         }
 
+        const statusesFromUrl = (searchParams?.get("f_3")?.split("|") || []).filter(Boolean);
+        console.log('statusesFromUrl', statusesFromUrl);
+
+        // Filter wares based on statuses from the URL, but now requiring all statuses to be present
+        if (statusesFromUrl.length > 0) {
+          foundWares = foundWares.filter((ware) => {
+            return statusesFromUrl.every((status) => ware.tag.includes(status));
+          });
+        }
+
         setResults({ foundWares, foundArticles });
 
       } catch (error) {

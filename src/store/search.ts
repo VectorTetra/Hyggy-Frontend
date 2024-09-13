@@ -22,6 +22,8 @@ interface SearchStore {
   setIsCategoryOpen: (value: boolean) => void;
   isTrademarksOpen: boolean;
   setIsTrademarksOpen: (value: boolean) => void;
+  isStatusOpen: boolean;
+  setIsStatusOpen: (value: boolean) => void;
   isSortingSidebarOpen: boolean;
   setIsSortingSidebarOpen: (value: boolean) => void;
   waresBeforeCategories: Ware[];
@@ -52,6 +54,8 @@ const useSearchStore = create<SearchStore>((set) => ({
   setIsSortingSidebarOpen: (value: boolean) => set({ isSortingSidebarOpen: value }),
   waresBeforeCategories: [],
   setWaresBeforeCategories: (waresBeforeCategories) => set({ waresBeforeCategories }),
+  isStatusOpen: false,
+  setIsStatusOpen: (value: boolean) => set({ isStatusOpen: value }),
 }));
 
 export default useSearchStore;

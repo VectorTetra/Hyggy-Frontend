@@ -38,6 +38,7 @@ function TrademarkPicker(props: any) {
 								value={trademark.name}
 								onChange={onChange}
 								checked={filters.includes(trademark.name)}
+								disabled={trademark.count === 0}
 							/>
 						</div>
 					</div>

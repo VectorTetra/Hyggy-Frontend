@@ -29,6 +29,7 @@
 	transform: translateX(100%);
 	/* Початковий стан - за межами екрана */
 	transition: transform 0.3s ease;
+	overflow-y: auto;
 }
 
 .sidebar.open {

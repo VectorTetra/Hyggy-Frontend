@@ -29,7 +29,7 @@ function CategoryPicker(props: any) {
 			<div className={isCategoryOpen ? styles.categoryOpen : styles.categoryClosed}>
 				{props.categories.map((category: any, index: any) => (
 					<div key={index} className={styles.categoryItem}>
-						<span className={styles.categoryName}>{category.name}</span>
+						<span className={styles.categoryName} style={{ opacity: category.isDisabled ? "0.5" : "1" }}>{category.name}</span>
 						<div>
 							<span className={styles.categoryCount}>{category.count}</span>
 							<input
@@ -38,6 +38,7 @@ function CategoryPicker(props: any) {
 								value={category.name}
 								onChange={onChange}
 								checked={filters.includes(category.name)}
+								disabled={category.isDisabled}
 							/>
 						</div>
 					</div>

@@ -4,7 +4,10 @@
 		"shortName": "HOKKSUND",
 		"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
 		"price": 899,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція",
+			"Новинка"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -18,7 +21,9 @@
 		"shortName": "JONAS",
 		"longName": "Диван JONAS розкладний темно-сірий",
 		"price": 3499,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 15,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -32,8 +37,10 @@
 		"shortName": "KABIN",
 		"longName": "Шафа для одягу KABIN 3 двері біла",
 		"price": 1799,
-		"tag": "Завжди низька ціна",
-		"discount": 5,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 3.8,
@@ -46,7 +53,9 @@
 		"shortName": "FJELL",
 		"longName": "Ліжко FJELL з ящиками 180x200 см натуральний дуб",
 		"price": 4999,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 8,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -60,7 +69,9 @@
 		"shortName": "EIKEN",
 		"longName": "Крісло EIKEN сіре",
 		"price": 1999,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 12,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -74,7 +85,7 @@
 		"shortName": "BERG",
 		"longName": "Комплект постільної білизни BERG 200x220 см",
 		"price": 799,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -88,8 +99,10 @@
 		"shortName": "GRAN",
 		"longName": "Обідній стіл GRAN діам.110см білий",
 		"price": 1299,
-		"tag": "Завжди низька ціна",
-		"discount": 7,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 4.4,
@@ -102,7 +115,9 @@
 		"shortName": "SAND",
 		"longName": "Тумба під телевізор SAND 120 см",
 		"price": 499,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 20,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -116,7 +131,9 @@
 		"shortName": "LEIF",
 		"longName": "Настільна лампа LEIF чорна",
 		"price": 399,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 5,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -130,7 +147,7 @@
 		"shortName": "AUGUST",
 		"longName": "Стілець AUGUST сірий",
 		"price": 899,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -144,7 +161,9 @@
 		"shortName": "LILL",
 		"longName": "Комод LILL 5 ящиків білий/дуб",
 		"price": 2199,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -158,8 +177,10 @@
 		"shortName": "RUSTA",
 		"longName": "Килим RUSTA 140x200 см",
 		"price": 1299,
-		"tag": "Завжди низька ціна",
-		"discount": 15,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.0,
@@ -172,7 +193,9 @@
 		"shortName": "LUNA",
 		"longName": "Лампа настільна LUNA метал",
 		"price": 799,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 8,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -186,7 +209,7 @@
 		"shortName": "JULIA",
 		"longName": "Штори JULIA 140x250 см",
 		"price": 549,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -200,7 +223,9 @@
 		"shortName": "FLOOR",
 		"longName": "Килим FLOOR 200x300 см",
 		"price": 2999,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 12,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -214,7 +239,9 @@
 		"shortName": "WIND",
 		"longName": "Склянка WIND 6 шт.",
 		"price": 299,
-		"tag": "Завжди низька ціна",
+		"tag": [
+			"Завжди низька ціна"
+		],
 		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -228,7 +255,9 @@
 		"shortName": "HAST",
 		"longName": "Тумба для взуття HAST 3 ящики",
 		"price": 999,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 6,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -241,7 +270,9 @@
 		"shortName": "SLEEP",
 		"longName": "Матрац SLEEP 180x200 см",
 		"price": 3499,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 20,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -254,7 +285,9 @@
 		"shortName": "BASK",
 		"longName": "Короб PROBOX 32л з кришкою прозорий",
 		"price": 199,
-		"tag": "Завжди низька ціна",
+		"tag": [
+			"Завжди низька ціна"
+		],
 		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -267,7 +300,9 @@
 		"shortName": "ELLA",
 		"longName": "Покривало ELLA 220x240 см",
 		"price": 1499,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -280,7 +315,7 @@
 		"shortName": "VIUF",
 		"longName": "Стілець складаний VIUF сірий",
 		"price": 499,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -293,7 +328,9 @@
 		"shortName": "CLAUS",
 		"longName": "Тримач для рушників CLAUS д.13см",
 		"price": 199,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 5,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -306,7 +343,9 @@
 		"shortName": "BIRD",
 		"longName": "Декоративна подушка BIRD 45x45 см",
 		"price": 299,
-		"tag": "Завжди низька ціна",
+		"tag": [
+			"Завжди низька ціна"
+		],
 		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -319,7 +358,7 @@
 		"shortName": "TONY",
 		"longName": "Обідній стіл TONY 90x90 см",
 		"price": 899,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -332,7 +371,9 @@
 		"shortName": "NORD",
 		"longName": "Шафа NORD 2 двері",
 		"price": 1499,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 8,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -345,8 +386,10 @@
 		"shortName": "MINI",
 		"longName": "Міні-комод MINI 3 ящики",
 		"price": 799,
-		"tag": "Завжди низька ціна",
-		"discount": 5,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.1,
@@ -358,7 +401,9 @@
 		"shortName": "KARL",
 		"longName": "Крісло KARL сірий",
 		"price": 1999,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -371,7 +416,9 @@
 		"shortName": "MOLTE",
 		"longName": "Ваза MOLTE 30 см",
 		"price": 299,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -384,7 +431,7 @@
 		"shortName": "BORNHOLM",
 		"longName": "Полиця для взуття BORNHOLM 4пол чорний",
 		"price": 899,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -397,8 +444,10 @@
 		"shortName": "FJORD",
 		"longName": "Ковдра FJORD 200x220 см",
 		"price": 1199,
-		"tag": "Завжди низька ціна",
-		"discount": 7,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.4,
@@ -410,7 +459,9 @@
 		"shortName": "VEDDE",
 		"longName": "Шафа VEDDE 220x197см із дзеркалом дикий дуб",
 		"price": 28500,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 12,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -423,7 +474,9 @@
 		"shortName": "UDSBJERG",
 		"longName": "Крісло UDSBJERG синій оксамит/чорний",
 		"price": 4999,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 30,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -436,8 +489,10 @@
 		"shortName": "TOBIAS",
 		"longName": "Годинник TOBIAS д.41см безшумний",
 		"price": 599,
-		"tag": "Завжди низька ціна",
-		"discount": 5,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.1,
@@ -449,7 +504,7 @@
 		"shortName": "FJELLDAL",
 		"longName": "Подушка FJELLDAL 50x70см 700г",
 		"price": 1299,
-		"tag": "",
+		"tag": [],
 		"discount": 50,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -462,7 +517,9 @@
 		"shortName": "HILDA",
 		"longName": "Тумба для взуття HILDA 2 ящики",
 		"price": 699,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -475,7 +532,9 @@
 		"shortName": "KRESTIAN",
 		"longName": "Прибори для салату KRESTIAN діам.30см дерево",
 		"price": 499,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 7,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -488,8 +547,10 @@
 		"shortName": "KRISTOF",
 		"longName": "Люстра KRISTOF д.35см в.23см натура",
 		"price": 1599,
-		"tag": "Завжди низька ціна",
-		"discount": 15,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.4,
@@ -501,7 +562,9 @@
 		"shortName": "NORDIC",
 		"longName": "Ковдра NORDIC 150x200 см",
 		"price": 899,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 5,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -514,7 +577,9 @@
 		"shortName": "KUNGSMYNTA",
 		"longName": "Підставка KUNGSMYNTA",
 		"price": 60,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -527,8 +592,10 @@
 		"shortName": "GLOW",
 		"longName": "Ковдра GLOW 200x220 см",
 		"price": 1299,
-		"tag": "Завжди низька ціна",
-		"discount": 10,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 4.5,
@@ -540,7 +607,7 @@
 		"shortName": "GROVE",
 		"longName": "Тумба комод GROVE 3 ящики",
 		"price": 999,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -553,7 +620,9 @@
 		"shortName": "FARGO",
 		"longName": "Стіл FARGO 120x80 см",
 		"price": 1499,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 8,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -566,7 +635,9 @@
 		"shortName": "SILK",
 		"longName": "Подушка SILK 60x60 см",
 		"price": 399,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 5,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -579,7 +650,7 @@
 		"shortName": "PRIME",
 		"longName": "Рамка для фотографій PRIME 20x30 см",
 		"price": 149,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -592,8 +663,10 @@
 		"shortName": "LOFT",
 		"longName": "Письмовий стіл LOFT 120 см",
 		"price": 1199,
-		"tag": "Завжди низька ціна",
-		"discount": 12,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.4,
@@ -605,7 +678,9 @@
 		"shortName": "CAMEL",
 		"longName": "Штори CAMEL 140x250 см",
 		"price": 699,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 10,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
@@ -618,7 +693,9 @@
 		"shortName": "BALI",
 		"longName": "Садовий стілець BALI",
 		"price": 499,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 8,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -631,7 +708,7 @@
 		"shortName": "SANDY",
 		"longName": "Ковдра SANDY 150x200 см",
 		"price": 899,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -644,8 +721,10 @@
 		"shortName": "GLOBE",
 		"longName": "Світильник GLOBE",
 		"price": 799,
-		"tag": "Завжди низька ціна",
-		"discount": 5,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 4.2,
@@ -657,7 +736,9 @@
 		"shortName": "MAST",
 		"longName": "Килим MAST 200x300 см",
 		"price": 1799,
-		"tag": "Новинка",
+		"tag": [
+			"Новинка"
+		],
 		"discount": 10,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -670,7 +751,9 @@
 		"shortName": "SHADOW",
 		"longName": "Лампа SHADOW",
 		"price": 499,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 8,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -683,7 +766,7 @@
 		"shortName": "DREAM",
 		"longName": "Подушка DREAM 40x40 см",
 		"price": 199,
-		"tag": "",
+		"tag": [],
 		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -696,7 +779,9 @@
 		"shortName": "SPARK",
 		"longName": "Подушка SPARK 60x60 см",
 		"price": 299,
-		"tag": "Чудова пропозиція",
+		"tag": [
+			"Чудова пропозиція"
+		],
 		"discount": 10,
 		"deliveryOption": "Є доставка",
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
@@ -709,8 +794,10 @@
 		"shortName": "VEDDE",
 		"longName": "Шафа VEDDE 167х197см із дзеркалом дикий дуб",
 		"price": 18500,
-		"tag": "Завжди низька ціна",
-		"discount": 5,
+		"tag": [
+			"Завжди низька ціна"
+		],
+		"discount": 0,
 		"deliveryOption": "Немає доставки",
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.4,
