@@ -10,7 +10,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.5,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
-		"category": "Тумби приліжкові"
+		"category": "Тумби приліжкові",
+		"trademark": "JYSK"
 	},
 	{
 		"id": 2,
@@ -23,7 +24,8 @@
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.0,
 		"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/246014",
-		"category": "Дивани"
+		"category": "Дивани",
+		"trademark": "JYSK"
 	},
 	{
 		"id": 3,
@@ -36,7 +38,8 @@
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 3.8,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/38059",
-		"category": "Шафи для одягу"
+		"category": "Шафи для одягу",
+		"trademark": "JYSK"
 	},
 	{
 		"id": 4,
@@ -49,7 +52,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.7,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/236109",
-		"category": "Ліжка"
+		"category": "Ліжка",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 5,
@@ -62,7 +66,8 @@
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.3,
 		"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/126722",
-		"category": "Крісла"
+		"category": "Крісла",
+		"trademark": "JYSK"
 	},
 	{
 		"id": 6,
@@ -75,7 +80,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.2,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/193300",
-		"category": "Постільна білизна"
+		"category": "Постільна білизна",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 7,
@@ -88,7 +94,8 @@
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 4.4,
 		"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/236918",
-		"category": "Обідні столи"
+		"category": "Обідні столи",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 8,
@@ -101,7 +108,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.1,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212434",
-		"category": "Тумби під телевізор"
+		"category": "Тумби під телевізор",
+		"trademark": null
 	},
 	{
 		"id": 9,
@@ -114,7 +122,8 @@
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.6,
 		"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/243690",
-		"category": "Настільні лампи"
+		"category": "Настільні лампи",
+		"trademark": "JYSK"
 	},
 	{
 		"id": 10,
@@ -127,7 +136,8 @@
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 3.9,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/246562",
-		"category": "Стільці"
+		"category": "Стільці",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 11,
@@ -140,7 +150,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.3,
 		"imageSrc": "https://cdn1.jysk.com/getimage/wd3.medium/86178",
-		"category": "Комоди"
+		"category": "Комоди",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 12,
@@ -153,7 +164,8 @@
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.0,
 		"imageSrc": "https://cdn1.jysk.com/getimage/wd3.medium/182043",
-		"category": "Килими"
+		"category": "Килими",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 13,
@@ -166,7 +178,8 @@
 		"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.2,
 		"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/243703",
-		"category": "Настільні лампи"
+		"category": "Настільні лампи",
+		"trademark": null
 	},
 	{
 		"id": 14,
@@ -179,7 +192,8 @@
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 3.7,
 		"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/240666",
-		"category": "Штори"
+		"category": "Штори",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 15,
@@ -192,7 +206,8 @@
 		"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
 		"rating": 4.5,
 		"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/41192",
-		"category": "Килими"
+		"category": "Килими",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 16,
@@ -205,7 +220,8 @@
 		"storeAvailability": "Немає в наявності в магазинах",
 		"rating": 4.1,
 		"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/235845",
-		"category": "Посуд"
+		"category": "Посуд",
+		"trademark": "Jutlandia"
 	},
 	{
 		"id": 17,

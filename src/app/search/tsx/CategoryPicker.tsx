@@ -1,3 +1,4 @@
+//File: CategoryPicker.tsx
 import useSearchStore from "@/store/search";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "../css/CategoryPicker.module.css";

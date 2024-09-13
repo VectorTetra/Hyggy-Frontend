@@ -12,8 +12,9 @@ import Loading from "./loading";
 import WareGrid from "./tsx/WareGrid";
 import ArticleGrid from "./tsx/ArticleGrid";
 import FilterSidebar from "./tsx/FilterSidebar";
-import { handleSearch } from "@/services/searchPageLogic";
+import { handleSearch, sortWares } from "@/services/searchPageLogic";
 import useSearchStore, { Filter } from "@/store/search"; // Імпортуємо Zustand store
+import { isEqual } from "lodash";
 
 export default function SearchPage() {
   const router = useRouter();
@@ -28,19 +29,16 @@ export default function SearchPage() {
 
   const searchParams = useSearchParams();
 
-  const { selectedFilters, setMinPossible, setMaxPossible, isSidebarOpen, setIsSidebarOpen, activeTab, setActiveTab } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
+  const { setMinPossible, setMaxPossible, waresBeforeCategories, setWaresBeforeCategories, activeTab, setActiveTab } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
   const [query, setQuery] = useState<string>("");
 
-  useEffect(() => {
-    const receivedQuery = searchParams?.get("query") ?? "";
-    setQuery(receivedQuery);
-    const receivedType = searchParams?.get("type") ?? "wares";
-    setActiveTab(receivedType);
-  }, [searchParams]);
 
   // useEffect(() => {
-
-  // }, [selectedFilters]);
+  //   // Сховати стандартну поведінку прокрутки при зміні URL
+  //   router.beforePopState(() => {
+  //     return false;
+  //   });
+  // }, [router]);
 
   useEffect(() => {
     async function performSearch() {
@@ -48,6 +46,11 @@ export default function SearchPage() {
         setLoading(true);
       }
       try {
+        const receivedQuery = searchParams?.get("query") ?? "";
+        if (query !== receivedQuery) setQuery(receivedQuery);
+        const receivedType = searchParams?.get("type") ?? "wares";
+        if (activeTab !== receivedType) setActiveTab(receivedType);
+
         let { foundWares, foundArticles } = await handleSearch(query);
 
         // Визначення мінімальної та максимальної ціни з результатів пошуку
@@ -72,7 +75,13 @@ export default function SearchPage() {
             return price >= minUrlPrice && price <= maxUrlPrice;
           });
         }
-        //console.log("waresBeforeCategories", waresBeforeCategories);
+
+        // Сортуємо товари з обох списків, щоб уникнути зайвих перерендерів списку категорій товарів
+        const sortedWares = sortWares(foundWares);
+        const sortedWaresBeforeCategories = sortWares(waresBeforeCategories);
+        if (!isEqual(sortedWares, sortedWaresBeforeCategories)) {
+          setWaresBeforeCategories(foundWares);
+        }
         const categoriesFromUrl = (searchParams?.get("f_1")?.split("|") || []).filter(Boolean);
         console.log(categoriesFromUrl);
         // Фільтруємо товари на основі категорій з URL
@@ -81,7 +90,18 @@ export default function SearchPage() {
             return categoriesFromUrl.includes(ware.category);
           });
         }
+
+        const trademarksFromUrl = (searchParams?.get("f_2")?.split("|") || []).filter(Boolean);
+        console.log('trademarksFromUrl', trademarksFromUrl);
+        // Фільтруємо товари на основі брендів з URL
+        if (trademarksFromUrl.length > 0) {
+          foundWares = foundWares.filter((ware) => {
+            return trademarksFromUrl.includes(ware.trademark);
+          });
+        }
+
         setResults({ foundWares, foundArticles });
+
       } catch (error) {
         console.error("Error during search:", error);
       } finally {
@@ -89,7 +109,7 @@ export default function SearchPage() {
       }
     }
     performSearch();
-  }, [query, searchParams, setMinPossible, setMaxPossible]);
+  }, [searchParams]);
 
   if (loading) {
     return (
@@ -120,7 +140,7 @@ export default function SearchPage() {
         {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
         {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
 
-        <FilterSidebar wares={results.foundWares} />
+        <FilterSidebar wares={waresBeforeCategories} foundWares={results.foundWares} />
       </div>
     </Layout>
   );

@@ -66,3 +66,8 @@ export async function handleSearch(query: string): Promise<{
 
 	return { foundWares, foundArticles };
 }
+
+// Функція для сортування масиву перед порівнянням
+export function sortWares(wares: Ware[]): Ware[] {
+	return wares.slice().sort((a, b) => a.id - b.id);
+}
