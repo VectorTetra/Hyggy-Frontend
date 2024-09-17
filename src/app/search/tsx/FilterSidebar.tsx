@@ -10,6 +10,7 @@ import TrademarkPicker from "./TrademarkPicker";
 import StatusPicker from "./StatusPicker";
 import ToggleCheckbox from "./ToggleCheckbox";
 import SaleCheckbox from "./SaleCheckbox";
+import SidebarButtonBar from "./SidebarButtonBar";
 
 const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundWares: Ware[] }) => {
 	const { isSidebarOpen, setIsSidebarOpen } = useSearchStore();
@@ -132,6 +133,8 @@ const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundW
 				<hr className={styles.sidebarHr} />
 				<SaleCheckbox />
 				<hr className={styles.sidebarHr} />
+
+				<SidebarButtonBar />
 			</div>
 		</>
 	);

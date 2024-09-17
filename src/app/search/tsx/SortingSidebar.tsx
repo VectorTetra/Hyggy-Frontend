@@ -4,6 +4,7 @@ import filterStyles from "../css/FilterSidebar.module.css";
 
 import { useQueryState } from 'nuqs';
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
+import SidebarButtonBar from "./SidebarButtonBar";
 
 export default function SortingSidebar(props: any) {
 	const { isSortingSidebarOpen, setIsSortingSidebarOpen } = useSearchStore();
@@ -85,6 +86,7 @@ export default function SortingSidebar(props: any) {
 					/>
 					<label htmlFor="alphabet_desc">За алфавітом (Я-А)</label>
 				</div>
+				<SidebarButtonBar />
 			</div>
 		</>
 	);
