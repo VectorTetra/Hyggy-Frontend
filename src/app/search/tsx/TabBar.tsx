@@ -1,25 +1,23 @@
 import styles from "../css/TabBar.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from 'nuqs';
+//import useSearchStore from "@/store/search";
 
 export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
-	const router = useRouter();
-	const searchParams = useSearchParams();
+	// Використовуємо useQueryState з nuqs для роботи з параметрами URL
+	// Якщо вказати { scroll: false }, то параметр не буде впливати на прокрутку
+	const [type, setType] = useQueryState('type', { scroll: false });
+	const [searchQuery, setSearchQuery] = useQueryState('query', { scroll: false });
+	//const { setScrollPosition } = useSearchStore();
 
 	// Функція для оновлення URL з параметрами
-	const updateUrl = (type: string) => {
-		// Створюємо нові параметри, зберігаючи існуючі
-		const params = new URLSearchParams(searchParams as any);
+	const updateUrl = (newType: string) => {
+		// Оновлюємо параметр типу в URL
+		setType(newType, { history: "replace" });
 
-		// Додаємо або змінюємо тип і кількість
-		params.set("type", type);
-
-		// Залишаємо інші параметри, зберігаючи query
+		// Якщо є query, оновлюємо і його
 		if (query) {
-			params.set("query", query);
+			setSearchQuery(query, { history: "replace" });
 		}
-
-		// Пушимо новий URL з оновленими параметрами
-		router.push(`?${params.toString()}`);
 	};
 
 	return (

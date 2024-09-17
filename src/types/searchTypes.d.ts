@@ -10,7 +10,7 @@ export interface Ware {
 	rating: number;
 	imageSrc: string;
 	category: string;
-	trademark: string;
+	trademark?: string;
 }
 
 export interface Article {

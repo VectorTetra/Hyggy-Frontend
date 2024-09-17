@@ -9,7 +9,7 @@
 	display: inline-block;
 	width: 40px;
 	height: 20px;
-	margin-right: 10px;
+	margin-left: 10px;
 }
 
 .toggleCheckbox {
@@ -52,4 +52,6 @@
 
 .toggleText {
 	font-size: 16px;
+	cursor: pointer;
+	user-select: none;
 }

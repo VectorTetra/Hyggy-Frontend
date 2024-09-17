@@ -1,24 +1,30 @@
 // File: StatusPicker.tsx
 import useSearchStore from "@/store/search";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from 'nuqs';
 import styles from "../css/StatusPicker.module.css";
 
 function StatusPicker(props: any) {
 	const { isStatusOpen, setIsStatusOpen } = useSearchStore();
-	const searchParams = useSearchParams();
-	const router = useRouter();
-	const filters = (searchParams?.get("f_3")?.split("|") || []).filter(Boolean);
+	const [filters, setFilters] = useQueryState("f_3", { scroll: false });
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
-		const params = new URLSearchParams(searchParams as any);
+		const currentFilters = (filters || "").split("|").filter(Boolean);
 
 		if (e.target.checked) {
-			params.set("f_3", [...filters, value].join("|"));
+			// Add new filter
+			setFilters([...currentFilters, value].join("|"), { history: "replace" });
 		} else {
-			params.set("f_3", filters.filter((filter: any) => filter !== value).join("|"));
+			// Remove filter
+			const updatedFilters = currentFilters.filter((filter: any) => filter !== value);
+			if (updatedFilters.length === 0) {
+				// Remove the parameter if no filters
+				setFilters(null, { history: "replace" });
+			} else {
+				// Update parameter with new filters
+				setFilters(updatedFilters.join("|"), { history: "replace" });
+			}
 		}
-		router.push(`?${params.toString()}`);
 	};
 
 	return (
@@ -27,18 +33,18 @@ function StatusPicker(props: any) {
 				Спец. пропозиції
 			</h2>
 			<div className={isStatusOpen ? styles.statusOpen : styles.statusClosed}>
-				{props.statuses.map((Status: any, index: any) => (
+				{props.statuses.map((status: any, index: any) => (
 					<div key={index} className={styles.statusItem}>
-						<span className={styles.statusName}>{Status.name}</span>
+						<span className={styles.statusName}>{status.name}</span>
 						<div>
-							<span className={styles.statusCount}>{Status.count}</span>
+							<span className={styles.statusCount}>{status.count}</span>
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={Status.name}
+								value={status.name}
 								onChange={onChange}
-								checked={filters.includes(Status.name)}
-								disabled={Status.count === 0}
+								checked={(filters || "").split("|").includes(status.name)}
+								disabled={status.count === 0}
 							/>
 						</div>
 					</div>

@@ -1,34 +1,55 @@
-import { useState } from 'react';
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "../css/ToggleCheckbox.module.css";
+import React from "react";
+import useSearchStore from "@/store/search";
+// Apply React Memo to prevent re-rendering
 
-const ToggleCheckbox = () => {
-  const [isChecked, setIsChecked] = useState(false);
+const ToggleCheckbox = React.memo(() => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const filter = searchParams?.get("f_4");
 
-  const handleToggle = () => {
-    setIsChecked(!isChecked);
-    if (!isChecked) {
-      console.log('Товари на акції: Включено');
-      // Додайте код для відображення акційних товарів
+  const onChange = (e: any) => {
+    const value = e.target.value;
+    const params = new URLSearchParams(searchParams as any);
+
+    if (e.target.checked) {
+      params.set("f_4", value);
     } else {
-      console.log('Товари на акції: Вимкнено');
-      // Додайте код для приховування акційних товарів
+      params.delete("f_4");
     }
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleSpanClick = () => {
+    const params = new URLSearchParams(searchParams as any);
+    const isChecked = filter === "sale";
+
+    if (!isChecked) {
+      params.set("f_4", "sale");
+    } else {
+      params.delete("f_4");
+    }
+    router.push(`?${params.toString()}`);
   };
 
   return (
     <div className={styles.toggleContainer}>
+      <span className={styles.toggleText} onClick={handleSpanClick}>
+        Товари на акції
+      </span>
       <label className={styles.toggleLabel}>
         <input
           type="checkbox"
-          checked={isChecked}
-          onChange={handleToggle}
+          value="sale"
+          checked={filter === "sale"}
+          onChange={onChange}
           className={styles.toggleCheckbox}
         />
         <span className={styles.toggleSlider}></span>
       </label>
-      <span className={styles.toggleText}>Товари на акції</span>
     </div>
   );
-};
+});
 
 export default ToggleCheckbox;

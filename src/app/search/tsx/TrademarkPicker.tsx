@@ -1,24 +1,31 @@
 // File: TrademarkPicker.tsx
+
 import useSearchStore from "@/store/search";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from 'nuqs';
 import styles from "../css/TrademarkPicker.module.css";
 
 function TrademarkPicker(props: any) {
 	const { isTrademarksOpen, setIsTrademarksOpen } = useSearchStore();
-	const searchParams = useSearchParams();
-	const router = useRouter();
-	const filters = (searchParams?.get("f_2")?.split("|") || []).filter(Boolean);
+	const [filters, setFilters] = useQueryState("f_2", { scroll: false });
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
-		const params = new URLSearchParams(searchParams as any);
+		const currentFilters = (filters || "").split("|").filter(Boolean);
 
 		if (e.target.checked) {
-			params.set("f_2", [...filters, value].join("|"));
+			// Add new filter
+			setFilters([...currentFilters, value].join("|"), { history: "replace" });
 		} else {
-			params.set("f_2", filters.filter((filter: any) => filter !== value).join("|"));
+			// Remove filter
+			const updatedFilters = currentFilters.filter((filter: any) => filter !== value);
+			if (updatedFilters.length === 0) {
+				// Remove the parameter if no filters
+				setFilters(null, { history: "replace" });
+			} else {
+				// Update parameter with new filters
+				setFilters(updatedFilters.join("|"), { history: "replace" });
+			}
 		}
-		router.push(`?${params.toString()}`);
 	};
 
 	return (
@@ -37,7 +44,7 @@ function TrademarkPicker(props: any) {
 								className={styles.checkbox}
 								value={trademark.name}
 								onChange={onChange}
-								checked={filters.includes(trademark.name)}
+								checked={(filters || "").split("|").includes(trademark.name)}
 								disabled={trademark.count === 0}
 							/>
 						</div>

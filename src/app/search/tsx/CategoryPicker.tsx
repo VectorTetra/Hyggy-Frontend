@@ -1,24 +1,30 @@
-//File: CategoryPicker.tsx
+// File: CategoryPicker.tsx
 import useSearchStore from "@/store/search";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from 'nuqs';
 import styles from "../css/CategoryPicker.module.css";
 
 function CategoryPicker(props: any) {
 	const { isCategoryOpen, setIsCategoryOpen } = useSearchStore();
-	const searchParams = useSearchParams();
-	const router = useRouter();
-	const filters = (searchParams?.get("f_1")?.split("|") || []).filter(Boolean);
+	const [filters, setFilters] = useQueryState("f_1", { scroll: false });
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
-		const params = new URLSearchParams(searchParams as any);
+		const currentFilters = (filters || "").split("|").filter(Boolean);
 
 		if (e.target.checked) {
-			params.set("f_1", [...filters, value].join("|"));
+			// Add new filter
+			setFilters([...currentFilters, value].join("|"), { history: "replace" });
 		} else {
-			params.set("f_1", filters.filter((filter: any) => filter !== value).join("|"));
+			// Remove filter
+			const updatedFilters = currentFilters.filter((filter: any) => filter !== value);
+			if (updatedFilters.length === 0) {
+				// Remove the parameter if no filters
+				setFilters(null, { history: "replace" });
+			} else {
+				// Update parameter with new filters
+				setFilters(updatedFilters.join("|"), { history: "replace" });
+			}
 		}
-		router.push(`?${params.toString()}`);
 	};
 
 	return (
@@ -37,7 +43,7 @@ function CategoryPicker(props: any) {
 								className={styles.checkbox}
 								value={category.name}
 								onChange={onChange}
-								checked={filters.includes(category.name)}
+								checked={(filters || "").split("|").includes(category.name)}
 								disabled={category.isDisabled}
 							/>
 						</div>

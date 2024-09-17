@@ -8,6 +8,8 @@ import PriceRange from "./PriceRange";
 import CategoryPicker from "./CategoryPicker";
 import TrademarkPicker from "./TrademarkPicker";
 import StatusPicker from "./StatusPicker";
+import ToggleCheckbox from "./ToggleCheckbox";
+import SaleCheckbox from "./SaleCheckbox";
 
 const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundWares: Ware[] }) => {
 	const { isSidebarOpen, setIsSidebarOpen } = useSearchStore();
@@ -40,7 +42,7 @@ const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundW
 	let trademarks: Trademark[] = Object.values(
 		wares.reduce((acc: Record<string, Trademark>, ware: Ware) => {
 			const trademarkName = ware.trademark;
-			if (!acc[trademarkName]) {
+			if (trademarkName && !acc[trademarkName]) {
 				acc[trademarkName] = { name: trademarkName, count: 0 };
 			}
 			return acc;
@@ -127,6 +129,8 @@ const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundW
 				<TrademarkPicker trademarks={trademarks} />
 				<hr className={styles.sidebarHr} />
 				<StatusPicker statuses={statuses} />
+				<hr className={styles.sidebarHr} />
+				<SaleCheckbox />
 				<hr className={styles.sidebarHr} />
 			</div>
 		</>

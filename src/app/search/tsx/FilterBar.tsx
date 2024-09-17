@@ -53,11 +53,11 @@ export default function FilterBar(props: any) {
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={false}
           onClick={() => {
+            setIsSidebarOpen(false);
             setIsSortingSidebarOpen(true);
             setIsCategoryOpen(false);
             setIsPriceRangeOpen(false);
             setIsTrademarksOpen(false);
-            setIsSidebarOpen(false);
           }}
         />
         <FilterButton
