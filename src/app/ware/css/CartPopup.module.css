@@ -1,0 +1,92 @@
+.popupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popupContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 665px;
+    width: 100%;
+    margin-top: 203px;
+    margin-left: 1120px;
+  }
+  
+  .productInfo {
+    justify-content: center;
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    font-size: 24px;
+  }
+
+  .productInfo p {
+    margin: 0;
+}
+
+  .oldprice {
+    color: #BCBCBC;
+    font-size: 16px;
+    text-decoration: line-through;
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  .priceAmount {
+    font-weight: bold;
+    font-size: 32px;
+  }
+
+  .delete {
+    font-weight: bold;
+    font-size: 24px;
+    color: #777777;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    font-style: normal;
+  }
+  
+  .resumeButton {
+    background-color: #474747;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .closeButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+  }
+  
+.deliveryInfo{
+  text-align: center;
+}
+.customHr{
+  width: 90%;
+}
+.info{
+  font-size: 40px;
+}
+.close{
+  font-size: 25px;
+  cursor: pointer;
+  text-align: right;
+}

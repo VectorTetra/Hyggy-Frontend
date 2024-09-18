@@ -1,0 +1,86 @@
+.reviewsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.overallRating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 10%;
+  margin-left: 10%;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+}
+
+.ratingText {
+  margin-left: 20px;
+}
+
+.mainText {
+  font-size: 32px;
+}
+
+.leaveReviewButton {
+  width: 420px;
+  height: 85px;
+  padding: 10px 20px;
+  font-size: 32px;
+  background-color: #7B7B7B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reviewHr {
+  width: 100%; 
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reviewItem {
+  padding: 20px;
+}
+
+.reviewerName {
+  font-size: 24px;
+  font-weight: bold;
+  width: 200px;
+  display: inline-block;
+}
+
+.reviewContent {
+  display: flex;
+  align-items: center;
+}
+
+.reviewRatingContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  font-size: 20px;
+  width: 200px;
+}
+
+.reviewRating {
+  margin-left: 10px;
+}
+
+.reviewText {
+  font-size: 24px;
+}

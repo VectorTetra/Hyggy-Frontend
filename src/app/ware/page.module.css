@@ -1,0 +1,454 @@
+.main {
+  padding: 1rem 6rem;
+  min-width: 80vw;
+}
+
+.breadcrumbs {
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.breadcrumbSeparator {
+  margin: 0 15px; 
+}
+
+.productContainer {
+  display: flex;
+  gap: 40px;
+}
+
+.imageGallery {
+  flex: 1;
+}
+
+.mainImageContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.mainImage {
+  position: relative;
+  width: 527px; 
+  height: 536px;
+  margin-bottom: 20px;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail {
+  position: relative;
+  width: 250px;
+  height: 218px;
+}
+
+.productInfo {
+  flex: 1;
+}
+
+.productName {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.productDescription {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.currentPrice {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.oldPrice {
+  font-size: 20px;
+  text-decoration: line-through;
+  color: #888;
+}
+
+.priceDescription {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.customHr {
+  width: 528px; 
+  margin-left: 0;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+}
+
+.deliveryTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.deliveryOption, .storeCount {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  width: 390px;
+  height: 70px;
+  font-size: 14px;
+}
+
+.optionDot {
+  align-items: center;
+  width: 11px;
+  height: 10px;
+  background-color: #33FF00;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.optionDotRed {
+  background-color: #FF0000;
+}
+
+.optionTitle {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 35px; 
+}
+
+.storeTitle {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px; 
+}
+
+.deliveryOptionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.activeOption {
+  border: 2px solid blue;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.quantityContainer {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px;
+  width: 120px;
+  height: 70px;
+}
+
+.quantityButton {
+  width: 140px;
+  height: 70px;
+  font-size: 18px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.quantityInput {
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  font-size: 20px;
+  border: none;
+  margin: 0 5px;
+}
+
+.addToCartButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #817D7D;
+  color: white;
+  border: none;
+  border-radius: 10px; 
+  cursor: pointer;
+  width: 230px;
+  height: 70px;
+}
+
+.tabsHeader {
+  justify-content: center;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  background-color: #9F9F9F;
+  margin-top: 40px;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 32px;
+}
+
+.tabTitle {
+  font-size: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.relatedArticlesTitle {
+  font-size: 32px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 1440px) {
+  .main {
+    padding: 1.5rem;
+  }
+
+  .productContainer {
+    gap: 30px;
+  }
+
+  .mainImage {
+    width: 400px;
+    height: 400px;
+  }
+
+  .thumbnail {
+    width: 190px;
+    height: 165px;
+  }
+
+  .customHr {
+    width: 100%;
+  }
+
+  .deliveryOption, .storeCount {
+    width: 100%;
+  }
+
+  .quantityContainer {
+    width: 100px;
+  }
+
+  .addToCartButton {
+    width: 200px;
+  }
+
+  .tabButton {
+    font-size: 28px;
+  }
+
+  .tabTitle {
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .productContainer {
+    flex-direction: column;
+  }
+
+  .imageGallery, .productInfo {
+    width: 100%;
+  }
+
+  .mainImage {
+    width: 100%;
+    height: auto;
+  }
+
+  .thumbnails {
+    justify-content: center;
+  }
+
+  .thumbnail {
+    width: 150px;
+    height: 130px;
+  }
+
+  .productName {
+    font-size: 28px;
+  }
+
+  .productDescription {
+    font-size: 20px;
+  }
+
+  .currentPrice {
+    font-size: 40px;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tabButton {
+    font-size: 24px;
+  }
+
+  .tabTitle {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .breadcrumbs {
+    font-size: 12px;
+  }
+
+  .productName {
+    font-size: 24px;
+  }
+
+  .productDescription {
+    font-size: 18px;
+  }
+
+  .rating {
+    font-size: 20px;
+  }
+
+  .currentPrice {
+    font-size: 36px;
+  }
+
+  .oldPrice {
+    font-size: 18px;
+  }
+
+  .deliveryTitle {
+    font-size: 18px;
+  }
+
+  .optionTitle, .storeTitle {
+    font-size: 16px;
+  }
+
+  .quantityButton {
+    width: 120px;
+    height: 60px;
+  }
+
+  .addToCartButton {
+    width: 100%;
+    height: 60px;
+  }
+
+  .relatedArticlesTitle {
+    font-size: 28px;
+  }
+
+  .tabsHeader {
+    flex-wrap: wrap;
+  }
+
+  .tabButton {
+    font-size: 20px;
+    padding: 8px 16px;
+  }
+
+  .tabTitle {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main {
+    padding: 0.5rem;
+  }
+
+  .breadcrumbs {
+    font-size: 10px;
+  }
+
+  .productName {
+    font-size: 20px;
+  }
+
+  .productDescription {
+    font-size: 16px;
+  }
+
+  .rating {
+    font-size: 18px;
+  }
+
+  .currentPrice {
+    font-size: 32px;
+  }
+
+  .oldPrice {
+    font-size: 16px;
+  }
+
+  .deliveryOption, .storeCount {
+    height: auto;
+    padding: 15px;
+  }
+
+  .optionTitle, .storeTitle {
+    font-size: 14px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .quantityContainer {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .addToCartButton {
+    font-size: 14px;
+  }
+
+  .tabButton {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .tabTitle {
+    font-size: 24px;
+  }
+
+  .relatedArticlesTitle {
+    font-size: 24px;
+  }
+}
