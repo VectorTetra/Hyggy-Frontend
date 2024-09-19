@@ -1,0 +1,24 @@
+{
+  "ConfirmationPage": {
+    "ConfirmationUser": [
+      {
+        
+        "email": "1234@gmail.com",
+        "confirmationCode": "123456",
+        "confirmationStatus": false
+      },
+      {
+        
+        "email": "1239@gmail.com",
+        "confirmationCode": "987654",
+        "confirmationStatus": false
+      },
+      {
+        
+        "email": "5678@gmail.com",
+        "confirmationCode": "789012",
+        "confirmationStatus": false
+      }
+    ]
+  }
+}

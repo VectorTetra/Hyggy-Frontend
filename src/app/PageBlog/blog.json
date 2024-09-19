@@ -1,0 +1,203 @@
+{
+    "blogData": {
+        "caption": "БЛОГ",
+        "text": "Читайте наш блог та будьте у курсі усіх новинок. Отримайте поради щодо здорового сну, догляду за меблями та декорування оселі.",
+        "blogmenu": [
+            {
+                "captionMenu": "Для дому",
+                "categoryKey": "homemenu",
+                "urlPageMenu": "#home"
+            },
+            {
+                "captionMenu": "Для саду",
+                "categoryKey": "forgardenmenu",
+                "urlPageMenu": "#garden"
+            },
+            {
+                "captionMenu": "Для сну",
+                "categoryKey": "forsleepmenu",
+                "urlPageMenu": "#sleep"
+            }
+        ],
+        "menuimage": {
+            "homemenu": [
+                {
+                    "caption": "Вітальня",
+                    "urlImagesHome": "../images/BlogMenu/livingroom.jpg",
+                    "urlPage": "./PageBlogCategory"
+                },
+                {
+                    "caption": "Кухня",
+                    "urlImagesHome": "../images/BlogMenu/kitchen.jpg",
+                    "urlPage": "./PageBlogCategory"
+                },
+                {
+                    "caption": "Спальня",
+                    "urlImagesHome": "../images/BlogMenu/Bedroom.jpg",
+                    "urlPage": "./PageBlogCategory"
+                },
+                {
+                    "caption": "Ванна",
+                    "urlImagesHome": "../images/BlogMenu/bathroom.jpg",
+                    "urlPage": "./PageBlogCategory"
+                },
+                {
+                    "caption": "Кабінет",
+                    "urlImagesHome": "../images/BlogMenu/office.jpg",
+                    "urlPage": "./PageBlogCategory"
+                },
+                {
+                    "caption": "Зберігання",
+                    "urlImagesHome": "../images/BlogMenu/shafa.jpg",
+                    "urlPage": "./PageBlogCategory"
+                }
+            ],
+            "forsleepmenu": [
+                {
+                    "caption": "Матраци та ліжка",
+                    "urlImagesSleep": "../images/BlogMenu/matrac.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Ковдри",
+                    "urlImagesSleep": "../images/BlogMenu/blanket.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Подушки",
+                    "urlImagesSleep": "../images/BlogMenu/pillow.png",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Здоров'я та алергії",
+                    "urlImagesSleep": "../images/BlogMenu/allergies.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Поради для сну",
+                    "urlImagesSleep": "../images/BlogMenu/Porada.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Догляд та обслуговування",
+                    "urlImagesSleep": "../images/BlogMenu/obslug.png",
+                    "urlPage": ""
+                }
+            ],
+            "forgardenmenu": [
+                {
+                    "caption": "Балкон та патіо",
+                    "urlImagesGarden": "../images/BlogMenu/garden chairs.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Відпочинок на свіжому повітрі",
+                    "urlImagesGarden": "../images/BlogMenu/outdoor area.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Свята",
+                    "urlImagesGarden": "../images/BlogMenu/Holiday.jpg",
+                    "urlPage": ""
+                },
+                {
+                    "caption": "Догляд та обслуговування",
+                    "urlImagesGarden": "../images/BlogMenu/image-teaser.png",
+                    "urlPage": ""
+                }
+            ]
+        },
+        "blogBody": [
+            {
+                "caption": "Для дому",
+                "imagesHome": [
+                    {
+                        "urlImages": "../images/BlogMenu/Home/Homebig.jpg",
+                        "caption": "",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Home/shtory_small.jpg",
+                        "caption": "Як вибрати штори та ролети? Повний гайд",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Home/small2.jpg",
+                        "caption": "Улюбленний текстиль колеги з відділу закупівель",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Home/small3.png",
+                        "caption": "Вибір шафи для взуття",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Home/small4.jpg",
+                        "caption": "Улюблений декор колеги з відділу закупівель",
+                        "urlPage": "../PageBlogIndividual"
+                    }
+                ]
+            },
+            {
+                "caption": "Все для сну",
+                "imagesHome": [
+                    {
+                        "urlImages": "../images/BlogMenu/Sleep/Big_picture.gif",
+                        "caption": "",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Sleep/small1.gif",
+                        "caption": "Як вибрати правильний розмір матрацу",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Sleep/small2.jpg",
+                        "caption": "Як ефективно сушити одяг у приміщенні: 7 ключових порад",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Sleep/small3.gif",
+                        "caption": "Як обрати подушку? Повний гайд",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Sleep/small4.gif",
+                        "caption": "Як вибрати ковдру? Повний гайд",
+                        "urlPage": "../MainPage/index.html"
+                    }
+                ]
+            },
+            {
+                "caption": "Для саду",
+                "imagesHome": [
+                    {
+                        "urlImages": "../images/BlogMenu/Garden/Garden_Big.jpg",
+                        "caption": "",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Garden/Garden_Small1.jpg",
+                        "caption": "Як вибрати батут? 7 порад, які слід враховувати перед покупкою",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Garden/Garden_Small2.jpg",
+                        "caption": "Посібник: Як вибрати садовий короб для зберігання?",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Garden/Garden_Small3.jpg",
+                        "caption": "Вибір ідеальної садової парасолі. Повний гайд",
+                        "urlPage": "../MainPage/index.html"
+                    },
+                    {
+                        "urlImages": "../images/BlogMenu/Garden/Garden_Small4.jpg",
+                        "caption": "Як вибрати ідеальний набір садових меблів для відпочинку",
+                        "urlPage": "../MainPage/index.html"
+                    }
+                ]
+            }
+        ]
+    }
+}

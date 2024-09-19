@@ -9,14 +9,14 @@ function MainPageHeaderMenu(props) {
         id={styles.mainPageHeaderMenu}
         src={props.photoUrl}
         alt="logo"
-        style={{ 
+        style={{
           cursor: "pointer"
-         }}
-         width={props.photoWidth}
-         height={props.photoHeight}
+        }}
+        width={props.photoWidth}
+        height={props.photoHeight}
         priority
       />
-      <Link href="../MainPage/index.html">Меню</Link>
+      <Link href="/page">Меню</Link>
     </div>
   );
 }
