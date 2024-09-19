@@ -1,6 +1,4 @@
-import { useState } from "react";
 import styles from "../css/SearchHeader.module.css";
-import Link from "next/link";
 
 export default function SearchHeader(props: any) {
   // Встановлюємо стан для відстеження активної вкладки

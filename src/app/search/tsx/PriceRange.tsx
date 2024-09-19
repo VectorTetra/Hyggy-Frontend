@@ -6,7 +6,7 @@ import styles from "../css/PriceRange.module.css";
 import debounce from 'lodash/debounce'; // Використаємо lodash для debounce
 
 const PriceRange = () => {
-	const [f_0, setf_0] = useQueryState('f_0', { scroll: false });
+	const [f_0, setf_0] = useQueryState('f_0', { scroll: false, shallow: true, throttleMs: 500 });
 	const { minPossible, maxPossible, setIsPriceRangeOpen, isPriceRangeOpen } = useSearchStore();
 	const [values, setValues] = useState([minPossible, maxPossible]);
 
@@ -20,9 +20,9 @@ const PriceRange = () => {
 	// Дебаунсимо оновлення параметра f_0 в URL
 	const updateUrlWithDebounce = debounce((newValues: number[]) => {
 		if (newValues[0] === minPossible && newValues[1] === maxPossible) {
-			setf_0(null, { history: "replace" }); // Видаляємо параметр, якщо значення є мінімальними і максимальними
+			setf_0(null, { history: "replace", scroll: false }); // Видаляємо параметр, якщо значення є мінімальними і максимальними
 		} else {
-			setf_0(`${newValues[0]}_${newValues[1]}`, { history: "replace" }); // Оновлюємо параметр
+			setf_0(`${newValues[0]}_${newValues[1]}`, { history: "replace", scroll: false }); // Оновлюємо параметр
 		}
 	}, 300);
 

@@ -17,6 +17,7 @@ import { isEqual } from "lodash";
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import SortingSidebar from "./tsx/SortingSidebar";
 
+
 export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<{
@@ -28,25 +29,27 @@ export default function SearchPage() {
   });
 
   // Використовуємо nuqs для зчитування параметрів запиту
-  const [query] = useQueryState("query");
-  const [type] = useQueryState("type");
-  const [priceRange] = useQueryState("f_0");
-  const [categories] = useQueryState("f_1");
-  const [trademarks] = useQueryState("f_2");
-  const [statuses] = useQueryState("f_3");
-  const [sale] = useQueryState("f_4");
-  const [sort] = useQueryState("sort");
+  const [query] = useQueryState("query", { scroll: false, history: "replace", shallow: true });
+  const [type] = useQueryState("type", { scroll: false, history: "replace", shallow: true });
+  const [priceRange] = useQueryState("f_0", { scroll: false, history: "replace", shallow: true });
+  const [categories] = useQueryState("f_1", { scroll: false, history: "replace", shallow: true });
+  const [trademarks] = useQueryState("f_2", { scroll: false, history: "replace", shallow: true });
+  const [statuses] = useQueryState("f_3", { scroll: false, history: "replace", shallow: true });
+  const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
+  const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
 
   const { setMinPossible, setMaxPossible,
     waresBeforeCategories, setWaresBeforeCategories,
-    activeTab, setActiveTab } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
+    activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
 
+  (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = ""; // Блокуємо/розблоковуємо скрол
   useEffect(() => {
     async function performSearch() {
       if (!loading) {
         setLoading(true);
       }
       try {
+
         if (activeTab !== type) setActiveTab(type || "wares");
 
         let { foundWares, foundArticles } = await handleSearch(query || "");
@@ -135,7 +138,9 @@ export default function SearchPage() {
           query={query}
         />
         {activeTab === "wares" && <FilterBar />}
-        <FilterStickerPanel />
+        <div style={{ minHeight: "32px", margin: "16px 0" }}>
+          <FilterStickerPanel />
+        </div>
         {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
         {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
         <FilterSidebar wares={waresBeforeCategories} foundWares={results.foundWares} />

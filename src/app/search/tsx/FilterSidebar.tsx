@@ -8,12 +8,13 @@ import PriceRange from "./PriceRange";
 import CategoryPicker from "./CategoryPicker";
 import TrademarkPicker from "./TrademarkPicker";
 import StatusPicker from "./StatusPicker";
-import ToggleCheckbox from "./ToggleCheckbox";
 import SaleCheckbox from "./SaleCheckbox";
 import SidebarButtonBar from "./SidebarButtonBar";
 
-const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundWares: Ware[] }) => {
+const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware[] }) => {
 	const { isSidebarOpen, setIsSidebarOpen } = useSearchStore();
+
+
 
 	// Групуємо wares по категоріям і рахуємо кількість товарів у кожній категорії
 	type Category = {
@@ -104,11 +105,16 @@ const FilterSidebar = React.memo(({ wares, foundWares }: { wares: Ware[], foundW
 	useEffect(() => {
 		if (isSidebarOpen) {
 			document.body.style.overflow = "hidden";
+			//
+
 		} else {
 			document.body.style.overflow = "";
+			//document.body.style.position = "";
+
 		}
 		return () => {
 			document.body.style.overflow = "";
+			//document.body.style.position = "";
 		};
 	}, [isSidebarOpen]);
 

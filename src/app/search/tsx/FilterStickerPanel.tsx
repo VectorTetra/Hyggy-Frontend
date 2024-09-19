@@ -1,7 +1,6 @@
 import styles from "../css/FilterStickerPanel.module.css";
 import CrossIcon from "@/app/sharedComponents/CrossIcon";
 import { useQueryState } from 'nuqs';
-
 function FilterStickerPanel() {
 	const [f_0, setf_0] = useQueryState('f_0', { scroll: false });
 	const [f_1, setf_1] = useQueryState('f_1', { scroll: false });
@@ -15,29 +14,29 @@ function FilterStickerPanel() {
 
 	const deleteCategorySticker = (category: string) => {
 		const updatedCategories = (f_1 ? f_1.split("|") : []).filter((c) => c !== category);
-		setf_1(updatedCategories.length === 0 ? null : updatedCategories.join("|"), { history: "replace" });
+		setf_1(updatedCategories.length === 0 ? null : updatedCategories.join("|"), { history: "replace", scroll: false });
 	};
 
 	const deleteTrademarkSticker = (trademark: string) => {
 		const updatedTrademarks = (f_2 ? f_2.split("|") : []).filter((t) => t !== trademark);
-		setf_2(updatedTrademarks.length === 0 ? null : updatedTrademarks.join("|"), { history: "replace" });
+		setf_2(updatedTrademarks.length === 0 ? null : updatedTrademarks.join("|"), { history: "replace", scroll: false });
 	};
 
 	const deleteStatusSticker = (status: string) => {
 		const updatedStatuses = (f_3 ? f_3.split("|") : []).filter((s) => s !== status);
-		setf_3(updatedStatuses.length === 0 ? null : updatedStatuses.join("|"), { history: "replace" });
+		setf_3(updatedStatuses.length === 0 ? null : updatedStatuses.join("|"), { history: "replace", scroll: false });
 	};
 
 	const deleteSaleSticker = () => {
-		setf_4(null, { history: "replace" });
+		setf_4(null, { history: "replace", scroll: false });
 	};
 
 	const clearAllFilters = () => {
-		setf_0(null, { history: "replace" });
-		setf_1(null, { history: "replace" });
-		setf_2(null, { history: "replace" });
-		setf_3(null, { history: "replace" });
-		setf_4(null, { history: "replace" });
+		setf_0(null, { history: "replace", scroll: false });
+		setf_1(null, { history: "replace", scroll: false });
+		setf_2(null, { history: "replace", scroll: false });
+		setf_3(null, { history: "replace", scroll: false });
+		setf_4(null, { history: "replace", scroll: false });
 	};
 
 	// Calculate the number of active filters

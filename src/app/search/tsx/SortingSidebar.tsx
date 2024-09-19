@@ -38,7 +38,7 @@ export default function SortingSidebar(props: any) {
 						id="rating_desc"
 						value="rating_desc"
 						checked={sort === "rating_desc"} // Перевірка для активного радіобокса
-						onChange={() => setSort("rating_desc")}
+						onChange={() => setSort("rating_desc", { history: "replace", scroll: false })} // Зміна стану при зміні радіобокса
 					/>
 					<label htmlFor="rating_desc">Найкращий відгук</label>
 				</div>
@@ -49,7 +49,7 @@ export default function SortingSidebar(props: any) {
 						id="price_asc"
 						value="price_asc"
 						checked={sort === "price_asc"}
-						onChange={() => setSort("price_asc")}
+						onChange={() => setSort("price_asc", { history: "replace", scroll: false })}
 					/>
 					<label htmlFor="price_asc">Найменша ціна</label>
 				</div>
@@ -60,7 +60,7 @@ export default function SortingSidebar(props: any) {
 						id="price_desc"
 						value="price_desc"
 						checked={sort === "price_desc"}
-						onChange={() => setSort("price_desc")}
+						onChange={() => setSort("price_desc", { history: "replace", scroll: false })}
 					/>
 					<label htmlFor="price_desc">Найбільша ціна</label>
 				</div>
@@ -71,7 +71,7 @@ export default function SortingSidebar(props: any) {
 						id="alphabet_asc"
 						value="alphabet_asc"
 						checked={sort === "alphabet_asc"}
-						onChange={() => setSort("alphabet_asc")}
+						onChange={() => setSort("alphabet_asc", { history: "replace", scroll: false })}
 					/>
 					<label htmlFor="alphabet_asc">За алфавітом (А-Я)</label>
 				</div>
@@ -82,7 +82,7 @@ export default function SortingSidebar(props: any) {
 						id="alphabet_desc"
 						value="alphabet_desc"
 						checked={sort === "alphabet_desc"}
-						onChange={() => setSort("alphabet_desc")}
+						onChange={() => setSort("alphabet_desc", { history: "replace", scroll: false })}
 					/>
 					<label htmlFor="alphabet_desc">За алфавітом (Я-А)</label>
 				</div>

@@ -1,6 +1,5 @@
 import styles from "../css/TabBar.module.css";
 import { useQueryState } from 'nuqs';
-//import useSearchStore from "@/store/search";
 
 export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
 	// Використовуємо useQueryState з nuqs для роботи з параметрами URL

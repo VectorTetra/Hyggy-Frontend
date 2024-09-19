@@ -1,8 +1,8 @@
 .filterStickerPanel {
 	display: flex;
 	gap: 10px;
-	max-height: 32px;
-	margin: 16px 0;
+	/* margin: 16px 0; */
+	flex-wrap: wrap;
 }
 
 .text {

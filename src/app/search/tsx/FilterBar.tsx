@@ -1,7 +1,5 @@
 //FilterBar.tsx
-import { useState } from "react";
 import styles from "../css/FilterBar.module.css";
-import Link from "next/link";
 import FilterButton from "./FilterButton";
 import ToggleCheckbox from "./ToggleCheckbox";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store  

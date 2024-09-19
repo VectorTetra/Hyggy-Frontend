@@ -1,4 +1,3 @@
-import { removeAllListeners } from 'process';
 import styles from '../css/SidebarButtonBar.module.css';
 import { useQueryState } from 'nuqs';
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store  
