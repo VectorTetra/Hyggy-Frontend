@@ -1,5 +1,6 @@
 // store/search.ts
 import { create } from "zustand";
+import { Ware } from "@/types/searchTypes";
 
 // f_0 : Фільтр ціни, значення вказується через нижнє підкреслення (напр. 250_8000) 
 // в масиві зберігаються об'єкти з ім'ям та значенням фільтру (напр. {name: "f_0", value: "250_8000"})
@@ -21,12 +22,12 @@ interface SearchStore {
   setIsCategoryOpen: (value: boolean) => void;
   isTrademarksOpen: boolean;
   setIsTrademarksOpen: (value: boolean) => void;
+  isStatusOpen: boolean;
+  setIsStatusOpen: (value: boolean) => void;
   isSortingSidebarOpen: boolean;
   setIsSortingSidebarOpen: (value: boolean) => void;
-  selectedFilters: Filter[];
-  addFilter: (filter: Filter) => void;
-  removeFilter: (filter: Filter) => void;
-  clearFilters: () => void;
+  waresBeforeCategories: Ware[];
+  setWaresBeforeCategories: (waresBeforeCategories: Ware[]) => void;
   //PriceRange
   minPossible: number;
   maxPossible: number;
@@ -41,16 +42,6 @@ const useSearchStore = create<SearchStore>((set) => ({
   setIsPriceRangeOpen: (value: boolean) => set({ isPriceRangeOpen: value }),
   isCategoryOpen: false,
   setIsCategoryOpen: (value: boolean) => set({ isCategoryOpen: value }),
-  selectedFilters: [],
-  addFilter: (filter: Filter) =>
-    set((state) => ({
-      selectedFilters: [...state.selectedFilters, filter],
-    })),
-  removeFilter: (filter: Filter) =>
-    set((state) => ({
-      selectedFilters: state.selectedFilters.filter((f) => f !== filter),
-    })),
-  clearFilters: () => set({ selectedFilters: [] }),
   minPossible: 0,
   maxPossible: 10000,
   setMinPossible: (minPossible) => set({ minPossible }),
@@ -61,6 +52,10 @@ const useSearchStore = create<SearchStore>((set) => ({
   setIsTrademarksOpen: (value: boolean) => set({ isTrademarksOpen: value }),
   isSortingSidebarOpen: false,
   setIsSortingSidebarOpen: (value: boolean) => set({ isSortingSidebarOpen: value }),
+  waresBeforeCategories: [],
+  setWaresBeforeCategories: (waresBeforeCategories) => set({ waresBeforeCategories }),
+  isStatusOpen: false,
+  setIsStatusOpen: (value: boolean) => set({ isStatusOpen: value }),
 }));
 
 export default useSearchStore;

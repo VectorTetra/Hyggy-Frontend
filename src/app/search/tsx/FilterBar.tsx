@@ -1,7 +1,5 @@
 //FilterBar.tsx
-import { useState } from "react";
 import styles from "../css/FilterBar.module.css";
-import Link from "next/link";
 import FilterButton from "./FilterButton";
 import ToggleCheckbox from "./ToggleCheckbox";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store  
@@ -53,11 +51,11 @@ export default function FilterBar(props: any) {
           afterImageSrc="/images/search/kursor.png"
           dissappearOnAdapt={false}
           onClick={() => {
+            setIsSidebarOpen(false);
             setIsSortingSidebarOpen(true);
             setIsCategoryOpen(false);
             setIsPriceRangeOpen(false);
             setIsTrademarksOpen(false);
-            setIsSidebarOpen(false);
           }}
         />
         <FilterButton

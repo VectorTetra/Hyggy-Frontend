@@ -1,34 +1,46 @@
-import { useState } from 'react';
+import { useQueryState } from 'nuqs';
 import styles from "../css/ToggleCheckbox.module.css";
+import React from "react";
+// Apply React Memo to prevent re-rendering
 
-const ToggleCheckbox = () => {
-  const [isChecked, setIsChecked] = useState(false);
+const ToggleCheckbox = React.memo(() => {
+  const [filter, setFilter] = useQueryState("f_4", { scroll: false });
 
-  const handleToggle = () => {
-    setIsChecked(!isChecked);
-    if (!isChecked) {
-      console.log('Товари на акції: Включено');
-      // Додайте код для відображення акційних товарів
+  const onChange = (e: any) => {
+    const value = e.target.value;
+    if (e.target.checked) {
+      setFilter(value, { history: "replace" });
     } else {
-      console.log('Товари на акції: Вимкнено');
-      // Додайте код для приховування акційних товарів
+      setFilter(null, { history: "replace" });
+    }
+  };
+
+  const handleSpanClick = () => {
+    const isChecked = filter === "sale";
+    if (!isChecked) {
+      setFilter("sale", { history: "replace" });
+    } else {
+      setFilter(null, { history: "replace" });
     }
   };
 
   return (
     <div className={styles.toggleContainer}>
+      <span className={styles.toggleText} onClick={handleSpanClick}>
+        Товари на акції
+      </span>
       <label className={styles.toggleLabel}>
         <input
           type="checkbox"
-          checked={isChecked}
-          onChange={handleToggle}
+          value="sale"
+          checked={filter === "sale"}
+          onChange={onChange}
           className={styles.toggleCheckbox}
         />
         <span className={styles.toggleSlider}></span>
       </label>
-      <span className={styles.toggleText}>Товари на акції</span>
     </div>
   );
-};
+});
 
 export default ToggleCheckbox;

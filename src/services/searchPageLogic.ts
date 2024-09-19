@@ -24,7 +24,7 @@ export async function handleSearch(query: string): Promise<{
 	let foundArticles: Article[] = [];
 
 	if (query === "") {
-		foundWares = jsonWares;
+		foundWares = jsonWares as Ware[];
 		foundArticles = jsonArticles;
 	} else {
 		const initialResults = searchWaresAndArticles(query);
@@ -65,4 +65,24 @@ export async function handleSearch(query: string): Promise<{
 	}
 
 	return { foundWares, foundArticles };
+}
+
+// Функція для сортування масиву перед порівнянням
+export function sortWares(wares: Ware[], sorting: string = "default"): Ware[] {
+	return wares.slice().sort((a, b) => {
+		switch (sorting) {
+			case "rating_desc":
+				return b.rating - a.rating; // Highest rating first
+			case "price_asc":
+				return a.price - b.price; // Lowest price first
+			case "price_desc":
+				return b.price - a.price; // Highest price first
+			case "alphabet_asc":
+				return a.shortName.localeCompare(b.shortName); // Alphabetical A-Z
+			case "alphabet_desc":
+				return b.shortName.localeCompare(a.shortName); // Alphabetical Z-A
+			default:
+				return a.id - b.id; // Default sorting by ID
+		}
+	});
 }

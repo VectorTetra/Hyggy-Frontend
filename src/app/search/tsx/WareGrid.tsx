@@ -56,9 +56,9 @@ export default function WareGrid(props: any) {
                 />
                 <div className={styles.wareStickersContainer}>
                   {ware.discount > 0 && <span className={styles.discountSticker}> - {ware.discount} %</span>}
-                  {ware.tag === "Новинка" && <span className={styles.newSticker}>Новинка</span>}
-                  {ware.tag === "Завжди низька ціна" && <span className={styles.lowPriceSticker}>Завжди низька ціна</span>}
-                  {ware.tag === "Чудова пропозиція" && <span className={styles.saleSticker}>Чудова пропозиція</span>}
+                  {ware.tag.includes("Новинка") && <span className={styles.newSticker}>Новинка</span>}
+                  {ware.tag.includes("Завжди низька ціна") && <span className={styles.lowPriceSticker}>Завжди низька ціна</span>}
+                  {ware.tag.includes("Чудова пропозиція") && <span className={styles.saleSticker}>Чудова пропозиція</span>}
                 </div>
               </Link>
             </div>

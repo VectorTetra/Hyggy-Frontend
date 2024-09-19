@@ -1,34 +1,31 @@
 import { useState, useEffect } from "react";
+import { useQueryState } from 'nuqs';
 import { Range, getTrackBackground } from "react-range";
-import { useRouter, useSearchParams } from 'next/navigation';
 import useSearchStore from "@/store/search";
 import styles from "../css/PriceRange.module.css";
 import debounce from 'lodash/debounce'; // Використаємо lodash для debounce
 
 const PriceRange = () => {
-	const router = useRouter();
-	const searchParams = useSearchParams();
+	const [f_0, setf_0] = useQueryState('f_0', { scroll: false, shallow: true, throttleMs: 500 });
 	const { minPossible, maxPossible, setIsPriceRangeOpen, isPriceRangeOpen } = useSearchStore();
-
 	const [values, setValues] = useState([minPossible, maxPossible]);
 
-	// Ініціалізуємо значення слайдера з URL або з Zustand при першому рендері
 	useEffect(() => {
-		const priceParams = searchParams?.get("f_0");
-		if (priceParams) {
-			const [min, max] = priceParams.split("_").map(Number);
+		if (f_0) {
+			const [min, max] = f_0.split("_").map(Number);
 			setValues([min, max]);
 		}
-	}, [searchParams, minPossible, maxPossible]);
+	}, [f_0, minPossible, maxPossible]);
 
-	// Дебаунсимо зміну URL щоб не було миттєвого оновлення
+	// Дебаунсимо оновлення параметра f_0 в URL
 	const updateUrlWithDebounce = debounce((newValues: number[]) => {
-		const params = new URLSearchParams(searchParams as any);
-		params.set("f_0", `${newValues[0]}_${newValues[1]}`);
-		router.push(`?${params.toString()}`);
-	}, 300); // Затримка в 300 мс
+		if (newValues[0] === minPossible && newValues[1] === maxPossible) {
+			setf_0(null, { history: "replace", scroll: false }); // Видаляємо параметр, якщо значення є мінімальними і максимальними
+		} else {
+			setf_0(`${newValues[0]}_${newValues[1]}`, { history: "replace", scroll: false }); // Оновлюємо параметр
+		}
+	}, 300);
 
-	// Оновлюємо URL тільки при втраті фокусу (blur)
 	const handleBlur = () => {
 		updateUrlWithDebounce(values);
 	};
@@ -38,8 +35,9 @@ const PriceRange = () => {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => { setIsPriceRangeOpen(!isPriceRangeOpen) }} className={styles.priceRangeHeader}>Ціна</h2>
-
+			<h2 onClick={() => setIsPriceRangeOpen(!isPriceRangeOpen)} className={styles.priceRangeHeader}>
+				Ціна
+			</h2>
 			<div className={`${isPriceRangeOpen ? styles.priceRangeOpen : styles.priceRange}`}>
 				<Range
 					disabled={!isPriceRangeOpen}
@@ -47,8 +45,8 @@ const PriceRange = () => {
 					step={1}
 					min={MIN}
 					max={MAX}
-					onChange={setValues} // Оновлюємо тільки локальний стан
-					onFinalChange={handleBlur} // Оновлюємо URL при втраті фокусу
+					onChange={setValues}
+					onFinalChange={handleBlur}
 					renderTrack={({ props, children }) => (
 						<div
 							{...props}
@@ -65,12 +63,7 @@ const PriceRange = () => {
 							{children}
 						</div>
 					)}
-					renderThumb={({ props }) => (
-						<div
-							{...props}
-							className={styles.thumb}
-						/>
-					)}
+					renderThumb={({ props }) => <div {...props} className={styles.thumb} />}
 				/>
 				<div className={styles.inputs}>
 					<div className={styles.formGroup}>
