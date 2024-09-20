@@ -51,7 +51,7 @@
           },
           {
             "name": "Всі категорії",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../PageAllCategory",
             "alt": "Всі категорії"
           }
         ]

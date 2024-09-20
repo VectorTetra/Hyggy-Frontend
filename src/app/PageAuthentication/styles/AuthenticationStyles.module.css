@@ -23,7 +23,6 @@
 }
 
 .formcontainerinput {
-    /* width: 30%; */
     padding: 10px;
     background-color: rgb(227, 223, 223);
     box-sizing: border-box;
@@ -45,7 +44,7 @@
 .submitbutton {
     margin: 15px 15px 0 15px;
     padding: 15px;
-    background-color: grey;
+    background-color: #00AAAD;
     color: white;
     box-sizing: border-box;
     border: 2px solid #bab8b8;
@@ -72,7 +71,7 @@
 }
 
 .submitbutton2:hover {
-    background-color: blue;
+    background-color: #00AAAD;
     color: white;
 }
 
@@ -82,13 +81,13 @@
 }
 
 .forgotpasswordlink {
-    color: #0c233b;
+    color: #00AAAD;
     margin-top: 50px;
     margin-bottom: 30px;
 }
 
 .forgotpasswordlink a {
-    color: #194a7e;
+    color: #00AAAD;
 }
 
 .createaccountbutton {
@@ -104,10 +103,7 @@
 .features {
     display: flex;
     width: 100%;
-    /* text-align: center; */
     justify-content: center;
-    /* align-items: center; */
-
 }
 
 .h2 {
@@ -119,7 +115,6 @@
     list-style-type: disc;
     text-align: left;
     margin-bottom: 2em;
-    /* padding-inline-start: 0; */
 }
 
 .featuresil {

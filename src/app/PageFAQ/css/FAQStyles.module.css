@@ -1,4 +1,3 @@
-/* Основной контейнер, разделяющий страницу на левую и правую части */
 .pagecontainer {
     display: flex;
     justify-content: space-between;
@@ -8,15 +7,12 @@
 /* Левый контейнер для FAQ и общих вопросов */
 .leftcontainer {
     flex: 2;
-    /* Левый контейнер занимает 2/3 ширины */
     padding-right: 20px;
-    /* Отступ между левым и правым контейнерами */
 }
 
 /* Правый контейнер для контактной информации */
 .rightcontainer {
     flex: 1;
-    /* Правый контейнер занимает 1/3 ширины */
 }
 
 
@@ -51,53 +47,35 @@
 .faqcaptionquestion {
     display: flex;
     align-items: center;
-    /* Центрирование по вертикали */
     justify-content: space-between;
-    /* Распределение пространства между элементами */
     padding: 20px 20px;
     margin: 5px 0;
-    background-color: #797575;
-    /* Более серый цвет для кнопки */
+    background-color: #00AAAD;
     border: 2px solid #acabab;
-    /* Цвет границы */
     color: white;
     font-size: 1.2vw;
     border-radius: 7px;
-    /* Скругление углов */
     text-decoration: none;
-    /* Убираем подчеркивание текста */
     font-weight: bold;
-    /* Жирный текст */
     cursor: pointer;
-    /* Курсор указывающий на возможность клика */
     transition: background-color 0.3s, color 0.3s;
-    /* Плавный переход цвета фона и текста */
     position: relative;
-    /* Позиционирование для псевдоэлемента */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Пример тени: смещение по X и Y, размытие, цвет */
 }
 
 .faqcaptionquestion:hover {
-    background-color: #e0e0e0;
-    /* Цвет фона при наведении */
+    background-color: #acdadb;
     color: #000;
-    /* Цвет текста при наведении */
 }
 
-/* Символ указателя > для кнопки captionquestion */
 .faqcaptionquestionicon {
     font-size: 16px;
-    /* Размер шрифта для указателя */
     color: #333;
-    /* Цвет указателя */
     transition: color 0.3s;
-    /* Плавный переход цвета указателя */
 }
 
 .faqcaptionquestion:hover .faqcaptionquestionicon {
     color: #000;
-    /* Цвет указателя при наведении */
 }
 
 .faqcaption {
@@ -113,24 +91,18 @@
     padding: 15px 20px;
     margin: 1.2vw 0;
     background-color: #f9f9f9;
-    /* Цвет фона для заголовка вопроса */
     border: 1px solid #b9b7b7;
-    /* Цвет границы для заголовка вопроса */
     border-radius: 5px;
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    /* Плавный переход цвета фона и текста */
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Пример тени: смещение по X и Y, размытие, цвет */
 }
 
 .faqquestiontitle.active {
     background-color: #e0e0e0;
-    /* Цвет фона активного заголовка */
     color: #000;
-    /* Цвет текста активного заголовка */
 }
 
 /* Символ + или - для заголовка вопроса */
@@ -138,29 +110,23 @@
     font-size: 16px;
     color: #333;
     margin-left: auto;
-    /* Выравнивание вправо */
     transition: color 0.3s;
-    /* Плавный переход цвета иконки */
 }
 
 .faqquestiontitle.active .faqquestiontitleicon {
     color: #000;
-    /* Цвет иконки для активного заголовка */
 }
 
 /* Стили для содержимого вопроса */
 .faqquestioncontent {
     padding: 10px 20px;
     border: 1px solid #ddd;
-    /* Цвет границы содержимого вопроса */
     border-radius: 5px;
     background-color: #d8d6d6;
-    /* Цвет фона содержимого вопроса */
 }
 
 .faqarrow {
     margin-left: auto;
-    /* Отодвигаем стрелки/знаки в край справа */
 }
 
 .commonquestions {
@@ -171,7 +137,6 @@
 .questionscontainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Две колонки */
     gap: 10px;
 }
 
@@ -192,18 +157,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Выравнивание по горизонтали */
     background-color: #f0f0f0;
-    /* Светло-серый фон */
     padding: 20px;
-    /* Внутренний отступ для блока */
     margin-top: 100px;
-    /* Отступ сверху */
     margin-left: 20px;
-    /* Отступ слева */
     border-radius: 5px;
-    /* Скругление углов */
-
 }
 
 .captionworkstyle {
@@ -217,26 +175,19 @@
 .contactitem {
     display: flex;
     align-items: center;
-    /* Центрирование элементов по вертикали */
     margin-bottom: 20px;
-    /* Отступ между блоками */
 }
 
 .contactimage {
     width: 3vw;
-    /* Ширина изображения */
     height: 3vw;
-    /* Высота изображения */
     margin-right: 20px;
-    /* Отступ справа от изображения */
     object-fit: cover;
-    /* Чтобы изображение сохраняло пропорции */
 }
 
 .contactcontent {
     flex: 1;
     margin-top: 10px;
-    /* Контент займет оставшееся пространство */
 }
 
 .contentstyle {
@@ -252,9 +203,7 @@
 
 .contactcontent a {
     text-decoration: none;
-    /* Убирает подчеркивание */
     color: inherit;
-    /* Сохраняет цвет текста */
 }
 
 .opentime {

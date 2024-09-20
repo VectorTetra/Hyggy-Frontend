@@ -1,6 +1,6 @@
-import styles from "./../../styles/MainPageBody-styles.module.css";
+import styles from "./../styles/MainPageBody-styles.module.css";
 
-export default function MainPageBodyBlogCaption(props) {
+export default function MainPageBodyCaption(props) {
 	return (
 		<div className={styles["category-caption"]}>
 			<div className={styles.caption}>

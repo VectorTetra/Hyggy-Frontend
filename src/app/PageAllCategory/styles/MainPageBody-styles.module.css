@@ -10,9 +10,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
-    /* Отступы между элементами */
     margin-left: 100px;
     margin-right: 100px;
+    margin-bottom: 50px;
 }
 
 .caption {
