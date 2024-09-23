@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderBasket(props) {
-  
+
   return (
     <div id={styles.mainPageHeaderLogoContainer}>
       <Image

@@ -1,13 +1,17 @@
 "use client";
 import React from "react";
-// import styles from "./page.module.css";
+
 import styles from "./styles/AuthenticationStyles.module.css";
-// import styles from '../../styles/MainPageHeader-styles.module.css';
+import { useRouter } from "next/navigation";
+
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
+
+    const router = useRouter();
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -15,6 +19,9 @@ export default function AuthenticationPage(props) {
         if (user && user.password === password) {
             setErrorMessage('');
             alert("Вхід здійснено успішно");
+
+            router.push("../PageProfileUser");
+
         } else {
             setErrorMessage('E-mail або пароль не вірні');
         }

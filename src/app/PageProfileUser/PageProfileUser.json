@@ -1,0 +1,444 @@
+	{
+		"profile": {
+			"Name": "Іван",
+			"Surname": "Іваненко",
+			"email": "user123@gmail.com",
+			"urlphoto": "../images/menedger.png",
+			"country": "Україна",
+			"numberphone": "+380661112233"
+		},
+		"favorites": [
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "PLUS S55",
+				"description": "Матрац PLUS S55 90x200см DREAMZONE",
+				"image": "../images/Product/241479.jpg",
+				"price": "5000"
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "PLUS S55",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			},
+			{
+				"offer": "в наявності",
+				"status": "Чудова пропозиція",
+				"sale": "-30%",
+				"name": "Product 1",
+				"description": "Описание товара 1",
+				"image": "/images/product1.jpg",
+				"price": "100 грн."
+			}
+		]
+	}
