@@ -1,0 +1,233 @@
+.pagecontainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Левый контейнер для FAQ и общих вопросов */
+.leftcontainer {
+    flex: 2;
+    padding-right: 20px;
+}
+
+/* Правый контейнер для контактной информации */
+.rightcontainer {
+    flex: 1;
+}
+
+
+.faqcontainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 2vw;
+}
+
+.faqcontainer h2 {
+    font-size: 2.0vw;
+    margin-bottom: 2vw;
+}
+
+.faqcontainertext {
+    padding-bottom: 0.7vw;
+}
+
+/* Общие стили для списка FAQ */
+.faqlist {
+    margin-top: 2vw;
+    list-style: none;
+}
+
+/* Стили для элемента FAQ */
+.faqitem {
+    margin-bottom: 1.0vw;
+}
+
+/* Стиль для кнопки captionquestion */
+.faqcaptionquestion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px;
+    margin: 5px 0;
+    background-color: #00AAAD;
+    border: 2px solid #acabab;
+    color: white;
+    font-size: 1.2vw;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.faqcaptionquestion:hover {
+    background-color: #acdadb;
+    color: #000;
+}
+
+.faqcaptionquestionicon {
+    font-size: 16px;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.faqcaptionquestion:hover .faqcaptionquestionicon {
+    color: #000;
+}
+
+.faqcaption {
+    font-weight: bold;
+    margin: 2.55vw 0 2vw;
+}
+
+/* Стили для заголовка вопроса */
+.faqquestiontitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    margin: 1.2vw 0;
+    background-color: #f9f9f9;
+    border: 1px solid #b9b7b7;
+    border-radius: 5px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.faqquestiontitle.active {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+/* Символ + или - для заголовка вопроса */
+.faqquestiontitleicon {
+    font-size: 16px;
+    color: #333;
+    margin-left: auto;
+    transition: color 0.3s;
+}
+
+.faqquestiontitle.active .faqquestiontitleicon {
+    color: #000;
+}
+
+/* Стили для содержимого вопроса */
+.faqquestioncontent {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #d8d6d6;
+}
+
+.faqarrow {
+    margin-left: auto;
+}
+
+.commonquestions {
+    display: flex;
+    flex-direction: column;
+}
+
+.questionscontainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.questiontitle {
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.questiontitle:hover {
+    background-color: #ddd;
+}
+
+.contactsection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-top: 100px;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
+.captionworkstyle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2vw;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.contactitem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contactimage {
+    width: 3vw;
+    height: 3vw;
+    margin-right: 20px;
+    object-fit: cover;
+}
+
+.contactcontent {
+    flex: 1;
+    margin-top: 10px;
+}
+
+.contentstyle {
+    padding-bottom: 5px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.textstyle {
+    font-size: 1.0vw;
+    color: grey;
+}
+
+.contactcontent a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.opentime {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.shopgo {
+    margin-top: 20px;
+}
+
+.shopgo a {
+    text-decoration: none;
+}
+
+.shopgo a:hover {
+    color: red;
+}
+
+.manedgerimage {
+    display: flex;
+    width: 10vw;
+    height: 10vw;
+    object-fit: cover;
+    position: relative;
+    margin-top: -6vw;
+}

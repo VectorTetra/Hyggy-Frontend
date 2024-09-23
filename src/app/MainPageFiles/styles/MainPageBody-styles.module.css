@@ -15,6 +15,15 @@
     margin-right: 100px;
 }
 
+.caption {
+    display: flex;
+    text-align: center;
+    background-color: rgb(209, 211, 211);
+    padding: 0.6vw 15vw 0.6vw 15vw;
+}
+
+
+
 .category-item {
     position: relative;
     width: calc(33.333% - 20px);
@@ -39,11 +48,12 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
+    color: rgb(48, 47, 47);
+    /* background-color: rgba(0, 0, 0, 0.6); */
     /* Полупрозрачный фон */
     padding: 5px;
     border-radius: 3px;
+    font-size: 22px;
 }
 
 .bodysale {
@@ -187,18 +197,18 @@
 .blog-button {
     display: inline-block;
     padding: 10px 15px;
-    background-color: #f0f0f0;
+    background-color: #00AAAD;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
-    border: 1px solid rgb(190, 190, 190);
-    /* Светло-серые края */
+    border: 1px solid #018183;
+    color: white;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     /* Тень */
 }
 
 .blog-button:hover {
-    background-color: #cc3a3a;
+    background-color: #3ac7cc;
     color: azure;
 }
 
@@ -223,9 +233,9 @@
     /* Добавить отступы, если нужно */
 }
 
-#form-container {
+.form-container {
     display: flex;
-    background-color: gainsboro;
+    background-color: rgb(224, 219, 219);
     text-align: center;
 }
 
@@ -273,7 +283,7 @@
 .inputSubmit {
     /* margin-top: 20px; */
     padding: 12px;
-    background-color: #3a7ae0;
+    background-color: #00AAAD;
     color: white;
     border: none;
     border-radius: 10px;
@@ -281,7 +291,7 @@
 }
 
 .inputSubmit:hover {
-    background-color: #0056b3;
+    background-color: #016264;
 }
 
 .imageaboutus {

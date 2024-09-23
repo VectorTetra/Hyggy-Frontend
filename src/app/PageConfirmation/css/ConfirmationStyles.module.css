@@ -1,0 +1,122 @@
+.maincontainer {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.formcontainer {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.caption {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.inputgroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formcontainerinput {
+    width: 30%;
+    padding: 10px;
+    background-color: rgb(227, 223, 223);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+.formcontainerinput::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.errormessage {
+    color: red;
+    margin-bottom: 15px;
+}
+
+.submitbutton {
+    width: 30%;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: grey;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submitbutton2 {
+    width: 30%;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    padding: 15px;
+    background-color: rgb(218, 217, 217);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submitbutton:hover {
+    background-color: blue;
+}
+
+.submitbutton2:hover {
+    background-color: blue;
+    color: white;
+}
+
+.linkcontainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.forgotpasswordlink {
+    color: #0c233b;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.forgotpasswordlink a {
+    color: #194a7e;
+}
+
+.createaccountbutton {
+    padding: 10px;
+    background-color: white;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.h2 {
+    margin-top: 50px;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    /* Расположить чекбоксы по вертикали */
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.features>div {
+    display: flex;
+    align-items: left;
+    margin: 5px 0;
+    /* Установить небольшой промежуток между строками чекбоксов */
+    width: 100%;
+}

@@ -14,51 +14,43 @@
         "urlpage": "https://jysk.ua/"
       }
     ],
-
     "hyggyLogo": {
       "width": "100",
       "height": "100",
       "url": "/images/Logo.png"
     },
-
     "menuPhoto": {
       "width": "50",
       "height": "50",
       "url": "/images/Menu.png"
     },
-
     "menuSearch": {
       "text": "Шукати товар або категорію"
     },
-
     "userPhoto": {
       "width": "50",
       "height": "50",
       "url": "/images/user.png"
     },
-
     "basketPhoto": {
       "width": "50",
       "height": "50",
       "url": "/images/basket.png"
     },
-
     "GeoPhoto": {
       "width": "50",
       "height": "50",
       "url": "/images/Geo.png"
     },
-
     "GeoKursor": {
       "width": "50",
       "height": "50",
       "url": "/images/Geokursor.png"
     },
-
     "navBar": [
       {
         "nameMenu": "Натхнення",
-        "url": "https://jysk.ua/",
+        "url": "../PageBlog",
         "alt": "Hyggy"
       },
       {
@@ -73,7 +65,7 @@
       },
       {
         "nameMenu": "Питання-відповідь",
-        "url": "https://jysk.ua/",
+        "url": "../PageFAQ",
         "alt": "Hyggy"
       },
       {

@@ -1,0 +1,28 @@
+{
+  "RegistrationPage": {
+    "RegistrationUser": [
+      {
+        "name": "Іван",
+        "surname": "Іванов",
+        "email": "1234@gmail.com",
+        "confirmationCode": "123456",
+        "confirmationStatus": false
+      },
+      {
+        "name": "Петро",
+        "surname": "Петров",
+        "email": "5678@gmail.com",
+        "confirmationCode": "789012",
+        "confirmationStatus": false
+      }
+    ],
+    "label": [
+      {
+        "name": "Прийняти умови та положення"
+      },
+      {
+        "name": "Підписатися на наші новини"
+      }
+    ]
+  }
+}
