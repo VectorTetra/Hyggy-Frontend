@@ -1,7 +1,5 @@
-import { useState } from "react";
 import styles from "../css/ArticleGrid.module.css";
 import Link from "next/link";
-import Image from "next/image";
 import ImageWithFallback from "../../sharedComponents/ImageWithFallback";
 export default function ArticleGrid(props: any) {
 	return (

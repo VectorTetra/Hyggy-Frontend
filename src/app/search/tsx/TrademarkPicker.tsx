@@ -1,11 +1,12 @@
-// File: CategoryPicker.tsx
+// File: TrademarkPicker.tsx
+
 import useSearchStore from "@/store/search";
 import { useQueryState } from 'nuqs';
-import styles from "../css/CategoryPicker.module.css";
+import styles from "../css/TrademarkPicker.module.css";
 
-function CategoryPicker(props: any) {
-	const { isCategoryOpen, setIsCategoryOpen } = useSearchStore();
-	const [filters, setFilters] = useQueryState("f_1", { scroll: false });
+function TrademarkPicker(props: any) {
+	const { isTrademarksOpen, setIsTrademarksOpen } = useSearchStore();
+	const [filters, setFilters] = useQueryState("f_2", { scroll: false });
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
@@ -29,22 +30,22 @@ function CategoryPicker(props: any) {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => setIsCategoryOpen(!isCategoryOpen)} className={styles.header}>
-				Категорія
+			<h2 onClick={() => setIsTrademarksOpen(!isTrademarksOpen)} className={styles.header}>
+				Торгова марка
 			</h2>
-			<div className={isCategoryOpen ? styles.categoryOpen : styles.categoryClosed}>
-				{props.categories.map((category: any, index: any) => (
-					<div key={index} className={styles.categoryItem}>
-						<span className={styles.categoryName} style={{ opacity: category.isDisabled ? "0.5" : "1" }}>{category.name}</span>
+			<div className={isTrademarksOpen ? styles.trademarkOpen : styles.trademarkClosed}>
+				{props.trademarks.map((trademark: any, index: any) => (
+					<div key={index} className={styles.trademarkItem}>
+						<span className={styles.trademarkName}>{trademark.name}</span>
 						<div>
-							<span className={styles.categoryCount}>{category.count}</span>
+							<span className={styles.trademarkCount}>{trademark.count}</span>
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={category.name}
+								value={trademark.name}
 								onChange={onChange}
-								checked={(filters || "").split("|").includes(category.name)}
-								disabled={category.isDisabled}
+								checked={(filters || "").split("|").includes(trademark.name)}
+								disabled={trademark.count === 0}
 							/>
 						</div>
 					</div>
@@ -54,4 +55,4 @@ function CategoryPicker(props: any) {
 	);
 }
 
-export default CategoryPicker;
+export default TrademarkPicker;

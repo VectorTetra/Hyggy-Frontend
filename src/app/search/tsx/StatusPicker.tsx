@@ -1,11 +1,11 @@
-// File: CategoryPicker.tsx
+// File: StatusPicker.tsx
 import useSearchStore from "@/store/search";
 import { useQueryState } from 'nuqs';
-import styles from "../css/CategoryPicker.module.css";
+import styles from "../css/StatusPicker.module.css";
 
-function CategoryPicker(props: any) {
-	const { isCategoryOpen, setIsCategoryOpen } = useSearchStore();
-	const [filters, setFilters] = useQueryState("f_1", { scroll: false });
+function StatusPicker(props: any) {
+	const { isStatusOpen, setIsStatusOpen } = useSearchStore();
+	const [filters, setFilters] = useQueryState("f_3", { scroll: false });
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
@@ -29,22 +29,22 @@ function CategoryPicker(props: any) {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => setIsCategoryOpen(!isCategoryOpen)} className={styles.header}>
-				Категорія
+			<h2 onClick={() => setIsStatusOpen(!isStatusOpen)} className={styles.header}>
+				Спец. пропозиції
 			</h2>
-			<div className={isCategoryOpen ? styles.categoryOpen : styles.categoryClosed}>
-				{props.categories.map((category: any, index: any) => (
-					<div key={index} className={styles.categoryItem}>
-						<span className={styles.categoryName} style={{ opacity: category.isDisabled ? "0.5" : "1" }}>{category.name}</span>
+			<div className={isStatusOpen ? styles.statusOpen : styles.statusClosed}>
+				{props.statuses.map((status: any, index: any) => (
+					<div key={index} className={styles.statusItem}>
+						<span className={styles.statusName}>{status.name}</span>
 						<div>
-							<span className={styles.categoryCount}>{category.count}</span>
+							<span className={styles.statusCount}>{status.count}</span>
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={category.name}
+								value={status.name}
 								onChange={onChange}
-								checked={(filters || "").split("|").includes(category.name)}
-								disabled={category.isDisabled}
+								checked={(filters || "").split("|").includes(status.name)}
+								disabled={status.count === 0}
 							/>
 						</div>
 					</div>
@@ -54,4 +54,4 @@ function CategoryPicker(props: any) {
 	);
 }
 
-export default CategoryPicker;
+export default StatusPicker;

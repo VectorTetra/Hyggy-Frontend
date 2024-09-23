@@ -78,7 +78,7 @@
 }
 
 .priceRange {
-	padding-top: 10px;
+	padding: 0 16px;
 	max-height: 0;
 	/* Стискування */
 	overflow: hidden;
@@ -90,7 +90,7 @@
 }
 
 .priceRangeOpen {
-	padding-top: 10px;
+	padding: 10px 16px 0 16px;
 	max-height: 500px;
 	/* Встановіть достатнє значення для розкриття */
 	opacity: 1;

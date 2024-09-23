@@ -12,8 +12,7 @@ import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeader(props) {
 	//console.log("MainPageHeader props header data:",props.headerData.headerData.hyggyLogo);
 	return (
-		// <div id={styles.mainPageHeader}>
-		<div>
+		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />
 			<div id={styles.mainPageHeaderLogoContainer}>
 				<MainPageHeaderLogo logoHeight={props.headerData.hyggyLogo.height}
