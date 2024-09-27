@@ -22,11 +22,11 @@ export default function SimilarWare({ product }: { product: Product }) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 767) {
         setItemsPerSlide(1);
-      } else if (window.innerWidth > 768 && window.innerWidth <= 900) {
+      } else if (window.innerWidth > 767 && window.innerWidth <= 1070) {
         setItemsPerSlide(2);
-      } else if (window.innerWidth > 900 && window.innerWidth <= 1200) {
+      } else if (window.innerWidth <= 1300) {
         setItemsPerSlide(3);
       } else {
         setItemsPerSlide(4);

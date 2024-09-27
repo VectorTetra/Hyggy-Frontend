@@ -1,13 +1,6 @@
 import Image from 'next/image';
 import styles from "../css/CartPopup.module.css";
 
-interface CartPopupProps {
-  cartItems: CartItem[];
-  selectedOption: string;
-  onClose: () => void;
-  onRemoveItem: (index: number) => void;
-}
-
 interface CartItem {
   productDescription: string;
   productImage: string;
@@ -17,10 +10,16 @@ interface CartItem {
   selectedOption: string;
 }
 
+interface CartPopupProps {
+  cartItems: CartItem[];
+  selectedOption: string;
+  onClose: () => void;
+  onRemoveItem: (index: number) => void;
+}
+
 const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem, selectedOption }) => {
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const deliveryPrice = item.selectedOption === 'delivery' ? 100 : 0;
       return total + parseFloat(item.price) * item.quantity;
     }, 0);
   };

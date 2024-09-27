@@ -3,18 +3,6 @@
   min-width: 80vw;
 }
 
-.breadcrumbs {
-  font-size: 14px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.breadcrumbSeparator {
-  margin: 0 15px; 
-}
-
 .productContainer {
   display: flex;
   gap: 40px;
@@ -116,16 +104,7 @@
 }
 
 .optionDot {
-  align-items: center;
-  width: 11px;
-  height: 10px;
-  background-color: #33FF00;
-  border-radius: 50%;
   margin-right: 10px;
-}
-
-.optionDotRed {
-  background-color: #FF0000;
 }
 
 .optionTitle {
@@ -189,7 +168,7 @@
 .addToCartButton {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #817D7D;
+  background-color: #00AAAD;
   color: white;
   border: none;
   border-radius: 10px; 
@@ -200,14 +179,14 @@
 
 .tabsHeader {
   justify-content: center;
-  display: flex;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
-  background-color: #9F9F9F;
+  background-color: #00AAAD;
   margin-top: 40px;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   width: 100vw;
+  text-align: center;
 }
 
 .tabButton {
@@ -226,13 +205,7 @@
   text-align: center;
 }
 
-.relatedArticlesTitle {
-  font-size: 32px;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1700px) {
   .main {
     padding: 1.5rem;
   }
@@ -242,8 +215,13 @@
   }
 
   .mainImage {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
+  }
+
+  .mainImage2 {
+    width: 300px;
+    height: 300px;
   }
 
   .thumbnail {
@@ -276,66 +254,19 @@
   }
 }
 
-@media screen and (max-width: 1024px) {
-  .productContainer {
-    flex-direction: column;
-  }
 
-  .imageGallery, .productInfo {
-    width: 100%;
-  }
-
-  .mainImage {
-    width: 100%;
-    height: auto;
-  }
-
-  .thumbnails {
-    justify-content: center;
-  }
-
-  .thumbnail {
-    width: 150px;
-    height: 130px;
-  }
-
-  .productName {
-    font-size: 28px;
-  }
-
-  .productDescription {
-    font-size: 20px;
-  }
-
-  .currentPrice {
-    font-size: 40px;
-  }
-
-  .actions {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .tabButton {
-    font-size: 24px;
-  }
-
-  .tabTitle {
-    font-size: 32px;
-  }
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
   .main {
     padding: 1rem;
   }
 
-  .breadcrumbs {
-    font-size: 12px;
+  .imageGallery{
+    display: none;
   }
 
   .productName {
     font-size: 24px;
+    margin-top: 10px;
   }
 
   .productDescription {
@@ -367,15 +298,6 @@
     height: 60px;
   }
 
-  .addToCartButton {
-    width: 100%;
-    height: 60px;
-  }
-
-  .relatedArticlesTitle {
-    font-size: 28px;
-  }
-
   .tabsHeader {
     flex-wrap: wrap;
   }
@@ -390,13 +312,13 @@
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 320px) {
   .main {
     padding: 0.5rem;
   }
 
-  .breadcrumbs {
-    font-size: 10px;
+  .imageGallery{
+    display: none;
   }
 
   .productName {
@@ -420,35 +342,30 @@
   }
 
   .deliveryOption, .storeCount {
-    height: auto;
-    padding: 15px;
+    display:block;
   }
 
   .optionTitle, .storeTitle {
     font-size: 14px;
-    margin-right: 10px;
-    margin-left: 10px;
   }
 
   .quantityContainer {
-    width: 100%;
-    margin-bottom: 10px;
+    width: 120px;
   }
 
   .addToCartButton {
+    width: 120px;
     font-size: 14px;
   }
 
+  .tabsHeader {
+    overflow-x: scroll;
+    white-space: nowrap; 
+
+  }
+
   .tabButton {
-    font-size: 16px;
     padding: 6px 12px;
-  }
-
-  .tabTitle {
-    font-size: 24px;
-  }
-
-  .relatedArticlesTitle {
-    font-size: 24px;
+    font-size: 16px;
   }
 }

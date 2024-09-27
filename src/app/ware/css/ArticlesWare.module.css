@@ -1,6 +1,7 @@
 .relatedArticles {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .articleCard {
@@ -30,5 +31,26 @@
 
 .articleLink:hover {
 	color: #000000;
-	text-decoration: underline;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+@media (max-width: 767px) {
+  .articleImage {
+    flex-shrink: 0;
+    width: 138px;
+    height: 86px;
+  }
+
+  .articleTitle {
+    font-size: .875rem;
+    margin-left: 20px;
+    width: 150px;
+  }
+
+  .articleLink {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
 }

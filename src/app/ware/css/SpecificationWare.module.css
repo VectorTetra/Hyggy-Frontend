@@ -30,3 +30,32 @@
 .specValue {
     flex: 1;
 }
+
+@media (max-width: 840px) {
+    .specificationsTable {
+        width: 90%;
+    }
+
+    .specName, .specValue {
+        font-size: 24px; 
+        padding: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .specificationsTable {
+        width: 100%; 
+        overflow-x: auto;
+    }
+
+    .specRow {
+        display: flex; 
+        flex-wrap: nowrap;
+    }
+
+    .specName, .specValue {
+        font-size: 14px; 
+        text-align: left;
+        padding: 8px;
+    }
+}

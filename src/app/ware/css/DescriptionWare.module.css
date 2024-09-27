@@ -1,6 +1,5 @@
 .descriptionContainer {
     display: flex;
-    gap: 20px;
 }
 
 .textContainer {
@@ -24,5 +23,13 @@
     position: relative;
     width: 392px; 
     height: 290px;
-    flex-shrink: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .descriptionContainer {
+        flex-direction: column; 
+    }
+    .descImage {
+        display: none;
+    }
 }

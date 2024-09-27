@@ -15,10 +15,9 @@
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    max-width: 665px;
-    width: 100%;
-    margin-top: 203px;
-    margin-left: 1120px;
+    width: 90vw;
+    max-width: 600px; 
+    margin: 0 auto; 
   }
   
   .productInfo {
@@ -52,14 +51,15 @@
   .delete {
     font-weight: bold;
     font-size: 24px;
-    color: #777777;
+    color: #00AAAD;
     text-decoration: underline;
     text-decoration-skip-ink: none;
     font-style: normal;
+    cursor: pointer;
   }
   
   .resumeButton {
-    background-color: #474747;
+    background-color: #00AAAD;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -68,6 +68,8 @@
     font-weight: bold;
   }
   .closeButton {
+    color: #00AAAD;
+    font-weight: bold;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -89,4 +91,82 @@
   font-size: 25px;
   cursor: pointer;
   text-align: right;
+}
+
+@media (max-width: 1000px) {
+  .popupContent {
+    max-width: 30%;
+    margin: 20px auto;
+    padding: 15px;
+    align-items: center;
+    margin-left: 250px;
+  }
+
+  .productInfo {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+  }
+
+  .price, .oldprice, .priceAmount {
+    font-size: 20px;
+  }
+
+  .resumeButton, .closeButton {
+    padding: 8px 16px;
+    font-size: 18px;
+  }
+
+  .info {
+    font-size: 30px;
+  }
+
+  .close {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .popupContent {
+    max-width: 50%;
+    margin: 15px auto;
+    padding: 10px;
+    margin-left: 25px;
+    margin-bottom: 1500px;
+  }
+}
+
+@media (max-width: 400px) {
+  .popupContent {
+    max-width: 23%;
+    margin: 15px auto;
+    padding: 10px;
+    margin-left: 15px;
+    margin-bottom: 1500px;
+  }
+
+  .productInfo {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+  }
+
+  .price, .oldprice, .priceAmount {
+    font-size: 18px;
+  }
+
+  .resumeButton, .closeButton {
+    padding: 6px 12px;
+    font-size: 16px;
+  }
+
+  .info {
+    font-size: 25px;
+  }
+
+  .close {
+    font-size: 18px;
+  }
 }
