@@ -25,6 +25,14 @@
 	display: flex;
 	text-align: center;
 	align-items: center;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+}
+
+.mainPageHeaderItem {
+	display: flex;
+	align-items: center;
+	gap: 10px
 }
 
 .inputSearch {
@@ -36,7 +44,7 @@
 	width: clamp(50px, 10vw, 70px);
 	aspect-ratio: 1 / 1;
 	padding: 10px;
-	margin-left: 100px;
+	/* margin-left: 100px; */
 }
 
 #horizontalBar {
@@ -73,48 +81,171 @@
 	color: rgb(231, 120, 120);
 }
 
+.mainPageHeaderSearchContainer {
+	order: 0;
 
-#mainPageHeaderLogoContainer input {
+}
+
+.inputSearch {
 	background-color: rgb(232, 230, 230);
 	border: 2px solid black;
-	width: 500px;
+	width: clamp(250px, 40vw, 500px);
 	height: 30px;
 	font-size: 14px;
-	margin-left: 100px;
+	margin-left: clamp(10px, 4vw, 100px);
 	padding: 5px;
+	order: 4;
+	display: flex;
 }
 
 #mainPageHeaderUserPhoto {
-	width: clamp(25px, 10vw, 25px);
-	margin-left: 220px;
-	margin-right: 15px;
+	width: clamp(25px, 10vw, 35px);
+	height: clamp(25px, 10vw, 35px);
 }
 
 #mainPageHeaderBasketPhoto {
 	width: clamp(30px, 10vw, 30px);
-	margin-left: 50px;
-	margin-right: 10px;
 }
 
-#mainPageHeaderGeoPhoto {
+.mainPageHeaderGeoPhoto {
 	width: clamp(25px, 10vw, 25px);
-	margin-left: 90px;
-	padding: 15px;
+	margin-left: 6vw;
 }
 
-#mainPageHeaderGeoKursor {
+.mainPageHeaderGeoKursor {
 	width: clamp(15px, 10vw, 15px);
-	margin-left: 3px;
-	margin-right: 10px;
+}
+
+.navbarcontainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	/* flex-wrap: wrap; */
+}
+
+.navbarmenu {
+	display: flex;
+}
+
+.geoblock {
+	display: flex;
+	align-items: center;
 }
 
 .geoText {
 	color: rgb(11, 3, 33);
 	font-size: 16px;
 	text-decoration: none;
+	margin-left: 15px;
 }
 
 .menuText {
-	font-size: 12px;
+	font-size: 16px;
 	padding: 10px;
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+
+.menuText:hover {
+	color: red;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+
+	#mainPageSale {
+		font-size: 16px;
+		height: 4vw;
+	}
+
+	.navbarcontainer {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.mainPageHeaderSearchContainer {
+		order: 1;
+		width: 90vw;
+		justify-content: center;
+		display: flex;
+	}
+
+	.inputSearch {
+		width: 80vw;
+		margin: 0 0 20px 0;
+	}
+
+	#mainPageHeaderLogoContainer {
+		justify-content: space-between;
+	}
+
+	.geoblock {
+		order: 1;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.disappearOnAdapt {
+		display: none;
+	}
+
+	.navbarcontainer {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	#mainPageHeaderLogoMyContainer {
+		order: 1;
+	}
+
+	.mainPageHeaderSearchContainer {
+		order: 1;
+		width: 90vw;
+		justify-content: center;
+		display: flex;
+		margin-left: 10px;
+	}
+
+	.inputSearch {
+		width: 80vw;
+		margin: 0 0 20px 0;
+	}
+
+	#mainPageHeaderLogoContainer {
+		justify-content: space-between;
+	}
+
+	#mainPageSale {
+		font-size: 12px;
+		height: 4vw;
+	}
+
+	.geoblock {
+		margin-bottom: 20px;
+	}
+
+	.navbarmenu {
+		justify-content: space-around;
+	}
+
+	.menuText {
+		font-size: 10px;
+		white-space: nowrap;
+	}
+
+
+	.geoText {
+		font-size: 12px;
+		margin-top: 20px;
+	}
+
+	.mainPageHeaderGeoPhoto {
+		margin-left: 2vw;
+	}
+
+	.geoblock {
+		order: 1;
+	}
+
 }

@@ -1,54 +1,80 @@
 /* Общий контейнер для баннера */
-.mainPageBorder-container{
-    display: flex;
+.mainPageBorder {
+    /* display: flex; */
     margin: 0;
     padding: 0;
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center; /* Центрирование по вертикали */
-    text-align: center;
+    /* justify-content: center;
+    align-items: center; */
 }
 
 .mainPageBorder-container {
-    position: relative; 
+    display: flex;
+    position: relative;
     margin-top: 30px;
     margin-left: 100px;
     margin-right: 100px;
-    /*width: 100%; /* Ширина контейнера будет 100% от родительского элемента */
-    height: auto; /* Высота адаптируется под содержимое */
-    /*overflow: hidden;*/ /* Обрезает содержимое, выходящее за пределы контейнера */
+    height: auto;
 }
 
 /* Стили для изображения баннера */
 .mainPageBorder-containerimg {
-    width: 100%; /* Изображение займет всю ширину контейнера */
-    height: auto; /* Высота адаптируется, чтобы сохранить пропорции */
-    display: block; /* Убирает отступы вокруг изображения */
+    width: 100%;
+    display: block;
 }
 
 /* Стили для кнопок навигации */
 .mainPageBorder-container button {
-    position: absolute; /* Абсолютное позиционирование внутри контейнера */
-    top: 50%; /* Расположение по центру вертикально */
-    transform: translateY(-50%); /* Для точного центрирования по вертикали */
-    background-color: rgba(20, 14, 109, 0.5); /* Полупрозрачный черный фон */
-    color: white; /* Белый цвет текста */
-    border: none; /* Без границ */
-    padding: 15px; /* Отступы внутри кнопки */
-    cursor: pointer; /* Указатель в виде руки при наведении */
-    z-index: 2; /* Кнопки будут поверх изображений */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(20, 14, 109, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 2;
 }
 
 /* Стили для левой кнопки */
 .mainPageBorder-container button:first-child {
-    left: 10px; /* Расположение в 10px от левого края */
+    left: 10px;
 }
 
 /* Стили для правой кнопки */
 .mainPageBorder-container button:last-child {
-    right: 10px; /* Расположение в 10px от правого края */
+    right: 10px;
 }
 
 /* Стили при наведении на кнопку */
 .mainPageBorder-container button:hover {
-    background-color: rgba(0, 0, 0, 0.7); /* Затемнение фона при наведении */
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+    .mainPageBorder-container {
+        margin-top: 15px;
+        margin-left: 30px;
+        margin-right: 30px;
+        height: auto;
+    }
+
+    .mainPageBorder-container button {
+        padding: 10px;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .mainPageBorder-container {
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        height: auto;
+    }
+
+    .mainPageBorder-container button {
+        padding: 5px;
+    }
+
 }

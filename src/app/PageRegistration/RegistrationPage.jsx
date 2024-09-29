@@ -158,7 +158,7 @@ export default function RegistrationPage(props) {
                                             />
                                         </td>
                                         <td>
-                                            <label style={{ "margin": "0", "padding": "0" }}> {item.name} </label>
+                                            <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}> {item.name} </label>
                                         </td>
                                     </tr>
 

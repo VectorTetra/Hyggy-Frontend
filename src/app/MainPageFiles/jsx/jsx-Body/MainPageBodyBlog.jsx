@@ -1,4 +1,5 @@
 import styles from "./../../styles/MainPageBody-styles.module.css";
+import MainPageBodyBlogButton from "./MainPageBodyBlogButton";
 
 export default function MainPageBodyBlog(props) {
     return (
@@ -11,6 +12,7 @@ export default function MainPageBodyBlog(props) {
                     </a>
                     <div className={styles["blog-text"]}>{item.textblog.text}</div>
                 </div>
+
             ))}
         </div>
     );

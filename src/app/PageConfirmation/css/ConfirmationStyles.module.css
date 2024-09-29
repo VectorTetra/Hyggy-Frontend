@@ -46,7 +46,7 @@
     width: 30%;
     margin-top: 15px;
     padding: 15px;
-    background-color: grey;
+    background-color: #00AAAD;
     color: white;
     box-sizing: border-box;
     border: 2px solid #bab8b8;
@@ -119,4 +119,43 @@
     margin: 5px 0;
     /* Установить небольшой промежуток между строками чекбоксов */
     width: 100%;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+
+    .caption {
+        font-size: 18px;
+    }
+
+    .formcontainerinput {
+        width: 40%;
+    }
+
+    .submitbutton {
+        width: 40%;
+    }
+
+    .submitbutton2 {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .caption {
+        font-size: 16px;
+    }
+
+    .formcontainerinput {
+        width: 60%;
+    }
+
+    .submitbutton {
+        width: 60%;
+    }
+
+    .submitbutton2 {
+        width: 60%;
+    }
+
 }

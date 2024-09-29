@@ -3,13 +3,14 @@ import React from "react";
 
 import styles from "./styles/AuthenticationStyles.module.css";
 import { useRouter } from "next/navigation";
+import useAuthorizeStore from "@/store/authorize";
 
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
-
+    const { setIsAuthorized } = useAuthorizeStore();
     const router = useRouter();
 
 
@@ -19,10 +20,11 @@ export default function AuthenticationPage(props) {
         if (user && user.password === password) {
             setErrorMessage('');
             alert("Вхід здійснено успішно");
-
+            setIsAuthorized(true);
             router.push("../PageProfileUser");
 
         } else {
+            setIsAuthorized(false);
             setErrorMessage('E-mail або пароль не вірні');
         }
     };
@@ -71,7 +73,7 @@ export default function AuthenticationPage(props) {
                                 <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
                                 <li className={styles.featuresil}>Зберігайте історію замовлень</li>
                                 <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
-                                <li>Зберігайте інформацію для майбутніх покупок</li>
+                                <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
                             </ul>
                         </div>
                     </div>
