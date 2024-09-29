@@ -9,436 +9,313 @@
 		},
 		"favorites": [
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "PLUS S55",
-				"description": "Матрац PLUS S55 90x200см DREAMZONE",
-				"image": "../images/Product/241479.jpg",
-				"price": "5000"
+				"id": 1,
+				"shortName": "HOKKSUND",
+				"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
+				"price": 899,
+				"tag": [
+					"Чудова пропозиція",
+					"Новинка"
+				],
+				"discount": 10,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.5,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
+				"category": "Тумби приліжкові",
+				"trademark": "JYSK"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "PLUS S55",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 2,
+				"shortName": "JONAS",
+				"longName": "Диван JONAS розкладний темно-сірий",
+				"price": 3499,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 15,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.0,
+				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/246014",
+				"category": "Дивани",
+				"trademark": "JYSK"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 3,
+				"shortName": "KABIN",
+				"longName": "Шафа для одягу KABIN 3 двері біла",
+				"price": 1799,
+				"tag": [
+					"Завжди низька ціна"
+				],
+				"discount": 0,
+				"deliveryOption": "Немає доставки",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 3.8,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/38059",
+				"category": "Шафи для одягу",
+				"trademark": "JYSK"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 4,
+				"shortName": "FJELL",
+				"longName": "Ліжко FJELL з ящиками 180x200 см натуральний дуб",
+				"price": 4999,
+				"tag": [
+					"Чудова пропозиція"
+				],
+				"discount": 8,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.7,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/236109",
+				"category": "Ліжка",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 5,
+				"shortName": "EIKEN",
+				"longName": "Крісло EIKEN сіре",
+				"price": 1999,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 12,
+				"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.3,
+				"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/126722",
+				"category": "Крісла",
+				"trademark": "JYSK"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 6,
+				"shortName": "BERG",
+				"longName": "Комплект постільної білизни BERG 200x220 см",
+				"price": 799,
+				"tag": [],
+				"discount": 0,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.2,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/193300",
+				"category": "Постільна білизна",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 7,
+				"shortName": "GRAN",
+				"longName": "Обідній стіл GRAN діам.110см білий",
+				"price": 1299,
+				"tag": [
+					"Завжди низька ціна"
+				],
+				"discount": 0,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 4.4,
+				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/236918",
+				"category": "Обідні столи",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 8,
+				"shortName": "SAND",
+				"longName": "Тумба під телевізор SAND 120 см",
+				"price": 499,
+				"tag": [
+					"Чудова пропозиція"
+				],
+				"discount": 20,
+				"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.1,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212434",
+				"category": "Тумби під телевізор"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 9,
+				"shortName": "LEIF",
+				"longName": "Настільна лампа LEIF чорна",
+				"price": 399,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 5,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.6,
+				"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/243690",
+				"category": "Настільні лампи",
+				"trademark": "JYSK"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 10,
+				"shortName": "AUGUST",
+				"longName": "Стілець AUGUST сірий",
+				"price": 899,
+				"tag": [],
+				"discount": 0,
+				"deliveryOption": "Немає доставки",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 3.9,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/246562",
+				"category": "Стільці",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 11,
+				"shortName": "LILL",
+				"longName": "Комод LILL 5 ящиків білий/дуб",
+				"price": 2199,
+				"tag": [
+					"Чудова пропозиція"
+				],
+				"discount": 10,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.3,
+				"imageSrc": "https://cdn1.jysk.com/getimage/wd3.medium/86178",
+				"category": "Комоди",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 12,
+				"shortName": "RUSTA",
+				"longName": "Килим RUSTA 140x200 см",
+				"price": 1299,
+				"tag": [
+					"Завжди низька ціна"
+				],
+				"discount": 0,
+				"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.0,
+				"imageSrc": "https://cdn1.jysk.com/getimage/wd3.medium/182043",
+				"category": "Килими",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 13,
+				"shortName": "LUNA",
+				"longName": "Лампа настільна LUNA метал",
+				"price": 799,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 8,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.2,
+				"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/243703",
+				"category": "Настільні лампи"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 14,
+				"shortName": "JULIA",
+				"longName": "Штори JULIA 140x250 см",
+				"price": 549,
+				"tag": [],
+				"discount": 0,
+				"deliveryOption": "Немає доставки",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 3.7,
+				"imageSrc": "https://cdn2.jysk.com/getimage/wd3.medium/240666",
+				"category": "Штори",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 15,
+				"shortName": "FLOOR",
+				"longName": "Килим FLOOR 200x300 см",
+				"price": 2999,
+				"tag": [
+					"Чудова пропозиція"
+				],
+				"discount": 12,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.5,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/41192",
+				"category": "Килими",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 16,
+				"shortName": "WIND",
+				"longName": "Склянка WIND 6 шт.",
+				"price": 299,
+				"tag": [
+					"Завжди низька ціна"
+				],
+				"discount": 0,
+				"deliveryOption": "Отримати сповіщення, коли товар знову буде наявний на складі для доставки",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 4.1,
+				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/235845",
+				"category": "Посуд",
+				"trademark": "Jutlandia"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 17,
+				"shortName": "HAST",
+				"longName": "Тумба для взуття HAST 3 ящики",
+				"price": 999,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 6,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.4,
+				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/246353",
+				"category": "Тумби для взуття"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 18,
+				"shortName": "SLEEP",
+				"longName": "Матрац SLEEP 180x200 см",
+				"price": 3499,
+				"tag": [
+					"Чудова пропозиція"
+				],
+				"discount": 20,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "Можливо замовити в JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.6,
+				"imageSrc": "https://cdn1.jysk.com/getimage/wd3.medium/41230",
+				"category": "Матраци"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 19,
+				"shortName": "BASK",
+				"longName": "Короб PROBOX 32л з кришкою прозорий",
+				"price": 199,
+				"tag": [
+					"Завжди низька ціна"
+				],
+				"discount": 0,
+				"deliveryOption": "Немає доставки",
+				"storeAvailability": "Немає в наявності в магазинах",
+				"rating": 4.0,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/238877",
+				"category": "Короби"
 			},
 			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
-			},
-			{
-				"offer": "в наявності",
-				"status": "Чудова пропозиція",
-				"sale": "-30%",
-				"name": "Product 1",
-				"description": "Описание товара 1",
-				"image": "/images/product1.jpg",
-				"price": "100 грн."
+				"id": 20,
+				"shortName": "ELLA",
+				"longName": "Покривало ELLA 220x240 см",
+				"price": 1499,
+				"tag": [
+					"Новинка"
+				],
+				"discount": 10,
+				"deliveryOption": "Є доставка",
+				"storeAvailability": "In stock in JYSK Миколаїв, БТ \"Південний Буг\"",
+				"rating": 4.3,
+				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/144501",
+				"category": "Покривала"
 			}
 		]
 	}

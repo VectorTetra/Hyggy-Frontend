@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import styles from '../page.module.css';
 import data from '../PageProfileUser.json';
-import FavoritesUser from './FavoritesUser';
+//import FavoritesUser from './FavoritesUser';
+import WareGrid from "@/app/search/tsx/WareGrid";
 
 export default function PageProfileUser(props: any) {
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);
@@ -45,7 +46,10 @@ export default function PageProfileUser(props: any) {
                         <li>Країна: {data.profile.country}</li>
                         <li>Номер телефону: {data.profile.numberphone}</li>
                     </ul>
-                    <button className={styles.deleteAccountButton}>Видалити обліковий запис</button>
+                    <div className={styles.deleteAccountButtonContainer}>
+                        <button className={styles.deleteAccountButton}>Видалити</button>
+                        <button className={styles.deleteAccountButton}>Редагувати</button>
+                    </div>
                 </div>
 
                 <div className={styles.profileBlock}>
@@ -57,7 +61,10 @@ export default function PageProfileUser(props: any) {
                     </ul>
                 </div>
             </div>
-            <FavoritesUser favorites={data.favorites} />
+            <div style={{ margin: "25px 3vw 0 3vw" }}>
+                <h2 className={styles.pageTitle2}>Обране</h2>
+                <WareGrid wares={data.favorites} itemsPerPage={8} />
+            </div>
         </div>
     );
 }

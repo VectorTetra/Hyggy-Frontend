@@ -8,7 +8,7 @@ import Pagination from "../../sharedComponents/Pagination";
 export default function WareGrid(props: any) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  console.log('items per page:', props.itemsPerPage)
   // Додавання товару до обраних
   const toggleFavorite = (wareId: string) => {
     setFavorites((prevFavorites) =>
@@ -25,7 +25,7 @@ export default function WareGrid(props: any) {
   }, [currentPage]);
 
 
-  const itemsPerPage = 20; // Кількість товарів на сторінку
+  const itemsPerPage = props.itemsPerPage !== undefined ? props.itemsPerPage : 20; // Кількість товарів на сторінку
   const totalItems = props.wares.length;
   // Визначення товарів, які будуть відображені на поточній сторінці
   const displayedWares = props.wares.slice(

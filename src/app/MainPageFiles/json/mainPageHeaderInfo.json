@@ -32,6 +32,11 @@
       "height": "50",
       "url": "/images/user.png"
     },
+    "favoritePhoto": {
+      "width": "50",
+      "height": "50",
+      "url": "/images/user.png"
+    },
     "basketPhoto": {
       "width": "50",
       "height": "50",

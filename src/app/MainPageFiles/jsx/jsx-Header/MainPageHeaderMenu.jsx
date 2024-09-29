@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderMenu(props) {
   return (
-    <div id={styles.mainPageHeaderLogoContainer}>
+    <Link href="/page" className={styles.mainPageHeaderItem}>
       <Image
         id={styles.mainPageHeaderMenu}
         src={props.photoUrl}
@@ -16,8 +16,8 @@ function MainPageHeaderMenu(props) {
         height={props.photoHeight}
         priority
       />
-      <Link href="/page">Меню</Link>
-    </div>
+      <div className={styles.disappearOnAdapt}>Меню</div>
+    </Link>
   );
 }
 export default MainPageHeaderMenu;
