@@ -1,0 +1,38 @@
+.stickerBar {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	/* Спочатку 4 елементи в ряд */
+	gap: 10px;
+	/* Відступ між елементами */
+	width: 100%;
+	margin: 15px 0;
+}
+
+.sticker {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.stickerText {
+	margin-top: 5px;
+	font-size: 12px;
+	text-wrap: nowrap;
+}
+
+@media (max-width: 768px) {
+	.stickerBar {
+		grid-template-columns: repeat(2, 1fr);
+		/* На середніх екранах – 2 елементи в ряд */
+	}
+}
+
+@media (max-width: 480px) {
+	.stickerBar {
+		grid-template-columns: 1fr;
+		/* На малих екранах – 1 елемент в ряд */
+	}
+}
