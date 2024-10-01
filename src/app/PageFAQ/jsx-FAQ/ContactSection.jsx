@@ -31,7 +31,7 @@ export default function ContactSection(props) {
                     ))}
                     <div className={styles.shopgo}>
                         <a href={props.faqPage.urlpage}>
-                            <div>{props.faqPage.captionshop}</div>
+                            <div className={styles.adaptivurl}>{props.faqPage.captionshop}</div>
                         </a>
                     </div>
                 </div>

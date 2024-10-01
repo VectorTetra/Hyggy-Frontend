@@ -80,7 +80,7 @@
 
 .faqcaption {
     font-weight: bold;
-    margin: 2.55vw 0 2vw;
+    margin: 2.0vw 0 2vw;
 }
 
 /* Стили для заголовка вопроса */
@@ -230,4 +230,195 @@
     object-fit: cover;
     position: relative;
     margin-top: -6vw;
+}
+
+
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    .pagecontainer {
+        display: grid;
+        place-items: center;
+        padding: 0;
+        margin: 0 0 20px 0;
+    }
+
+    .faqcontainer h2 {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .faqcontainertext {
+        font-size: 12px;
+        text-align: justify;
+    }
+
+    .faqcaptionquestion {
+        font-size: 16px;
+    }
+
+    .faqquestiontitle {
+        font-size: 12px;
+    }
+
+    .faqquestioncontent {
+        font-size: 12px;
+    }
+
+    .leftcontainer {
+        padding-right: 0;
+    }
+
+    .adaptivh3 {
+        font-size: 14px;
+    }
+
+    .questionscontainer {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .questiontitle {
+        margin-bottom: 11px;
+    }
+
+    .faqcaption {
+        font-weight: bold;
+        margin: 10px 0 10px;
+        font-size: 12px;
+    }
+
+    .contactsection {
+        padding: 10px;
+        margin: 20px 5px 0 5px;
+    }
+
+    .manedgerimage {
+        width: 100px;
+        height: 100px;
+        margin-top: -50px;
+    }
+
+    .captionworkstyle {
+        font-size: 12px;
+    }
+
+    .textstyle {
+        font-size: 10px;
+    }
+
+    .contactimage {
+        width: 50px;
+        height: 50px;
+        margin-right: 20px;
+    }
+
+    .hr {
+        width: 100%;
+    }
+
+    .opentime {
+        font-size: 12px;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .adaptivurl {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .pagecontainer {
+        display: grid;
+        place-items: center;
+        padding: 0;
+        margin: 0 0 20px 0;
+    }
+
+    .faqcontainer h2 {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .faqcontainertext {
+        font-size: 12px;
+        text-align: justify;
+    }
+
+    .faqcaptionquestion {
+        font-size: 12px;
+    }
+
+    .faqquestiontitle {
+        font-size: 12px;
+    }
+
+    .faqquestioncontent {
+        font-size: 12px;
+    }
+
+    .leftcontainer {
+        padding-right: 0;
+    }
+
+    .adaptivh3 {
+        font-size: 14px;
+    }
+
+    .questionscontainer {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .questiontitle {
+        margin-bottom: 11px;
+    }
+
+    .faqcaption {
+        font-weight: bold;
+        margin: 10px 0 10px;
+        font-size: 12px;
+    }
+
+    .contactsection {
+        padding: 10px;
+        margin: 20px 5px 0 5px;
+    }
+
+    .manedgerimage {
+        width: 100px;
+        height: 100px;
+        margin-top: -50px;
+    }
+
+    .captionworkstyle {
+        font-size: 12px;
+    }
+
+    .textstyle {
+        font-size: 10px;
+    }
+
+    .contactimage {
+        width: 50px;
+        height: 50px;
+        margin-right: 20px;
+    }
+
+    .hr {
+        width: 100%;
+    }
+
+    .opentime {
+        font-size: 12px;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .adaptivurl {
+        font-size: 14px;
+    }
 }

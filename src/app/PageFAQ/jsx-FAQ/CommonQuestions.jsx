@@ -25,7 +25,7 @@ export default function CommonQuestions(props) {
 
     return (
         <div className={styles.commonquestions}>
-            <h3>НАЙБІЛЬШ ПОШИРЕНІ ПИТАННЯ</h3>
+            <h3 className={styles.adaptivh3}>Найбільш поширені питання</h3>
             <div className={styles.questionscontainer}>
                 <div className={styles.questionscolumn}>
                     {firstColumn.map((item, index) => (
