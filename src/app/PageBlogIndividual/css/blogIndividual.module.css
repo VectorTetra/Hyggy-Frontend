@@ -1,0 +1,37 @@
+.headcontainer {
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+.bigimage {
+    margin-bottom: 40px;
+}
+
+.captiontext {
+    margin-top: 50px;
+}
+
+.contenttext {
+    font-size: 1.1vw;
+    text-align: justify;
+}
+
+.imagerow {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    justify-content: space-between;
+    /* Распределяет пространство между изображениями */
+    gap: 20px;
+    /* Отступ между изображениями */
+}
+
+.imagerow img {
+    width: 50%;
+    /* Каждое изображение занимает 50% ширины контейнера */
+    height: auto;
+    /* Автоматическая высота для сохранения пропорций */
+}

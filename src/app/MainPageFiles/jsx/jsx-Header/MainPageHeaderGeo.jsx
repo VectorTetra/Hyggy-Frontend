@@ -4,9 +4,9 @@ import styles from '../../styles/MainPageHeader-styles.module.css';
 
 function MainPageHeaderGeo(props) {
   return (
-    <div id={styles.mainPageHeaderLogoContainer}>
+    <div className={styles.geoblock} >
       <img
-        id={styles.mainPageHeaderGeoPhoto}
+        className={styles.mainPageHeaderGeoPhoto}
         src={props.GeoPhotoUrl}
         alt="GeoPhoto"
       />
@@ -14,7 +14,7 @@ function MainPageHeaderGeo(props) {
         Виберіть магазин Hyggy
       </Link>
       <img
-        id={styles.mainPageHeaderGeoKursor}
+        className={styles.mainPageHeaderGeoKursor}
         src={props.GeoKursorUrl}
         alt="GeoPhoto"
       />

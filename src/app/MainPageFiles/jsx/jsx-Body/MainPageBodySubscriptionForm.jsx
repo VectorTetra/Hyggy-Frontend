@@ -24,7 +24,7 @@ export default function MainPageBodySubscriptionForm(props) {
         <div className={styles["form-container"]}>
             <form method="post" id={styles.subscForm} onSubmit={handleSubmit}>
                 <div className={styles["form-containerin"]}>
-                    <div style={{ fontSize: "24px" }}>{props.caption}</div>
+                    <div><h3 className={styles.h3}>{props.caption}</h3></div>
                     <div className={styles["form-containerInput"]}>
                         <input
                             type="text"

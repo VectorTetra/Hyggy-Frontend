@@ -1,0 +1,153 @@
+.maincontainer {
+    display: flex !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.formcontainer {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.caption {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.inputgroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formcontainerinput {
+    padding: 10px;
+    background-color: rgb(227, 223, 223);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+.formcontainerinput::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.errormessage {
+    color: red;
+    margin-bottom: 15px;
+}
+
+.submitbutton {
+    margin: 15px 15px 0 15px;
+    padding: 15px;
+    background-color: #00AAAD;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submitbutton2 {
+    margin-top: 15px;
+    display: flex;
+    margin-bottom: 50px;
+    padding: 15px;
+    background-color: rgb(218, 217, 217);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+    flex: 1;
+    justify-content: center;
+}
+
+.submitbutton:hover {
+    background-color: blue;
+}
+
+.submitbutton2:hover {
+    background-color: #00AAAD;
+    color: white;
+}
+
+.linkcontainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.forgotpasswordlink {
+    color: #00AAAD;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.forgotpasswordlink a {
+    color: #00AAAD;
+}
+
+.createaccountbutton {
+    padding: 10px;
+    background-color: white;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.features {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.h2 {
+    margin-top: 50px;
+}
+
+.featuresul {
+    margin: auto;
+    list-style-type: disc;
+    text-align: left;
+    margin-bottom: 2em;
+}
+
+.featuresil {
+    margin-bottom: 0.5em;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {}
+
+@media screen and (max-width: 500px) {
+
+    .h2 {
+        font-size: 18px;
+    }
+
+    .featuresil {
+        margin-bottom: 0.2em;
+        font-size: 14px;
+    }
+
+    .caption {
+        font-size: 22px;
+    }
+
+    .submitbutton2 {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+}

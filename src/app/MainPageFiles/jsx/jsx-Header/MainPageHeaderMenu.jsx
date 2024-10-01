@@ -4,20 +4,20 @@ import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderMenu(props) {
   return (
-    <div id={styles.mainPageHeaderLogoContainer}>
+    <Link href="/page" className={styles.mainPageHeaderItem}>
       <Image
         id={styles.mainPageHeaderMenu}
         src={props.photoUrl}
         alt="logo"
-        style={{ 
+        style={{
           cursor: "pointer"
-         }}
-         width={props.photoWidth}
-         height={props.photoHeight}
+        }}
+        width={props.photoWidth}
+        height={props.photoHeight}
         priority
       />
-      <Link href="../MainPage/index.html">Меню</Link>
-    </div>
+      <div className={styles.disappearOnAdapt}>Меню</div>
+    </Link>
   );
 }
 export default MainPageHeaderMenu;

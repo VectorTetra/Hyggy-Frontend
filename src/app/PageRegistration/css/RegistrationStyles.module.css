@@ -1,0 +1,198 @@
+.maincontainer {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.formcontainer {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.caption {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.inputgroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formInput {
+    width: 30%;
+    padding: 10px;
+    background-color: rgb(227, 223, 223);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+.formInput::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.errormessage {
+    color: red;
+    margin-bottom: 15px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.formCheckbox {
+    margin: 0 10px 0 0;
+    padding: 10px;
+    background-color: rgb(227, 223, 223);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+}
+
+.submitbutton {
+    width: 30%;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #00AAAD;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submitbutton2 {
+    width: 30%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    padding: 15px;
+    background-color: rgb(218, 217, 217);
+    box-sizing: border-box;
+    border: 2px solid #bab8b8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.submitbutton:hover {
+    background-color: blue;
+}
+
+.submitbutton2:hover {
+    background-color: blue;
+    color: white;
+}
+
+.linkcontainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.forgotpasswordlink {
+    color: #0c233b;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.forgotpasswordlink a {
+    color: #194a7e;
+}
+
+.createaccountbutton {
+    padding: 10px;
+    background-color: white;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.h2 {
+    margin-top: 50px;
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.featuresFormGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.features>div {
+    display: flex;
+    align-items: left;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.checkboxesTable {
+    width: 30%;
+    text-wrap: nowrap;
+    text-align: left;
+    margin: 15px 0 15px 0;
+}
+
+.checkboxesTableContainer {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+
+    .formInput {
+        width: 40%;
+    }
+
+    .submitbutton {
+        width: 40%;
+    }
+
+    .submitbutton2 {
+        width: 40%;
+    }
+
+    .caption {
+        font-size: 20px;
+    }
+}
+
+
+
+
+@media screen and (max-width: 500px) {
+
+    .formInput {
+        width: 50%;
+    }
+
+    .submitbutton {
+        width: 50%;
+    }
+
+    .submitbutton2 {
+        width: 50%;
+    }
+
+    .caption {
+        font-size: 18px;
+    }
+
+}
