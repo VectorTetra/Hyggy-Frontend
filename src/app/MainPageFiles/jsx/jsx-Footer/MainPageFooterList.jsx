@@ -7,7 +7,7 @@ function MainPageFooterList(props) {
   return (
     <div className={styles.flexContainer}>
       <div className={styles["footer-container"]}>
-        {props.text.map((item,index) => (
+        {props.text.map((item, index) => (
           <div key={item.nameCategory} className={styles.flexItem}>
             <div className={styles["footer-item"]}>{item.nameCategory}</div>
             {item.listCategory.map((subItem) => (
@@ -15,7 +15,6 @@ function MainPageFooterList(props) {
                 <Link
                   className={styles["footer-itemA"]}
                   href={subItem.urlcategory}
-                  key={subItem.name}
                 >
                   {subItem.name}
                 </Link>

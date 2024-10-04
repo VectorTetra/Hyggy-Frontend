@@ -1,17 +1,22 @@
 "use client";
 import React from "react";
 import styles from "../css/FAQStyles.module.css";
-
+import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 export default function CommonQuestions(props) {
-    const handleTitleClick = (index) => {
-        props.onTitleClick(index);
+    const [activeCaption, setActiveCaption] = useQueryState("activeCaption", { scroll: false, history: "replace", shallow: true });
+    const [activeQuestion, setActiveQuestion] = useQueryState("activeQuestion", { scroll: false, history: "replace", shallow: true });
+    const handleTitleClick = (queryFilter, id) => {
+        setActiveCaption(queryFilter);
+        setActiveQuestion(id);
     };
 
     const titles = props.faqPage.answer.flatMap(item =>
         item.subquestions.flatMap(subitem =>
             subitem.questions.map(question => ({
                 title: question.title,
-                content: question.content
+                content: question.content,
+                queryFilter: item.queryFilter,
+                id: question.id
             }))
         )
     );
@@ -28,22 +33,22 @@ export default function CommonQuestions(props) {
             <h3 className={styles.adaptivh3}>Найбільш поширені питання</h3>
             <div className={styles.questionscontainer}>
                 <div className={styles.questionscolumn}>
-                    {firstColumn.map((item, index) => (
+                    {firstColumn.map((item) => (
                         <div
-                            key={index}
+                            key={item.id}
                             className={styles.questiontitle}
-                            onClick={() => handleTitleClick(index)}
+                            onClick={() => handleTitleClick(item.queryFilter, item.id)}
                         >
                             {item.title}
                         </div>
                     ))}
                 </div>
                 <div className={styles.questionscolumn}>
-                    {secondColumn.map((item, index) => (
+                    {secondColumn.map((item) => (
                         <div
-                            key={index + 6}
+                            key={item.id}
                             className={styles.questiontitle}
-                            onClick={() => handleTitleClick(index + 6)}
+                            onClick={() => handleTitleClick(item.queryFilter, item.id)}
                         >
                             {item.title}
                         </div>

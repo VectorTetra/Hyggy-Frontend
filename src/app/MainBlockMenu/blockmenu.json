@@ -1,0 +1,146 @@
+{
+    "blockData": [
+        {
+            "caption": "Спальня",
+            "subCategories": [
+                {
+                    "type": "Матраци",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-1-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-1-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ліжка",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ковдри",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Подушки",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Постільна білизна",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Меблі для спальні",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "caption": "Ванна",
+            "subCategories": [
+                {
+                    "type": "Матраци",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-1-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-1-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ліжка",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ковдри",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Подушки",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Постільна білизна",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                },
+                {
+                    "type": "Меблі для спальні",
+                    "subCategories": [
+                        {
+                            "name": "Sub-subcategory 1-2-1"
+                        },
+                        {
+                            "name": "Sub-subcategory 1-2-2"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -11,7 +11,7 @@ import Layout from '../sharedComponents/Layout';
 
 export default function WorkPage(props: any) {
 	return (
-		<Layout headerType='null'>
+		<Layout headerType='header1'>
 			<div className={styles.pageContainer}>
 				{data.map((item: any) => {
 					if (item.type === "imageHeader") {
