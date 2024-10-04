@@ -1,23 +1,30 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
+
 function MainPageHeaderMenu(props) {
+
+  const handleMenuClick = () => {
+    console.log('Меню нажато');
+    onMenuClick(); // Вызовите переданную функцию
+  };
+
+  const { onMenuClick, photoUrl, photoWidth, photoHeight } = props;
   return (
-    <Link href="/page" className={styles.mainPageHeaderItem}>
+    <div onClick={handleMenuClick} className={styles.mainPageHeaderItem}>
       <Image
         id={styles.mainPageHeaderMenu}
-        src={props.photoUrl}
+        src={photoUrl}
         alt="logo"
         style={{
           cursor: "pointer"
         }}
-        width={props.photoWidth}
-        height={props.photoHeight}
+        width={photoWidth}
+        height={photoHeight}
         priority
       />
-      <div className={styles.disappearOnAdapt}>Меню</div>
-    </Link>
+      <div className={styles.disappearOnAdapt} style={{ cursor: "pointer" }}>Меню</div>
+    </div>
   );
 }
 export default MainPageHeaderMenu;
