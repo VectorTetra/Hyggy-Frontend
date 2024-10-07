@@ -4,9 +4,9 @@ import styles from '../../styles/MainPageHeader-styles.module.css';
 
 function MainPageHeaderLogo(props) {
 	return (
-		<div className={styles.mainPageHeaderLogoContainer}>
+		<div className={styles.mainPageHeaderItem} id={styles.mainPageHeaderLogoMyContainer}>
 			<Link href="/">
-				<img id={styles.mainPageHeaderLogo} src={props.logoUrl} alt="logo" 		
+				<img id={styles.mainPageHeaderLogo} src={props.logoUrl} alt="logo"
 				/>
 			</Link>
 		</div>

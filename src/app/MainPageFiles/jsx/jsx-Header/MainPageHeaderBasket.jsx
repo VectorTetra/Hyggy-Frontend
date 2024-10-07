@@ -3,9 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderBasket(props) {
-  
+
   return (
-    <div id={styles.mainPageHeaderLogoContainer}>
+    <Link href="/" className={styles.mainPageHeaderItem}>
       <Image
         className={styles.mainPageHeaderBasketPhoto}
         src={props.basketPhotoUrl}
@@ -14,8 +14,9 @@ function MainPageHeaderBasket(props) {
         height={props.basketPhotoHeight}
         priority={true}
       />
-      <Link href="/">Кошик</Link>
-    </div>
+      <div className={styles.disappearOnAdapt}>Кошик</div>
+    </Link>
+
   );
 }
 export default MainPageHeaderBasket;

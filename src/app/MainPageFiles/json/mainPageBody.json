@@ -1,170 +1,156 @@
 {
-	"bodyData":
-	{
-        "bodycaption":
-        {
-            "caption": "КАТЕГОРІЇ"
-        },
-
-        "bodysale":
-        {
-            "textsale": "Облаштуйте свою оселю у скандинавському стилі та відчуйте хюґе! Наша спеціальна акція пропонує вам можливість створити ідеальний простір для відпочинку та релаксації. У цій категорії ви знайдете всі товари, на які зараз діє акційна ціна.",
-            "textsale2": "Також, ви можете переглянути всі актуальні знижки тут.",
+	"bodyData": {
+		"bodycaption": {
+			"caption": "Категорії"
+		},
+		"bodysale": {
+			"textsale": "Облаштуйте свою оселю у скандинавському стилі та відчуйте хюґе! Наша спеціальна акція пропонує вам можливість створити ідеальний простір для відпочинку та релаксації. У цій категорії ви знайдете всі товари, на які зараз діє акційна ціна.",
+			"textsale2": "Також, ви можете переглянути всі актуальні знижки тут.",
 			"urlimage": "../images/Sale.jpg",
-            "urlsale": "https://jysk.ua/"
-        },
-
-		"category":[
+			"urlsale": "https://jysk.ua/"
+		},
+		"category": [
 			{
 				"nameCategory": "Спальня",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Bedroom.jpg",
-				"alt":"Спальня"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Bedroom.jpg",
+				"alt": "Спальня"
 			},
-            {
+			{
 				"nameCategory": "Ванна",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Bathroom.jpg",
-				"alt":"Ванна"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Bathroom.jpg",
+				"alt": "Ванна"
 			},
-            {
+			{
 				"nameCategory": "Офіс",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Office.jpg",
-				"alt":"Офіс"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Office.jpg",
+				"alt": "Офіс"
 			},
-            {
+			{
 				"nameCategory": "Вітальня",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Livingroom.jpg",
-				"alt":"Вітальня"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Livingroom.jpg",
+				"alt": "Вітальня"
 			},
-            {
+			{
 				"nameCategory": "Кухня та їдальня",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Diningroom.jpg",
-				"alt":"Кухня та їдальня"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Diningroom.jpg",
+				"alt": "Кухня та їдальня"
 			},
-            {
+			{
 				"nameCategory": "Зберігання",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Storage.jpg",
-				"alt":"Зберігання"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Storage.jpg",
+				"alt": "Зберігання"
 			},
-            {
+			{
 				"nameCategory": "Для вікон",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Window.jpg",
-				"alt":"Для вікон"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Window.jpg",
+				"alt": "Для вікон"
 			},
-            {
+			{
 				"nameCategory": "Для саду",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Garden.jpg",
-				"alt":"Для саду"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Garden.jpg",
+				"alt": "Для саду"
 			},
-            {
+			{
 				"nameCategory": "Для дому",
-				"urlcategory":"https://jysk.ua/",
-                "urlimage":"../images/Category/Forhome.jpg",
-				"alt":"Для дому"
-			}
-        ],
-
-		"brandcaption":
-        {
-            "caption": "БРЕНДИ"
-        },
-
-		"brand":[
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand1.png",
-				"alt":"Brand1"
-			},
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand2.png",
-				"alt":"Brand2"
-			},
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand3.png",
-				"alt":"Brand2"
-			},
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand4.png",
-				"alt":"Brand2"
-			},
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand5.png",
-				"alt":"Brand2"
-			},
-			{
-				"urlBrand":"https://jysk.ua/",
-                "urlimage":"../images/Brand/Brand6.png",
-				"alt":"Brand2"
+				"urlcategory": "https://jysk.ua/",
+				"urlimage": "../images/Category/Forhome.jpg",
+				"alt": "Для дому"
 			}
 		],
-
-		"blogcaption":
-        {
-            "caption": "НАТХНЕННЯ"
-        },
-	
-		"blog":[
+		"brandcaption": {
+			"caption": "Бренди"
+		},
+		"brand": [
 			{
-				"textblog":{
-				"textcaption": "Ми тут, щоб допомогти",
-				"text": "Наш відділ по роботі з клієнтами готовий допомогти Вам. Зв'яжіться з нами в чаті або за телефоном, щоб отримати найшвидшу відповідь."
-				}, 
-				"urlpage":"https://jysk.ua/",
-                "urlimage":"../images/Blog/Blogphone.jpg",
-				"alt":"blog",
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand1.png",
+				"alt": "Brand1"
+			},
+			{
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand2.png",
+				"alt": "Brand2"
+			},
+			{
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand3.png",
+				"alt": "Brand2"
+			},
+			{
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand4.png",
+				"alt": "Brand2"
+			},
+			{
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand5.png",
+				"alt": "Brand2"
+			},
+			{
+				"urlBrand": "https://jysk.ua/",
+				"urlimage": "../images/Brand/Brand6.png",
+				"alt": "Brand2"
+			}
+		],
+		"blogcaption": {
+			"caption": "Натхнення"
+		},
+		"blog": [
+			{
+				"textblog": {
+					"textcaption": "Ми тут, щоб допомогти",
+					"text": "Наш відділ по роботі з клієнтами готовий допомогти Вам. Зв'яжіться з нами в чаті або за телефоном, щоб отримати найшвидшу відповідь."
+				},
+				"urlpage": "https://jysk.ua/",
+				"urlimage": "../images/Blog/Blogphone.jpg",
+				"alt": "blog",
 				"textbutton": "Звернутися до служби підтримки"
 			},
 			{
-				"textblog":{
-				"textcaption": "Працюй з нами",
-				"text": "Вітаємо в HYGGY, компанії, яка розвивається і зростає з кожним роком. Водночас ми щодня докладаємо зусиль, щоб кожен день приносив задоволення від роботи. Тому що саме комфортне робоче середовище, сильні команди та розкриття потенціалу наших амбітних колег сприяють успіху."}, 
-				"urlpage":"https://jysk.ua/",
-                "urlimage":"../images/Blog/job.png",
-				"alt":"blog",
+				"textblog": {
+					"textcaption": "Працюй з нами",
+					"text": "Вітаємо в HYGGY, компанії, яка розвивається і зростає з кожним роком. Водночас ми щодня докладаємо зусиль, щоб кожен день приносив задоволення від роботи. Тому що саме комфортне робоче середовище, сильні команди та розкриття потенціалу наших амбітних колег сприяють успіху."
+				},
+				"urlpage": "https://jysk.ua/",
+				"urlimage": "../images/Blog/job.png",
+				"alt": "blog",
 				"textbutton": "Перейти до вакансій"
 			}
 		],
-
-		"aboutus":[
+		"aboutus": [
 			{
 				"captoin": "Наша історія",
 				"text": "Ми – молода компанія HYGGY, яка прагне принести у ваш дім затишок та комфорт.",
-				"urlpage":"https://jysk.ua/",
-                "urlimage":"../images/aboutus.jpg",
-				"alt":"blog"
+				"urlpage": "https://jysk.ua/",
+				"urlimage": "../images/aboutus.jpg",
+				"alt": "blog"
 			},
 			{
 				"captoin": "Гарантія на матраци",
 				"text": "25 років гарантії на матраци категорії GOLD.",
-				"urlpage":"https://jysk.ua/",
-                "urlimage":"../images/garant.png",
-				"alt":"blog"
+				"urlpage": "https://jysk.ua/",
+				"urlimage": "../images/garant.png",
+				"alt": "blog"
 			},
 			{
 				"captoin": "Завжди низька ціна",
 				"text": "Ми пропонуємо широкий вибір товарів за привабливими низькими цінами.",
-				"urlpage":"https://jysk.ua/",
-                "urlimage":"../images/price.png",
-				"alt":"blog"
+				"urlpage": "https://jysk.ua/",
+				"urlimage": "../images/price.png",
+				"alt": "blog"
 			}
 		],
-
-		"formmail":
-        {
-            "caption": "Підписуйтеся на нашу розсилку та щотижня отримуйте найкращі пропозиції, інформацію про розіграші й сезонні новинки.",
+		"formmail": {
+			"caption": "Підписуйтеся на нашу розсилку та щотижня отримуйте найкращі пропозиції, інформацію про розіграші й сезонні новинки.",
 			"forminfo": "Так, я бажаю підписатися на email - розсилку від HYGGY, що містить статті для натхнення, інформацію про актуальні пропозиції, новинки та акції. Відмовитись від розсилки можна у будь-який час. Ми обробляємо вищезгадану персональну інформацію для того, щоб надсилати вам листи."
-        }
-
-    }
+		}
+	}
 }
