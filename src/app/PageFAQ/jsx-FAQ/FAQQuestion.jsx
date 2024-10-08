@@ -12,7 +12,7 @@ export default function FAQQuestion({ question }) {
     return (
         <div key={question.id} ref={questionRef}>
             <div className={styles.faqquestiontitle} onClick={() => {
-                activeQuestion !== question.id ? setActiveQuestion(question.id) : setActiveQuestion(null)
+                activeQuestion !== question.id ? setActiveQuestion(question.id, { history: "replace" }) : setActiveQuestion(null, { history: "replace" })
             }}>
                 {question.title}
                 <span className={styles.faqarrow}>

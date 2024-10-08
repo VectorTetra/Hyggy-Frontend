@@ -15,7 +15,7 @@ export default function FAQItem({ item }) {
         <div ref={itemRef} key={item.queryFilter} className={styles.faqitem}>
             <div
                 className={styles.faqcaptionquestion}
-                onClick={() => { activeCaption !== item.queryFilter ? setActiveCaption(item.queryFilter) : setActiveCaption(null) }}
+                onClick={() => { activeCaption !== item.queryFilter ? setActiveCaption(item.queryFilter, { history: "replace" }) : setActiveCaption(null, { history: "replace" }) }}
             >
                 {item.captionquestion}
                 <span className={styles.faqarrow}>{activeCaption === item.queryFilter ? '<' : '>'}</span>
