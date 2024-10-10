@@ -3,20 +3,20 @@ import { useState } from "react";
 
 interface StarRatingProps {
   rating: number;
-  onRatingChange?: (rating: number) => void; 
+  onRatingChange?: (rating: number) => void;
 }
 
 export default function StarRating({ rating, onRatingChange }: StarRatingProps) {
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null); 
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const fullStars = Math.floor(hoveredRating ?? rating); // Повні зірки, з урахуванням наведення
-	const partialStar = hoveredRating === null ? rating - fullStars : 0; // Часткова зірка тільки при відсутності наведення
-	const maxStars = 5; // Максимальна кількість зірок
+  const partialStar = hoveredRating === null ? rating - fullStars : 0; // Часткова зірка тільки при відсутності наведення
+  const maxStars = 5; // Максимальна кількість зірок
 
-  const starElements = [];
+  const starElements: JSX.Element[] = [];
 
   const handleStarClick = (index: number) => {
     if (onRatingChange) {
-      onRatingChange(index + 1); 
+      onRatingChange(index + 1);
     }
   };
 
