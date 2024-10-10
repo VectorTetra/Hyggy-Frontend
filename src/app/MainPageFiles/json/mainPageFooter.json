@@ -51,7 +51,7 @@
           },
           {
             "name": "Всі категорії",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../PageAllCategory",
             "alt": "Всі категорії"
           }
         ]
@@ -61,7 +61,7 @@
         "listCategory": [
           {
             "name": "Відділ по роботі з клієнтами",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../PageFAQ",
             "alt": "job"
           },
           {
@@ -71,12 +71,12 @@
           },
           {
             "name": "Доставка",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "/PageFAQ?activeCaption=1",
             "alt": "delivery"
           },
           {
             "name": "Повернення",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "/PageFAQ?activeCaption=2",
             "alt": "return"
           }
         ]
@@ -86,12 +86,12 @@
         "listCategory": [
           {
             "name": "Про нас",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../aboutUs",
             "alt": "about us"
           },
           {
             "name": "Робота в Hyggy",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../work",
             "alt": "shops"
           }
         ]

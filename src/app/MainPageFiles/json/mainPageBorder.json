@@ -1,19 +1,18 @@
 {
-	"borderData":{
-	"mainBorder":
-    [
-		{
-      "url":"../images/Banner/UA2_6.jpg",
-      "urlpage":"https://jysk.ua/"
-		},
-    {
-      "url":"../images/Banner/UA5_6.jpg",
-      "urlpage":"https://jysk.ua/"
-		},
-    {
-      "url":"../images/Banner/UA5_7.jpg",
-      "urlpage":"https://jysk.ua/"
-		}
+  "borderData": {
+    "mainBorder": [
+      {
+        "url": "../images/Banner/UA2_6.jpg",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "url": "../images/Banner/UA5_6.jpg",
+        "urlpage": "https://jysk.ua/"
+      },
+      {
+        "url": "../images/Banner/UA5_7.jpg",
+        "urlpage": "https://jysk.ua/"
+      }
     ]
-}
+  }
 }

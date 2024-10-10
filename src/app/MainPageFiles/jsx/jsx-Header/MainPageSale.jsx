@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
 import styles from '../../styles/MainPageHeader-styles.module.css';
@@ -6,7 +7,7 @@ function MainPageSale(props) {
 
     // Функция для перехода к следующему элементу
     const nextSale = () => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             (prevIndex + 1) % props.infoSales.length
         );
     };

@@ -1,14 +1,16 @@
-function MainPageBodySale(props) {
+import styles from "./../../styles/MainPageBody-styles.module.css";
+
+export default function MainPageBodySale(props) {
     return (
-        <div className="bodysale">
-            <img src={props.urlphoto} className="bodysale-image" />
-            <div className="bodysale-text">
+        <div className={styles["bodysale"]}>
+            <img src={props.urlphoto} className={styles["bodysale-image"]} alt="Sale Image" />
+            <div className={styles["bodysale-text"]}>
                 {props.text}
-				<br/><br/>
-				<a className="text-link" href={props.urlpagesale}>
-    				{props.text2}
-				</a>
+                <br /><br />
+                <a className={styles["text-link"]} href={props.urlpagesale}>
+                    {props.text2}
+                </a>
             </div>
-        </div>			
-    )
+        </div>
+    );
 }

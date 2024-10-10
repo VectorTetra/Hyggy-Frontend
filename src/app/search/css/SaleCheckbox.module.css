@@ -1,0 +1,22 @@
+.container {
+	padding: 0 15px;
+}
+
+.saleCheckboxItem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-right: 8px;
+}
+
+
+.saleCheckboxName {
+	margin: 0;
+	cursor: pointer;
+	user-select: none;
+	font-size: 14px;
+}
+
+.checkbox {
+	margin-left: 10px;
+}

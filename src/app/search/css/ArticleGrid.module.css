@@ -1,0 +1,50 @@
+#articleGrid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(250px, 1fr));
+	grid-gap: 20px;
+	gap: 20px;
+	justify-items: start;
+	align-items: baseline;
+}
+
+.articleLink {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 5% 2.5%;
+	align-items: center;
+	color: #000000;
+	text-decoration: none;
+}
+
+.articleLink:hover {
+	color: #000000;
+	text-decoration: underline;
+}
+
+.articleImageContainer {
+	width: 100%;
+	/* Контейнер займає всю ширину доступного простору */
+	height: 200px;
+	/* Фіксована висота контейнера */
+	overflow: hidden;
+	/* Приховує частини зображення, які виходять за межі контейнера */
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+}
+
+.articleImage {
+	width: 100%;
+	/* Зображення займає всю ширину контейнера */
+	height: 100%;
+	/* Зображення займає всю висоту контейнера */
+	object-fit: cover;
+	/* Зображення обрізається по краях, щоб зберегти пропорції */
+}
+
+@media screen and (max-width: 1000px) {
+	#articleGrid {
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	}
+}

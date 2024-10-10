@@ -1,0 +1,15 @@
+{
+    "AuthenticationPage":
+    {
+        "AuthenticationInfo":[
+            {
+                "email": "123@gmail.com",
+                "password": "123"
+              },
+              {
+                "email": "user2@example.com",
+                "password": "password456"
+              }
+        ]
+    }
+}

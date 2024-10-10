@@ -1,0 +1,107 @@
+.container {
+	padding: 0 15px;
+}
+
+.track {
+	height: 6px;
+	width: 100%;
+}
+
+.thumb {
+	height: 20px;
+	width: 20px;
+	background-color: #548BF4;
+	border-radius: 50%;
+}
+
+.inputs {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	border-bottom-color: rgb(163, 163, 163);
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-style: solid;
+	border-bottom-width: 1.11667px;
+	border-image-outset: 0;
+	border-image-repeat: stretch;
+	border-image-slice: 100%;
+	border-image-source: none;
+	border-image-width: 1;
+	border-left-color: rgb(163, 163, 163);
+	border-left-style: solid;
+	border-left-width: 1.11667px;
+	border-right-color: rgb(163, 163, 163);
+	border-right-style: solid;
+	border-right-width: 1.11667px;
+	border-top-color: rgb(163, 163, 163);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-top-style: solid;
+	border-top-width: 1.11667px;
+	box-sizing: border-box;
+	color: rgb(0, 0, 0);
+	cursor: pointer;
+	font-family: "Open Sans", sans-serif;
+	font-size: 16px;
+	hyphens: auto;
+	line-height: 22.85px;
+	margin-bottom: 15px;
+	min-height: 0px;
+	min-width: 0px;
+	position: relative;
+	width: 120px
+}
+
+.formGroup:hover,
+.formGroup:focus {
+	border-color: rgb(20, 60, 138);
+}
+
+.inputPrice {
+	border: none;
+}
+
+.inputPrice:focus {
+	outline: none;
+}
+
+.inputLabel {
+	font-size: 10px;
+	color: rgb(115, 115, 115)
+}
+
+.priceRange {
+	padding: 0 16px;
+	max-height: 0;
+	/* Стискування */
+	overflow: hidden;
+	/* Сховати вміст */
+	opacity: 0;
+	/* Непрозорий */
+	transition: max-height 0.3s ease, opacity 0.3s ease;
+	/* Плавні переходи */
+}
+
+.priceRangeOpen {
+	padding: 10px 16px 0 16px;
+	max-height: 500px;
+	/* Встановіть достатнє значення для розкриття */
+	opacity: 1;
+	transition: max-height 0.3s ease, opacity 0.3s ease;
+	/* Прозорий */
+}
+
+
+.priceRangeHeader {
+	cursor: pointer;
+	user-select: none;
+	font-size: 14px;
+	margin: 0;
+}
