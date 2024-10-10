@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import styles from "../css/CartPopup.module.css";
+import Link from 'next/link';
 
 interface CartItem {
   productDescription: string;
+  productName: string;
   productImage: string;
   quantity: number;
   price: string;
@@ -65,7 +67,9 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
             <span className={styles.info}>Сума ({calculateQuantity()} товарів): </span>
             <span className={styles.priceAmount}>{totalPrice} грн</span>
           </p>
-          <p><button onClick={onClose} className={styles.resumeButton}>Продовжити</button></p>
+          <Link href="/cart" passHref>
+            <button className={styles.resumeButton}>Продовжити</button>
+          </Link>
           <p onClick={onClose} className={styles.closeButton}>Продовжити покупки</p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 interface CartItem {
     productDescription: string;
+    productName: string;
     productImage: string;
     quantity: number;
     price: string;

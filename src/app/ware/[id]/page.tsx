@@ -20,6 +20,7 @@ import {
 
 interface CartItem {
   productDescription: string;
+  productName: string;
   productImage: string;
   quantity: number;
   price: string;
@@ -69,6 +70,7 @@ export default function WarePage() {
   const handleAddToCart = () => {
     const newItem = {
       productDescription: product.productDescription,
+      productName: product.productName,
       productImage: product.mainImage1,
       quantity: quantity,
       price: product.currentPrice,

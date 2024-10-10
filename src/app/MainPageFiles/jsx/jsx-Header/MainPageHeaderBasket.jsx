@@ -14,7 +14,7 @@ function MainPageHeaderBasket(props) {
         height={props.basketPhotoHeight}
         priority={true}
       />
-      <Link href="/">Кошик</Link>
+      <Link href="/cart">Кошик</Link>
     </div>
   );
 }

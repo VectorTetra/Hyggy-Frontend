@@ -300,6 +300,8 @@
 
   .tabsHeader {
     flex-wrap: wrap;
+    overflow-x: scroll;
+    white-space: nowrap; 
   }
 
   .tabButton {
@@ -356,12 +358,6 @@
   .addToCartButton {
     width: 120px;
     font-size: 14px;
-  }
-
-  .tabsHeader {
-    overflow-x: scroll;
-    white-space: nowrap; 
-
   }
 
   .tabButton {

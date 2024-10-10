@@ -84,9 +84,160 @@
   font-size: 24px;
 }
 
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 1648px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modalContent h1{
+  font-weight: bold;
+  font-size: 40px;
+  text-align: center;
+}
+
+.formRating{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  font-size: 43px;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 810px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 100px;
+}
+
+.submitButton{
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  background-color: #00AAAD;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submitButton:hover{
+  opacity: 0.9;
+}
+
+.close{
+  font-size: 25px;
+  cursor: pointer;
+  text-align: right;
+}
+
+@media screen and (max-width: 1920px) {
+  .modalContent {
+    width: 75%;
+    padding: 50px;
+  }
+
+  .formRating {
+    font-size: 24px;
+  }
+
+  .formGroup {
+    width: 100%;
+  }
+
+  .formInput, .formTextarea {
+    font-size: 14px;
+  }
+
+  .submitButton {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .leaveReviewButton {
+    width: 80%;
+    height: 50px;
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .overallRating {
+    padding: 10px;
+  }
+
+  .ratingText {
+    font-size: 18px;
+    margin-left: 8px;
+  }
+
+  .mainText {
+    font-size: 20px;
+  }
+
+  .reviewerName {
+    font-size: 16px;
+  }
+
+  .reviewText {
+    font-size: 16px;
+  }
+
+  .reviewRatingContainer {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modalContent {
+    width: 75%;
+    padding: 50px;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .rating {
     font-size: 24px;
+  }
+
+  .overallRating {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
   }
 
   .ratingText {
@@ -99,7 +250,7 @@
 
   .leaveReviewButton {
     width: 30%;
-    height: 50px;
+    height: 60px;
     padding: 5px 10px;
     font-size: 1rem;
   }
@@ -137,7 +288,7 @@
 
   .leaveReviewButton {
     width: 60%;
-    height: 50px;
+    height: 60px;
     padding: 5px 10px;
     font-size: 1rem;
   }

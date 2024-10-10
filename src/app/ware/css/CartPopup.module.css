@@ -95,7 +95,7 @@
 
 @media (max-width: 1000px) {
   .popupContent {
-    max-width: 30%;
+    max-width: 50%;
     margin: 20px auto;
     padding: 15px;
     align-items: center;
@@ -129,11 +129,10 @@
 
 @media (max-width: 650px) {
   .popupContent {
-    max-width: 50%;
+    max-width: 90%;
     margin: 15px auto;
     padding: 10px;
     margin-left: 25px;
-    margin-bottom: 1500px;
   }
 }
 
