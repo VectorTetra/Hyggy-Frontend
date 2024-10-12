@@ -1,0 +1,55 @@
+.sidebarContainer {
+    position: relative;
+}
+
+.menuButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+.menuList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.menuList li {
+    padding: 15px;
+}
+
+.menuList button {
+    background: none;
+    border: none;
+    color: white;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.subMenu {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.subMenu li {
+    padding: 10px 0;
+}

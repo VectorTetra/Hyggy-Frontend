@@ -6,8 +6,8 @@ export default function CommonQuestions(props) {
     const [activeCaption, setActiveCaption] = useQueryState("activeCaption", { scroll: false, history: "replace", shallow: true });
     const [activeQuestion, setActiveQuestion] = useQueryState("activeQuestion", { scroll: false, history: "replace", shallow: true });
     const handleTitleClick = (queryFilter, id) => {
-        setActiveCaption(queryFilter);
-        setActiveQuestion(id);
+        setActiveCaption(queryFilter, { history: "replace" });
+        setActiveQuestion(id, { history: "replace" });
     };
 
     const titles = props.faqPage.answer.flatMap(item =>

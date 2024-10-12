@@ -5,7 +5,7 @@ import styles from '../../styles/MainPageHeader-styles.module.css';
 function MainPageHeaderBasket(props) {
 
   return (
-    <Link href="/" className={styles.mainPageHeaderItem}>
+    <Link href="/cart" className={styles.mainPageHeaderItem}>
       <Image
         className={styles.mainPageHeaderBasketPhoto}
         src={props.basketPhotoUrl}
@@ -16,7 +16,6 @@ function MainPageHeaderBasket(props) {
       />
       <div className={styles.disappearOnAdapt}>Кошик</div>
     </Link>
-
   );
 }
 export default MainPageHeaderBasket;

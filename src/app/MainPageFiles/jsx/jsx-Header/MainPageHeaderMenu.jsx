@@ -12,6 +12,7 @@ export default function MainPageHeaderMenu({ photoUrl, photoWidth, photoHeight }
       setIsMainPageMenuOpened(true); // Вызываем переданную функцию
     }
   };
+
   return (
     <div onClick={handleMenuClick} className={styles.mainPageHeaderItem}>
       <Image
@@ -25,9 +26,8 @@ export default function MainPageHeaderMenu({ photoUrl, photoWidth, photoHeight }
         height={photoHeight}
         priority
       />
-      <div className={styles.disappearOnAdapt} style={{ cursor: "pointer" }}>
-        Меню
-      </div>
+
+      <div className={styles.disappearOnAdapt} style={{ cursor: "pointer" }}>Меню</div>
     </div>
   );
 }
