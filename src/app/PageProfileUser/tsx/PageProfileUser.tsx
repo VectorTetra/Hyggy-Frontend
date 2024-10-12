@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import styles from '../page.module.css';
 import data from '../PageProfileUser.json';
-//import FavoritesUser from './FavoritesUser';
 import WareGrid from "@/app/search/tsx/WareGrid";
 
 export default function PageProfileUser(props: any) {

@@ -6,7 +6,6 @@ export default function TabBar({ waresQuantity, articlesQuantity, activeTab, set
 	// Якщо вказати { scroll: false }, то параметр не буде впливати на прокрутку
 	const [type, setType] = useQueryState('type', { scroll: false });
 	const [searchQuery, setSearchQuery] = useQueryState('query', { scroll: false });
-	//const { setScrollPosition } = useSearchStore();
 
 	// Функція для оновлення URL з параметрами
 	const updateUrl = (newType: string) => {
