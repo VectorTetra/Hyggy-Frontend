@@ -8,12 +8,20 @@
 }
 
 .mainPageBorder-container {
+    /* position: relative; */
+    /* transform: translateY(-50%); */
+    /* background-color: rgba(20, 14, 109, 0.5); */
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
     display: flex;
-    position: relative;
-    margin-top: 30px;
-    margin-left: 100px;
-    margin-right: 100px;
-    height: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /* flex: 1; */
+    /* z-index: 0; */
+    /* bottom: 0; */
 }
 
 /* Стили для изображения баннера */
@@ -24,10 +32,13 @@
 
 /* Стили для кнопок навигации */
 .mainPageBorder-container button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(20, 14, 109, 0.5);
+    /* position: absolute; */
+    /* top: 50%; */
+    display: flex;
+    width: 50px;
+    height: 50px;
+    /* transform: translateY(-50%); */
+    background-color: #00AAAD;
     color: white;
     border: none;
     padding: 15px;

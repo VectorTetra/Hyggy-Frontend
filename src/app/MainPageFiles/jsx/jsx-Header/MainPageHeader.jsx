@@ -1,3 +1,67 @@
+// "use client";
+// import React from 'react';
+// import MainPageHeaderLogo from './MainPageHeaderLogo';
+// import MainPageHeaderMenu from './MainPageHeaderMenu';
+// import MainPageHeaderSearch from './MainPageHeaderSearch';
+// import MainPageHeaderUser from './MainPageHeaderUser';
+// import MainPageHeaderFavoriteButton from './MainPageHeaderFavoriteButton';
+// import MainPageHeaderBasket from './MainPageHeaderBasket';
+// import MainPageHeaderGeo from './MainPageHeaderGeo';
+// import MainPageHeaderNavbar from './MainPageHeaderNavbar';
+// import MainPageSale from './MainPageSale';
+// import styles from '../../styles/MainPageHeader-styles.module.css';
+// import useAuthorizeStore from '@/store/authorize';
+
+// function MainPageHeader(props) {
+// 	//console.log("MainPageHeader props header data:",props.headerData.headerData.hyggyLogo);
+// 	const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
+
+// 	return (
+// 		<div id={styles.mainPageHeader}>
+// 			<MainPageSale infoSales={props.headerData.info} />
+// 			<div id={styles.mainPageHeaderLogoContainer}>
+// 				<div style={{ display: "flex" }}>
+// 					<MainPageHeaderLogo logoHeight={props.headerData.hyggyLogo.height}
+// 						logoWidth={props.headerData.hyggyLogo.width}
+// 						logoUrl={props.headerData.hyggyLogo.url} />
+// 					<MainPageHeaderMenu photoHeight={props.headerData.menuPhoto.height}
+// 						photoWidth={props.headerData.menuPhoto.width}
+// 						photoUrl={props.headerData.menuPhoto.url} />
+// 				</div>
+// 				<MainPageHeaderSearch searchText={props.headerData.menuSearch.text} />
+// 				<div style={{ display: "flex" }}>
+// 					{isAuthorized && <MainPageHeaderFavoriteButton
+// 						favoritePhotoHeight={props.headerData.favoritePhoto.height}
+// 						favoritePhotoWidth={props.headerData.favoritePhoto.width}
+// 						favoritePhotoUrl={props.headerData.favoritePhoto.url}
+// 					/>}
+// 					<MainPageHeaderUser userPhotoHeight={props.headerData.userPhoto.height}
+// 						userPhotoWidth={props.headerData.userPhoto.width}
+// 						userPhotoUrl={props.headerData.userPhoto.url} />
+// 					<MainPageHeaderBasket basketPhotoHeight={props.headerData.basketPhoto.height}
+// 						basketPhotoWidth={props.headerData.basketPhoto.width}
+// 						basketPhotoUrl={props.headerData.basketPhoto.url} />
+// 				</div>
+// 			</div>
+// 			<hr id={styles.horizontalBar} />
+
+// 			<div className={styles.navbarcontainer}>
+
+// 				<MainPageHeaderGeo GeoPhotoHeight={props.headerData.GeoPhoto.height}
+// 					GeoPhotoWidth={props.headerData.GeoPhoto.width}
+// 					GeoPhotoUrl={props.headerData.GeoPhoto.url}
+// 					GeoKursorHeight={props.headerData.GeoKursor.height}
+// 					GeoKursorWidth={props.headerData.GeoKursor.width}
+// 					GeoKursorUrl={props.headerData.GeoKursor.url} />
+// 				<MainPageHeaderNavbar navBar={props.headerData.navBar} />
+
+// 			</div>
+// 			<hr id={styles.horizontalBar2} />
+// 		</div>
+// 	)
+// }
+// export default MainPageHeader;
+
 "use client";
 import React from 'react';
 import MainPageHeaderLogo from './MainPageHeaderLogo';
@@ -11,52 +75,64 @@ import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import useAuthorizeStore from '@/store/authorize';
-function MainPageHeader(props) {
-	//console.log("MainPageHeader props header data:",props.headerData.headerData.hyggyLogo);
-	const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
+
+function MainPageHeader({ headerData }) {  // Передаем onMenuClick через пропсы
+	const { isAuthorized } = useAuthorizeStore();
 
 	return (
 		<div id={styles.mainPageHeader}>
-			<MainPageSale infoSales={props.headerData.info} />
+			<MainPageSale infoSales={headerData.info} />
 			<div id={styles.mainPageHeaderLogoContainer}>
 				<div style={{ display: "flex" }}>
-					<MainPageHeaderLogo logoHeight={props.headerData.hyggyLogo.height}
-						logoWidth={props.headerData.hyggyLogo.width}
-						logoUrl={props.headerData.hyggyLogo.url} />
-					<MainPageHeaderMenu photoHeight={props.headerData.menuPhoto.height}
-						photoWidth={props.headerData.menuPhoto.width}
-						photoUrl={props.headerData.menuPhoto.url} />
+					<MainPageHeaderLogo
+						logoHeight={headerData.hyggyLogo.height}
+						logoWidth={headerData.hyggyLogo.width}
+						logoUrl={headerData.hyggyLogo.url}
+					/>
+					{/* Передаем onMenuClick в MainPageHeaderMenu */}
+					<MainPageHeaderMenu
+						photoHeight={headerData.menuPhoto.height}
+						photoWidth={headerData.menuPhoto.width}
+						photoUrl={headerData.menuPhoto.url}
+					/>
 				</div>
-				<MainPageHeaderSearch searchText={props.headerData.menuSearch.text} />
+				<MainPageHeaderSearch searchText={headerData.menuSearch.text} />
 				<div style={{ display: "flex" }}>
-					{isAuthorized && <MainPageHeaderFavoriteButton
-						favoritePhotoHeight={props.headerData.favoritePhoto.height}
-						favoritePhotoWidth={props.headerData.favoritePhoto.width}
-						favoritePhotoUrl={props.headerData.favoritePhoto.url}
-					/>}
-					<MainPageHeaderUser userPhotoHeight={props.headerData.userPhoto.height}
-						userPhotoWidth={props.headerData.userPhoto.width}
-						userPhotoUrl={props.headerData.userPhoto.url} />
-					<MainPageHeaderBasket basketPhotoHeight={props.headerData.basketPhoto.height}
-						basketPhotoWidth={props.headerData.basketPhoto.width}
-						basketPhotoUrl={props.headerData.basketPhoto.url} />
+					{isAuthorized && (
+						<MainPageHeaderFavoriteButton
+							favoritePhotoHeight={headerData.favoritePhoto.height}
+							favoritePhotoWidth={headerData.favoritePhoto.width}
+							favoritePhotoUrl={headerData.favoritePhoto.url}
+						/>
+					)}
+					<MainPageHeaderUser
+						userPhotoHeight={headerData.userPhoto.height}
+						userPhotoWidth={headerData.userPhoto.width}
+						userPhotoUrl={headerData.userPhoto.url}
+					/>
+					<MainPageHeaderBasket
+						basketPhotoHeight={headerData.basketPhoto.height}
+						basketPhotoWidth={headerData.basketPhoto.width}
+						basketPhotoUrl={headerData.basketPhoto.url}
+					/>
 				</div>
 			</div>
 			<hr id={styles.horizontalBar} />
 
 			<div className={styles.navbarcontainer}>
-
-				<MainPageHeaderGeo GeoPhotoHeight={props.headerData.GeoPhoto.height}
-					GeoPhotoWidth={props.headerData.GeoPhoto.width}
-					GeoPhotoUrl={props.headerData.GeoPhoto.url}
-					GeoKursorHeight={props.headerData.GeoKursor.height}
-					GeoKursorWidth={props.headerData.GeoKursor.width}
-					GeoKursorUrl={props.headerData.GeoKursor.url} />
-				<MainPageHeaderNavbar navBar={props.headerData.navBar} />
-
+				<MainPageHeaderGeo
+					GeoPhotoHeight={headerData.GeoPhoto.height}
+					GeoPhotoWidth={headerData.GeoPhoto.width}
+					GeoPhotoUrl={headerData.GeoPhoto.url}
+					GeoKursorHeight={headerData.GeoKursor.height}
+					GeoKursorWidth={headerData.GeoKursor.width}
+					GeoKursorUrl={headerData.GeoKursor.url}
+				/>
+				<MainPageHeaderNavbar navBar={headerData.navBar} />
 			</div>
 			<hr id={styles.horizontalBar2} />
 		</div>
 	)
 }
+
 export default MainPageHeader;

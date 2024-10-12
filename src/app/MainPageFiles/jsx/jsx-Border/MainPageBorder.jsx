@@ -28,8 +28,11 @@ export function MainPageBorder(props) {
         <div className={styles.mainPageBorder}>
             <div className={`${styles["mainPageBorder-container"]}`}>
                 <button onClick={prevBanner}>{"<<"}</button>
-                <a style={{ width: "100%" }} href={props.borderData.mainBorder[currentIndex].urlpage}>
-                    <img className={`${styles["mainPageBorder-containerimg"]}`} src={props.borderData.mainBorder[currentIndex].url} />
+                <a href={props.borderData.mainBorder[currentIndex].urlpage}>
+                    <img className={`${styles["mainPageBorder-containerimg"]}`} style={{
+                        width: '80vw',
+                        height: '250px'
+                    }} src={props.borderData.mainBorder[currentIndex].url} />
                 </a>
                 <button onClick={nextBanner}>{">>"}</button>
             </div>
