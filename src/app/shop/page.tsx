@@ -19,11 +19,13 @@ export default function Shop() {
     useEffect(() => {
         const storedShop = sessionStorage.getItem('shop');
         if(storedShop){
+            console.log(storedShop);
             setPlace(JSON.parse(storedShop));
             // if(markerRef.current)
             // {
             //     markerRef.current.openPopup();
             // }
+            console.log(place?.name);
         }
     },[])
     const openGoogleMaps = () => {
@@ -118,7 +120,7 @@ export default function Shop() {
 
             </div>
             <div className="p-3 bg-gray-100 flex flex-col  lg:w-1/3">
-                <Image className="h-56" src="/images/Shops/Магазин,Суми.png" alt="Магазин,Суми" width={450} 
+                <Image className="h-56" src={place?.photoUrl as string} alt="Магазин,Суми" width={450} 
                 height={500}></Image>
                 <h1 id="workhours" className="mt-10 text-2xl font-semibold">Робочі години</h1>
                 <ul className="list-none mt-2 font-light text-[14px] space-y-2 flex flex-col">

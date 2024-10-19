@@ -18,6 +18,8 @@ export const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 export type Place = {
+  id: string;
+  photoUrl: string,
   name: string;
   address: string;
   postalCode: string;
@@ -31,6 +33,8 @@ const Map = () => {
 
   const [places, setPlaces] = useState<Place[]>([
     {
+      id: "1",
+      photoUrl: "/images/Shops/OdessaHyggy.png",
       name: "Hyggy Odessa",
       address: "вул. Харківська 2/2",
       postalCode: "40024",
@@ -41,6 +45,8 @@ const Map = () => {
       longitude: 30.7233095,
     },
     {
+      id: "2",
+      photoUrl: "/images/Shops/HyggyЮжне.png",
       name: "Hyggy Odessa",
       address: "вул. Харківська 2/2",
       postalCode: "40024",
@@ -51,6 +57,8 @@ const Map = () => {
       longitude: 30.8233095,
     },
     {
+      id: "3",
+      photoUrl: "/images/Shops/JYSK Миколаїв.png",
       name: "Hyggy Mykolaiv",
       address: "вул. Харківська 2/2",
       postalCode: "40024",
@@ -61,6 +69,8 @@ const Map = () => {
       longitude: 31.9974
     },
     {
+      id: "4",
+      photoUrl: "/images/Shops/Магазин,Суми.png",
       name: "Hyggy Kharkiv",
       address: "вул. Харківська 2/2",
       postalCode: "40024",
@@ -69,7 +79,7 @@ const Map = () => {
       workHours: ["10:00 - 20:00", "10:00 - 20:00"],
       latitude: 49.988358, 
       longitude: 36.232845
-    },
+    }
   ]);
       const [position, setPosition] = useState({
         lat: places[0].latitude,
@@ -77,6 +87,7 @@ const Map = () => {
       });
       const router = useRouter();
       const handleMarkerClick = (place:Place) =>{
+        console.log(place.photoUrl);
        sessionStorage.setItem('shop', JSON.stringify(place));
 
        router.push('/shop');

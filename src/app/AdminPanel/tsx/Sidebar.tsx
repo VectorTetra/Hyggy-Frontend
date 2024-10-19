@@ -13,7 +13,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
-
+import Link from 'next/link';
+import Shops from '../shops/page';
+import ShopEmployees from '../shopemployees/page';
+import Clients from '../clients/page';
+import NewShop from '../shops/NewShop';
 const drawerWidth = 240;
 
 interface Props {
@@ -56,7 +60,7 @@ const MenuItem = ({
 
 	return (
 		<>
-			<ListItem disablePadding>
+			<ListItem disablePadding >
 				<ListItemButton
 					onClick={handleClick} // Викликаємо функцію для зміни стану
 					sx={{
@@ -112,12 +116,15 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 export default function Sidebar(props: Props) {
 	const { window } = props;
 	const [openWarehouses, setOpenWarehouses] = useState(false);
+	const [openEmployees, setEmployees] = useState(false);
 	const { activeTab, setActiveTab } = useAdminPanelStore();
 	// Функція для відкриття/закриття підпунктів
 	const toggleWarehouses = () => {
 		setOpenWarehouses(!openWarehouses);
 	};
-
+	const toggleEmployees =() => {
+		setEmployees(!openEmployees)
+	};
 	// Вміст сайдбару
 	const drawer = (
 		<div>
@@ -160,7 +167,10 @@ export default function Sidebar(props: Props) {
 				</MenuItem>
 
 				<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
-				<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
+				<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" open={openEmployees} onClick={toggleEmployees}>
+					<SubMenuItem text="Магазини" value="shopEmployees" />
+					<SubMenuItem text="Склади" value="storageEmployees" />
+				</MenuItem>
 				<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 				<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 			</List>
@@ -207,9 +217,11 @@ export default function Sidebar(props: Props) {
 				{activeTab === 'supplies' && <div>Поставки</div>}
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
-				{activeTab === 'stores' && <div>Магазини</div>}
+				{activeTab === 'stores' && <Shops />}
+				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
+				{activeTab === 'shopEmployees' && <ShopEmployees />}
+				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 			</Box>
 		</Box>
