@@ -8,6 +8,7 @@
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    overflow-y: auto;
 }
 
 .menuContainer.show {
@@ -15,9 +16,6 @@
 }
 
 .menuHeader {
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     padding: 10px;
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./css/mainblockmenu.module.css";
 import blockData from "./json/blockmenu.json";
 import useMainPageMenuStore from "@/store/mainPageMenu";
@@ -8,6 +8,9 @@ export default function BlockMenu() {
     const [currentMenu, setCurrentMenu] = useState(blockData.blockData);
     const [currentCategory, setCurrentCategory] = useState(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
+
+    const menuRef = useRef(null);
+
     const handleCategoryClick = (category) => {
         if (category.subCategories) {
             setHistory([...history, { menu: currentMenu, category: currentCategory }]); // Сохраняем текущий уровень в историю
@@ -28,14 +31,29 @@ export default function BlockMenu() {
         }
     };
 
+
+    // Закрытие меню при клике вне его области
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMainPageMenuOpened(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [setIsMainPageMenuOpened]);
+
     return (
         <div className={styles.overlay}>
-            <div className={`${styles.menuContainer} ${currentMenu.length ? styles.show : ''}`}>
+            <div ref={menuRef} className={`${styles.menuContainer} ${currentMenu.length ? styles.show : ''}`}>
                 <div className={styles.menuHeader}>
                     {history.length === 0 ? (
                         <>
                             <div className={styles.menuContainerLogo}>
-                                <img src="/images/Logo.png" alt="Logo" className={styles.logo} />
+                                <img src="/images/AdminPanel/hyggyIcon.png" alt="Logo" className={styles.logo} />
                                 <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
                             </div>
                         </>
@@ -76,7 +94,4 @@ export default function BlockMenu() {
             </div>
         </div>
     );
-
-
-
 }

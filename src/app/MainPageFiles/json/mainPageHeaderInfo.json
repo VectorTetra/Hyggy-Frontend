@@ -15,9 +15,9 @@
       }
     ],
     "hyggyLogo": {
-      "width": "100",
-      "height": "100",
-      "url": "/images/Logo.png"
+      "width": "150",
+      "height": "150",
+      "url": "/images/AdminPanel/hyggyIcon.png"
     },
     "menuPhoto": {
       "width": "50",

@@ -21,15 +21,14 @@ const Pagination: FC<PaginationProps> = ({
 	};
 
 	const renderPageNumbers = () => {
-		const pages = [];
+		const pages: (JSX.Element | string)[] = [];
 
 		if (currentPage > 2) {
 			pages.push(
 				<button
 					key={1}
 					onClick={() => handlePageClick(1)}
-					className={`${styles.paginationButton} ${currentPage === 1 ? styles.activePage : ""
-						}`}
+					className={`${styles.paginationButton} ${currentPage === 1 ? styles.activePage : ""}`}
 				>
 					1
 				</button>
@@ -41,17 +40,12 @@ const Pagination: FC<PaginationProps> = ({
 			}
 		}
 
-		for (
-			let i = Math.max(1, currentPage - 1);
-			i <= Math.min(currentPage + 1, totalPages);
-			i++
-		) {
+		for (let i = Math.max(1, currentPage - 1); i <= Math.min(currentPage + 1, totalPages); i++) {
 			pages.push(
 				<button
 					key={i}
 					onClick={() => handlePageClick(i)}
-					className={`${styles.paginationButton} ${currentPage === i ? styles.activePage : ""
-						}`}
+					className={`${styles.paginationButton} ${currentPage === i ? styles.activePage : ""}`}
 				>
 					{i}
 				</button>
@@ -68,8 +62,7 @@ const Pagination: FC<PaginationProps> = ({
 				<button
 					key={totalPages}
 					onClick={() => handlePageClick(totalPages)}
-					className={`${styles.paginationButton} ${currentPage === totalPages ? styles.activePage : ""
-						}`}
+					className={`${styles.paginationButton} ${currentPage === totalPages ? styles.activePage : ""}`}
 				>
 					{totalPages}
 				</button>
@@ -78,6 +71,7 @@ const Pagination: FC<PaginationProps> = ({
 
 		return pages;
 	};
+
 
 	return (
 		<div className={styles.paginationContainer}>
