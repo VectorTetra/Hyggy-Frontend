@@ -1,3 +1,4 @@
+// Page: AdminPanel
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Імпорт із next/navigation

@@ -7,6 +7,7 @@ import { useQueryState } from 'nuqs';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDebounce } from 'use-debounce';
+import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import '../css/WarehouseFrame.css';
 
 export default function WarehouseFrame() {
@@ -15,6 +16,7 @@ export default function WarehouseFrame() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
 	const [filteredData, setFilteredData] = useState([]);
+	const { warehouseId, setWarehouseId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
 		city: false,
@@ -41,8 +43,8 @@ export default function WarehouseFrame() {
 		{
 			field: 'actions',
 			headerName: 'Дії',
-			flex: 0.5,
-			minWidth: 175,
+			flex: 0,
+			width: 75,
 			renderCell: (params) => (
 				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
 					<Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
@@ -63,7 +65,10 @@ export default function WarehouseFrame() {
 	};
 
 	const handleEdit = (row) => {
-		console.log('Редагувати рядок:', row);
+		// Встановлюємо warehouseId для редагування обраного складу
+		setWarehouseId(row.id); // Встановлюємо Id складу для редагування
+		console.log("row.id :", row.id)
+		setActiveTab("addEditWarehouse"); // Змінюємо активну вкладку
 	};
 
 	const handleDelete = (id) => {
@@ -114,7 +119,8 @@ export default function WarehouseFrame() {
 			} catch (error) {
 				console.error('Error fetching filtered data:', error);
 			} finally {
-				setLoading(false);
+				if (data.length > 0)
+					setLoading(false);
 			}
 		};
 
@@ -122,7 +128,7 @@ export default function WarehouseFrame() {
 	}, [debouncedSearchTerm, data]);
 
 	return (
-		<Box sx={{ width: '100%' }}>
+		<Box sx={{ overflowX: "auto" }}>
 			<Typography variant="h5" sx={{ marginBottom: 2 }}>
 				Склади : {loading ? <CircularProgress size={24} /> : filteredData.length}
 			</Typography>
@@ -131,17 +137,21 @@ export default function WarehouseFrame() {
 					searchTerm={searchTerm}
 					onSearchChange={(event) => setSearchTerm(event.target.value)}
 				/>
-				<Button variant="contained" color="primary">
+				<Button variant="contained" color="primary" onClick={() => {
+					setWarehouseId(0);
+					setActiveTab("addEditWarehouse");
+				}}>
 					Додати
 				</Button>
 			</Box>
-			<Box sx={{ overflowX: 'auto', position: 'relative' }}>
+			<Box className="dataGridContainer"> {/* Додаємо новий клас */}
 				{filteredData.length === 0 && !loading ? (
 					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 						Нічого не знайдено
 					</Typography>
 				) : (
 					<DataGrid
+						className="dataGrid"
 						rows={filteredData}
 						columns={columns}
 						apiRef={apiRef}
@@ -149,7 +159,7 @@ export default function WarehouseFrame() {
 						initialState={{
 							pagination: {
 								paginationModel: {
-									pageSize: 100,
+									pageSize: 50,
 									page: 0,
 								},
 							},
@@ -205,4 +215,5 @@ export default function WarehouseFrame() {
 			</Box>
 		</Box>
 	);
+
 }
