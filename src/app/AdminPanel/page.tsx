@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Імпорт із next/navigation
 import Sidebar from './tsx/Sidebar'; // Імпорт Sidebar
+import Content from './tsx/Content'; // Імпорт Content
 
 export default function Admin() {
 	const [authenticated, setAuthenticated] = useState(true);
@@ -34,8 +35,9 @@ export default function Admin() {
 
 	return (
 		authenticated ? (
-			<div>
+			<div style={{ display: "flex" }}>
 				<Sidebar />
+				<Content />
 			</div>
 		) : null
 	);

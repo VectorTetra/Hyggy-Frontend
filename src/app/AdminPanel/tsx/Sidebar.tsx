@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { Box, Collapse, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
+import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 import Image from 'next/image';
 import CategoryIcon from '@mui/icons-material/Category';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
@@ -13,7 +13,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
-
+import { lazy, Suspense } from 'react';
+import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 const drawerWidth = 240;
 
 interface Props {
@@ -36,7 +37,7 @@ const MenuItem = ({
 	children?: React.ReactNode;
 }) => {
 	// Використовуємо Zustand для отримання активної вкладки
-	const { activeTab, setActiveTab } = useAdminPanelStore();
+	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	// Перевірка, чи ця вкладка є активною
 	const isActive = activeTab === value;
 
@@ -79,7 +80,7 @@ const MenuItem = ({
 
 			{/* Якщо є дочірні елементи, розкриваємо їх */}
 			{children && (
-				<Collapse in={open} timeout="auto" unmountOnExit>
+				<Collapse in={open} timeout={200} unmountOnExit>
 					<List component="div" disablePadding>{children}</List>
 				</Collapse>
 			)}
@@ -89,7 +90,7 @@ const MenuItem = ({
 
 // Компонент для вторинного пункту меню
 const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
-	const { activeTab, setActiveTab } = useAdminPanelStore();
+	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const isActive = activeTab === value;
 
 	return (
@@ -110,9 +111,10 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 };
 
 export default function Sidebar(props: Props) {
+	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const { window } = props;
 	const [openWarehouses, setOpenWarehouses] = useState(false);
-	const { activeTab, setActiveTab } = useAdminPanelStore();
+	//const { activeTab, setActiveTab } = useAdminPanelStore();
 	// Функція для відкриття/закриття підпунктів
 	const toggleWarehouses = () => {
 		setOpenWarehouses(!openWarehouses);
@@ -171,7 +173,7 @@ export default function Sidebar(props: Props) {
 	const container = window !== undefined ? () => window().document.body : undefined;
 
 	return (
-		<Box sx={{ display: 'flex' }}>
+		<Box>
 			<CssBaseline />
 			<Box
 				component="nav"
@@ -192,25 +194,6 @@ export default function Sidebar(props: Props) {
 				>
 					{drawer}
 				</Drawer>
-			</Box>
-			<Box
-				component="main"
-				sx={{
-					flexGrow: 1,
-					p: 3,
-					width: { sm: `calc(100% - ${drawerWidth}px)` },
-				}}
-			>
-				{activeTab === 'products' && <div>Товари</div>}
-				{activeTab === 'warehousesList' && <div>Склади</div>}
-				{activeTab === 'remains' && <div>Залишки</div>}
-				{activeTab === 'supplies' && <div>Поставки</div>}
-				{activeTab === 'transfers' && <div>Переміщення</div>}
-				{activeTab === 'writeOffs' && <div>Списання</div>}
-				{activeTab === 'stores' && <div>Магазини</div>}
-				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
-				{activeTab === 'orders' && <div>Замовлення</div>}
 			</Box>
 		</Box>
 	);
