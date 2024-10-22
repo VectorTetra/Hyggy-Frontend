@@ -1,0 +1,212 @@
+.overlayBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    width: 500px;
+    height: 100%;
+    background-color: white;
+    transition: right 0.3s ease;
+    z-index: 100;
+    border: 1px solid #9e9e9e;
+}
+
+.overlay.show {
+    right: 0;
+}
+
+.menuContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.menuHeader {
+    display: flex;
+    justify-content: center;
+}
+
+.divider {
+    border-top: 2px solid #9b9999;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(56, 174, 174, 0.1);
+}
+
+.menuContainerLogo {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    margin: 20px 0px 20px 0px;
+}
+
+.menuContainerLogo span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.closeButton {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    justify-content: space-between;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 0.5rem;
+    background-color: rgb(238, 236, 236);
+    border: 1px solid #737272;
+    border-radius: 4px;
+    font-size: 16px;
+    box-shadow: 8px 8px 15px #9ecfd0;
+    transition: box-shadow 0.3s ease;
+}
+
+.searchInput:focus {
+    box-shadow: 12px 12px 15px #9ecfd0;
+
+}
+
+
+.searchButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.shopListContainer {
+    flex-grow: 1;
+    /* Занимает оставшееся пространство */
+    overflow-y: auto;
+    /* Включает вертикальную прокрутку, если содержимое превышает высоту */
+    padding: 1rem;
+    /* Добавьте отступы, если нужно */
+    max-height: calc(100% - 20%);
+}
+
+.h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.shopcard {
+    display: flex;
+    /* Используем flexbox для выравнивания */
+    justify-content: space-between;
+    /* Размещаем элементы с максимальным пространством между ними */
+    align-items: center;
+    /* Вертикальное выравнивание элементов */
+    padding: 10px;
+    /* Отступы вокруг карточки */
+    /* border: 1px solid #ccc; */
+    /* Граница карточки */
+    margin: 5px 0;
+    /* Отступы между карточками */
+}
+
+.shopInfo {
+    display: flex;
+    /* Используем flexbox для расположения текста */
+    flex-direction: column;
+    /* Вертикальное расположение заголовка и текста */
+}
+
+.shopButton {
+    background-color: #00AAAD;
+    /* Синий цвет кнопки */
+    color: white;
+    /* Белый цвет текста на кнопке */
+    border: none;
+    /* Убираем границу */
+    padding: 10px 15px;
+    /* Отступы внутри кнопки */
+    cursor: pointer;
+    /* Указываем курсор при наведении */
+    border-radius: 5px;
+    /* Закругленные углы кнопки */
+    transition: background-color 0.3s ease;
+    /* Плавный переход цвета фона */
+}
+
+.shopButton:hover {
+    background-color: darkblue;
+    /* Темный синий цвет при наведении */
+}
+
+.card {
+    border: 1px solid #ccc;
+    margin: 10px 10px 10px 10px;
+}
+
+.card:hover {
+    border: 1px solid blue;
+}
+
+.worktime {
+    display: flexbox;
+    margin-left: 10px;
+}
+
+.customlink {
+    color: darkblue;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+.customlink:hover {
+    color: #ff4500;
+    /* Замените на нужный цвет при наведении */
+    text-decoration: underline;
+}
+
+.worktimelist {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.worktimeitem {
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.worktimeday {
+    width: 150px;
+    font-size: 14px;
+}
+
+.customlink2 {
+    color: darkblue;
+    text-decoration: none;
+    margin: 20px 0 5px 0;
+}

@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
+import Blog from './Blog';
 
 const drawerWidth = 240;
 
@@ -118,6 +119,7 @@ export default function Sidebar(props: Props) {
 		setOpenWarehouses(!openWarehouses);
 	};
 
+
 	// Вміст сайдбару
 	const drawer = (
 		<div>
@@ -163,6 +165,9 @@ export default function Sidebar(props: Props) {
 				<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 				<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 				<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
+				<MenuItem icon={<ShoppingCartIcon />} text="Блог" value="blog">
+					<SubMenuItem text="Блог" value="blog" />
+				</MenuItem>
 			</List>
 			<Divider />
 		</div>
@@ -193,14 +198,7 @@ export default function Sidebar(props: Props) {
 					{drawer}
 				</Drawer>
 			</Box>
-			<Box
-				component="main"
-				sx={{
-					flexGrow: 1,
-					p: 3,
-					width: { sm: `calc(100% - ${drawerWidth}px)` },
-				}}
-			>
+			<Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
 				{activeTab === 'products' && <div>Товари</div>}
 				{activeTab === 'warehousesList' && <div>Склади</div>}
 				{activeTab === 'remains' && <div>Залишки</div>}
@@ -211,6 +209,7 @@ export default function Sidebar(props: Props) {
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <div>Клієнти</div>}
 				{activeTab === 'orders' && <div>Замовлення</div>}
+				{activeTab === 'blog' && <Blog />}
 			</Box>
 		</Box>
 	);
