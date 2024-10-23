@@ -1,45 +1,64 @@
 // Page: AdminPanel
 "use client";
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Імпорт із next/navigation
-import Sidebar from './tsx/Sidebar'; // Імпорт Sidebar
-import Content from './tsx/Content'; // Імпорт Content
+import { useRouter } from 'next/navigation';
+import Sidebar from './tsx/Sidebar';
+import Content from './tsx/Content';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import StoreIcon from '@mui/icons-material/Store';
+import "react-toastify/dist/ReactToastify.css";
+import './css/AdminPanel.css';
 
 export default function Admin() {
 	const [authenticated, setAuthenticated] = useState(true);
-	// const [loading, setLoading] = useState(true);
 	const router = useRouter();
 
+	// useEffect для перевірки автентифікації
 	// useEffect(() => {
-	// 	// Викликаємо ваш API для перевірки автентифікації
 	// 	const checkAuth = async () => {
 	// 		try {
-	// 			const response = await fetch('/api/check-auth'); // API route для перевірки автентифікації
+	// 			const response = await fetch('/api/check-auth');
 	// 			if (response.ok) {
 	// 				setAuthenticated(true);
 	// 			} else {
-	// 				router.push('/AdminPanelLogin'); // Перенаправляємо на сторінку логіну, якщо неавторизований
+	// 				router.push('/AdminPanelLogin');
 	// 			}
 	// 		} catch (error) {
 	// 			router.push('/AdminPanelLogin');
-	// 		} finally {
-	// 			setLoading(false);
 	// 		}
 	// 	};
 
 	// 	checkAuth();
 	// }, [router]);
 
-	// if (loading) {
-	// 	return <p>Завантаження...</p>;
-	// }
-
 	return (
 		authenticated ? (
-			<div style={{ display: "flex" }}>
-				<Sidebar />
-				<Content />
+			<div>
+				<div style={{ display: "flex" }}>
+					<Sidebar />
+					<Content />
+					<ToastContainer
+						stacked={true}
+						autoClose={5000}
+						position='bottom-right'
+						pauseOnHover={false}
+						theme='colored'
+						transition={Bounce}
+						closeOnClick={true}
+						hideProgressBar={false}
+						limit={3}
+
+					/>
+				</div>
 			</div>
 		) : null
 	);
+}
+export function MyToastMessage() {
+	return (
+		<div style={{ display: "flex" }}>
+			Новий тост
+			<StoreIcon />
+		</div>
+	)
 }

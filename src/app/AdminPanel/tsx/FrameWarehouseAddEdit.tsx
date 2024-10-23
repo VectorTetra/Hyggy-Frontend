@@ -20,6 +20,7 @@ import { customIcon } from '../../shops/components/Map';
 import { getStorages, postStorage, putStorage } from '@/pages/api/StorageApi';
 import { getAddresses, postAddress, putAddress } from '@/pages/api/AddressApi';
 import { useQueryState } from 'nuqs';
+import { toast } from 'react-toastify';
 
 const WarehouseAddEditFrame = () => {
 	const [address, setAddress] = useState('');
@@ -37,7 +38,12 @@ const WarehouseAddEditFrame = () => {
 	const [selectedSuggestion, setSelectedSuggestion] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const warehouseId = useAdminPanelStore((state) => state.warehouseId);
-
+	useEffect(() => {
+		if (warehouseId === null) {
+			//setSelectedPosition(null);
+			setActiveTab('warehousesList');
+		}
+	}, []);
 	const isSaveDisabled =
 		AddressLatitude === null ||
 		AddressLongitude === null;
@@ -181,20 +187,21 @@ const WarehouseAddEditFrame = () => {
 	const handleSave = async () => {
 		try {
 			let newStorageDTOCollection: any[] | null = null;
-
+			// Перевірка на існуючу адресу
+			let checkExistedAddressDTO = await getAddresses({
+				SearchParameter: "Query",
+				HouseNumber: AddressHouseNumber,
+				City: AddressCity,
+				State: AddressState,
+				Street: AddressStreet,
+				PostalCode: AddressPostalCode,
+				Latitude: AddressLatitude,
+				Longitude: AddressLongitude,
+			});
 			// Перевірка, чи це новий склад
 			if (warehouseId === 0) {
-				// Перевірка на існуючу адресу
-				let checkExistedAddressDTO = await getAddresses({
-					SearchParameter: "Query",
-					HouseNumber: AddressHouseNumber,
-					City: AddressCity,
-					State: AddressState,
-					Street: AddressStreet,
-					PostalCode: AddressPostalCode,
-					Latitude: AddressLatitude,
-					Longitude: AddressLongitude,
-				});
+
+
 
 				// Якщо адреса існує
 				if (checkExistedAddressDTO.length > 0) {
@@ -203,7 +210,7 @@ const WarehouseAddEditFrame = () => {
 						newStorageDTOCollection = await postStorage({ AddressId: checkExistedAddressDTO[0].id });
 					} else {
 						// Адреса вже має асоційований склад
-						alert("Склад з такою адресою вже існує.");
+						toast.error("Склад з такою адресою вже існує!");
 						return; // Виходимо, якщо склад вже існує
 					}
 				} else {
@@ -217,19 +224,28 @@ const WarehouseAddEditFrame = () => {
 						Latitude: AddressLatitude,
 						Longitude: AddressLongitude,
 					});
-
+					console.log("newAddressDTO", newAddressDTO);
 					// Тепер створюємо склад для нової адреси
-					newStorageDTOCollection = await postStorage({ AddressId: newAddressDTO[0].Id });
+					newStorageDTOCollection = await postStorage({ AddressId: newAddressDTO.id });
 				}
 
 				// Перевірка, чи склад успішно створений
-				if (newStorageDTOCollection && Array.isArray(newStorageDTOCollection) && newStorageDTOCollection.length > 0) {
-					alert("Склад успішно створено!");
+				if (newStorageDTOCollection) {
+					toast.success("Склад успішно створено!");
 					setActiveTab("warehousesList");
 				}
 			} else if (warehouseId !== null && warehouseId !== undefined) {
 				// Перезаписуємо адресу і оновлюємо склад
-
+				if (checkExistedAddressDTO.length > 0) {
+					if (!checkExistedAddressDTO[0].storageId) {
+						// Створити новий склад для існуючої адреси
+						newStorageDTOCollection = await postStorage({ AddressId: checkExistedAddressDTO[0].id });
+					} else {
+						// Адреса вже має асоційований склад
+						toast.error("Склад з такою адресою вже існує!");
+						return; // Виходимо, якщо склад вже існує
+					}
+				}
 				let oldAddress = await getAddresses({ SearchParameter: "Query", StorageId: warehouseId });
 				console.log("oldAddress", oldAddress);
 				let newAddressDTO = await putAddress({
@@ -252,7 +268,7 @@ const WarehouseAddEditFrame = () => {
 					ShopId: oldAddress[0].shopId // Якщо адреса існує, беремо shopId, якщо ні - null
 					// Додайте інші поля, які потрібно оновити
 				});
-				alert("Склад успішно оновлено!");
+				toast.success("Склад успішно оновлено!");
 				setActiveTab("warehousesList");
 			}
 		} catch (error) {
@@ -260,13 +276,19 @@ const WarehouseAddEditFrame = () => {
 		}
 	};
 
-
-
-
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+			{warehouseId !== null && warehouseId > 0 ? (
+				<Typography variant="h5" color="textPrimary">
+					Редагування складу
+				</Typography>
+			) :
+				(<Typography variant="h5" color="textPrimary">
+					Cтворення нового складу
+				</Typography>
+				)}
 			{oldAddress && (
-				<Typography variant="body1" color="textSecondary">
+				<Typography variant="h6" color="textSecondary">
 					Стара адреса: {oldAddress}
 				</Typography>
 			)}
@@ -305,7 +327,8 @@ const WarehouseAddEditFrame = () => {
 					</RadioGroup>
 				</Box>
 				<Box sx={{ flex: 1 }}>
-					<MapContainer
+					{warehouseId && <MapContainer
+						key={selectedPosition ? selectedPosition.toString() : 'default'}
 						center={selectedPosition || [50.4501, 30.5234]}
 						zoom={selectedPosition ? 18 : 12}
 						maxZoom={18}
@@ -318,7 +341,7 @@ const WarehouseAddEditFrame = () => {
 						<CustomMapEvents onMapClick={handleMapClick} />
 						{selectedPosition && <MapFocus position={selectedPosition} zoom={18} />}
 						{selectedPosition && <Marker position={selectedPosition} icon={customIcon} />}
-					</MapContainer>
+					</MapContainer>}
 				</Box>
 			</Box>
 			<Button disabled={isSaveDisabled} variant="contained" color="success" onClick={handleSave}>

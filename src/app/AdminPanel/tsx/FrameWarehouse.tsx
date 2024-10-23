@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { getStorages } from '@/pages/api/StorageApi';
+import { deleteStorage, getStorages } from '@/pages/api/StorageApi';
 import SearchField from './SearchField';
 import { useQueryState } from 'nuqs';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,25 +9,67 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useDebounce } from 'use-debounce';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import '../css/WarehouseFrame.css';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { toast } from 'react-toastify';
 
 export default function WarehouseFrame() {
-	const [data, setData] = useState([]);
+	const [data, setData] = useState<any | null>([]);
+	const [filteredData, setFilteredData] = useState<any | null>([]);
 	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
-	const [filteredData, setFilteredData] = useState([]);
+
 	const { warehouseId, setWarehouseId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
-		city: false,
+		id: false,
 		state: false,
 		postalCode: false,
 	});
 	const apiRef = useGridApiRef();
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
-		{ field: 'shopName', headerName: 'Назва магазину', flex: 1, minWidth: 200 },
+		{
+			field: 'shopName',
+			headerName: 'Назва магазину',
+			flex: 1,
+			minWidth: 200,
+			renderCell: (params) => {
+				// Перевіряємо, чи значення shopName пусте або null
+				if (!params.value) {
+					return (
+						<Typography
+							variant="body2"
+							sx={{
+								fontStyle: 'italic',
+								color: 'blue',
+								display: "flex",
+								alignItems: "center", // Центруємо по вертикалі
+								height: "100%", // Задаємо висоту для центрування
+							}}
+						>
+							=&gt; (Загальний склад)
+						</Typography>
+					);
+				}
+				// Якщо значення не пусте, відображаємо його
+				return (
+					<Typography
+						variant="body2"
+						sx={{
+							display: "flex",
+							alignItems: "center", // Центруємо по вертикалі
+							height: "100%", // Задаємо висоту для центрування
+						}}
+					>
+						{params.value}
+					</Typography>
+				);
+			},
+		},
 		{ field: 'state', headerName: 'Область', flex: 1, minWidth: 150 },
 		{ field: 'city', headerName: 'Місто', flex: 0.8, minWidth: 150 },
 		{ field: 'street', headerName: 'Вулиця', flex: 1, minWidth: 150 },
@@ -50,7 +92,7 @@ export default function WarehouseFrame() {
 					<Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
 						<EditIcon />
 					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row.id)}>
+					<Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
 						<DeleteIcon />
 					</Button>
 				</Box>
@@ -71,8 +113,22 @@ export default function WarehouseFrame() {
 		setActiveTab("addEditWarehouse"); // Змінюємо активну вкладку
 	};
 
-	const handleDelete = (id) => {
-		console.log('Видалити рядок з ID:', id);
+	const handleDelete = (row) => {
+		// Встановлюємо рядок для видалення та відкриваємо діалог
+		console.log("row", row);
+		setSelectedRow(row);
+		setIsDialogOpen(true);
+	};
+
+	const handleConfirmDelete = async () => {
+		if (selectedRow) {
+			console.log("selectedRow", selectedRow);
+			await deleteStorage(selectedRow.id);
+			setIsDialogOpen(false);
+			// Оновлюємо список складів після видалення
+			setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
+			toast.info('Склад успішно видалено!');
+		}
 	};
 
 	useEffect(() => {
@@ -163,6 +219,14 @@ export default function WarehouseFrame() {
 									page: 0,
 								},
 							},
+							sorting: {
+								sortModel: [
+									{
+										field: 'shopName',
+										sort: 'asc', // 'asc' для зростання або 'desc' для спадання
+									},
+								],
+							},
 						}}
 						pageSizeOptions={[5, 10, 20, 50, 100]}
 						disableRowSelectionOnClick
@@ -213,6 +277,16 @@ export default function WarehouseFrame() {
 					/>
 				)}
 			</Box>
+			<ConfirmationDialog
+				title="Видалити склад?"
+				contentText={
+					selectedRow
+						? `Ви справді хочете видалити цей склад? : ${selectedRow.state}, ${selectedRow.city}, ${selectedRow.street}, ${selectedRow.houseNumber}, ${selectedRow.postalCode}`
+						: ''
+				}
+				onConfirm={handleConfirmDelete}
+				open={isDialogOpen}
+			/>
 		</Box>
 	);
 
