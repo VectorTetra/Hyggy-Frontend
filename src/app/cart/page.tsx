@@ -7,7 +7,8 @@ import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
   removeFromCart
-} from "../ware/types/Cart";
+} from "./types/Cart";
+import Link from 'next/link';
 
 interface CartItem {
   productDescription: string;
@@ -83,8 +84,10 @@ const CartPage = () => {
         <center><h1>Огляд кошика</h1></center>
         {cartItems.length === 0 ? (
           <center>
-          <p>Кошик пустий</p>
-          <button className={styles.continueButton}>Продовжити покупки</button>
+            <p>Кошик пустий</p>
+            <Link href="/">
+              <button className={styles.continueButton}>Продовжити покупки</button>
+            </Link>
           </center>
         ) : (
           <div className={styles.cartItems}>
@@ -103,8 +106,8 @@ const CartPage = () => {
                   <p className={styles.product}>{item.productName}</p>
                 </div>
                 <div className={styles.quantityContainer}>
-                  <button 
-                    className={styles.quantityButton} 
+                  <button
+                    className={styles.quantityButton}
                     onClick={() => decreaseQuantity(index)}
                   >
                     -
@@ -115,8 +118,8 @@ const CartPage = () => {
                     onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
                     className={styles.quantityInput}
                   />
-                  <button 
-                    className={styles.quantityButton} 
+                  <button
+                    className={styles.quantityButton}
                     onClick={() => increaseQuantity(index)}
                   >
                     +
@@ -139,10 +142,14 @@ const CartPage = () => {
                 <p>Доставка протягом 10-12 робочих днів</p>
               )}
             </div>
-            <br/>
+            <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
-            <button className={styles.checkoutButton}>Продовжити</button>
-            <button className={styles.continueButton}>Продовжити покупки</button>
+            <Link href="/cart/address">
+              <button className={styles.checkoutButton}>Продовжити</button>
+            </Link>
+            <Link href="/">
+              <button className={styles.continueButton}>Продовжити покупки</button>
+            </Link>
           </div>
         )}
       </div>
