@@ -116,6 +116,13 @@
     height: auto;
 }
 
+.brand-item a {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
 .blog-container {
     display: flex;
     flex-wrap: wrap;

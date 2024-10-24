@@ -41,7 +41,7 @@
 }
 
 #mainPageHeaderLogo {
-	width: clamp(50px, 10vw, 70px);
+	width: clamp(100px, 15vw, 100px);
 	aspect-ratio: 1 / 1;
 	padding: 10px;
 	/* margin-left: 100px; */

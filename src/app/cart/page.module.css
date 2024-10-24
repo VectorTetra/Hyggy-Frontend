@@ -52,7 +52,7 @@
     border-radius: 10px;
     cursor: pointer;
     font-size: 24px;
-    margin-right: 50px;
+
   }
 
   .continueButton {
@@ -64,6 +64,7 @@
     cursor: pointer;
     font-size: 24px;
     color: black;
+    margin-right: 50px;
   }
 
   .productDescription {
@@ -183,6 +184,15 @@
   @media (max-width: 768px) {
     .cartPage h1 {
       font-size: 20px;
+
+  .cartInfo p {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .cartPage h1 {
+      font-size: 28px;
     }
 
     .cartItemImage {

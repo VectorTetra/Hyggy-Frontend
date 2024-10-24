@@ -36,6 +36,7 @@ export default function Admin() {
 		authenticated ? (
 			<div>
 				<Sidebar />
+
 			</div>
 		) : null
 	);

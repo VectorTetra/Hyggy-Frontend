@@ -71,7 +71,7 @@
 }
 
 .categorycontainer {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     margin-left: 5vw;
     margin-right: 5vw;
 }
@@ -84,6 +84,7 @@
 .h2 {
     display: flex;
     justify-content: center;
+    margin: 10px 0 10px 0;
 }
 
 .largeimage {
@@ -134,4 +135,145 @@
     text-align: center;
     padding: 5px;
     box-sizing: border-box;
+}
+
+
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+
+    .captionH2 {
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    .captionText {
+        margin: 15px 15px 10px 15px;
+    }
+
+    .menucontainer {
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .menuitem {
+        font-size: 14px;
+    }
+
+    .imagescontainer {
+        display: grid;
+        gap: 20px;
+        margin: 5px 10px 5px 10px;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+
+    .textmenu {
+        font-size: 14px;
+    }
+
+    .imagecaption {
+        font-size: 14px;
+        line-height: 1.2;
+        padding: 0;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .captionH2 {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .captionText {
+        margin: 15px 10px 10px 10px;
+        font-size: 14px;
+    }
+
+    .menucontainer {
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .menuitem {
+        font-size: 12px;
+    }
+
+    .imagescontainer {
+        display: grid;
+        gap: 8px;
+        margin: 0px 10px 0px 10px;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 80px));
+    }
+
+    .textmenu {
+        font-size: 12px;
+    }
+
+    .h2 {
+        font-size: 16px;
+
+    }
+
+    .categorycontent {
+        flex-direction: column;
+    }
+
+    .imagescontainer {
+        gap: 10px;
+        margin-top: 0 10px 0 10px;
+    }
+
+    .largeimage {
+        flex: 1;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .largeimage .imagewrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .largeimage img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .smallimages {
+        gap: 5px;
+    }
+
+    .smallimage .imagewrapper {
+        position: static;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+
+    }
+
+    .imagecaption {
+        position: static;
+        background: none;
+        padding: 0;
+        margin: 0;
+        color: black;
+        font-size: 14px;
+
+    }
+
+    .smallimage img {
+        width: 100%;
+        height: 100px;
+    }
+
+    .imagewrapper a {
+        text-decoration: none;
+    }
+
 }

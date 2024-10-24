@@ -1,15 +1,18 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
+import useMainPageMenuStore from "@/store/mainPageMenu";
 
-function MainPageHeaderMenu(props) {
 
+export default function MainPageHeaderMenu({ photoUrl, photoWidth, photoHeight }) {
+  const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
   const handleMenuClick = () => {
-    console.log('Меню нажато');
-    onMenuClick(); // Вызовите переданную функцию
+    if (!isMainPageMenuOpened) {
+      setIsMainPageMenuOpened(true); // Вызываем переданную функцию
+    }
   };
 
-  const { onMenuClick, photoUrl, photoWidth, photoHeight } = props;
   return (
     <div onClick={handleMenuClick} className={styles.mainPageHeaderItem}>
       <Image
@@ -23,8 +26,8 @@ function MainPageHeaderMenu(props) {
         height={photoHeight}
         priority
       />
+
       <div className={styles.disappearOnAdapt} style={{ cursor: "pointer" }}>Меню</div>
     </div>
   );
 }
-export default MainPageHeaderMenu;

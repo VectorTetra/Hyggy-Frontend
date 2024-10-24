@@ -145,10 +145,10 @@ const CartPage = () => {
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
             <Link href="/cart/address">
-              <button className={styles.checkoutButton}>Продовжити</button>
+              <button className={styles.checkoutButton}>Продовжити покупки</button>
             </Link>
             <Link href="/">
-              <button className={styles.continueButton}>Продовжити покупки</button>
+              <button className={styles.continueButton}>Завершити замовлення</button>
             </Link>
           </div>
         )}
