@@ -13,7 +13,7 @@ export default function Content() {
 			sx={{
 				flexGrow: 1,
 				p: 3,
-				overflowX: "auto",
+				//overflowX: "auto",
 				//width: { sm: `calc(100% - ${drawerWidth}px)` },
 			}}
 		>

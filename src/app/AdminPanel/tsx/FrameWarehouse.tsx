@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, gridColumnsTotalWidthSelector } from '@mui/x-data-grid';
 import { deleteStorage, getStorages } from '@/pages/api/StorageApi';
 import SearchField from './SearchField';
 import { useQueryState } from 'nuqs';
@@ -31,38 +31,63 @@ export default function WarehouseFrame() {
 	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
 	const columns = [
-		{ field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
+		{
+			field: 'id',
+			headerName: 'ID',
+			minWidth: 50,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
 		{
 			field: 'shopName',
 			headerName: 'Назва магазину',
-			flex: 1,
-			minWidth: 200,
+			flex: 2,
+			minWidth: 300,
 			renderCell: (params) => {
-				// Перевіряємо, чи значення shopName пусте або null
-				if (!params.value) {
+				if (params.value === "-> (Загальний склад)") {
 					return (
 						<Typography
 							variant="body2"
+							title={params.value}
 							sx={{
 								fontStyle: 'italic',
 								color: 'blue',
 								display: "flex",
-								alignItems: "center", // Центруємо по вертикалі
-								height: "100%", // Задаємо висоту для центрування
+								alignItems: "center",
+								height: "100%",
 							}}
 						>
-							=&gt; (Загальний склад)
+							{params.value}
 						</Typography>
 					);
 				}
-				// Якщо значення не пусте, відображаємо його
 				return (
 					<Typography
 						variant="body2"
+						title={params.value}
 						sx={{
 							display: "flex",
-							alignItems: "center", // Центруємо по вертикалі
-							height: "100%", // Задаємо висоту для центрування
+							alignItems: "center",
+							height: "100%",
+							whiteSpace: 'nowrap',
+							overflow: 'hidden',
+							textOverflow: 'ellipsis',
+							maxWidth: '100%',
 						}}
 					>
 						{params.value}
@@ -70,15 +95,125 @@ export default function WarehouseFrame() {
 				);
 			},
 		},
-		{ field: 'state', headerName: 'Область', flex: 1, minWidth: 150 },
-		{ field: 'city', headerName: 'Місто', flex: 0.8, minWidth: 150 },
-		{ field: 'street', headerName: 'Вулиця', flex: 1, minWidth: 150 },
-		{ field: 'houseNumber', headerName: '№ буд.', flex: 0.3, minWidth: 100 },
-		{ field: 'postalCode', headerName: 'Поштовий індекс', flex: 1, minWidth: 150 },
+		{
+			field: 'state',
+			headerName: 'Область',
+			flex: 1,
+			minWidth: 150,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
+		{
+			field: 'city',
+			headerName: 'Місто',
+			flex: 0.8,
+			minWidth: 150,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
+		{
+			field: 'street',
+			headerName: 'Вулиця',
+			flex: 1,
+			minWidth: 250,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
+		{
+			field: 'houseNumber',
+			headerName: '№ буд.',
+			flex: 0.3,
+			minWidth: 100,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
+		{
+			field: 'postalCode',
+			headerName: 'Поштовий індекс',
+			flex: 1,
+			minWidth: 150,
+			renderCell: (params) => (
+				<Typography
+					variant="body2"
+					title={params.value}
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+						maxWidth: '100%',
+						height: "100%",
+					}}
+				>
+					{params.value}
+				</Typography>
+			),
+		},
 		{
 			field: 'storedWaresSum',
 			headerName: 'Заг. сума товарів',
-			flex: 0.5,
+			flex: 1.5,
 			cellClassName: 'text-right',
 			renderCell: (params) => formatCurrency(params.value),
 		},
@@ -99,6 +234,7 @@ export default function WarehouseFrame() {
 			),
 		},
 	];
+
 
 	const formatCurrency = (value) => {
 		if (value === null || value === undefined) return '';
@@ -153,27 +289,27 @@ export default function WarehouseFrame() {
 		};
 
 		fetchStorages();
-	}, [activeTab]);
+	}, []);
 
 
 	useEffect(() => {
-		const fetchFilteredData = async () => {
+		const fetchFilteredData = () => {
 			setLoading(true);
 			try {
 				if (debouncedSearchTerm) {
-					const filteredStorages = await getStorages({
-						SearchParameter: "Query", // Параметр пошуку
-						QueryAny: debouncedSearchTerm.length > 0 ? debouncedSearchTerm : null,
-						PageNumber: 1,
-						PageSize: 1000 // Завантажити 1000 записів для фільтрації
-					});
+					// Фільтруємо дані локально по будь-якому полю
+					const filteredStorages = data.filter(item =>
+						Object.values(item).some(value =>
+							// Перевіряємо, чи є значення строкою та чи містить воно термін пошуку
+							typeof value === 'string' && value.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+						)
+					);
 					setFilteredData(filteredStorages); // Оновлюємо відфільтровані дані
-				}
-				else {
+				} else {
 					setFilteredData(data); // Якщо немає терміна пошуку, використовуємо всі дані
 				}
 			} catch (error) {
-				console.error('Error fetching filtered data:', error);
+				console.error('Error filtering data:', error);
 			} finally {
 				if (data.length > 0)
 					setLoading(false);
@@ -183,24 +319,43 @@ export default function WarehouseFrame() {
 		fetchFilteredData();
 	}, [debouncedSearchTerm, data]);
 
+
 	return (
-		<Box sx={{ overflowX: "auto" }}>
-			<Typography variant="h5" sx={{ marginBottom: 2 }}>
-				Склади : {loading ? <CircularProgress size={24} /> : filteredData.length}
-			</Typography>
-			<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-				<SearchField
-					searchTerm={searchTerm}
-					onSearchChange={(event) => setSearchTerm(event.target.value)}
-				/>
-				<Button variant="contained" color="primary" onClick={() => {
-					setWarehouseId(0);
-					setActiveTab("addEditWarehouse");
+		<Box>
+			<Box sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'space-between',
+				alignItems: 'normal',
+				marginBottom: '1rem',
+				position: 'sticky', // Фіксована позиція
+				top: 0, // Залишається зверху
+				left: 0,
+				backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
+				zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
+				width: "100%",
+				padding: '0' // Додаємо відступи для панелі
+			}}>
+				<Typography variant="h5" sx={{ marginBottom: 2 }}>
+					Склади : {loading ? <CircularProgress size={24} /> : filteredData.length}
+				</Typography>
+				<Box sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
 				}}>
-					Додати
-				</Button>
+					<SearchField
+						searchTerm={searchTerm}
+						onSearchChange={(event) => setSearchTerm(event.target.value)}
+					/>
+					<Button variant="contained" sx={{ backgroundColor: "#248922" }} onClick={() => {
+						setWarehouseId(0);
+						setActiveTab("addEditWarehouse");
+					}}>
+						Додати
+					</Button>
+				</Box>
 			</Box>
-			<Box className="dataGridContainer"> {/* Додаємо новий клас */}
+			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh">
 				{filteredData.length === 0 && !loading ? (
 					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 						Нічого не знайдено
@@ -212,10 +367,11 @@ export default function WarehouseFrame() {
 						columns={columns}
 						apiRef={apiRef}
 						loading={loading}
+
 						initialState={{
 							pagination: {
 								paginationModel: {
-									pageSize: 50,
+									pageSize: 100,
 									page: 0,
 								},
 							},
@@ -228,12 +384,27 @@ export default function WarehouseFrame() {
 								],
 							},
 						}}
-						pageSizeOptions={[5, 10, 20, 50, 100]}
+						pageSizeOptions={[5, 10, 25, 50, 100]}
 						disableRowSelectionOnClick
 						slots={{ toolbar: GridToolbar }}
 						columnVisibilityModel={columnVisibilityModel}
 						onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
 						localeText={{
+							MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
+							columnsManagementReset: "Скинути",
+							columnsManagementSearchTitle: "Пошук",
+							toolbarExport: 'Експорт',
+							toolbarExportLabel: 'Експорт',
+							toolbarExportCSV: 'Завантажити як CSV',
+							toolbarExportPrint: 'Друк',
+							columnsManagementShowHideAllText: "Показати / Сховати всі",
+							filterPanelColumns: 'Стовпці', // Переклад для "Columns"
+							filterPanelOperator: 'Оператор', // Переклад для "Operator"
+							// filterPanelValue: 'Значення', 
+							// filterPanelFilterValue: 'Значення фільтра',
+							toolbarExportExcel: "Експорт",
+							filterPanelInputLabel: "Значення",
+							filterPanelInputPlaceholder: 'Значення фільтра',
 							filterOperatorContains: 'Містить',
 							filterOperatorDoesNotContain: 'Не містить',
 							filterOperatorEquals: 'Дорівнює',
@@ -273,6 +444,12 @@ export default function WarehouseFrame() {
 						}}
 						sx={{
 							opacity: loading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+							flexGrow: 1, // Займає доступний простір у контейнері
+							minWidth: 800, // Мінімальна ширина DataGrid
+							"& .MuiDataGrid-scrollbar--horizontal": {
+								position: 'fixed',
+								bottom: "5px"
+							}
 						}}
 					/>
 				)}
@@ -281,13 +458,21 @@ export default function WarehouseFrame() {
 				title="Видалити склад?"
 				contentText={
 					selectedRow
-						? `Ви справді хочете видалити цей склад? : ${selectedRow.state}, ${selectedRow.city}, ${selectedRow.street}, ${selectedRow.houseNumber}, ${selectedRow.postalCode}`
+						? `Ви справді хочете видалити цей склад? : ${selectedRow.state && `${selectedRow.state},`} 
+                    ${selectedRow.city && `${selectedRow.city},`} 
+                    ${selectedRow.street && `${selectedRow.street},`}
+                    ${selectedRow.houseNumber && `${selectedRow.houseNumber},`}
+                    ${selectedRow.postalCode && `${selectedRow.postalCode}`}`
 						: ''
 				}
 				onConfirm={handleConfirmDelete}
+				onCancel={() => setIsDialogOpen(false)}
+				confirmButtonColor='#be0f0f'
+				cancelButtonColor='#248922'
 				open={isDialogOpen}
 			/>
 		</Box>
+
 	);
 
 }

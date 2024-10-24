@@ -4,6 +4,11 @@
 }
 
 /* .MuiDataGrid-scrollbar--horizontal {
+	position: 'fixed';
+	bottom: "5px";
+} */
+
+/* .MuiDataGrid-scrollbar--horizontal {
 	position: fixed;
 } */
 

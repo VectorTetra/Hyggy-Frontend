@@ -327,7 +327,7 @@ const WarehouseAddEditFrame = () => {
 					</RadioGroup>
 				</Box>
 				<Box sx={{ flex: 1 }}>
-					{warehouseId && <MapContainer
+					{warehouseId !== null && <MapContainer
 						key={selectedPosition ? selectedPosition.toString() : 'default'}
 						center={selectedPosition || [50.4501, 30.5234]}
 						zoom={selectedPosition ? 18 : 12}

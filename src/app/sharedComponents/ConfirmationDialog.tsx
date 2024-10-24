@@ -5,6 +5,8 @@ export default function ConfirmationDialog({
 	open,
 	title,
 	contentText,
+	confirmButtonColor = "#248922",
+	cancelButtonColor = "#be0f0f",
 	onConfirm,
 	onCancel = () => { }, // За замовчуванням виконується порожня функція
 	confirmButtonText = "Підтвердити",
@@ -24,10 +26,10 @@ export default function ConfirmationDialog({
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onCancel} color="primary">
+				<Button onClick={onCancel} variant="contained" sx={{ backgroundColor: cancelButtonColor }} >
 					{cancelButtonText}
 				</Button>
-				<Button onClick={onConfirm} color="secondary" autoFocus>
+				<Button onClick={onConfirm} variant="contained" sx={{ backgroundColor: confirmButtonColor }} autoFocus>
 					{confirmButtonText}
 				</Button>
 			</DialogActions>
