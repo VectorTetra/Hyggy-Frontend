@@ -16,7 +16,7 @@ import {
   getCartFromLocalStorage,
   addToCart,
   removeFromCart
-} from '../types/Cart';
+} from '../../cart/types/Cart';
 
 interface CartItem {
   productDescription: string;
@@ -29,7 +29,8 @@ interface CartItem {
 }
 
 export default function WarePage() {
-  const { id } = useParams();
+  const params = useParams<{ id: string }>();
+  const id = params?.id;
   const product = jsonData.find((item) => item.id === Number(id));
 
   if (!product) {
@@ -119,49 +120,49 @@ export default function WarePage() {
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.main}>
-          {isMobile && (
-            <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
-              <div className="carousel-inner">
-                <div className="carousel-item active">
-                  <Image
-                    src={product.mainImage1}
-                    alt={product.productName}
-                    layout="responsive"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <div className="carousel-item">
-                  <Image
-                    src={product.mainImage2}
-                    alt={product.productName}
-                    layout="responsive"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                {product.thumbnails.map((thumb, index) => (
-                  <div className="carousel-item" key={index}>
-                    <Image
-                      src={thumb}
-                      alt={`Thumbnail ${index + 1}`}
-                      layout="responsive"
-                      width={100}
-                      height={100}
-                    />
-                  </div>
-                ))}
+        {isMobile && (
+          <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
+            <div className="carousel-inner">
+              <div className="carousel-item active">
+                <Image
+                  src={product.mainImage1}
+                  alt={product.productName}
+                  layout="responsive"
+                  width={100}
+                  height={100}
+                />
               </div>
-              <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
-              </button>
-              <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Next</span>
-              </button>
+              <div className="carousel-item">
+                <Image
+                  src={product.mainImage2}
+                  alt={product.productName}
+                  layout="responsive"
+                  width={100}
+                  height={100}
+                />
+              </div>
+              {product.thumbnails.map((thumb, index) => (
+                <div className="carousel-item" key={index}>
+                  <Image
+                    src={thumb}
+                    alt={`Thumbnail ${index + 1}`}
+                    layout="responsive"
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              ))}
             </div>
-          )}
+            <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Next</span>
+            </button>
+          </div>
+        )}
 
         <div className={styles.productContainer}>
           <div className={styles.imageGallery}>
@@ -173,12 +174,12 @@ export default function WarePage() {
                 <Image src={product.mainImage2} alt={product.productName} layout="fill" />
               </div>
             </div>
-              <div className={styles.thumbnails}>
-                {product.thumbnails.map((thumb, index) => (
-                  <div key={index} className={styles.thumbnail}>
-                    <Image src={thumb} alt={`Thumbnail ${index + 1}`} layout="fill" objectFit="cover" />
-                  </div>
-                ))}
+            <div className={styles.thumbnails}>
+              {product.thumbnails.map((thumb, index) => (
+                <div key={index} className={styles.thumbnail}>
+                  <Image src={thumb} alt={`Thumbnail ${index + 1}`} layout="fill" objectFit="cover" />
+                </div>
+              ))}
             </div>
           </div>
           <div className={styles.productInfo}>
@@ -195,31 +196,29 @@ export default function WarePage() {
               )}
             </div>
             <p className={styles.priceDescription}>{product.priceDescription}</p>
-            <hr className={styles.customHr}/>
+            <hr className={styles.customHr} />
             <h3 className={styles.deliveryTitle}>{product.deliveryTitle}</h3>
             <div className={styles.deliveryOptionsContainer}>
               <div
-                className={`${styles.deliveryOption} ${
-                  selectedOption === "delivery" ? styles.activeOption : ""
-                }`}
+                className={`${styles.deliveryOption} ${selectedOption === "delivery" ? styles.activeOption : ""
+                  }`}
                 onClick={() => setSelectedOption("delivery")}>
                 <div className={styles.optionTitle}>Доставка</div>
-                    <span className={styles.optionDot}>{product.deliveryOption.includes("Не в наявності") ? <span><svg width="12" height="12">
-                      <circle cx="6" cy="6" r="6" fill="red" />
-                    </svg></span> : <span><svg width="12" height="12">
-                      <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                    </svg></span>}</span>
+                <span className={styles.optionDot}>{product.deliveryOption.includes("Не в наявності") ? <span><svg width="12" height="12">
+                  <circle cx="6" cy="6" r="6" fill="red" />
+                </svg></span> : <span><svg width="12" height="12">
+                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
+                </svg></span>}</span>
                 <span>{product.deliveryOption}</span>
               </div>
-              <div className={`${styles.storeCount} ${
-                  selectedOption === "store" ? styles.activeOption : ""
+              <div className={`${styles.storeCount} ${selectedOption === "store" ? styles.activeOption : ""
                 }`} onClick={() => setSelectedOption("store")}>
                 <div className={styles.storeTitle}>В магазинах</div>
                 <span className={styles.optionDot}>{product.storeCount.includes("0") ? <span><svg width="12" height="12">
-                      <circle cx="6" cy="6" r="6" fill="red" />
-                    </svg></span> : <span><svg width="12" height="12">
-                      <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                    </svg></span>}</span>
+                  <circle cx="6" cy="6" r="6" fill="red" />
+                </svg></span> : <span><svg width="12" height="12">
+                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
+                </svg></span>}</span>
                 <span>В наявності в {product.storeCount} магазинах</span>
               </div>
             </div>
@@ -237,13 +236,13 @@ export default function WarePage() {
               <button className={styles.addToCartButton} onClick={handleAddToCart}>Додати до кошика</button>
             </span>
             {showPopup && (
-        <CartPopup
-        cartItems={cartItems}
-        selectedOption={selectedOption}
-        onClose={handleClosePopup}
-        onRemoveItem={handleRemoveItem}
-      />
-      )}
+              <CartPopup
+                cartItems={cartItems}
+                selectedOption={selectedOption}
+                onClose={handleClosePopup}
+                onRemoveItem={handleRemoveItem}
+              />
+            )}
           </div>
         </div>
         <div className={styles.tabsHeader}>
@@ -253,42 +252,42 @@ export default function WarePage() {
             <button className={styles.tabButton} onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}>Відгуки</button>
             <button className={styles.tabButton} onClick={() => document.getElementById('similarProducts')?.scrollIntoView({ behavior: 'smooth' })}>Схожі товари</button>
           </div>
-        </div>   
+        </div>
         <h2 id="description" className={styles.tabTitle}>Опис</h2>
-          {product.descriptionText ? (
-            <DescriptionWare product={product} />
-          ) : (
-            <p>Опис недоступний.</p>
-          )}
-          <h3>Пов'язані статті в блозі</h3>
-          {product.relatedArticles && product.relatedArticles.length > 0 ? ( 
-            <ArticlesWare product={product} />
-          ) : (
-            <p>Немає пов'язаних статей.</p>
-          )}
-          <hr/>
-          <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
-          {product.specifications && product.specifications.length > 0 ? (
-            <center><SpecificationWare product={product} /></center>
-          ) : (
-            <p>Характеристики недоступні.</p>
-          )}
-          <hr/>
-          <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
-          {product.lastReviews && product.lastReviews.length > 0 ? ( 
-            <ReviewWare product={product} />
-          ) : (
-            <p>Немає відгуків.</p>
-          )}
-          <hr/>
-          <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
-          {product.similarProducts && product.similarProducts.length > 0 && product.similarProducts.some(p => Object.keys(p).length > 0) ? (
-            <section className={styles.similarProducts}>
-              <SimilarWare product={product} />
-            </section>
-          ) : (
-            <p>Немає схожих товарів.</p>
-          )}   
+        {product.descriptionText ? (
+          <DescriptionWare product={product} />
+        ) : (
+          <p>Опис недоступний.</p>
+        )}
+        <h3>Пов'язані статті в блозі</h3>
+        {product.relatedArticles && product.relatedArticles.length > 0 ? (
+          <ArticlesWare product={product} />
+        ) : (
+          <p>Немає пов'язаних статей.</p>
+        )}
+        <hr />
+        <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
+        {product.specifications && product.specifications.length > 0 ? (
+          <center><SpecificationWare product={product} /></center>
+        ) : (
+          <p>Характеристики недоступні.</p>
+        )}
+        <hr />
+        <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
+        {product.lastReviews && product.lastReviews.length > 0 ? (
+          <ReviewWare product={product} />
+        ) : (
+          <p>Немає відгуків.</p>
+        )}
+        <hr />
+        <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
+        {product.similarProducts && product.similarProducts.length > 0 && product.similarProducts.some(p => Object.keys(p).length > 0) ? (
+          <section className={styles.similarProducts}>
+            <SimilarWare product={product} />
+          </section>
+        ) : (
+          <p>Немає схожих товарів.</p>
+        )}
       </div>
     </Layout>
   );

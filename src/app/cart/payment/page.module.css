@@ -1,0 +1,120 @@
+.Page {
+  padding: 1rem 6rem;
+}
+
+.Page h1 {
+  font-weight: bold;
+}
+
+.checkoutPage {
+  display: flex;
+  justify-content: center;
+}
+
+.formSection {
+  width: 60%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.formSection h2 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.formSection h2 {
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="password"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.formGroup input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.buttonGroup {
+  margin-top: 20px;
+}
+
+.submitButton {
+  background-color: #00AAAD;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.cancelButton {
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  color: #00AAAD;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.formGroupRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.formGroupRow .formGroup {
+  flex: 1;
+}
+
+.formGroupRow .formGroup:nth-child(2) {
+  flex: 1;
+}
+
+.price {
+  text-align: right;
+  font-weight: bold;
+}
+
+.formInput {
+  background-color: #E0E0E0;
+}
+
+.formInput::placeholder {
+  color: gray;
+}
+
+@media (max-width: 768px) {
+  .checkoutPage {
+    flex-direction: column;
+  }
+}

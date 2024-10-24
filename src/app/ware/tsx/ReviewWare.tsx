@@ -2,6 +2,7 @@ import { useState } from 'react';
 import StarRating from '../../sharedComponents/StarRating';
 import styles from "../css/ReviewWare.module.css";
 import { Product } from '../types/Product';
+import Link from 'next/link';
 
 export default function ReviewWare({ product }: { product: Product }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function ReviewWare({ product }: { product: Product }) {
     setReviewData({ ...reviewData, termsAccepted: e.target.checked });
   };
 
-  const handleRatingChange = (newRating:any) => {
+  const handleRatingChange = (newRating: any) => {
     setReviewData((prev) => ({
       ...prev,
       rating: newRating,
@@ -64,65 +65,65 @@ export default function ReviewWare({ product }: { product: Product }) {
             <p onClick={() => setIsModalOpen(false)} className={styles.close}>×</p>
             <h1>Залишити відгук</h1>
             <form onSubmit={handleSubmit}>
-              <hr/>
+              <hr />
               <div className={styles.formRating}>
                 <StarRating rating={reviewData.rating} onRatingChange={handleRatingChange} />
               </div>
-                <div className={styles.formGroup}>
+              <div className={styles.formGroup}>
+                <input
+                  type="text"
+                  name="topic"
+                  value={reviewData.topic}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Тема*"
+                  className={styles.formInput}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <input
+                  type="text"
+                  name="name"
+                  value={reviewData.name}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Ім’я*"
+                  className={styles.formInput}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <input
+                  type="email"
+                  name="email"
+                  value={reviewData.email}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="E-mail*"
+                  className={styles.formInput}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <textarea
+                  name="review"
+                  value={reviewData.review}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Відгук*"
+                  className={styles.formTextarea}
+                ></textarea>
+              </div>
+              <div className={styles.formGroup}>
+                <label>
                   <input
-                    type="text"
-                    name="topic"
-                    value={reviewData.topic}
-                    onChange={handleInputChange}
+                    type="checkbox"
+                    name="termsAccepted"
+                    checked={reviewData.termsAccepted}
+                    onChange={handleCheckboxChange}
                     required
-                    placeholder="Тема*"
-                    className={styles.formInput}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <input
-                    type="text"
-                    name="name"
-                    value={reviewData.name}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Ім’я*"
-                    className={styles.formInput}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <input
-                    type="email"
-                    name="email"
-                    value={reviewData.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="E-mail*"
-                    className={styles.formInput}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <textarea
-                    name="review"
-                    value={reviewData.review}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="Відгук*"
-                    className={styles.formTextarea}
-                  ></textarea>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="termsAccepted"
-                      checked={reviewData.termsAccepted}
-                      onChange={handleCheckboxChange}
-                      required
-                    />&nbsp;Прийняти Умови та Положення
-                  </label>
-                </div>
-                <center><button type="submit" className={styles.submitButton}> Надіслати відгук</button></center>
+                  />&nbsp;Прийняти  <Link href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та Положення</Link>
+                </label>
+              </div>
+              <center><button type="submit" className={styles.submitButton}> Надіслати відгук</button></center>
             </form>
           </div>
         </div>
