@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 
 interface AdminPanelState {
+
 	activeTab: string | null;
 	setActiveTab: (tab: string) => void;
 	warehouseId: number | null;

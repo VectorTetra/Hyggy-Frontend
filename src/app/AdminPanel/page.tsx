@@ -47,18 +47,11 @@ export default function Admin() {
 						closeOnClick={true}
 						hideProgressBar={false}
 						limit={3}
+
 					/>
 				</div>
 
 			</div>
 		) : null
 	);
-}
-export function MyToastMessage() {
-	return (
-		<div style={{ display: "flex" }}>
-			Новий тост
-			<StoreIcon />
-		</div>
-	)
 }

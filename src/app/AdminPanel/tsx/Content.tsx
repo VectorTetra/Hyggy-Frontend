@@ -3,6 +3,10 @@ import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, Li
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
+
+import AllShops from './AllShops';
+import NewShop from './NewShop';
+
 const drawerWidth = 240;
 
 export default function Content() {
@@ -25,7 +29,8 @@ export default function Content() {
 				{activeTab === 'supplies' && <div>Поставки</div>}
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
-				{activeTab === 'stores' && <div>Магазини</div>}
+				{activeTab === 'stores' && <AllShops />}
+ 				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <div>Клієнти</div>}
 				{activeTab === 'orders' && <div>Замовлення</div>}
