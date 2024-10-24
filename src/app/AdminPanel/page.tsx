@@ -47,9 +47,9 @@ export default function Admin() {
 						closeOnClick={true}
 						hideProgressBar={false}
 						limit={3}
-
 					/>
 				</div>
+
 			</div>
 		) : null
 	);

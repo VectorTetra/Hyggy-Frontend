@@ -7,7 +7,8 @@ import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
   removeFromCart
-} from "../ware/types/Cart";
+} from "./types/Cart";
+import Link from 'next/link';
 
 interface CartItem {
   productDescription: string;
@@ -84,7 +85,9 @@ const CartPage = () => {
         {cartItems.length === 0 ? (
           <center>
             <p>Кошик пустий</p>
-            <button className={styles.continueButton}>Продовжити покупки</button>
+            <Link href="/">
+              <button className={styles.continueButton}>Продовжити покупки</button>
+            </Link>
           </center>
         ) : (
           <div className={styles.cartItems}>
@@ -141,8 +144,12 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
-            <button className={styles.continueButton}>Продовжити покупки</button>
-            <button className={styles.checkoutButton}>Завершити замовлення</button>
+            <Link href="/cart/address">
+              <button className={styles.checkoutButton}>Продовжити покупки</button>
+            </Link>
+            <Link href="/">
+              <button className={styles.continueButton}>Завершити замовлення</button>
+            </Link>
           </div>
         )}
       </div>

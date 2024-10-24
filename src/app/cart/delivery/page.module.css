@@ -1,0 +1,29 @@
+.Page {
+    padding: 1rem 6rem;
+}
+
+.Page h1 {
+    font-weight: bold;
+}
+
+.submitButton {
+    background-color: #00AAAD;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancelButton {
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    color: #00AAAD;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+}

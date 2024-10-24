@@ -41,7 +41,7 @@
 }
 
 #mainPageHeaderLogo {
-	width: clamp(50px, 10vw, 70px);
+	width: clamp(100px, 15vw, 100px);
 	aspect-ratio: 1 / 1;
 	padding: 10px;
 	/* margin-left: 100px; */
@@ -150,6 +150,21 @@
 
 .menuText:hover {
 	color: red;
+}
+
+.cartQuantityBadge {
+	position: absolute;
+	top: -5px;
+	right: -8px;
+	background-color: #00AAAD;
+	color: white;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
 }
 
 @media screen and (max-width: 1000px) and (min-width: 500px) {
