@@ -1,6 +1,8 @@
-"use client";
 import { useState } from 'react';
-import { Box, Collapse, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
+import {
+	Box, Collapse, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton,
+	ListItemIcon, ListItemText, Toolbar, Button
+} from '@mui/material';
 import Image from 'next/image';
 import CategoryIcon from '@mui/icons-material/Category';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
@@ -11,15 +13,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
+
+import ArticleIcon from '@mui/icons-material/Article';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
-import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
+//import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import Blog from './Blog';
-
 const drawerWidth = 240;
-
-interface Props {
-	window?: () => Window;
-}
 
 const MenuItem = ({
 	icon,
@@ -37,7 +38,7 @@ const MenuItem = ({
 	children?: React.ReactNode;
 }) => {
 	// Використовуємо Zustand для отримання активної вкладки
-	const { activeTab, setActiveTab } = useAdminPanelStore();
+	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	// Перевірка, чи ця вкладка є активною
 	const isActive = activeTab === value;
 
@@ -80,7 +81,7 @@ const MenuItem = ({
 
 			{/* Якщо є дочірні елементи, розкриваємо їх */}
 			{children && (
-				<Collapse in={open} timeout="auto" unmountOnExit>
+				<Collapse in={open} timeout={200} unmountOnExit>
 					<List component="div" disablePadding>{children}</List>
 				</Collapse>
 			)}
@@ -90,7 +91,7 @@ const MenuItem = ({
 
 // Компонент для вторинного пункту меню
 const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
-	const { activeTab, setActiveTab } = useAdminPanelStore();
+	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const isActive = activeTab === value;
 
 	return (
@@ -110,23 +111,29 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 	);
 };
 
-export default function Sidebar(props: Props) {
-	const { window } = props;
+export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
-	const { activeTab, setActiveTab } = useAdminPanelStore();
-	// Функція для відкриття/закриття підпунктів
+	const { window } = props;
+
 	const toggleWarehouses = () => {
 		setOpenWarehouses(!openWarehouses);
 	};
 
-
-	// Вміст сайдбару
 	const drawer = (
 		<div>
-			<Toolbar sx={{ padding: '8px 0' }}>
+			<Toolbar
+				sx={{
+					padding: '8px 16px',
+					position: 'fixed',
+					top: 0,
+					width: drawerWidth,
+					zIndex: 1201, // Вище, ніж контент списку
+					backgroundColor: '#00AAAD',
+					boxSizing: 'border-box',
+				}}
+			>
 				<Button
 					variant="contained"
-					color="primary"
 					sx={{
 						backgroundColor: 'white',
 						color: '#00AAAD',
@@ -139,36 +146,48 @@ export default function Sidebar(props: Props) {
 						},
 					}}
 				>
-					<Image
-						src={hyggyIcon}
-						alt="<"
-						width={72}
-						height={36}
-					/>
+					<Image src={hyggyIcon} alt="<" width={72} height={36} />
 					<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
 				</Button>
 			</Toolbar>
-			<Divider />
-			<List>
-				<MenuItem icon={<CategoryIcon />} text="Товари" value="products" />
 
-				{/* Склади (зі стрілкою для відкриття/закриття підпунктів) */}
-				<MenuItem icon={<WarehouseIcon />} text="Склади" value="warehouses" open={openWarehouses} onClick={toggleWarehouses}>
-					<SubMenuItem text="Склади" value="warehousesList" />
-					<SubMenuItem text="Залишки" value="remains" />
-					<SubMenuItem text="Поставки" value="supplies" />
-					<SubMenuItem text="Переміщення" value="transfers" />
-					<SubMenuItem text="Списання" value="writeOffs" />
-				</MenuItem>
-
-				<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
-				<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
-				<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
-				<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
-				<MenuItem icon={<ShoppingCartIcon />} text="Блог" value="blog">
-					<SubMenuItem text="Блог" value="blog" />
-				</MenuItem>
-			</List>
+			<Divider sx={{ mt: 8 }} /> {/* Відступ, щоб розділювач не накладався на кнопку */}
+			<Box sx={{
+				overflowY: 'auto',
+				height: 'calc(100vh - 128px)',
+				'&::-webkit-scrollbar': {
+					width: '8px',
+				},
+				'&::-webkit-scrollbar-track': {
+					backgroundColor: '#01cace', // Колір фону треку скролу
+					borderRadius: '4px',
+				},
+				'&::-webkit-scrollbar-thumb': {
+					backgroundColor: '#005557', // Колір самого скроллбару
+					borderRadius: '4px',
+				},
+				'&::-webkit-scrollbar-thumb:hover': {
+					backgroundColor: '#000000', // Колір при наведенні на скроллбар
+				},
+			}}>
+				{/* Відступ зверху і прокручування */}
+				<List>
+					<MenuItem icon={<CategoryIcon />} text="Товари" value="products" />
+					<MenuItem icon={<WarehouseIcon />} text="Склади" value="warehouses" open={openWarehouses} onClick={toggleWarehouses}>
+						<SubMenuItem text="Склади" value="warehousesList" />
+						<SubMenuItem text="Залишки" value="remains" />
+						<SubMenuItem text="Поставки" value="supplies" />
+						<SubMenuItem text="Переміщення" value="transfers" />
+						<SubMenuItem text="Списання" value="writeOffs" />
+					</MenuItem>
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
+					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
+					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
+					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
+					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
+					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
+				</List>
+			</Box>
 			<Divider />
 		</div>
 	);
@@ -176,13 +195,9 @@ export default function Sidebar(props: Props) {
 	const container = window !== undefined ? () => window().document.body : undefined;
 
 	return (
-		<Box sx={{ display: 'flex' }}>
+		<Box>
 			<CssBaseline />
-			<Box
-				component="nav"
-				sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-				aria-label="mailbox folders"
-			>
+			<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="menu folders">
 				<Drawer
 					container={container}
 					variant="permanent"
@@ -198,19 +213,7 @@ export default function Sidebar(props: Props) {
 					{drawer}
 				</Drawer>
 			</Box>
-			<Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
-				{activeTab === 'products' && <div>Товари</div>}
-				{activeTab === 'warehousesList' && <div>Склади</div>}
-				{activeTab === 'remains' && <div>Залишки</div>}
-				{activeTab === 'supplies' && <div>Поставки</div>}
-				{activeTab === 'transfers' && <div>Переміщення</div>}
-				{activeTab === 'writeOffs' && <div>Списання</div>}
-				{activeTab === 'stores' && <div>Магазини</div>}
-				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
-				{activeTab === 'orders' && <div>Замовлення</div>}
-				{activeTab === 'blog' && <Blog />}
-			</Box>
+
 		</Box>
 	);
 }

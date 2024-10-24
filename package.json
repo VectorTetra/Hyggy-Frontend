@@ -13,6 +13,9 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.2",
     "@mui/material": "^6.1.2",
+    "@mui/x-data-grid": "^7.21.0",
+    "@mui/x-data-grid-generator": "^7.21.0",
+    "@mui/x-data-grid-premium": "^7.21.0",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "convert-layout": "^0.11.1",
@@ -26,8 +29,10 @@
     "react-range": "^1.10.0",
     "react-responsive-carousel": "^3.2.23",
     "react-slick": "^0.30.2",
+    "react-toastify": "^10.0.6",
     "slick-carousel": "^1.8.1",
     "typo-js": "^1.2.4",
+    "use-debounce": "^10.0.4",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

@@ -1,0 +1,43 @@
+/* WarehouseFrame.css */
+.MuiDataGrid-cell.text-right {
+	text-align: right !important;
+}
+
+/* .MuiDataGrid-scrollbar--horizontal {
+	position: 'fixed';
+	bottom: "5px";
+} */
+
+/* .MuiDataGrid-scrollbar--horizontal {
+	position: fixed;
+} */
+
+/*
+.dataGridContainer {
+	position: relative;
+	
+	overflow-x: auto;
+	
+	white-space: nowrap;
+	
+	width: 100%;
+	
+	border: 1px solid #ddd;
+	
+	border-radius: 4px;
+	
+}
+
+.dataGrid {
+	position: sticky;
+	
+	top: 0;
+	
+	z-index: 1;
+	
+}
+
+.dataGrid::-webkit-scrollbar-track {
+	position: fixed;
+}
+	*/
