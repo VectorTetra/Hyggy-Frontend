@@ -30,7 +30,7 @@ export default function Admin() {
 
 	// 	checkAuth();
 	// }, [router]);
-	
+
 	return (
 		authenticated ? (
 			<div>
@@ -50,6 +50,7 @@ export default function Admin() {
 
 					/>
 				</div>
+
 			</div>
 		) : null
 	);

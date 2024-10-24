@@ -12,7 +12,6 @@ import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import useAuthorizeStore from '@/store/authorize';
 function MainPageHeader(props) {
-	//console.log("MainPageHeader props header data:",props.headerData.headerData.hyggyLogo);
 	const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
 
 	return (
@@ -59,4 +58,4 @@ function MainPageHeader(props) {
 		</div>
 	)
 }
-export default MainPageHeader;
+export default MainPageHeader; 

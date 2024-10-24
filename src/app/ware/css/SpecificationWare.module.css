@@ -1,0 +1,61 @@
+.specificationsTable {
+    width: 70%;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.specRow {
+    display: flex;
+    border-bottom: 1px solid #000000;
+}
+
+.specRow:last-child {
+    border-bottom: none;
+}
+
+.specName, .specValue {
+    padding: 15px;
+    font-size: 32px;
+    text-align: center;
+    background-color: #D9D9D9;
+}
+
+.specName {
+    flex: 1;
+    font-weight: bold;
+    border-right: 1px solid #000000;
+}
+
+.specValue {
+    flex: 1;
+}
+
+@media (max-width: 840px) {
+    .specificationsTable {
+        width: 90%;
+    }
+
+    .specName, .specValue {
+        font-size: 24px; 
+        padding: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .specificationsTable {
+        width: 100%; 
+        overflow-x: auto;
+    }
+
+    .specRow {
+        display: flex; 
+        flex-wrap: nowrap;
+    }
+
+    .specName, .specValue {
+        font-size: 14px; 
+        text-align: left;
+        padding: 8px;
+    }
+}

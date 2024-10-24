@@ -1,6 +1,6 @@
 {
     "blogData": {
-        "caption": "БЛОГ",
+        "caption": "Блог",
         "text": "Читайте наш блог та будьте у курсі усіх новинок. Отримайте поради щодо здорового сну, догляду за меблями та декорування оселі.",
         "blogmenu": [
             {
@@ -79,7 +79,7 @@
                     "urlPage": ""
                 },
                 {
-                    "caption": "Догляд та обслуговування",
+                    "caption": "Догляд",
                     "urlImagesSleep": "../images/BlogMenu/obslug.png",
                     "urlPage": ""
                 }
@@ -91,7 +91,7 @@
                     "urlPage": ""
                 },
                 {
-                    "caption": "Відпочинок на свіжому повітрі",
+                    "caption": "На свіжому повітрі",
                     "urlImagesGarden": "../images/BlogMenu/outdoor area.jpg",
                     "urlPage": ""
                 },
@@ -101,7 +101,7 @@
                     "urlPage": ""
                 },
                 {
-                    "caption": "Догляд та обслуговування",
+                    "caption": "Догляд",
                     "urlImagesGarden": "../images/BlogMenu/image-teaser.png",
                     "urlPage": ""
                 }

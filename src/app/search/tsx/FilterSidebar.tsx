@@ -64,7 +64,6 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 				if (!acc[statusName]) {
 					acc[statusName] = { name: statusName, count: 0 };
 				}
-				//acc[statusName].count += 1;
 			});
 			return acc;
 		}, {})
@@ -105,16 +104,12 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 	useEffect(() => {
 		if (isSidebarOpen) {
 			document.body.style.overflow = "hidden";
-			//
-
 		} else {
 			document.body.style.overflow = "";
-			//document.body.style.position = "";
 
 		}
 		return () => {
 			document.body.style.overflow = "";
-			//document.body.style.position = "";
 		};
 	}, [isSidebarOpen]);
 

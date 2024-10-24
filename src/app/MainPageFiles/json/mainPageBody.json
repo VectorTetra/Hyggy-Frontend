@@ -122,21 +122,21 @@
 				"urlpage": "https://jysk.ua/",
 				"urlimage": "../images/Blog/job.png",
 				"alt": "blog",
-				"textbutton": "Перейти до вакансій"
+				"textbutton": "Робота в Hyggy"
 			}
 		],
 		"aboutus": [
 			{
 				"captoin": "Наша історія",
 				"text": "Ми – молода компанія HYGGY, яка прагне принести у ваш дім затишок та комфорт.",
-				"urlpage": "https://jysk.ua/",
+				"urlpage": "../aboutUs",
 				"urlimage": "../images/aboutus.jpg",
 				"alt": "blog"
 			},
 			{
 				"captoin": "Гарантія на матраци",
 				"text": "25 років гарантії на матраци категорії GOLD.",
-				"urlpage": "https://jysk.ua/",
+				"urlpage": "../qualityAndGuarantee",
 				"urlimage": "../images/garant.png",
 				"alt": "blog"
 			},
