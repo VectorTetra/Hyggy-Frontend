@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { CircularProgress } from '@mui/material';
 import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
@@ -22,10 +23,13 @@ interface CartItem {
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflow = 'auto';
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
+    setLoading(false);
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -77,7 +81,11 @@ const CartPage = () => {
       return totalSavings;
     }, 0);
   };
-
+  if (loading) {
+    return (
+      <CircularProgress />
+    );
+  }
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.cartPage}>
