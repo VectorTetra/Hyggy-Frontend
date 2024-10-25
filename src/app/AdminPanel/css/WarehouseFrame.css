@@ -3,6 +3,15 @@
 	text-align: right !important;
 }
 
+@media print {
+	.MuiDataGrid-root {
+		height: auto !important;
+		/* Задає автоматичну висоту */
+		overflow: visible !important;
+		/* Відключає переповнення */
+	}
+}
+
 /* .MuiDataGrid-scrollbar--horizontal {
 	position: 'fixed';
 	bottom: "5px";

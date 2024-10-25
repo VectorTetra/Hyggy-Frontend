@@ -222,6 +222,7 @@ export default function WarehouseFrame() {
 			headerName: 'Дії',
 			flex: 0,
 			width: 75,
+			disableExport: true,
 			renderCell: (params) => (
 				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
 					<Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
@@ -355,7 +356,7 @@ export default function WarehouseFrame() {
 					</Button>
 				</Box>
 			</Box>
-			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh">
+			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
 				{filteredData.length === 0 && !loading ? (
 					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 						Нічого не знайдено
@@ -386,7 +387,23 @@ export default function WarehouseFrame() {
 						}}
 						pageSizeOptions={[5, 10, 25, 50, 100]}
 						disableRowSelectionOnClick
-						slots={{ toolbar: GridToolbar }}
+						slots={{
+							toolbar: GridToolbar
+
+						}}
+						slotProps={{
+							toolbar: {
+								csvOptions: {
+									fileName: 'Склади',
+									delimiter: ';',
+									utf8WithBom: true,
+								},
+								printOptions: {
+									hideFooter: true,
+									hideToolbar: true,
+								},
+							},
+						}}
 						columnVisibilityModel={columnVisibilityModel}
 						onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
 						localeText={{
