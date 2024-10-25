@@ -10,6 +10,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ForumIcon from '@mui/icons-material/Forum';
+import LogoutIcon from '@mui/icons-material/Logout';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
@@ -119,7 +121,6 @@ export default function Sidebar(props: Props) {
 		setOpenWarehouses(!openWarehouses);
 	};
 
-
 	// Вміст сайдбару
 	const drawer = (
 		<div>
@@ -139,13 +140,15 @@ export default function Sidebar(props: Props) {
 						},
 					}}
 				>
-					<Image
-						src={hyggyIcon}
-						alt="<"
-						width={72}
-						height={36}
-					/>
-					<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+					<a href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
+						<Image
+							src={hyggyIcon}
+							alt="<"
+							width={72}
+							height={36}
+						/>
+						<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+					</a>
 				</Button>
 			</Toolbar>
 			<Divider />
@@ -160,14 +163,18 @@ export default function Sidebar(props: Props) {
 					<SubMenuItem text="Переміщення" value="transfers" />
 					<SubMenuItem text="Списання" value="writeOffs" />
 				</MenuItem>
-
 				<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
 				<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 				<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 				<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
-				<MenuItem icon={<ShoppingCartIcon />} text="Блог" value="blog">
-					<SubMenuItem text="Блог" value="blog" />
-				</MenuItem>
+				<MenuItem icon={<ForumIcon />} text="Блог" value="blog" />
+				<a href="../AdminPanelLogin">
+					<MenuItem
+						icon={<LogoutIcon />}
+						text="Вихід"
+						value="exit"
+					/>
+				</a>
 			</List>
 			<Divider />
 		</div>
@@ -210,6 +217,7 @@ export default function Sidebar(props: Props) {
 				{activeTab === 'clients' && <div>Клієнти</div>}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 				{activeTab === 'blog' && <Blog />}
+				{/* {activeTab === 'exit'} */}
 			</Box>
 		</Box>
 	);

@@ -70,32 +70,26 @@
 		},
 		"brand": [
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand1.png",
 				"alt": "Brand1"
 			},
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand2.png",
 				"alt": "Brand2"
 			},
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand3.png",
 				"alt": "Brand2"
 			},
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand4.png",
 				"alt": "Brand2"
 			},
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand5.png",
 				"alt": "Brand2"
 			},
 			{
-				"urlBrand": "https://jysk.ua/",
 				"urlimage": "../images/Brand/Brand6.png",
 				"alt": "Brand2"
 			}
@@ -109,17 +103,18 @@
 					"textcaption": "Ми тут, щоб допомогти",
 					"text": "Наш відділ по роботі з клієнтами готовий допомогти Вам. Зв'яжіться з нами в чаті або за телефоном, щоб отримати найшвидшу відповідь."
 				},
-				"urlpage": "https://jysk.ua/",
+				"urlpage": "../PageFAQ",
 				"urlimage": "../images/Blog/Blogphone.jpg",
 				"alt": "blog",
-				"textbutton": "Звернутися до служби підтримки"
+				"textbutton": "Звернутися до служби підтримки",
+				"title": "Питання та відповіді"
 			},
 			{
 				"textblog": {
 					"textcaption": "Працюй з нами",
 					"text": "Вітаємо в HYGGY, компанії, яка розвивається і зростає з кожним роком. Водночас ми щодня докладаємо зусиль, щоб кожен день приносив задоволення від роботи. Тому що саме комфортне робоче середовище, сильні команди та розкриття потенціалу наших амбітних колег сприяють успіху."
 				},
-				"urlpage": "https://jysk.ua/",
+				"urlpage": "../work",
 				"urlimage": "../images/Blog/job.png",
 				"alt": "blog",
 				"textbutton": "Робота в Hyggy"

@@ -5,9 +5,7 @@ export default function MainPageBodyBrand(props) {
         <div className={styles["brand-container"]}>
             {props.brand.map((item, index) => (
                 <div className={styles["brand-item"]} key={index}>
-                    <a href={item.urlBrand}>
-                        <img src={item.urlimage} alt={`Brand ${index}`} />
-                    </a>
+                    <img src={item.urlimage} alt={`Brand ${index}`} />
                 </div>
             ))}
         </div>

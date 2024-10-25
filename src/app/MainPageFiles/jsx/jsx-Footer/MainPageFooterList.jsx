@@ -3,7 +3,8 @@ import styles from '../../styles/MainPageFooter-styles.module.css';
 import MainPageFooterMessenger from "./MainPageFooterMessenger";
 import MainPageFooterAddress from "./MainPageFooterAddress";
 import Link from "next/link";
-function MainPageFooterList(props) {
+
+export default function MainPageFooterList(props) {
   return (
     <div className={styles.flexContainer}>
       <div className={styles["footer-container"]}>
@@ -34,4 +35,3 @@ function MainPageFooterList(props) {
     </div>
   );
 }
-export default MainPageFooterList;
