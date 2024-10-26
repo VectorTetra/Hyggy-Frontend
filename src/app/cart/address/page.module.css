@@ -1,0 +1,208 @@
+.Page {
+  padding: 1rem 6rem;
+}
+
+.Page h1 {
+  font-weight: bold;
+}
+
+.checkoutPage {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.formSection {
+  width: 60%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.formSection h2 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.formSection h2 {
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="tel"] {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.formGroup input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.buttonGroup {
+  margin-top: 20px;
+}
+
+.submitButton {
+  background-color: #00AAAD;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.cancelButton {
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  color: #00AAAD;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+.cartSummary {
+  width: 35%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.cartSummary h2 {
+  margin-bottom: 20px;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cartItemImageContainer {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  margin-right: 15px;
+}
+
+.cartItemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cartItemDetails {
+  flex-grow: 1;
+}
+
+.cartItemDetails p {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.totalPrice {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.formGroupRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.formGroupRow .formGroup {
+  flex: 1;
+}
+
+.formGroupRow .formGroup:nth-child(2) {
+  flex: 1;
+}
+
+.price {
+  text-align: right;
+  font-weight: bold;
+}
+
+.formInput {
+  background-color: #E0E0E0;
+}
+
+.formInput::placeholder {
+  color: gray;
+}
+
+.errorInput {
+  background-color: #ffcccc;
+  border-color: #ff0000;
+}
+
+.info p {
+  font-size: x-small;
+}
+
+.suggestionsList {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestionsList li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.suggestionsList li:last-child {
+  border-bottom: none;
+}
+
+.suggestionsList li:hover {
+  background-color: #f0f0f0;
+}
+
+.suggestionsList li:active {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .checkoutPage {
+    flex-direction: column;
+  }
+
+  .formSection,
+  .cartSummary {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

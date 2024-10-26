@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { CircularProgress } from '@mui/material';
 import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
   removeFromCart
-} from "../ware/types/Cart";
+} from "./types/Cart";
+import Link from 'next/link';
 
 interface CartItem {
   productDescription: string;
@@ -21,10 +23,13 @@ interface CartItem {
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflow = 'auto';
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
+    setLoading(false);
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -76,7 +81,11 @@ const CartPage = () => {
       return totalSavings;
     }, 0);
   };
-
+  if (loading) {
+    return (
+      <CircularProgress />
+    );
+  }
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.cartPage}>
@@ -84,7 +93,9 @@ const CartPage = () => {
         {cartItems.length === 0 ? (
           <center>
             <p>Кошик пустий</p>
-            <button className={styles.continueButton}>Продовжити покупки</button>
+            <Link href="/">
+              <button className={styles.continueButton}>Продовжити покупки</button>
+            </Link>
           </center>
         ) : (
           <div className={styles.cartItems}>
@@ -141,8 +152,12 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
-            <button className={styles.continueButton}>Продовжити покупки</button>
-            <button className={styles.checkoutButton}>Завершити замовлення</button>
+            <Link href="/cart/address">
+              <button className={styles.checkoutButton}>Продовжити покупки</button>
+            </Link>
+            <Link href="/">
+              <button className={styles.continueButton}>Завершити замовлення</button>
+            </Link>
           </div>
         )}
       </div>
