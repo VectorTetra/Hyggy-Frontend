@@ -9,6 +9,11 @@ import jsonData from "./structure.json";
 export default function AboutUs() {
   const data = jsonData; // Використання даних із JSON-файлу
 
+  const pageMetadata = {
+    title: "Про нас", // Задаем заголовок для этой страницы
+    description: "Про нас",
+  };
+
   const renderComponent = (component: any, index: number) => {
     switch (component.objectType) {
       case "image":
@@ -68,7 +73,7 @@ export default function AboutUs() {
   };
 
   return (
-    <Layout headerType="header1" footerType = 'footer1'>
+    <Layout headerType="header1" footerType='footer1' pageMetadata={pageMetadata}>
       <div className={styles.main}>
         {data.structure.map((component: any, index: any) =>
           renderComponent(component, index)

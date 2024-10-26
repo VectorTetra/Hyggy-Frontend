@@ -104,24 +104,24 @@
     },
     "messenger": [
       {
-        "urlimages": "../images/messenger/fb.png",
-        "urlpage": "https://jysk.ua/"
+        "urlimages": "/images/messenger/fb.png",
+        "urlpage": "https://www.messenger.com"
       },
       {
-        "urlimages": "../images/messenger/LogoInstagram.png",
-        "urlpage": "https://jysk.ua/"
+        "urlimages": "/images/messenger/LogoInstagram.png",
+        "urlpage": "https://www.instagram.com"
       },
       {
-        "urlimages": "../images/messenger/LogoTelegram.png",
-        "urlpage": "https://jysk.ua/"
+        "urlimages": "/images/messenger/LogoTelegram.png",
+        "urlpage": "https://web.telegram.org"
       },
       {
-        "urlimages": "../images/messenger/LogoViber.png",
-        "urlpage": "https://jysk.ua/"
+        "urlimages": "/images/messenger/LogoViber.png",
+        "urlpage": "https://www.viber.com"
       },
       {
-        "urlimages": "../images/messenger/LogoWhatsapp.png",
-        "urlpage": "https://jysk.ua/"
+        "urlimages": "/images/messenger/LogoWhatsapp.png",
+        "urlpage": "https://www.whatsapp.com"
       }
     ]
   }

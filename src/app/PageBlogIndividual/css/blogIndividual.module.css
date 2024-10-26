@@ -24,14 +24,75 @@
     margin-top: 30px;
     margin-bottom: 50px;
     justify-content: space-between;
-    /* Распределяет пространство между изображениями */
     gap: 20px;
-    /* Отступ между изображениями */
 }
 
 .imagerow img {
     width: 50%;
-    /* Каждое изображение занимает 50% ширины контейнера */
     height: auto;
-    /* Автоматическая высота для сохранения пропорций */
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+
+    .headcontainer {
+        margin: 25px 20px 0 20px;
+    }
+
+    .bigimage {
+        margin-bottom: 25px;
+    }
+
+    .h1 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .h2 {
+        font-size: 18px;
+    }
+
+    .contenttext {
+        font-size: 14px;
+    }
+
+    .imagerow {
+        margin: 10px 5px 30px 0;
+        gap: 5px;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+
+    .headcontainer {
+        margin: 20px 15px 0 15px;
+    }
+
+
+    .bigimage {
+        margin-bottom: 20px;
+    }
+
+    .h1 {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .contenttext {
+        font-size: 12px;
+    }
+
+    .h2 {
+        font-size: 16px;
+    }
+
+    .captiontext {
+        margin-top: 20px;
+    }
+
+    .imagerow {
+        margin: 10px 5px 30px 0;
+        gap: 5px;
+    }
+
 }

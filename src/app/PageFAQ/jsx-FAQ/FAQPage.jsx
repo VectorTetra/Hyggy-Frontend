@@ -3,6 +3,7 @@ import styles from "../css/FAQStyles.module.css";
 import CommonQuestions from "./CommonQuestions";
 import ContactSection from "./ContactSection";
 import FAQSection from "./FAQSection";
+import Head from 'next/head'; // Импортируем Head
 
 export default function FAQPage(props) {
     return (
