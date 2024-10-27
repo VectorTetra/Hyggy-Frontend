@@ -50,7 +50,11 @@ const WarehouseAddEditFrame = () => {
 
 	useEffect(() => {
 		const fetchAddress = async (id: number) => {
+
 			try {
+				if (id === 0) {
+					return;
+				}
 				const warehouses = await getStorages({ SearchParameter: 'Query', Id: id });
 				if (warehouses && warehouses.length > 0) {
 					const { street, houseNumber, city, state, postalCode, latitude, longitude } = warehouses[0];

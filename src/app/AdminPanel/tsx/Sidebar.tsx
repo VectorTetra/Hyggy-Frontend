@@ -12,6 +12,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ForumIcon from '@mui/icons-material/Forum';
+import LogoutIcon from '@mui/icons-material/Logout';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import ArticleIcon from '@mui/icons-material/Article';
 import RateReviewIcon from '@mui/icons-material/RateReview';
@@ -146,13 +148,20 @@ export default function Sidebar(props) {
 						},
 					}}
 				>
-					<Image src={hyggyIcon} alt="<" width={72} height={36} />
-					<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+
+					<a href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
+						<Image
+							src={hyggyIcon}
+							alt="<"
+							width={72}
+							height={36}
+						/>
+						<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+					</a>
 				</Button>
 			</Toolbar>
-
 			<Divider sx={{ mt: 8 }} /> {/* Відступ, щоб розділювач не накладався на кнопку */}
-			<Box sx={{
+        <Box sx={{
 				overflowY: 'auto',
 				height: 'calc(100vh - 128px)',
 				'&::-webkit-scrollbar': {
@@ -186,16 +195,22 @@ export default function Sidebar(props) {
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
+          <a href="../AdminPanelLogin">
+					<MenuItem
+						icon={<LogoutIcon />}
+						text="Вихід"
+						value="exit"
+					/>
+				</a>
 				</List>
 			</Box>
-			<Divider />
 		</div>
 	);
 
 	const container = window !== undefined ? () => window().document.body : undefined;
 
 	return (
-		<Box>
+		<Box sx={{ zIndex: 10000 }}>
 			<CssBaseline />
 			<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="menu folders">
 				<Drawer
@@ -213,7 +228,6 @@ export default function Sidebar(props) {
 					{drawer}
 				</Drawer>
 			</Box>
-
 		</Box>
 	);
 }

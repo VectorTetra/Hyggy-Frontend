@@ -113,23 +113,23 @@
                 "imagesHome": [
                     {
                         "urlImages": "../images/BlogMenu/Home/Homebig.jpg",
-                        "caption": "",
-                        "urlPage": "../MainPage/index.html"
+                        "caption": "Як оновити оселю, щоб вона заряджала енергією",
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Home/shtory_small.jpg",
                         "caption": "Як вибрати штори та ролети? Повний гайд",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Home/small2.jpg",
                         "caption": "Улюбленний текстиль колеги з відділу закупівель",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Home/small3.png",
                         "caption": "Вибір шафи для взуття",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Home/small4.jpg",
@@ -143,28 +143,28 @@
                 "imagesHome": [
                     {
                         "urlImages": "../images/BlogMenu/Sleep/Big_picture.gif",
-                        "caption": "",
-                        "urlPage": "../MainPage/index.html"
+                        "caption": "Гайд з правильного вибору матраца",
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Sleep/small1.gif",
                         "caption": "Як вибрати правильний розмір матрацу",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Sleep/small2.jpg",
                         "caption": "Як ефективно сушити одяг у приміщенні: 7 ключових порад",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Sleep/small3.gif",
                         "caption": "Як обрати подушку? Повний гайд",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Sleep/small4.gif",
                         "caption": "Як вибрати ковдру? Повний гайд",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     }
                 ]
             },
@@ -173,28 +173,28 @@
                 "imagesHome": [
                     {
                         "urlImages": "../images/BlogMenu/Garden/Garden_Big.jpg",
-                        "caption": "",
-                        "urlPage": "../MainPage/index.html"
+                        "caption": "Оновіть своє подвір'я з новим садовим павільйоном",
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Garden/Garden_Small1.jpg",
                         "caption": "Як вибрати батут? 7 порад, які слід враховувати перед покупкою",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Garden/Garden_Small2.jpg",
                         "caption": "Посібник: Як вибрати садовий короб для зберігання?",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Garden/Garden_Small3.jpg",
                         "caption": "Вибір ідеальної садової парасолі. Повний гайд",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     },
                     {
                         "urlImages": "../images/BlogMenu/Garden/Garden_Small4.jpg",
                         "caption": "Як вибрати ідеальний набір садових меблів для відпочинку",
-                        "urlPage": "../MainPage/index.html"
+                        "urlPage": "../PageBlogIndividual"
                     }
                 ]
             }

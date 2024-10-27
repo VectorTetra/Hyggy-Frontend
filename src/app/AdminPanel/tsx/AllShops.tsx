@@ -15,18 +15,23 @@ export default function AllShops() {
   const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
   const [data, setData] = useState<any | null>([]);
   const [loading, setLoading] = useState(true);
+
   const [paginationModel, setPaginationModel] = React.useState({
     page: 1,
     pageSize: 100,
   });
+
   const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
+
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
     city: false, // Приховуємо колонку "Місто"
     state: false, // Приховуємо колонку "Область"
     postalCode: false, // Приховуємо колонку "Поштовий індекс"
   });
+
   const [selectedRow, setSelectedRow] = useState<any | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const apiRef = useGridApiRef();
 
   // Функція для форматування значення
@@ -43,6 +48,7 @@ export default function AllShops() {
         typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
 
   const handleDelete = (row) => {
     // Встановлюємо рядок для видалення та відкриваємо діалог
@@ -61,6 +67,7 @@ export default function AllShops() {
       toast.info('Склад успішно видалено!');
     }
   };
+
   // Створюємо масив колонок з перекладеними назвами
   const columns = [
     { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
@@ -84,10 +91,12 @@ export default function AllShops() {
       minWidth: 175,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
+
           <Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => { setActiveNewShop(params.row.id); setActiveTab('addNewShop') }}>
             <EditIcon />
           </Button>
           <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
+
             <DeleteIcon />
           </Button>
         </Box>
@@ -95,17 +104,20 @@ export default function AllShops() {
     },
   ];
 
+
   useEffect(() => {
     const fetchStorages = async () => {
       try {
         const storages = await getShops({
           SearchParameter: "Query",
           PageNumber: 1,
+
           PageSize: 150
         });
         console.log(storages);
         setData(storages);
         setActiveNewShop(null);
+
       } catch (error) {
         console.error('Error fetching storage data:', error);
       } finally {
@@ -194,6 +206,7 @@ export default function AllShops() {
           }}
         />
       </Box>
+
       <ConfirmationDialog
         title="Видалити магазин?"
         contentText={
@@ -213,6 +226,7 @@ export default function AllShops() {
         cancelButtonColor='#248922'
         open={isDialogOpen}
       />
+
     </Box>
 
 

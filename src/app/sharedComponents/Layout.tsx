@@ -7,15 +7,26 @@ import useMainPageMenuStore from "@/store/mainPageMenu";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import BlockMenu from './BlockMenu';
 import BlockShops from './BlockShops';
-interface LayoutProps {
+
+export interface LayoutProps {
   children: React.ReactNode;
   headerType?: 'header1' | 'header2' | 'null'; // Определение типа хедера
   footerType?: 'footer1' | 'footer2'; // Определение типа футера
+  pageMetadata?: {    // Добавьте этот блок
+    title: string;
+    description: string;
+  };
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', footerType = 'footer1' }) => {
+const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', footerType = 'footer1', pageMetadata }) => {
   const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
   const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
+
+  React.useEffect(() => {
+    if (pageMetadata) {
+      document.title = pageMetadata.title;
+    }
+  }, [pageMetadata]);
 
   return (
     <>

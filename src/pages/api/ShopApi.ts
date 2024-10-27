@@ -104,7 +104,6 @@ export async function putShop(Shop: ShopDTO) {
 		if (!Shop.Id) {
 			throw new Error('Id is required for updating a Shop');
 		}
-
 		//const response = await axios.put(`http://localhost:5263/api/Shop`, Shop);
 		const response = await axios.put(`http://www.hyggy.somee.com/api/Shop`, Shop);
 		return response.data;
@@ -118,8 +117,8 @@ export async function putShop(Shop: ShopDTO) {
 export async function deleteShop(id: number) {
 	try {
 		const response = await axios.delete(`http://www.hyggy.somee.com/api/Shop/${id}`);
-		//const response = await axios.delete(`http://localhost:5263/api/Shop/${id}`);
 
+		//const response = await axios.delete(`http://localhost:5263/api/Shop/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Shop:', error);

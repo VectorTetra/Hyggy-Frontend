@@ -95,6 +95,18 @@ export default function Login() {
 					Увійти
 				</Button>
 			</Box>
+			<a href="/" >
+				<Button
+					variant="contained"
+					type="submit"
+					color="primary"
+					fullWidth
+					sx={{ padding: '10px 90px 10px 90px ', fontSize: '1rem', marginTop: "30px" }}
+				>
+					Перейти на сайт HYGGY
+				</Button>
+			</a>
 		</Box>
+
 	);
 }
