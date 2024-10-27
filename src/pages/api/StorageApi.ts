@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface StorageQueryParams {
-	SearchParameter?: "Query";
+	SearchParameter?: string;
 	AddressId?: number;
 	Id?: number;
 	ShopId?: number;
@@ -28,7 +28,10 @@ export async function getStorages(params: StorageQueryParams = {}) {
 		const response = await axios.get('http://www.hyggy.somee.com/api/Storage', {
 			params,
 		});
-
+		// const response = await axios.get('http://localhost:5263/api/Storage', {
+		// 		params,
+		// 	});
+	
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching storages:', error);
@@ -40,6 +43,7 @@ export async function getStorages(params: StorageQueryParams = {}) {
 export async function postStorage(storage: StorageDTO) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/Storage', storage);
+		//const response = await axios.post('http://localhost:5263/api/Storage', storage);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating storage:', error);
