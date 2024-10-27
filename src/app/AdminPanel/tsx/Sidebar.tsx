@@ -400,7 +400,7 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
-					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
 					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />

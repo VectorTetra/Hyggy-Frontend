@@ -39,7 +39,7 @@ import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface ShopQueryParams {
-	SearchParameter?: "Query";
+	SearchParameter?: string;
 	Id?: number;
 	AddressId?: number;
 	Street?: string;
@@ -76,7 +76,9 @@ export async function getShops(params: ShopQueryParams = {}) {
 		const response = await axios.get('http://www.hyggy.somee.com/api/Shop', {
 			params,
 		});
-
+		// const response = await axios.get('http://localhost:5263/api/Shop', {
+		// 	params,
+		// });
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching Shops:', error);
@@ -88,6 +90,7 @@ export async function getShops(params: ShopQueryParams = {}) {
 export async function postShop(Shop: ShopDTO) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/Shop', Shop);
+		//const response = await axios.post('http://localhost:5263/api/Shop', Shop);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Shop:', error);
@@ -102,6 +105,7 @@ export async function putShop(Shop: ShopDTO) {
 			throw new Error('Id is required for updating a Shop');
 		}
 
+		//const response = await axios.put(`http://localhost:5263/api/Shop`, Shop);
 		const response = await axios.put(`http://www.hyggy.somee.com/api/Shop`, Shop);
 		return response.data;
 	} catch (error) {
@@ -114,6 +118,8 @@ export async function putShop(Shop: ShopDTO) {
 export async function deleteShop(id: number) {
 	try {
 		const response = await axios.delete(`http://www.hyggy.somee.com/api/Shop/${id}`);
+		//const response = await axios.delete(`http://localhost:5263/api/Shop/${id}`);
+
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Shop:', error);

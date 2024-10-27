@@ -5,6 +5,7 @@ import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
 import AllShops from './AllShops';
 import NewShop from './NewShop';
+import Clients from './Clients';
 
 const drawerWidth = 240;
 
@@ -29,9 +30,9 @@ export default function Content() {
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
 				{activeTab === 'stores' && <AllShops />}
- 				{activeTab === 'addNewShop' && <NewShop />}
+				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
+				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 				{activeTab === 'blog' && <div>Блоги</div>}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
