@@ -25,7 +25,7 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	let categories: Category[] = Object.values(
 		wares.reduce((acc: Record<string, Category>, ware: Ware) => {
-			const categoryName = ware.category;
+			const categoryName = ware.wareCategory3Name;
 			if (!acc[categoryName]) {
 				acc[categoryName] = { name: categoryName, count: 0 };
 			}
@@ -43,7 +43,7 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	let trademarks: Trademark[] = Object.values(
 		wares.reduce((acc: Record<string, Trademark>, ware: Ware) => {
-			const trademarkName = ware.trademark;
+			const trademarkName = ware.trademarkName;
 			if (trademarkName && !acc[trademarkName]) {
 				acc[trademarkName] = { name: trademarkName, count: 0 };
 			}
@@ -60,7 +60,7 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	let statuses: Status[] = Object.values(
 		wares.reduce((acc: Record<string, Status>, ware: Ware) => {
-			ware.tag.forEach((statusName: string) => {
+			ware.statusNames.forEach((statusName: string) => {
 				if (!acc[statusName]) {
 					acc[statusName] = { name: statusName, count: 0 };
 				}
@@ -72,13 +72,13 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	// Оновлюємо кількість і стан доступності для торгових марок і статусів
 	foundWares.forEach((ware: Ware) => {
-		const trademark = trademarks.find((trademark: any) => trademark.name === ware.trademark);
+		const trademark = trademarks.find((trademark: any) => trademark.name === ware.trademarkName);
 		if (trademark) {
 			trademark.count = (trademark.count || 0) + 1;
 			trademark.isDisabled = false;
 		}
 
-		ware.tag.forEach((statusName: string) => {
+		ware.statusNames.forEach((statusName: string) => {
 			const status = statuses.find((status: any) => status.name === statusName);
 			if (status) {
 				status.count = (status.count || 0) + 1;

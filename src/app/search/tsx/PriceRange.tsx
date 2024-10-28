@@ -3,7 +3,7 @@ import { useQueryState } from 'nuqs';
 import { Range, getTrackBackground } from "react-range";
 import useSearchStore from "@/store/search";
 import styles from "../css/PriceRange.module.css";
-import debounce from 'lodash/debounce'; // Використаємо lodash для debounce
+import debounce from 'lodash/debounce';
 
 const PriceRange = () => {
 	const [f_0, setf_0] = useQueryState('f_0', { scroll: false, shallow: true, throttleMs: 500 });
@@ -30,8 +30,10 @@ const PriceRange = () => {
 		updateUrlWithDebounce(values);
 	};
 
-	const MIN = minPossible;
-	const MAX = maxPossible;
+	// Перевірка, щоб уникнути некоректних значень
+	const MIN = Math.min(minPossible, maxPossible);
+	const MAX = Math.max(minPossible, maxPossible);
+	const isRangeValid = MIN < MAX && !isNaN(MIN) && !isNaN(MAX);
 
 	return (
 		<div className={styles.container}>
@@ -39,32 +41,34 @@ const PriceRange = () => {
 				Ціна
 			</h2>
 			<div className={`${isPriceRangeOpen ? styles.priceRangeOpen : styles.priceRange}`}>
-				<Range
-					disabled={!isPriceRangeOpen}
-					values={values}
-					step={1}
-					min={MIN}
-					max={MAX}
-					onChange={setValues}
-					onFinalChange={handleBlur}
-					renderTrack={({ props, children }) => (
-						<div
-							{...props}
-							className={styles.track}
-							style={{
-								background: getTrackBackground({
-									values,
-									colors: ["#ccc", "#548BF4", "#ccc"],
-									min: MIN,
-									max: MAX,
-								}),
-							}}
-						>
-							{children}
-						</div>
-					)}
-					renderThumb={({ props }) => <div {...props} className={styles.thumb} />}
-				/>
+				{isRangeValid && (
+					<Range
+						disabled={!isPriceRangeOpen}
+						values={values}
+						step={1}
+						min={MIN}
+						max={MAX}
+						onChange={setValues}
+						onFinalChange={handleBlur}
+						renderTrack={({ props, children }) => (
+							<div
+								{...props}
+								className={styles.track}
+								style={{
+									background: getTrackBackground({
+										values,
+										colors: ["#ccc", "#548BF4", "#ccc"],
+										min: MIN,
+										max: MAX,
+									}),
+								}}
+							>
+								{children}
+							</div>
+						)}
+						renderThumb={({ props }) => <div {...props} className={styles.thumb} />}
+					/>
+				)}
 				<div className={styles.inputs}>
 					<div className={styles.formGroup}>
 						<label className={styles.inputLabel}>Мін</label>
@@ -78,7 +82,7 @@ const PriceRange = () => {
 								const value = Math.max(Number(e.target.value), MIN);
 								setValues([Math.min(value, values[1]), values[1]]);
 							}}
-							onBlur={handleBlur} // Оновлюємо URL при блюрі
+							onBlur={handleBlur}
 						/>
 					</div>
 					<div className={styles.formGroup}>
@@ -93,7 +97,7 @@ const PriceRange = () => {
 								const value = Math.min(Number(e.target.value), MAX);
 								setValues([values[0], Math.max(value, values[0])]);
 							}}
-							onBlur={handleBlur} // Оновлюємо URL при блюрі
+							onBlur={handleBlur}
 						/>
 					</div>
 				</div>

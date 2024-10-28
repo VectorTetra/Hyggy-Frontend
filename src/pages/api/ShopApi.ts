@@ -48,8 +48,8 @@ export interface ShopQueryParams {
 	Name?: string;
 	State?: string;
 	PostalCode?: string;
-  Latitude?:number;
-  Longitude?:number;
+	Latitude?: number;
+	Longitude?: number;
 	StorageId?: number;
 	OrderId?: number;
 	PageNumber?: number;
@@ -63,12 +63,30 @@ export interface ShopDTO {
 	AddressId?: number;
 	Id?: number;
 	StorageId?: number;
-	Name?: string ;
-	WorkHours?: string ;
-	PhotoUrl?: string ;
+	Name?: string;
+	WorkHours?: string;
+	PhotoUrl?: string;
 	OrderIds?: number[] | null;
 	ShopEmployeeIds?: string[] | null;
 }
+export interface ShopGetDTO {
+	id?: number;
+	photoUrl?: string;
+	workHours?: string;
+	name?: string;
+	street?: string;
+	houseNumber?: string;
+	city?: string;
+	state?: string;
+	postalCode?: string;
+	latitude?: number;
+	longitude?: number;
+	addressId?: number;
+	storageId?: number;
+	executedOrdersSum?: number;
+	orderIds?: number[] | null;
+}
+
 
 // GET запит (вже реалізований)
 export async function getShops(params: ShopQueryParams = {}) {

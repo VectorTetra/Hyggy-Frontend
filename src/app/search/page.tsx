@@ -16,6 +16,7 @@ import useSearchStore from "@/store/search"; // Імпортуємо Zustand sto
 import { isEqual } from "lodash";
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import SortingSidebar from "./tsx/SortingSidebar";
+import { CircularProgress } from "@mui/material";
 
 
 export default function SearchPage() {
@@ -41,8 +42,10 @@ export default function SearchPage() {
   const { setMinPossible, setMaxPossible,
     waresBeforeCategories, setWaresBeforeCategories,
     activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
+  useEffect(() => {
+    (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = ""; // Блокуємо/розблоковуємо скрол
+  }, []);
 
-  (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = ""; // Блокуємо/розблоковуємо скрол
   useEffect(() => {
     async function performSearch() {
       if (!loading) {
@@ -80,21 +83,21 @@ export default function SearchPage() {
         const categoriesFromUrl = categories ? categories.split("|").filter(Boolean) : [];
         if (categoriesFromUrl.length > 0) {
           foundWares = foundWares.filter((ware) => {
-            return categoriesFromUrl.includes(ware.category);
+            return categoriesFromUrl.includes(ware.wareCategory3Name);
           });
         }
 
         const trademarksFromUrl = trademarks ? trademarks.split("|").filter(Boolean) : [];
         if (trademarksFromUrl.length > 0) {
           foundWares = foundWares.filter((ware) => {
-            return ware.trademark && trademarksFromUrl.includes(ware.trademark);
+            return ware.trademarkName && trademarksFromUrl.includes(ware.trademarkName);
           });
         }
 
         const statusesFromUrl = statuses ? statuses.split("|").filter(Boolean) : [];
         if (statusesFromUrl.length > 0) {
           foundWares = foundWares.filter((ware) => {
-            return statusesFromUrl.every((status) => ware.tag.includes(status));
+            return statusesFromUrl.every((status) => ware.statusNames.includes(status));
           });
         }
 
@@ -116,7 +119,7 @@ export default function SearchPage() {
   if (loading) {
     return (
       <Layout headerType="header1" footerType="footer1">
-        <Loading />
+        <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />
       </Layout>
     );
   }
