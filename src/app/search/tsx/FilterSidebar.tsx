@@ -1,7 +1,7 @@
 // File: FilterSidebar.tsx
 import React from "react";
 import { useEffect } from "react";
-import { Ware } from "@/types/searchTypes";
+import { Ware } from "@/pages/api/WareApi";
 import styles from "../css/FilterSidebar.module.css";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
 import PriceRange from "./PriceRange";
@@ -10,32 +10,35 @@ import TrademarkPicker from "./TrademarkPicker";
 import StatusPicker from "./StatusPicker";
 import SaleCheckbox from "./SaleCheckbox";
 import SidebarButtonBar from "./SidebarButtonBar";
+import { WareCategory3 } from "@/pages/api/WareCategory3Api";
 
-const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware[] }) => {
-	const { isSidebarOpen, setIsSidebarOpen } = useSearchStore();
+const FilterSidebar = (({ wares, foundWares, categories }: { wares: Ware[], foundWares: Ware[], categories: WareCategory3[] }) => {
+	const { isSidebarOpen, setIsSidebarOpen, setCategoriesMap, setTrademarksMap, setStatusesMap } = useSearchStore();
 
 
 
 	// Групуємо wares по категоріям і рахуємо кількість товарів у кожній категорії
 	type Category = {
+		id: number;
 		name: string;
 		count: number;
 		isDisabled?: boolean;
 	};
 
-	let categories: Category[] = Object.values(
-		wares.reduce((acc: Record<string, Category>, ware: Ware) => {
-			const categoryName = ware.wareCategory3Name;
-			if (!acc[categoryName]) {
-				acc[categoryName] = { name: categoryName, count: 0 };
-			}
-			acc[categoryName].count += 1;
-			return acc;
-		}, {})
-	);
+	// Групуємо wares по категоріям та рахуємо кількість товарів у кожній категорії
+	let filterSidebarCategories = categories.map(category => {
+		const count = wares.filter(ware => ware.wareCategory3Id === category.id).length;
+		return {
+			id: category.id,
+			name: category.name,
+			count: count
+		};
+	});
+	filterSidebarCategories = filterSidebarCategories.filter(fsc => fsc.count > 0);
 
 	// Групуємо wares по торговим маркам
 	type Trademark = {
+		id: number | null;
 		name: string;
 		count: number;
 		isDisabled?: boolean;
@@ -44,8 +47,9 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 	let trademarks: Trademark[] = Object.values(
 		wares.reduce((acc: Record<string, Trademark>, ware: Ware) => {
 			const trademarkName = ware.trademarkName;
+			const trademarkId = ware.trademarkId;
 			if (trademarkName && !acc[trademarkName]) {
-				acc[trademarkName] = { name: trademarkName, count: 0 };
+				acc[trademarkName] = { id: trademarkId, name: trademarkName, count: 0 };
 			}
 			return acc;
 		}, {})
@@ -53,6 +57,7 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	// Групуємо wares по статусам
 	type Status = {
+		id: number;
 		name: string;
 		count: number;
 		isDisabled?: boolean;
@@ -60,9 +65,9 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 
 	let statuses: Status[] = Object.values(
 		wares.reduce((acc: Record<string, Status>, ware: Ware) => {
-			ware.statusNames.forEach((statusName: string) => {
+			ware.statusNames.forEach((statusName: string, index) => {
 				if (!acc[statusName]) {
-					acc[statusName] = { name: statusName, count: 0 };
+					acc[statusName] = { id: ware.statusIds[index], name: statusName, count: 0 };
 				}
 			});
 			return acc;
@@ -95,8 +100,8 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 	statuses = statuses.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 	// Сортуємо категорії по алфавіту за іменем (назвою)
-	categories = categories.sort((a: any, b: any) => a.name.localeCompare(b.name));
-	console.log("categories", categories);
+	filterSidebarCategories = filterSidebarCategories.sort((a: any, b: any) => a.name.localeCompare(b.name));
+	console.log("filterSidebarCategories", filterSidebarCategories);
 
 	const onClose = () => setIsSidebarOpen(false);
 
@@ -126,7 +131,7 @@ const FilterSidebar = (({ wares, foundWares }: { wares: Ware[], foundWares: Ware
 				<hr className={styles.sidebarHr} />
 				<PriceRange />
 				<hr className={styles.sidebarHr} />
-				<CategoryPicker categories={categories} />
+				<CategoryPicker categories={filterSidebarCategories} />
 				<hr className={styles.sidebarHr} />
 				<TrademarkPicker trademarks={trademarks} />
 				<hr className={styles.sidebarHr} />

@@ -4,38 +4,38 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export class WareQueryParams {
 	SearchParameter: string = "Query";
-	PageNumber?: number;
-	PageSize?: number;
-	Id?: number;
-	Article?: number;
-	Category1Id?: number;
-	Category2Id?: number;
-	Category3Id?: number;
-	NameSubstring?: string;
-	DescriptionSubstring?: string;
-	Category1NameSubstring?: string;
-	Category2NameSubstring?: string;
-	Category3NameSubstring?: string;
-	TrademarkId?: number;
-	TrademarkNameSubstring?: string;
-	MinPrice?: number;
-	MaxPrice?: number;
-	MinDiscount?: number;
-	MaxDiscount?: number;
-	IsDeliveryAvailable?: boolean;
-	StatusId?: number;
-	StatusName?: string;
-	StatusDescription?: string;
-	CustomerId?: string;
-	ImagePath?: string;
-	Sorting?: string;
-	StringIds?: string;
-	StringTrademarkIds?: string;
-	StringStatusIds?: string;
-	StringCategory1Ids?: string;
-	StringCategory2Ids?: string;
-	StringCategory3Ids?: string;
-	QueryAny?: string;
+	PageNumber?: number | null;
+	PageSize?: number | null;
+	Id?: number | null;
+	Article?: number | null;
+	Category1Id?: number | null;
+	Category2Id?: number | null;
+	Category3Id?: number | null;
+	NameSubstring?: string | null;
+	DescriptionSubstring?: string | null;
+	Category1NameSubstring?: string | null;
+	Category2NameSubstring?: string | null;
+	Category3NameSubstring?: string | null;
+	TrademarkId?: number | null;
+	TrademarkNameSubstring?: string | null;
+	MinPrice?: number | null;
+	MaxPrice?: number | null;
+	MinDiscount?: number | null;
+	MaxDiscount?: number | null;
+	IsDeliveryAvailable?: boolean | null;
+	StatusId?: number | null;
+	StatusName?: string | null;
+	StatusDescription?: string | null;
+	CustomerId?: string | null;
+	ImagePath?: string | null;
+	Sorting?: string | null;
+	StringIds?: string | null;
+	StringTrademarkIds?: string | null;
+	StringStatusIds?: string | null;
+	StringCategory1Ids?: string | null;
+	StringCategory2Ids?: string | null;
+	StringCategory3Ids?: string | null;
+	QueryAny?: string | null;
 }
 
 export class WarePostDTO {
@@ -73,7 +73,33 @@ export class WarePutDTO {
 	TrademarkId: number | null;
 	CustomerFavoriteIds: string[] = [];
 }
-
+export class Ware {
+	id: number;
+	article: number;
+	name: string;
+	description: string;
+	structureFilePath: string;
+	price: number;
+	discount: number;
+	finalPrice: number;
+	isDeliveryAvailable: boolean;
+	wareCategory3Id: number;
+	statusIds: number[];
+	imageIds: number[];
+	priceHistoryIds: number[];
+	wareItemIds: number[];
+	orderItemIds: number[];
+	reviewIds: number[];
+	trademarkId: number | null;
+	averageRating: number;
+	previewImagePath: string;
+	customerFavoriteIds: string[];
+	statusNames: string[];
+	imagePaths: string[];
+	trademarkName: string;
+	wareCategory3Name: string;
+	wareItems: any[];
+}
 // GET запит (вже реалізований)
 export async function getWares(params: WareQueryParams = { SearchParameter: "Query" }) {
 	try {
@@ -128,7 +154,7 @@ export async function deleteWare(id: number) {
 // Використання useQuery для отримання списку складів (wares)
 export function useWares(params: WareQueryParams = { SearchParameter: "Query" }) {
 	return useQuery(['wares', params], () => getWares(params), {
-		staleTime: 5000, // Дані залишаються свіжими протягом 5 секунд
+		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
 		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
 		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
 	});

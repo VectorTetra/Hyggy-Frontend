@@ -41,9 +41,9 @@ function StatusPicker(props: any) {
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={status.name}
+								value={status.id}
 								onChange={onChange}
-								checked={(filters || "").split("|").includes(status.name)}
+								checked={(filters || "").split("|").includes(status.id)}
 								disabled={status.count === 0}
 							/>
 						</div>

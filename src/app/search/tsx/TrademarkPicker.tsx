@@ -42,9 +42,9 @@ function TrademarkPicker(props: any) {
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={trademark.name}
+								value={trademark.id}
 								onChange={onChange}
-								checked={(filters || "").split("|").includes(trademark.name)}
+								checked={(filters || "").split("|").includes(trademark.id)}
 								disabled={trademark.count === 0}
 							/>
 						</div>

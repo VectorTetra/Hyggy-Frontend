@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import StarRating from "../../sharedComponents/StarRating";
 import Pagination from "../../sharedComponents/Pagination";
-import { Ware } from "@/types/searchTypes";
+import { Ware } from "@/pages/api/WareApi";
+import { ShopGetDTO } from "@/pages/api/ShopApi";
 
 export default function WareGrid(props: any) {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  console.log('items per page:', props.itemsPerPage)
+  const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+  console.log("wares:", props.wares);
   // Додавання товару до обраних
   const toggleFavorite = (wareId: number) => {
     setFavorites((prevFavorites) =>
@@ -18,13 +20,18 @@ export default function WareGrid(props: any) {
         : [...prevFavorites, wareId]
     );
   };
+  useEffect(() => {
+    const savedShop = localStorage.getItem("selectedShop");
+    if (savedShop) {
+      setSelectedShop(JSON.parse(savedShop));
+    }
+  }, []);
   // Після зміни сторінки прокрутити вгору
   useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 0); // затримка 0 мс
   }, [currentPage]);
-
 
   const itemsPerPage = props.itemsPerPage !== undefined ? props.itemsPerPage : 20; // Кількість товарів на сторінку
   const totalItems = props.wares.length;
@@ -76,7 +83,7 @@ export default function WareGrid(props: any) {
                   {Math.ceil(ware.finalPrice)} грн
                 </span>
                 {ware.discount !== 0 && (
-                  <span className={styles.oldPrice}>{ware.finalPrice} грн</span>
+                  <span className={styles.oldPrice}>{ware.price} грн</span>
                 )}
               </div>
 
@@ -92,7 +99,9 @@ export default function WareGrid(props: any) {
                     <td>{ware.isDeliveryAvailable ? "Є доставка" : "Немає доставки"}</td>
                   </tr>
 
-                  {(Array.isArray(ware.wareItems) && ware.wareItems.every(wi => wi.quantity === 0)) &&
+                  {(Array.isArray(ware.wareItems) &&
+                    (ware.wareItems.every(wi => wi.quantity === 0) || ware.wareItems.length === 0))
+                    &&
                     <tr className={styles.storeAvailability}>
                       <td><svg width="12" height="12">
                         <circle cx="6" cy="6" r="6" fill="red" />
@@ -100,12 +109,23 @@ export default function WareGrid(props: any) {
                       <td>Неможливо замовити</td>
                     </tr>
                   }
-                  {(ware.storeAvailability.includes("Можливо замовити")) && <td><svg width="12" height="12">
-                    <circle cx="6" cy="6" r="6" fill="yellow" />
-                  </svg></td>}
-                  {ware.storeAvailability.includes("In stock") && <td><svg width="12" height="12">
-                    <circle cx="6" cy="6" r="6" fill="green" />
-                  </svg></td>}
+                  {(Array.isArray(ware.wareItems)
+                    && ware.wareItems.some(wi => wi.quantity > 0)
+                    && ware.wareItems.some(wi => wi.quantity === 0 && wi.storageId === selectedShop?.storageId)) &&
+                    <tr className={styles.storeAvailability}>
+                      <td><svg width="12" height="12">
+                        <circle cx="6" cy="6" r="6" fill="yellow" />
+                      </svg></td>
+                      <td>Можливо замовити в {selectedShop?.name}</td>
+                    </tr>}
+                  {(Array.isArray(ware.wareItems)
+                    && ware.wareItems.some(wi => wi.quantity > 0 && wi.storageId === selectedShop?.storageId)) &&
+                    <tr className={styles.storeAvailability}>
+                      <td><svg width="12" height="12">
+                        <circle cx="6" cy="6" r="6" fill="green" />
+                      </svg></td>
+                      <td>Є в наявності в {selectedShop?.name}</td>
+                    </tr>}
 
 
                 </tbody>

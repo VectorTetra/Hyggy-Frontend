@@ -37,6 +37,7 @@
 
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface ShopQueryParams {
 	SearchParameter?: "Query";
@@ -137,4 +138,43 @@ export async function deleteShop(id: number) {
 		console.error('Error deleting Shop:', error);
 		throw new Error('Failed to delete Shop');
 	}
+}
+
+// Використання useQuery для отримання списку складів (Shops)
+export function useShops(params: ShopQueryParams = { SearchParameter: "Query" }) {
+	return useQuery(['Shops', params], () => getShops(params), {
+		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
+		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
+		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+	});
+}
+
+// Використання useMutation для створення нового складу (Shop)
+export function useCreateShop() {
+	const queryClient = useQueryClient();
+	return useMutation((newShop: ShopDTO) => postShop(newShop), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після створення нового складу
+		},
+	});
+}
+
+// Використання useMutation для оновлення існуючого складу (Shop)
+export function useUpdateShop() {
+	const queryClient = useQueryClient();
+	return useMutation((updatedShop: ShopDTO) => putShop(updatedShop), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після оновлення складу
+		},
+	});
+}
+
+// Використання useMutation для видалення складу (Shop)
+export function useDeleteShop() {
+	const queryClient = useQueryClient();
+	return useMutation((id: number) => deleteShop(id), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після видалення складу
+		},
+	});
 }

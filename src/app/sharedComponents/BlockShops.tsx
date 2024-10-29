@@ -190,34 +190,39 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./css/MenuShops.module.css";
-import blockShops from "./json/menushops.json";
+//import blockShops from "./json/menushops.json";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
-import { ShopGetDTO } from "@/pages/api/ShopApi";
+import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 
 export default function BlockShops() {
     const [searchTerm, setSearchTerm] = useState("");
-    const [currentMenu, setCurrentMenu] = useState(blockShops);
     const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
-
     const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
     const menuRef = useRef<HTMLDivElement | null>(null);
 
-    // Проверка локального хранилища на наличие выбранного магазина
+    // Використання кешованих даних з API для отримання списку магазинів
+    const { data: shops, isLoading } = useShops({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000
+    });
+
+    // Перевірка локального хранилища на наявність вибраного магазину
     useEffect(() => {
-        const savedShop = localStorage.getItem('selectedShop');
+        const savedShop = localStorage.getItem("selectedShop");
         if (savedShop) {
             setSelectedShop(JSON.parse(savedShop));
         }
     }, []);
 
-    const handleSearch = () => {
-        console.log("Поиск: ", searchTerm);
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            handleSearch();
-        }
+    const handleShopClick = (shop: ShopGetDTO) => {
+        setSelectedShop(shop);
+        localStorage.setItem("selectedShop", JSON.stringify(shop));
+        setIsMainPageMenuShopsOpened(false);
     };
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -226,22 +231,24 @@ export default function BlockShops() {
         }
     };
 
-    const handleShopClick = (shop: ShopGetDTO) => {
-        setSelectedShop(shop);
-        const shopString = JSON.stringify(shop);
-        localStorage.setItem('selectedShop', shopString);
-        console.log(`Выбран магазин: ${shopString}`);
-        setIsMainPageMenuShopsOpened(false);
-        window.location.reload();
-    };
-
-    const checkShopStatus = (worktime) => {
+    const checkShopStatus = (workHours: string) => {
         const currentDate = new Date();
         const currentDay = currentDate.toLocaleString("uk-UA", { weekday: "long" });
         const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
+        //console.log("currentDay", currentDay);
+        //console.log("currentTime", currentTime);
 
-        const todayWorktime = worktime.find(time => time.dayweek === currentDay);
+        // Розбиваємо `workHours` на окремі записи за кожен день
+        const workHoursArray = workHours.split("|").map((day) => {
+            const [dayweek, hours] = day.split(",");
+            const [open, close] = hours.split(" - ");
+            return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
+        });
+        //console.log("workHoursArray", workHoursArray);
 
+        // Знаходимо сьогоднішні години роботи
+        const todayWorktime = workHoursArray.find((time) => time.dayweek.toLocaleLowerCase() === currentDay.toLocaleLowerCase());
+        //console.log("todayWorktime", todayWorktime);
         if (todayWorktime) {
             const [openHour, openMinute] = todayWorktime.open.split(":").map(Number);
             const [closeHour, closeMinute] = todayWorktime.close.split(":").map(Number);
@@ -250,22 +257,23 @@ export default function BlockShops() {
 
             if (currentTime >= openMinutes && currentTime < closeMinutes) {
                 return (
-                    <span style={{ marginLeft: '10px' }}>
-                        <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Відчинено:</span>
-                        <span style={{ fontSize: '0.9em', marginLeft: '5px' }}> Зачиняється о {todayWorktime.close}</span>
+                    <span style={{ marginLeft: "10px" }}>
+                        <span style={{ color: "green", fontWeight: "bold", fontSize: "0.9em" }}>Відчинено:</span>
+                        <span style={{ fontSize: "0.9em", marginLeft: "5px" }}> Зачиняється о {todayWorktime.close}</span>
                     </span>
                 );
             } else {
                 return (
-                    <span style={{ marginLeft: '10px' }}>
-                        <span style={{ color: 'red', fontWeight: 'bold', fontSize: '0.9em' }}>Зачинено:</span>
-                        <span style={{ fontSize: '0.9em' }}> Відкриється о {todayWorktime.open}</span>
+                    <span style={{ marginLeft: "10px" }}>
+                        <span style={{ color: "red", fontWeight: "bold", fontSize: "0.9em" }}>Зачинено:</span>
+                        <span style={{ fontSize: "0.9em" }}> Відкриється о {todayWorktime.open}</span>
                     </span>
                 );
             }
         }
         return "Час роботи не доступний";
     };
+
 
     const ShopStatus = ({ shop }) => {
         const [isOpen, setIsOpen] = useState(false);
@@ -274,43 +282,50 @@ export default function BlockShops() {
             setIsOpen(!isOpen);
         };
 
+        // Розбираємо рядок workHours на масив об'єктів для відображення
+        const parsedWorkHours = shop.workHours.split("|").map((day) => {
+            const [dayweek, hours] = day.split(",");
+            const [open, close] = hours.split(" - ");
+            return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
+        });
+
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                    <div>{checkShopStatus(shop.worktime)}</div>
+            <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                    <div>{checkShopStatus(shop.workHours)}</div>
                     <span
                         onClick={toggleWorkHours}
                         style={{
-                            margin: '10px 15px 10px 0',
-                            color: '#007bff',
-                            textDecoration: 'underline',
-                            cursor: 'pointer',
-                            fontSize: '14px',
+                            margin: "10px 15px 10px 0",
+                            color: "#007bff",
+                            textDecoration: "underline",
+                            cursor: "pointer",
+                            fontSize: "14px",
                         }}
                     >
                         Робочі години
                     </span>
                 </div>
                 {isOpen && (
-                    <div style={{ width: '100%', padding: '10px', marginTop: '10px' }}>
+                    <div style={{ width: "100%", padding: "10px", marginTop: "10px" }}>
                         <div>
-                            <p style={{ fontWeight: 'bold' }}>Інформація про магазин:</p>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                            <p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
+                            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                 <strong>Адреса:</strong>
-                                <span style={{ marginLeft: '50px' }}>
-                                    {shop.address.street},
-                                    <p style={{ marginBottom: 0 }}>{shop.address.city}</p>
+                                <span style={{ marginLeft: "50px" }}>
+                                    {shop.street},
+                                    <p style={{ marginBottom: 0 }}>{shop.city}</p>
                                     <a className={styles.customlink} href="https://jysk.ua">Як знайти магазин</a>
                                 </span>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', margin: '20px 0 10px 0', flexDirection: 'column' }}>
-                            <p style={{ fontWeight: 'bold', marginBottom: '10px' }}>Робочі години:</p>
+                        <div style={{ display: "flex", margin: "20px 0 10px 0", flexDirection: "column" }}>
+                            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>Робочі години:</p>
                             <ul className={styles.worktimelist}>
-                                {shop.worktime.map((time, index) => (
+                                {parsedWorkHours.map((time, index) => (
                                     <li key={index} className={styles.worktimeitem}>
                                         <span className={styles.worktimeday}>{time.dayweek}:</span>
-                                        <span style={{ fontSize: '14px' }}>{time.open} - {time.close}</span>
+                                        <span style={{ fontSize: "14px" }}>{time.open} - {time.close}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -332,11 +347,11 @@ export default function BlockShops() {
     return (
         <>
             {isMainPageMenuShopsOpened && <div className={styles.overlayBackground}></div>}
-            <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ''}`}>
+            <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.captioncity : "Виберіть магазин HYGGY"}</span>
+                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
                             <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>Х</button>
                         </div>
                     </div>
@@ -345,35 +360,38 @@ export default function BlockShops() {
                         <input
                             type="text"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={handleKeyDown}
+                            onChange={handleSearchChange}
                             className={styles.searchInput}
                             placeholder="Введіть місто або адресу..."
                         />
-                        <button onClick={handleSearch} className={styles.searchButton}>
+                        <button onClick={() => { }} className={styles.searchButton}>
                             🔍
                         </button>
                     </div>
 
                     <div className={styles.shopListContainer}>
-                        {blockShops.blockShops.map((shop, index) => (
-                            <div key={index} className={styles.card}>
-                                <div className={styles.shopcard}>
-                                    <div className={styles.shopInfo}>
-                                        <h2 className={styles.h2}>{shop.captioncity}</h2>
-                                        <p className={styles.p}>{shop.geoposition}</p>
+                        {isLoading ? (
+                            <p>Завантаження...</p>
+                        ) : (
+                            shops?.map((shop, index) => (
+                                <div key={index} className={styles.card}>
+                                    <div className={styles.shopcard}>
+                                        <div className={styles.shopInfo}>
+                                            <h2 className={styles.h2}>{shop.name}</h2>
+                                        </div>
+                                        <button onClick={() => handleShopClick(shop)} className={styles.shopButton}>
+                                            Обрати магазин
+                                        </button>
                                     </div>
-                                    <button onClick={() => handleShopClick(shop)} className={styles.shopButton}>
-                                        Обрати магазин
-                                    </button>
+                                    <ShopStatus shop={shop} />
                                 </div>
-                                <ShopStatus shop={shop} />
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
         </>
     );
 }
+
 
