@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 export interface LayoutProps {
   children: React.ReactNode;
   headerType?: 'header1' | 'header2' | 'null'; // Определение типа хедера
-  footerType?: 'footer1' | 'footer2'; // Определение типа футера
+  footerType?: 'footer1' | 'footer2' | 'null'; // Определение типа футера
   pageMetadata?: {    // Добавьте этот блок
     title: string;
     description: string;
@@ -38,6 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', foote
       {isMainPageMenuShopsOpened && <BlockShops />}
       <main>{children}</main>
       {footerType === 'footer1' && <Footer1 />}
+      {footerType === 'null' && null}
     </QueryClientProvider>
   );
 };

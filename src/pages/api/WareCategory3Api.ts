@@ -91,8 +91,8 @@ export async function deleteWareCategory3(id: number) {
 // Використання useQuery для отримання списку складів (wareCategories3)
 export function useWareCategories3(params: WareCategory3QueryParams = { SearchParameter: "Query" }) {
 	return useQuery(['wareCategories3', params], () => getWareCategories3(params), {
-		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
-		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
 	});
 }

@@ -100,8 +100,8 @@ export async function deleteBlog(id: number) {
 // Використання useQuery для отримання списку складів (blogs)
 export function useBlogs(params: BlogQueryParams = { SearchParameter: "Query" }) {
 	return useQuery(['blogs', params], () => getBlogs(params), {
-		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
-		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
 	});
 }

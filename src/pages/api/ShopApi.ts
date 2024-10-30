@@ -143,8 +143,8 @@ export async function deleteShop(id: number) {
 // Використання useQuery для отримання списку складів (Shops)
 export function useShops(params: ShopQueryParams = { SearchParameter: "Query" }) {
 	return useQuery(['Shops', params], () => getShops(params), {
-		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
-		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
 	});
 }

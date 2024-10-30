@@ -34,9 +34,9 @@ export default function WareGrid(props: any) {
   }, [currentPage]);
 
   const itemsPerPage = props.itemsPerPage !== undefined ? props.itemsPerPage : 20; // Кількість товарів на сторінку
-  const totalItems = props.wares.length;
+  const totalItems = props.wares?.length;
   // Визначення товарів, які будуть відображені на поточній сторінці
-  const displayedWares = props.wares.slice(
+  const displayedWares = props.wares?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -44,7 +44,7 @@ export default function WareGrid(props: any) {
   return (
     <div>
       <div id={styles.wareGrid}>
-        {displayedWares.map((ware: Ware) => (
+        {displayedWares?.map((ware: Ware) => (
           <div key={ware.id} className={styles.wareCard}>
             <div className={styles.wareCardLinkContainer}>
               <button
@@ -64,9 +64,9 @@ export default function WareGrid(props: any) {
                 />
                 <div className={styles.wareStickersContainer}>
                   {ware.discount > 0 && <span className={styles.discountSticker}> - {ware.discount} %</span>}
-                  {ware.statusNames.includes("Новинка") && <span className={styles.newSticker}>Новинка</span>}
-                  {ware.statusNames.includes("Завжди низька ціна") && <span className={styles.lowPriceSticker}>Завжди низька ціна</span>}
-                  {ware.statusNames.includes("Чудова пропозиція") && <span className={styles.saleSticker}>Чудова пропозиція</span>}
+                  {ware.statusIds.includes(3) && <span className={styles.newSticker}>Новинка</span>}
+                  {ware.statusIds.includes(1) && <span className={styles.lowPriceSticker}>Завжди низька ціна</span>}
+                  {ware.statusIds.includes(2) && <span className={styles.saleSticker}>Чудова пропозиція</span>}
                 </div>
               </Link>
             </div>

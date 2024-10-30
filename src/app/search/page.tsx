@@ -18,6 +18,8 @@ import { useQueryState, parseAsArrayOf, parseAsJson } from 'nuqs'; // Імпор
 import SortingSidebar from "./tsx/SortingSidebar";
 import { CircularProgress } from "@mui/material";
 import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
+import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
+import { useWareStatuses } from "@/pages/api/WareStatusApi";
 
 interface Filter {
   id: string; // або number, в залежності від типу вашого id
@@ -28,8 +30,8 @@ export default function SearchPage() {
   const [type] = useQueryState("type", { scroll: false, history: "replace", shallow: true });
   const [priceRange] = useQueryState("f_0", { scroll: false, history: "replace", shallow: true });
   const [categories] = useQueryState<Filter[] | null>("f_1", parseAsArrayOf(parseAsJson()));
-  const [trademarks] = useQueryState("f_2", { scroll: false, history: "replace", shallow: true });
-  const [statuses] = useQueryState("f_3", { scroll: false, history: "replace", shallow: true });
+  const [trademarks] = useQueryState<Filter[] | null>("f_2", parseAsArrayOf(parseAsJson()));
+  const [statuses] = useQueryState<Filter[] | null>("f_3", parseAsArrayOf(parseAsJson()));
   const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
   const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
   const [loading, setLoading] = useState(true);
@@ -41,9 +43,24 @@ export default function SearchPage() {
     (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = "";
   }, []);
 
-  const { data: foundCategories = [], isLoading: isWareCategories3Loading } = useWareCategories3({
+  const { data: foundWareCategories = [], isLoading: isWareCategories3Loading } = useWareCategories3({
     SearchParameter: "Query",
     QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
+  const { data: foundTrademarks = [], isLoading: isWareTrademarksLoading } = useWareTrademarks({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
+  const { data: foundWareStatuses = [], isLoading: isWareStatusesLoading } = useWareStatuses({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
   });
   const { data: foundWares = [], isLoading: isFoundWaresLoading } = useWares({
     SearchParameter: "Query",
@@ -51,24 +68,37 @@ export default function SearchPage() {
     MinPrice: priceRange ? Number(priceRange?.split("_")[0]) : null,
     MaxPrice: priceRange ? Number(priceRange?.split("_")[1]) : null,
     StringCategory3Ids: categories?.map(category => category.id).join('|'),
-    StringTrademarkIds: trademarks,
-    StringStatusIds: statuses,
+    StringTrademarkIds: trademarks?.map(trademark => trademark.id).join('|'),
+    StringStatusIds: statuses?.map(status => status.id).join('|'),
     Sorting: sort,
     MinDiscount: sale ? 0.1 : null,
-    MaxDiscount: sale ? 100 : null
+    MaxDiscount: sale ? 100 : null,
+    PageNumber: 1,
+    PageSize: 1000
   });
   const { data: wares = [], isLoading: isWaresLoading } = useWares({
     SearchParameter: "Query",
     QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000
   });
 
   const { data: foundBlogs = [], isLoading: isBlogsLoading } = useBlogs({
     SearchParameter: "Query",
-    QueryAny: query
+    QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000
   });
 
-  const allLoadings = isFoundWaresLoading && isWaresLoading && isBlogsLoading && isWareCategories3Loading
-
+  const allLoadings = isFoundWaresLoading
+    && isWaresLoading
+    && isBlogsLoading
+    && isWareCategories3Loading
+    && isWareTrademarksLoading
+    && isWareStatusesLoading;
+  console.log("foundWareCategories", foundWareCategories);
+  console.log("foundTrademarks", foundTrademarks);
+  console.log("foundWareStatuses", foundWareStatuses);
   return (
     <div className={styles.main}>
       {allLoadings ? <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />
@@ -80,9 +110,12 @@ export default function SearchPage() {
           <div style={{ minHeight: "32px", margin: "16px 0" }}>
             <FilterStickerPanel />
           </div>
-          {activeTab === "wares" && <WareGrid wares={foundWares} />}
-          {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs} />}
-          <FilterSidebar wares={wares} foundWares={foundWares} categories={foundCategories} />
+          {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
+          {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
+          <FilterSidebar wares={wares} foundWares={foundWares}
+            categories={foundWareCategories} trademarks={foundTrademarks}
+            statuses={foundWareStatuses}
+          />
           <SortingSidebar />
         </>
       }

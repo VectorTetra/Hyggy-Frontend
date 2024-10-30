@@ -43,7 +43,7 @@ function CategoryPicker(props: any) {
 								className={styles.checkbox}
 								value={category.id}
 								onChange={onChange}
-								checked={filters?.some((filter: Filter) => Number(filter.id) === category.id)} // Перевірка, чи фільтр вибраний
+								checked={filters !== null && filters?.some((filter: Filter) => Number(filter.id) === category.id)} // Перевірка, чи фільтр вибраний
 								disabled={category.isDisabled}
 							/>
 						</div>

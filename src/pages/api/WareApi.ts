@@ -154,9 +154,9 @@ export async function deleteWare(id: number) {
 // Використання useQuery для отримання списку складів (wares)
 export function useWares(params: WareQueryParams = { SearchParameter: "Query" }) {
 	return useQuery(['wares', params], () => getWares(params), {
-		staleTime: 1000000, // Дані залишаються свіжими протягом 5 секунд
-		cacheTime: 10000, // Дані залишаються в кеші протягом 10 секунд після того, як стають неактуальними
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false,
 	});
 }
 

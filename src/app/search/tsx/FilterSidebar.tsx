@@ -11,8 +11,13 @@ import StatusPicker from "./StatusPicker";
 import SaleCheckbox from "./SaleCheckbox";
 import SidebarButtonBar from "./SidebarButtonBar";
 import { WareCategory3 } from "@/pages/api/WareCategory3Api";
+import { WareTrademark } from "@/pages/api/WareTrademarkApi";
+import { WareStatus } from "@/pages/api/WareStatusApi";
 
-const FilterSidebar = (({ wares, foundWares, categories }: { wares: Ware[], foundWares: Ware[], categories: WareCategory3[] }) => {
+const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }: {
+	wares: Ware[], foundWares: Ware[],
+	categories: WareCategory3[], trademarks: WareTrademark[], statuses: WareStatus[]
+}) => {
 	const { isSidebarOpen, setIsSidebarOpen, setCategoriesMap, setTrademarksMap, setStatusesMap } = useSearchStore();
 
 
@@ -44,16 +49,15 @@ const FilterSidebar = (({ wares, foundWares, categories }: { wares: Ware[], foun
 		isDisabled?: boolean;
 	};
 
-	let trademarks: Trademark[] = Object.values(
-		wares.reduce((acc: Record<string, Trademark>, ware: Ware) => {
-			const trademarkName = ware.trademarkName;
-			const trademarkId = ware.trademarkId;
-			if (trademarkName && !acc[trademarkName]) {
-				acc[trademarkName] = { id: trademarkId, name: trademarkName, count: 0 };
-			}
-			return acc;
-		}, {})
-	);
+	let filterSidebarTrademarks = trademarks.map(trademark => {
+		const count = wares.filter(ware => ware.trademarkId === trademark.id).length;
+		return {
+			id: trademark.id,
+			name: trademark.name,
+			count: count
+		};
+	});
+	filterSidebarTrademarks = filterSidebarTrademarks.filter(fsc => fsc.count > 0);
 
 	// Групуємо wares по статусам
 	type Status = {
@@ -63,45 +67,44 @@ const FilterSidebar = (({ wares, foundWares, categories }: { wares: Ware[], foun
 		isDisabled?: boolean;
 	};
 
-	let statuses: Status[] = Object.values(
-		wares.reduce((acc: Record<string, Status>, ware: Ware) => {
-			ware.statusNames.forEach((statusName: string, index) => {
-				if (!acc[statusName]) {
-					acc[statusName] = { id: ware.statusIds[index], name: statusName, count: 0 };
-				}
-			});
-			return acc;
-		}, {})
-	);
-
-
-	// Оновлюємо кількість і стан доступності для торгових марок і статусів
-	foundWares.forEach((ware: Ware) => {
-		const trademark = trademarks.find((trademark: any) => trademark.name === ware.trademarkName);
-		if (trademark) {
-			trademark.count = (trademark.count || 0) + 1;
-			trademark.isDisabled = false;
-		}
-
-		ware.statusNames.forEach((statusName: string) => {
-			const status = statuses.find((status: any) => status.name === statusName);
-			if (status) {
-				status.count = (status.count || 0) + 1;
-				status.isDisabled = false;
-			}
-		});
+	let filterSidebarStatuses = statuses.map(status => {
+		const count = wares.filter(ware => ware.statusIds.includes(status.id)).length;
+		return {
+			id: status.id,
+			name: status.name,
+			count: count
+		};
 	});
+	filterSidebarStatuses = filterSidebarStatuses.filter(fsc => fsc.count > 0);
+
+
+	// // Оновлюємо кількість і стан доступності для торгових марок і статусів
+	// foundWares.forEach((ware: Ware) => {
+	// 	const trademark = trademarks.find((trademark: any) => trademark.name === ware.trademarkName);
+	// 	if (trademark) {
+	// 		trademark.count = (trademark.count || 0) + 1;
+	// 		trademark.isDisabled = false;
+	// 	}
+
+	// 	ware.statusNames.forEach((statusName: string) => {
+	// 		const status = statuses.find((status: any) => status.name === statusName);
+	// 		if (status) {
+	// 			status.count = (status.count || 0) + 1;
+	// 			status.isDisabled = false;
+	// 		}
+	// 	});
+	// });
 
 	// Прибираємо пусті та null значення з торгових марок і статусів
-	trademarks = trademarks.filter((trademark: any) => trademark.name);
-	trademarks = trademarks.sort((a: any, b: any) => a.name.localeCompare(b.name));
+	// trademarks = trademarks.filter((trademark: any) => trademark.name);
+	// trademarks = trademarks.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-	statuses = statuses.filter((status: any) => status.name);
-	statuses = statuses.sort((a: any, b: any) => a.name.localeCompare(b.name));
+	// statuses = statuses.filter((status: any) => status.name);
+	// statuses = statuses.sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-	// Сортуємо категорії по алфавіту за іменем (назвою)
-	filterSidebarCategories = filterSidebarCategories.sort((a: any, b: any) => a.name.localeCompare(b.name));
-	console.log("filterSidebarCategories", filterSidebarCategories);
+	// // Сортуємо категорії по алфавіту за іменем (назвою)
+	// filterSidebarCategories = filterSidebarCategories.sort((a: any, b: any) => a.name.localeCompare(b.name));
+	// console.log("filterSidebarCategories", filterSidebarCategories);
 
 	const onClose = () => setIsSidebarOpen(false);
 
@@ -133,9 +136,9 @@ const FilterSidebar = (({ wares, foundWares, categories }: { wares: Ware[], foun
 				<hr className={styles.sidebarHr} />
 				<CategoryPicker categories={filterSidebarCategories} />
 				<hr className={styles.sidebarHr} />
-				<TrademarkPicker trademarks={trademarks} />
+				<TrademarkPicker trademarks={filterSidebarTrademarks} />
 				<hr className={styles.sidebarHr} />
-				<StatusPicker statuses={statuses} />
+				<StatusPicker statuses={filterSidebarStatuses} />
 				<hr className={styles.sidebarHr} />
 				<SaleCheckbox />
 				<hr className={styles.sidebarHr} />

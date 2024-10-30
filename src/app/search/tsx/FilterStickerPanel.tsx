@@ -12,8 +12,8 @@ function FilterStickerPanel() {
 	const { categoriesMap, trademarksMap, statusesMap } = useSearchStore();
 	const [f_0, setf_0] = useQueryState('f_0', { scroll: false });
 	const [f_1, setf_1] = useQueryState<Filter[] | null>("f_1", parseAsArrayOf(parseAsJson()));
-	const [f_2, setf_2] = useQueryState('f_2', { scroll: false });
-	const [f_3, setf_3] = useQueryState('f_3', { scroll: false });
+	const [f_2, setf_2] = useQueryState<Filter[] | null>("f_2", parseAsArrayOf(parseAsJson()));
+	const [f_3, setf_3] = useQueryState<Filter[] | null>("f_3", parseAsArrayOf(parseAsJson()));
 	const [f_4, setf_4] = useQueryState('f_4', { scroll: false });
 
 	const deletePriceSticker = () => {
@@ -26,13 +26,13 @@ function FilterStickerPanel() {
 	};
 
 	const deleteTrademarkSticker = (trademarkId: string) => {
-		const updatedTrademarks = (f_2 ? f_2.split("|") : []).filter((t) => t !== trademarkId);
-		setf_2(updatedTrademarks.length === 0 ? null : updatedTrademarks.join("|"), { history: "replace", scroll: false });
+		const updatedTrademarks = f_2?.filter((c) => c.id !== trademarkId) || [];
+		setf_2(updatedTrademarks.length === 0 ? null : updatedTrademarks, { history: "replace", scroll: false });
 	};
 
 	const deleteStatusSticker = (statusId: string) => {
-		const updatedStatuses = (f_3 ? f_3.split("|") : []).filter((s) => s !== statusId);
-		setf_3(updatedStatuses.length === 0 ? null : updatedStatuses.join("|"), { history: "replace", scroll: false });
+		const updatedStatuses = f_3?.filter((c) => c.id !== statusId) || [];
+		setf_3(updatedStatuses.length === 0 ? null : updatedStatuses, { history: "replace", scroll: false });
 	};
 
 	const deleteSaleSticker = () => {
@@ -51,9 +51,9 @@ function FilterStickerPanel() {
 	const hasActiveFilters = [f_0, f_1, f_2, f_3, f_4].some(filter => filter !== null);
 	const filterCount = [
 		f_0 ? 1 : 0,
-		f_1 ? (f_1.length || 0) : 0, // Тепер просто беремо довжину масиву
-		f_2 ? (f_2.split("|").length || 0) : 0,
-		f_3 ? (f_3.split("|").length || 0) : 0,
+		f_1 ? (f_1.length || 0) : 0,
+		f_2 ? (f_2.length || 0) : 0,
+		f_3 ? (f_3.length || 0) : 0,
 		f_4 ? 1 : 0
 	].reduce((acc, count) => acc + count, 0);
 
@@ -68,15 +68,15 @@ function FilterStickerPanel() {
 							<CrossIcon width="22px" height="22px" />
 						</span>
 					))}
-					{f_2 && f_2.split("|").map((trademarkId, index) => (
-						<span key={index} className={styles.filterStickerItem} onClick={() => deleteTrademarkSticker(trademarkId)}>
-							<div className={styles.text}>{trademarksMap[trademarkId] || trademarkId}</div>
+					{f_2 && f_2.map((trademark, index) => (
+						<span key={index} className={styles.filterStickerItem} onClick={() => deleteTrademarkSticker(trademark.id)}>
+							<div className={styles.text}>{trademark.name}</div>
 							<CrossIcon width="22px" height="22px" />
 						</span>
 					))}
-					{f_3 && f_3.split("|").map((statusId, index) => (
-						<span key={index} className={styles.filterStickerItem} onClick={() => deleteStatusSticker(statusId)}>
-							<div className={styles.text}>{statusesMap[statusId] || statusId}</div>
+					{f_3 && f_3.map((status, index) => (
+						<span key={index} className={styles.filterStickerItem} onClick={() => deleteStatusSticker(status.id)}>
+							<div className={styles.text}>{status.name}</div>
 							<CrossIcon width="22px" height="22px" />
 						</span>
 					))}
