@@ -5,6 +5,7 @@ import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Head from 'next/head';
 import Layout from "./sharedComponents/Layout";
+import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,11 +31,10 @@ export default function RootLayout({
         <meta name="description" content={description} />
       </Head>
       <body className={inter.className}>
-        <Layout headerType="header1" footerType="footer1">
+        <QueryClientWrapper>
           {children}
-        </Layout>
+        </QueryClientWrapper>
       </body>
-
     </html>
   );
 }

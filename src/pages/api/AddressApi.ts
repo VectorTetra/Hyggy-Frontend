@@ -4,34 +4,34 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface AddressQueryParams {
 	SearchParameter: string;
-	Id?: number;
-	Street?: string;
-	HouseNumber?: string;
-	City?: string;
-	State?: string;
-	PostalCode?: string;
+	Id?: number | null;
+	Street?: string | null;
+	HouseNumber?: string | null;
+	City?: string | null;
+	State?: string | null;
+	PostalCode?: string | null;
 	Latitude?: number | null;
 	Longitude?: number | null;
-	ShopId?: number;
-	StorageId?: number;
-	OrderId?: number;
-	PageNumber?: number;
-	PageSize?: number;
-	StringIds?: string;
-	Sorting?: string;
-	QueryAny?: string;
+	ShopId?: number | null;
+	StorageId?: number | null;
+	OrderId?: number | null;
+	PageNumber?: number | null;
+	PageSize?: number | null;
+	StringIds?: string | null;
+	Sorting?: string | null;
+	QueryAny?: string | null;
 }
 
 export interface AddressDTO {
 	AddressId?: number;
-	Id?: number;
+	Id?: number | null;
 	ShopId?: number | null;
 	StorageId?: number | null;
-	Street?: string;
-	HouseNumber?: string;
-	City?: string;
-	State?: string;
-	PostalCode?: string;
+	Street?: string | null;
+	HouseNumber?: string | null;
+	City?: string | null;
+	State?: string | null;
+	PostalCode?: string | null;
 	Latitude?: number | null;
 	Longitude?: number | null;
 	OrderIds?: number[];

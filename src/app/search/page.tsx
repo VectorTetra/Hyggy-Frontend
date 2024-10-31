@@ -20,6 +20,7 @@ import { CircularProgress } from "@mui/material";
 import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
 import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
 import { useWareStatuses } from "@/pages/api/WareStatusApi";
+import QueryClientWrapper from "../sharedComponents/QueryClientWrapper";
 
 interface Filter {
   id: string; // або number, в залежності від типу вашого id
@@ -100,26 +101,30 @@ export default function SearchPage() {
   console.log("foundTrademarks", foundTrademarks);
   console.log("foundWareStatuses", foundWareStatuses);
   return (
-    <div className={styles.main}>
-      {allLoadings ? <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />
-        :
-        <>
-          <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
-          <SearchHeader foundWaresQuantity={foundWares.length} foundBlogsQuantity={foundBlogs.length} activeTab={activeTab} query={query} loading={!allLoadings} />
-          {activeTab === "wares" && <FilterBar />}
-          <div style={{ minHeight: "32px", margin: "16px 0" }}>
-            <FilterStickerPanel />
-          </div>
-          {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
-          {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
-          <FilterSidebar wares={wares} foundWares={foundWares}
-            categories={foundWareCategories} trademarks={foundTrademarks}
-            statuses={foundWareStatuses}
-          />
-          <SortingSidebar />
-        </>
-      }
-    </div>
+
+    <Layout headerType="header1" footerType='footer1'>
+      <div className={styles.main}>
+        {allLoadings ? <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />
+          :
+          <>
+            <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
+            <SearchHeader foundWaresQuantity={foundWares.length} foundBlogsQuantity={foundBlogs.length} activeTab={activeTab} query={query} loading={!allLoadings} />
+            {activeTab === "wares" && <FilterBar />}
+            <div style={{ minHeight: "32px", margin: "16px 0" }}>
+              <FilterStickerPanel />
+            </div>
+            {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
+            {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
+            <FilterSidebar wares={wares} foundWares={foundWares}
+              categories={foundWareCategories} trademarks={foundTrademarks}
+              statuses={foundWareStatuses}
+            />
+            <SortingSidebar />
+          </>
+        }
+      </div>
+    </Layout>
+
   );
 }
 

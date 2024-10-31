@@ -18,8 +18,8 @@ export interface StorageQueryParams {
 	QueryAny?: string | null;
 }
 export interface StorageDTO {
-	AddressId?: number;
-	Id?: number;
+	AddressId?: number | null;
+	Id?: number | null;
 	ShopId?: number | null;
 }
 

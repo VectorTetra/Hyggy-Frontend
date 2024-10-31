@@ -10,9 +10,11 @@ export default function Home() {
   console.log("borderData", borderData);
   return (
     <Layout headerType="header1" footerType="footer1">
+      {/* <div> */}
       <MainPageBorder borderData={borderData.borderData} />
       <MainPageBody bodyData={bodyData.bodyData} />
       <div></div>
+      {/* </div> */}
     </Layout>
   );
 }
