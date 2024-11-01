@@ -36,7 +36,6 @@ export default function SearchPage() {
   const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
   const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
   const [loading, setLoading] = useState(true);
-
   const { setMinPossible, setMaxPossible, waresBeforeCategories, setWaresBeforeCategories,
     activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore();
 
@@ -91,22 +90,31 @@ export default function SearchPage() {
     PageSize: 1000
   });
 
+  useEffect(() => {
+    if (!isWaresLoading && wares.length) {
+      const prices = wares.map(ware => ware.finalPrice).filter(price => price !== undefined);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      setMinPossible(Math.floor(minPrice));
+      setMaxPossible(Math.ceil(maxPrice));
+    }
+  }, [isWaresLoading, wares]);
+
   const allLoadings = isFoundWaresLoading
-    && isWaresLoading
-    && isBlogsLoading
-    && isWareCategories3Loading
-    && isWareTrademarksLoading
-    && isWareStatusesLoading;
-  console.log("foundWareCategories", foundWareCategories);
-  console.log("foundTrademarks", foundTrademarks);
-  console.log("foundWareStatuses", foundWareStatuses);
+    || isWaresLoading
+    || isBlogsLoading
+    || isWareCategories3Loading
+    || isWareTrademarksLoading
+    || isWareStatusesLoading;
+
+
   return (
 
     <Layout headerType="header1" footerType='footer1'>
       <div className={styles.main}>
-        {allLoadings ? <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />
-          :
-          <>
+        {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />}
+        <>
+          {!allLoadings && <>
             <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
             <SearchHeader foundWaresQuantity={foundWares.length} foundBlogsQuantity={foundBlogs.length} activeTab={activeTab} query={query} loading={!allLoadings} />
             {activeTab === "wares" && <FilterBar />}
@@ -115,13 +123,13 @@ export default function SearchPage() {
             </div>
             {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
             {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
-            <FilterSidebar wares={wares} foundWares={foundWares}
-              categories={foundWareCategories} trademarks={foundTrademarks}
-              statuses={foundWareStatuses}
-            />
-            <SortingSidebar />
-          </>
-        }
+          </>}
+          <FilterSidebar wares={wares} foundWares={foundWares}
+            categories={foundWareCategories} trademarks={foundTrademarks}
+            statuses={foundWareStatuses}
+          />
+          <SortingSidebar />
+        </>
       </div>
     </Layout>
 

@@ -40,9 +40,19 @@
 .sidebarHeader {
 	display: flex;
 	justify-content: center;
+	margin-top: 10px;
+}
+
+.sidebarFilters {
+	max-height: 80vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 .sidebarHr {
 	width: 90%;
 	text-align: center;
+	display: flex;
+	align-self: center;
 }

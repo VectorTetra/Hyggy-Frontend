@@ -77,35 +77,6 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 	});
 	filterSidebarStatuses = filterSidebarStatuses.filter(fsc => fsc.count > 0);
 
-
-	// // Оновлюємо кількість і стан доступності для торгових марок і статусів
-	// foundWares.forEach((ware: Ware) => {
-	// 	const trademark = trademarks.find((trademark: any) => trademark.name === ware.trademarkName);
-	// 	if (trademark) {
-	// 		trademark.count = (trademark.count || 0) + 1;
-	// 		trademark.isDisabled = false;
-	// 	}
-
-	// 	ware.statusNames.forEach((statusName: string) => {
-	// 		const status = statuses.find((status: any) => status.name === statusName);
-	// 		if (status) {
-	// 			status.count = (status.count || 0) + 1;
-	// 			status.isDisabled = false;
-	// 		}
-	// 	});
-	// });
-
-	// Прибираємо пусті та null значення з торгових марок і статусів
-	// trademarks = trademarks.filter((trademark: any) => trademark.name);
-	// trademarks = trademarks.sort((a: any, b: any) => a.name.localeCompare(b.name));
-
-	// statuses = statuses.filter((status: any) => status.name);
-	// statuses = statuses.sort((a: any, b: any) => a.name.localeCompare(b.name));
-
-	// // Сортуємо категорії по алфавіту за іменем (назвою)
-	// filterSidebarCategories = filterSidebarCategories.sort((a: any, b: any) => a.name.localeCompare(b.name));
-	// console.log("filterSidebarCategories", filterSidebarCategories);
-
 	const onClose = () => setIsSidebarOpen(false);
 
 	// Використовуємо useEffect для блокування/розблокування скролу
@@ -123,26 +94,24 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 
 	return (
 		<>
-			<div
-				className={`${styles.backdrop} ${isSidebarOpen ? styles.open : ""}`}
+			<div className={`${styles.backdrop} ${isSidebarOpen ? styles.open : ""}`}
 				onClick={onClose}
 			></div>
-			<div
-				className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}
-			>
+			<div className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>
 				<h2 className={styles.sidebarHeader}>Фільтри</h2>
-				<hr className={styles.sidebarHr} />
-				<PriceRange />
-				<hr className={styles.sidebarHr} />
-				<CategoryPicker categories={filterSidebarCategories} />
-				<hr className={styles.sidebarHr} />
-				<TrademarkPicker trademarks={filterSidebarTrademarks} />
-				<hr className={styles.sidebarHr} />
-				<StatusPicker statuses={filterSidebarStatuses} />
-				<hr className={styles.sidebarHr} />
-				<SaleCheckbox />
-				<hr className={styles.sidebarHr} />
-
+				<div className={styles.sidebarFilters}>
+					<hr className={styles.sidebarHr} />
+					<PriceRange />
+					<hr className={styles.sidebarHr} />
+					<CategoryPicker categories={filterSidebarCategories} />
+					<hr className={styles.sidebarHr} />
+					<TrademarkPicker trademarks={filterSidebarTrademarks} />
+					<hr className={styles.sidebarHr} />
+					<StatusPicker statuses={filterSidebarStatuses} />
+					<hr className={styles.sidebarHr} />
+					<SaleCheckbox />
+					<hr className={styles.sidebarHr} />
+				</div>
 				<SidebarButtonBar />
 			</div>
 		</>
