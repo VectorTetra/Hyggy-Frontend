@@ -19,19 +19,13 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 	categories: WareCategory3[], trademarks: WareTrademark[], statuses: WareStatus[]
 }) => {
 	const { isSidebarOpen, setIsSidebarOpen, setCategoriesMap, setTrademarksMap, setStatusesMap } = useSearchStore();
-
-
-
-	// Групуємо wares по категоріям і рахуємо кількість товарів у кожній категорії
-	type Category = {
-		id: number;
-		name: string;
-		count: number;
-		isDisabled?: boolean;
-	};
-
+	console.log("FilterSidebar.tsx, wares: ", wares);
+	console.log("FilterSidebar.tsx, foundWares: ", foundWares);
+	console.log("FilterSidebar.tsx, categories: ", categories);
+	console.log("FilterSidebar.tsx, trademarks: ", trademarks);
+	console.log("FilterSidebar.tsx, statuses: ", statuses);
 	// Групуємо wares по категоріям та рахуємо кількість товарів у кожній категорії
-	let filterSidebarCategories = categories.map(category => {
+	let filterSidebarCategories = categories?.map(category => {
 		const count = wares.filter(ware => ware.wareCategory3Id === category.id).length;
 		return {
 			id: category.id,
@@ -41,15 +35,8 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 	});
 	filterSidebarCategories = filterSidebarCategories.filter(fsc => fsc.count > 0);
 
-	// Групуємо wares по торговим маркам
-	type Trademark = {
-		id: number | null;
-		name: string;
-		count: number;
-		isDisabled?: boolean;
-	};
-
-	let filterSidebarTrademarks = trademarks.map(trademark => {
+	// Групуємо wares по торговим маркам та рахуємо кількість товарів у кожній торговій марці
+	let filterSidebarTrademarks = trademarks?.map(trademark => {
 		const count = wares.filter(ware => ware.trademarkId === trademark.id).length;
 		return {
 			id: trademark.id,
@@ -59,15 +46,8 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 	});
 	filterSidebarTrademarks = filterSidebarTrademarks.filter(fsc => fsc.count > 0);
 
-	// Групуємо wares по статусам
-	type Status = {
-		id: number;
-		name: string;
-		count: number;
-		isDisabled?: boolean;
-	};
-
-	let filterSidebarStatuses = statuses.map(status => {
+	// Групуємо wares по статусам та рахуємо кількість товарів у кожному статусі
+	let filterSidebarStatuses = statuses?.map(status => {
 		const count = wares.filter(ware => ware.statusIds.includes(status.id)).length;
 		return {
 			id: status.id,

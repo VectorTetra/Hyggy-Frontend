@@ -107,7 +107,11 @@ export default function SearchPage() {
     || isWareTrademarksLoading
     || isWareStatusesLoading;
 
-
+  console.log("SearchPage.tsx, foundWares: ", foundWares);
+  console.log("SearchPage.tsx, foundBlogs: ", foundBlogs);
+  console.log("SearchPage.tsx, foundWareCategories: ", foundWareCategories);
+  console.log("SearchPage.tsx, foundTrademarks: ", foundTrademarks);
+  console.log("SearchPage.tsx, foundWareStatuses: ", foundWareStatuses);
   return (
 
     <Layout headerType="header1" footerType='footer1'>
@@ -116,7 +120,11 @@ export default function SearchPage() {
         <>
           {!allLoadings && <>
             <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
-            <SearchHeader foundWaresQuantity={foundWares.length} foundBlogsQuantity={foundBlogs.length} activeTab={activeTab} query={query} loading={!allLoadings} />
+            <SearchHeader foundWaresQuantity={foundWares.length}
+              foundBlogsQuantity={foundBlogs.length}
+              activeTab={activeTab}
+              query={query}
+              loading={!allLoadings} />
             {activeTab === "wares" && <FilterBar />}
             <div style={{ minHeight: "32px", margin: "16px 0" }}>
               <FilterStickerPanel />
@@ -124,9 +132,9 @@ export default function SearchPage() {
             {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
             {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
           </>}
-          <FilterSidebar wares={wares} foundWares={foundWares}
-            categories={foundWareCategories} trademarks={foundTrademarks}
-            statuses={foundWareStatuses}
+          <FilterSidebar wares={wares || []} foundWares={foundWares || []}
+            categories={foundWareCategories || []} trademarks={foundTrademarks || []}
+            statuses={foundWareStatuses || []}
           />
           <SortingSidebar />
         </>
