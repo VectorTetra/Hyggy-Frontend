@@ -11,9 +11,11 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
+//import { useQueryClient } from 'react-query';
 
 export default function WarehouseFrame() {
 	const { mutate: deleteStorage } = useDeleteStorage();
+	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
 		SearchParameter: "Query",
 		PageNumber: 1,
@@ -277,36 +279,24 @@ export default function WarehouseFrame() {
 		}
 	};
 
-	// useEffect(() => {
-	// 	const fetchStorages = async () => {
-	// 		try {
-	// 			if (activeTab !== "warehousesList") return;
-	// 			setLoading(true);
-	// 			console.log('Fetching storages...');
-	// 			const storages = await getStorages({
-	// 				SearchParameter: "Query",
-	// 				PageNumber: 1,
-	// 				PageSize: 1000
-	// 			});
-	// 			console.log('Storages fetched:', storages);
-	// 			setData(storages);
-	// 		} catch (error) {
-	// 			console.error('Error fetching storage data:', error);
-	// 		} finally {
-	// 			console.log('Setting loading to false');
-	// 			setLoading(false);
-	// 		}
-	// 	};
-
-	// 	fetchStorages();
-	// }, []);
+	useEffect(() => {
+		// if (data.length === 0)
+		// 	queryClient.invalidateQueries('storages');
+		if (success) {
+			setFilteredData(data);
+			setLoading(false);
+		}
+		else {
+			setLoading(true);
+		}
+	}, [data]);
 
 
 	useEffect(() => {
 		const fetchFilteredData = () => {
 			setLoading(true);
 			try {
-				if (!data) { toast.error('data не ініціалізована!'); return; }
+				//if (data.length === 0) { toast.error('data не ініціалізована!'); return; }
 				if (debouncedSearchTerm) {
 					// Фільтруємо дані локально по будь-якому полю
 					const filteredStorages = data.filter(item =>
@@ -316,11 +306,11 @@ export default function WarehouseFrame() {
 						)
 					);
 					setFilteredData(filteredStorages); // Оновлюємо відфільтровані дані
-					toast.info('Встановлено filteredStorages!');
+					//toast.info('Встановлено filteredStorages!');
 				} else {
 					setFilteredData(data); // Якщо немає терміна пошуку, використовуємо всі дані
 					console.log(data);
-					toast.info('Встановлено data!');
+					//toast.info('Встановлено data!');
 				}
 			} catch (error) {
 				console.error('Error filtering data:', error);
@@ -379,8 +369,7 @@ export default function WarehouseFrame() {
 						rows={filteredData}
 						columns={columns}
 						apiRef={apiRef}
-						loading={loading}
-
+						loading={loading || dataLoading}
 						initialState={{
 							pagination: {
 								paginationModel: {
@@ -472,7 +461,7 @@ export default function WarehouseFrame() {
 							toolbarQuickFilterDeleteIconLabel: 'Очистити',
 						}}
 						sx={{
-							opacity: loading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
 							flexGrow: 1, // Займає доступний простір у контейнері
 							minWidth: 800, // Мінімальна ширина DataGrid
 							"& .MuiDataGrid-scrollbar--horizontal": {
