@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Head from 'next/head';
 import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

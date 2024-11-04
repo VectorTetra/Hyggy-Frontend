@@ -131,15 +131,23 @@ export function isSaler() {
 export async function AuthorizeAsWorker(params: UserForAuthenticationDto) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
+
 		if (response.data.isAuthSuccessfull) {
 			setToken(response.data.token);
-		}
-		else {
+		} else {
 			removeToken();
-			return response.data.error;
+			toast.error(response.data.error);
 		}
+		return response.data;
+
 	} catch (error) {
 		removeToken();
-		throw new Error('Помилка авторизації: ' + error);
+		//console.error('Error authorizing:', error);
+		// Перевіряємо, чи є в error.response об'єкт, який містить помилку сервера
+		if (error.response && error.response.data) {
+			toast.error('Помилка авторизації: ' + error.response.data);
+		} else {
+			toast.error('Невідома помилка авторизації');
+		}
 	}
 }

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { AuthorizeAsWorker } from '@/pages/api/TokenApi';
+import { AuthorizeAsWorker, getDecodedToken } from '@/pages/api/TokenApi';
 import { toast } from 'react-toastify';
 
 export default function Login() {
@@ -25,11 +25,13 @@ export default function Login() {
 		e.preventDefault();
 
 		AuthorizeAsWorker({ Email: email, Password: password }).then((response) => {
-			if (response) {
-				setError(response);
-			} else {
+			if (response.isAuthSuccessfull) {
 				router.push('/AdminPanel');
 				toast.success('Ви успішно увійшли в систему!');
+				const decodedToken = getDecodedToken();
+				if (decodedToken) {
+					toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
+				}
 			}
 		});
 	};
