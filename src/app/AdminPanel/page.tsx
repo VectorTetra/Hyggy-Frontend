@@ -8,28 +8,19 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import StoreIcon from '@mui/icons-material/Store';
 import "react-toastify/dist/ReactToastify.css";
 import './css/AdminPanel.css';
+import { jwtDecode } from "jwt-decode";
+import { validateToken } from '@/pages/api/TokenApi';
+// import { JwtPayload } from 'jwt-decode';
 
 export default function Admin() {
-	const [authenticated, setAuthenticated] = useState(true);
+	const [authenticated, setAuthenticated] = useState(validateToken().status === 200);
 	const router = useRouter();
-
 	// useEffect для перевірки автентифікації
-	// useEffect(() => {
-	// 	const checkAuth = async () => {
-	// 		try {
-	// 			const response = await fetch('/api/check-auth');
-	// 			if (response.ok) {
-	// 				setAuthenticated(true);
-	// 			} else {
-	// 				router.push('/AdminPanelLogin');
-	// 			}
-	// 		} catch (error) {
-	// 			router.push('/AdminPanelLogin');
-	// 		}
-	// 	};
-
-	// 	checkAuth();
-	// }, [router]);
+	useEffect(() => {
+		if (!authenticated) {
+			router.push('/AdminPanelLogin');
+		}
+	}, [authenticated]);
 
 	return (
 		authenticated ? (
@@ -37,7 +28,7 @@ export default function Admin() {
 				<div style={{ display: "flex" }}>
 					<Sidebar />
 					<Content />
-					<ToastContainer
+					{/* <ToastContainer
 						stacked={true}
 						autoClose={5000}
 						position='bottom-right'
@@ -48,7 +39,7 @@ export default function Admin() {
 						hideProgressBar={false}
 						limit={3}
 
-					/>
+					/> */}
 				</div>
 
 			</div>

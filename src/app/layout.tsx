@@ -5,7 +5,7 @@ import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Head from 'next/head';
 import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
-
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -33,6 +33,17 @@ export default function RootLayout({
         <QueryClientWrapper>
           {children}
         </QueryClientWrapper>
+        <ToastContainer
+          stacked={true}
+          autoClose={5000}
+          position='bottom-right'
+          pauseOnHover={false}
+          theme='colored'
+          transition={Bounce}
+          closeOnClick={true}
+          hideProgressBar={false}
+          limit={3}
+        />
       </body>
     </html>
   );
