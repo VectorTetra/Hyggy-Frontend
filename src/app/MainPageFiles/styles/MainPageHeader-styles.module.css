@@ -41,10 +41,12 @@
 }
 
 #mainPageHeaderLogo {
-	width: clamp(100px, 15vw, 100px);
-	aspect-ratio: 1 / 1;
-	padding: 10px;
+	/* width: clamp(100px, 15vw, 100px);
+	aspect-ratio: 1 / 1; */
+	/* padding: 10px; */
 	/* margin-left: 100px; */
+	width: 110px;
+	height: 71px;
 }
 
 #horizontalBar {

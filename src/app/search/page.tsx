@@ -13,14 +13,12 @@ import FilterSidebar from "./tsx/FilterSidebar";
 import FilterStickerPanel from "./tsx/FilterStickerPanel";
 //import { useHandleSearch, sortWares } from "@/services/searchPageLogic";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
-import { isEqual } from "lodash";
 import { useQueryState, parseAsArrayOf, parseAsJson } from 'nuqs'; // Імпортуємо nuqs
 import SortingSidebar from "./tsx/SortingSidebar";
 import { CircularProgress } from "@mui/material";
 import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
 import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
 import { useWareStatuses } from "@/pages/api/WareStatusApi";
-import QueryClientWrapper from "../sharedComponents/QueryClientWrapper";
 
 interface Filter {
   id: string; // або number, в залежності від типу вашого id

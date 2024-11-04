@@ -6,47 +6,47 @@
         "listCategory": [
           {
             "name": "Спальня",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Спальня",
             "alt": "Спальня"
           },
           {
             "name": "Ванна",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Ванна",
             "alt": "Ванна"
           },
           {
             "name": "Офіс",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Офіс",
             "alt": "Офіс"
           },
           {
             "name": "Вітальня",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Вітальня",
             "alt": "Вітальня"
           },
           {
             "name": "Кухня та їдальня",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Кухня та їдальня",
             "alt": "Кухня та їдальня"
           },
           {
             "name": "Зберігання",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Зберігання",
             "alt": "Зберігання"
           },
           {
             "name": "Для вікон",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Для вікон",
             "alt": "Для вікон"
           },
           {
             "name": "Для саду",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Для саду",
             "alt": "Для саду"
           },
           {
             "name": "Для дому",
-            "urlcategory": "https://jysk.ua/",
+            "urlcategory": "../search?query=Для дому",
             "alt": "Для дому"
           },
           {
