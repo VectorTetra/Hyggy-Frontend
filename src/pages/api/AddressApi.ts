@@ -1,36 +1,37 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface AddressQueryParams {
 	SearchParameter: string;
-	Id?: number;
-	Street?: string;
-	HouseNumber?: string;
-	City?: string;
-	State?: string;
-	PostalCode?: string;
+	Id?: number | null;
+	Street?: string | null;
+	HouseNumber?: string | null;
+	City?: string | null;
+	State?: string | null;
+	PostalCode?: string | null;
 	Latitude?: number | null;
 	Longitude?: number | null;
-	ShopId?: number;
-	StorageId?: number;
-	OrderId?: number;
-	PageNumber?: number;
-	PageSize?: number;
-	StringIds?: string;
-	Sorting?: string;
-	QueryAny?: string;
+	ShopId?: number | null;
+	StorageId?: number | null;
+	OrderId?: number | null;
+	PageNumber?: number | null;
+	PageSize?: number | null;
+	StringIds?: string | null;
+	Sorting?: string | null;
+	QueryAny?: string | null;
 }
 
 export interface AddressDTO {
 	AddressId?: number;
-	Id?: number;
+	Id?: number | null;
 	ShopId?: number | null;
 	StorageId?: number | null;
-	Street?: string;
-	HouseNumber?: string;
-	City?: string;
-	State?: string;
-	PostalCode?: string;
+	Street?: string | null;
+	HouseNumber?: string | null;
+	City?: string | null;
+	State?: string | null;
+	PostalCode?: string | null;
 	Latitude?: number | null;
 	Longitude?: number | null;
 	OrderIds?: number[];
@@ -80,4 +81,43 @@ export async function deleteAddress(id: number) {
 		console.error('Error deleting address:', error);
 		throw error;
 	}
+}
+
+// Використання useQuery для отримання списку складів (wares)
+export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }) {
+	return useQuery(['addresses', params], () => getAddresses(params), {
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false,
+	});
+}
+
+// Використання useMutation для створення нового складу (ware)
+export function useCreateAddress() {
+	const queryClient = useQueryClient();
+	return useMutation((newAddress: AddressDTO) => postAddress(newAddress), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після створення нового складу
+		},
+	});
+}
+
+// Використання useMutation для оновлення існуючого складу (ware)
+export function useUpdateAddress() {
+	const queryClient = useQueryClient();
+	return useMutation((updatedAddress: AddressDTO) => putAddress(updatedAddress), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після оновлення складу
+		},
+	});
+}
+
+// Використання useMutation для видалення складу (ware)
+export function useDeleteAddress() {
+	const queryClient = useQueryClient();
+	return useMutation((id: number) => deleteAddress(id), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після видалення складу
+		},
+	});
 }

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useRef, useEffect } from "react";
 import styles from "./css/Pagination.module.css";
 
 interface PaginationProps {
@@ -15,6 +15,15 @@ const Pagination: FC<PaginationProps> = ({
 	onPageChange,
 }) => {
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
+	const prevFilteredItemsCount = useRef(totalItems);
+	useEffect(() => {
+		if (prevFilteredItemsCount.current !== totalItems) {
+			// Якщо кількість товарів змінилась, переходимо на першу сторінку
+			onPageChange(1);
+		}
+		// Оновлюємо попереднє значення
+		prevFilteredItemsCount.current = totalItems;
+	}, [totalItems, onPageChange]);
 
 	const handlePageClick = (page: number) => {
 		onPageChange(page);

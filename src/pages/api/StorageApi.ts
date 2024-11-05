@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface StorageQueryParams {
 	SearchParameter?: string;
@@ -17,8 +18,8 @@ export interface StorageQueryParams {
 	QueryAny?: string | null;
 }
 export interface StorageDTO {
-	AddressId?: number;
-	Id?: number;
+	AddressId?: number | null;
+	Id?: number | null;
 	ShopId?: number | null;
 }
 
@@ -75,4 +76,43 @@ export async function deleteStorage(id: number) {
 		console.error('Error deleting storage:', error);
 		throw new Error('Failed to delete storage');
 	}
+}
+
+// Використання useQuery для отримання списку складів (wares)
+export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }) {
+	return useQuery(['storages', params], () => getStorages(params), {
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false,
+	});
+}
+
+// Використання useMutation для створення нового складу (ware)
+export function useCreateStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((newStorage: StorageDTO) => postStorage(newStorage), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після створення нового складу
+		},
+	});
+}
+
+// Використання useMutation для оновлення існуючого складу (ware)
+export function useUpdateStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((updatedStorage: StorageDTO) => putStorage(updatedStorage), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після оновлення складу
+		},
+	});
+}
+
+// Використання useMutation для видалення складу (ware)
+export function useDeleteStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((id: number) => deleteStorage(id), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після видалення складу
+		},
+	});
 }

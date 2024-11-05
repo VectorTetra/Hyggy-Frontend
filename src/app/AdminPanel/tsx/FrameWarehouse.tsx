@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, gridColumnsTotalWidthSelector } from '@mui/x-data-grid';
-import { deleteStorage, getStorages } from '@/pages/api/StorageApi';
-import SearchField from './SearchField';
-import { useQueryState } from 'nuqs';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useDebounce } from 'use-debounce';
-import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
-import '../css/WarehouseFrame.css';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { useDeleteStorage, useStorages } from '@/pages/api/StorageApi';
+import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useQueryState } from 'nuqs';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'use-debounce';
+import '../css/WarehouseFrame.css';
+import SearchField from './SearchField';
+//import { useQueryClient } from 'react-query';
 
 export default function WarehouseFrame() {
-	const [data, setData] = useState<any | null>([]);
+	const { mutate: deleteStorage } = useDeleteStorage();
+	//const queryClient = useQueryClient();
+	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
+		SearchParameter: "Query",
+		PageNumber: 1,
+		PageSize: 1000
+	});
+
 	const [filteredData, setFilteredData] = useState<any | null>([]);
-	const [loading, setLoading] = useState(true);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
+	const [loading, setLoading] = useState(true);
 
 	const { warehouseId, setWarehouseId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
@@ -257,46 +265,38 @@ export default function WarehouseFrame() {
 		setIsDialogOpen(true);
 	};
 
-	const handleConfirmDelete = async () => {
+	const handleConfirmDelete = () => {
 		if (selectedRow) {
 			console.log("selectedRow", selectedRow);
-			await deleteStorage(selectedRow.id);
-			setIsDialogOpen(false);
-			// Оновлюємо список складів після видалення
-			setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
-			toast.info('Склад успішно видалено!');
+			deleteStorage(selectedRow.id, {
+				onSuccess: () => {
+					setIsDialogOpen(false);
+					toast.info('Склад успішно видалено!');
+					// Якщо потрібно оновити локальний стан:
+					// setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
+				}
+			});
 		}
 	};
 
 	useEffect(() => {
-		const fetchStorages = async () => {
-			try {
-				if (activeTab !== "warehousesList") return;
-				setLoading(true);
-				console.log('Fetching storages...');
-				const storages = await getStorages({
-					SearchParameter: "Query",
-					PageNumber: 1,
-					PageSize: 1000
-				});
-				console.log('Storages fetched:', storages);
-				setData(storages);
-			} catch (error) {
-				console.error('Error fetching storage data:', error);
-			} finally {
-				console.log('Setting loading to false');
-				setLoading(false);
-			}
-		};
-
-		fetchStorages();
-	}, []);
+		// if (data.length === 0)
+		// 	queryClient.invalidateQueries('storages');
+		if (success) {
+			setFilteredData(data);
+			setLoading(false);
+		}
+		else {
+			setLoading(true);
+		}
+	}, [data]);
 
 
 	useEffect(() => {
 		const fetchFilteredData = () => {
 			setLoading(true);
 			try {
+				//if (data.length === 0) { toast.error('data не ініціалізована!'); return; }
 				if (debouncedSearchTerm) {
 					// Фільтруємо дані локально по будь-якому полю
 					const filteredStorages = data.filter(item =>
@@ -306,19 +306,21 @@ export default function WarehouseFrame() {
 						)
 					);
 					setFilteredData(filteredStorages); // Оновлюємо відфільтровані дані
+					//toast.info('Встановлено filteredStorages!');
 				} else {
 					setFilteredData(data); // Якщо немає терміна пошуку, використовуємо всі дані
+					console.log(data);
+					//toast.info('Встановлено data!');
 				}
 			} catch (error) {
 				console.error('Error filtering data:', error);
 			} finally {
-				if (data.length > 0)
-					setLoading(false);
+				setLoading(false);
 			}
 		};
 
 		fetchFilteredData();
-	}, [debouncedSearchTerm, data]);
+	}, [debouncedSearchTerm]);
 
 
 	return (
@@ -357,7 +359,7 @@ export default function WarehouseFrame() {
 				</Box>
 			</Box>
 			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
-				{filteredData.length === 0 && !loading ? (
+				{filteredData.length === 0 && !loading && success ? (
 					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 						Нічого не знайдено
 					</Typography>
@@ -367,8 +369,7 @@ export default function WarehouseFrame() {
 						rows={filteredData}
 						columns={columns}
 						apiRef={apiRef}
-						loading={loading}
-
+						loading={loading || dataLoading}
 						initialState={{
 							pagination: {
 								paginationModel: {
@@ -460,7 +461,7 @@ export default function WarehouseFrame() {
 							toolbarQuickFilterDeleteIconLabel: 'Очистити',
 						}}
 						sx={{
-							opacity: loading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
 							flexGrow: 1, // Займає доступний простір у контейнері
 							minWidth: 800, // Мінімальна ширина DataGrid
 							"& .MuiDataGrid-scrollbar--horizontal": {

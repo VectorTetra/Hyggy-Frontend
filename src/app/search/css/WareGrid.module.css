@@ -122,6 +122,7 @@
 	min-width: 0px;
 	position: relative;
 	display: flex;
+	justify-content: center;
 }
 
 .wareCardLink {

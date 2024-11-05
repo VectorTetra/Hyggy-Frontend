@@ -1,11 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
+const AllShops = lazy(() => import('./AllShops'));
+const NewShop = lazy(() => import('./NewShop'));
+const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
-
-import AllShops from './AllShops';
-import NewShop from './NewShop';
 
 import Clients from './Clients';
 

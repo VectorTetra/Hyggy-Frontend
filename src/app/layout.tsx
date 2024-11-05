@@ -4,7 +4,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Head from 'next/head';
-
+import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -28,7 +30,22 @@ export default function RootLayout({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <QueryClientWrapper>
+          {children}
+        </QueryClientWrapper>
+        <ToastContainer
+          stacked={true}
+          autoClose={5000}
+          position='bottom-right'
+          pauseOnHover={false}
+          theme='colored'
+          transition={Bounce}
+          closeOnClick={true}
+          hideProgressBar={false}
+          limit={3}
+        />
+      </body>
     </html>
   );
 }
