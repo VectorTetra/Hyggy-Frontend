@@ -12,8 +12,8 @@ import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import useAuthorizeStore from '@/store/authorize';
 function MainPageHeader(props) {
-	const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
-
+	//const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
+	const isAuthorized = JSON.parse(localStorage.getItem("isAuthorized"));
 	return (
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />
@@ -33,7 +33,8 @@ function MainPageHeader(props) {
 						favoritePhotoWidth={props.headerData.favoritePhoto.width}
 						favoritePhotoUrl={props.headerData.favoritePhoto.url}
 					/>}
-					<MainPageHeaderUser userPhotoHeight={props.headerData.userPhoto.height}
+					<MainPageHeaderUser
+						userPhotoHeight={props.headerData.userPhoto.height}
 						userPhotoWidth={props.headerData.userPhoto.width}
 						userPhotoUrl={props.headerData.userPhoto.url} />
 					<MainPageHeaderBasket basketPhotoHeight={props.headerData.basketPhoto.height}

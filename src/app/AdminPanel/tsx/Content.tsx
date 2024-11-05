@@ -3,6 +3,7 @@ import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, Li
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
+import Blog from './Blog';
 
 import AllShops from './AllShops';
 import NewShop from './NewShop';
@@ -30,11 +31,11 @@ export default function Content() {
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
 				{activeTab === 'stores' && <AllShops />}
- 				{activeTab === 'addNewShop' && <NewShop />}
+				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <div>Клієнти</div>}
 				{activeTab === 'orders' && <div>Замовлення</div>}
-				{activeTab === 'blog' && <div>Блоги</div>}
+				{activeTab === 'blog' && <Blog />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
 			</Suspense>
 		</Box>)

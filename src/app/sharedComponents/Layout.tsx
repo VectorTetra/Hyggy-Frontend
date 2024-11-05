@@ -12,7 +12,7 @@ export interface LayoutProps {
   children: React.ReactNode;
   headerType?: 'header1' | 'header2' | 'null'; // Определение типа хедера
   footerType?: 'footer1' | 'footer2'; // Определение типа футера
-  pageMetadata?: {    // Добавьте этот блок
+  pageMetadata?: {
     title: string;
     description: string;
   };

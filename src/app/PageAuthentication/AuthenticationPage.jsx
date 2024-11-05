@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-
 import styles from "./styles/AuthenticationStyles.module.css";
 import { useRouter } from "next/navigation";
 import useAuthorizeStore from "@/store/authorize";
@@ -20,11 +19,12 @@ export default function AuthenticationPage(props) {
         if (user && user.password === password) {
             setErrorMessage('');
             alert("Вхід здійснено успішно");
-            setIsAuthorized(true);
+            //setIsAuthorized(true);
+            localStorage.setItem('isAuthorized', 'true'); // Сохранение статуса в localStorage
             router.push("../PageProfileUser");
-
         } else {
-            setIsAuthorized(false);
+            //setIsAuthorized(false);
+            localStorage.setItem('isAuthorized', 'false'); // Сохранение статуса в localStorage
             setErrorMessage('E-mail або пароль не вірні');
         }
     };
