@@ -6,6 +6,9 @@ const NewShop = lazy(() => import('./NewShop'));
 const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 
+import Clients from './Clients';
+
+
 const drawerWidth = 240;
 
 export default function Content() {
@@ -31,7 +34,7 @@ export default function Content() {
 				{activeTab === 'stores' && <AllShops />}
 				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
+				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 				{activeTab === 'blog' && <div>Блоги</div>}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
