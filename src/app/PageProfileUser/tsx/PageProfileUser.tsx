@@ -9,7 +9,7 @@ import OrdersUser from './OrdersUser';
 import CompletedOrdersUser from './CompletedOrdersUser';
 import ReviewsUser from './ReviewsUser';
 
-export default function PageProfileUser() {
+export default function PageProfileUser(props) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);

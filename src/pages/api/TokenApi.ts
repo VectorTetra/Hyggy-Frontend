@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import axios from 'axios';
-import { i } from "nuqs/dist/serializer-BZD8Ur_m";
+//import { i } from "nuqs/dist/serializer-BZD8Ur_m";
 import { toast } from "react-toastify";
 //import { ToastContainer, toast, Bounce } from 'react-toastify';
 class JwtPayload {
@@ -17,6 +17,14 @@ class JwtPayload {
 class UserForAuthenticationDto {
 	Email: string;
 	Password: string;
+}
+class UserForRegistrationDto {
+	Name: string;
+	Surname: string;
+	Email: string;
+	Role: string;
+	Password: string;
+	ConfirmPassword: string;
 }
 class AuthResponseDto {
 	isAuthSuccessfull: boolean;
@@ -128,7 +136,7 @@ export function isSaler() {
 	return token.role === 'Saler';
 }
 
-export async function AuthorizeAsWorker(params: UserForAuthenticationDto) {
+export async function Authorize(params: UserForAuthenticationDto) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
 
@@ -151,3 +159,47 @@ export async function AuthorizeAsWorker(params: UserForAuthenticationDto) {
 		}
 	}
 }
+export async function RegisterAsWorker(params: UserForRegistrationDto) {
+	try {
+		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
+
+		if (response.data.message) {
+			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
+		} else {
+		}
+		//return response.data;
+
+	} catch (error) {
+		//console.error('Error authorizing:', error);
+		// Перевіряємо, чи є в error.response об'єкт, який містить помилку сервера
+		if (error.response && error.response.data) {
+			toast.error('Помилка реєстрації: ' + error.response.data);
+		} else {
+			toast.error('Невідома помилка реєстрації');
+		}
+	}
+}
+export async function RegisterAsClient(params: UserForRegistrationDto) {
+	try {
+		console.log(params);
+		const response = await axios.post('http://www.hyggy.somee.com/api/Customer/register', params);
+		console.log(response);
+		if (response.data.message) {
+			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
+		} else {
+		}
+		//return response.data;
+
+	} catch (error) {
+		//console.error('Error authorizing:', error);
+		// Перевіряємо, чи є в error.response об'єкт, який містить помилку сервера
+		console.log(error);
+		if (error.response && error.response.data) {
+			toast.error('Помилка реєстрації: ' + error.response.data);
+		} else {
+			toast.error('Невідома помилка реєстрації');
+		}
+	}
+}
+
+
