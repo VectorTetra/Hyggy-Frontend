@@ -1,12 +1,16 @@
 import { lazy, Suspense } from 'react';
 import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
+const AllShops = lazy(() => import('./AllShops'));
+const NewShop = lazy(() => import('./NewShop'));
+const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
+const Blog = lazy(() => import ('./Blog'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
-import Blog from './Blog';
 
-import AllShops from './AllShops';
-import NewShop from './NewShop';
+
+
+import Clients from './Clients';
+
 
 const drawerWidth = 240;
 
@@ -33,7 +37,7 @@ export default function Content() {
 				{activeTab === 'stores' && <AllShops />}
 				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
-				{activeTab === 'clients' && <div>Клієнти</div>}
+				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 				{activeTab === 'blog' && <Blog />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}

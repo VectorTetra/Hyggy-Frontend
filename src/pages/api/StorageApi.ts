@@ -1,8 +1,9 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface StorageQueryParams {
-	SearchParameter?: "Query";
+	SearchParameter?: string;
 	AddressId?: number;
 	Id?: number;
 	ShopId?: number;
@@ -17,8 +18,8 @@ export interface StorageQueryParams {
 	QueryAny?: string | null;
 }
 export interface StorageDTO {
-	AddressId?: number;
-	Id?: number;
+	AddressId?: number | null;
+	Id?: number | null;
 	ShopId?: number | null;
 }
 
@@ -28,7 +29,10 @@ export async function getStorages(params: StorageQueryParams = {}) {
 		const response = await axios.get('http://www.hyggy.somee.com/api/Storage', {
 			params,
 		});
-
+		// const response = await axios.get('http://localhost:5263/api/Storage', {
+		// 		params,
+		// 	});
+	
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching storages:', error);
@@ -40,6 +44,7 @@ export async function getStorages(params: StorageQueryParams = {}) {
 export async function postStorage(storage: StorageDTO) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/Storage', storage);
+		//const response = await axios.post('http://localhost:5263/api/Storage', storage);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating storage:', error);
@@ -71,4 +76,43 @@ export async function deleteStorage(id: number) {
 		console.error('Error deleting storage:', error);
 		throw new Error('Failed to delete storage');
 	}
+}
+
+// Використання useQuery для отримання списку складів (wares)
+export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }) {
+	return useQuery(['storages', params], () => getStorages(params), {
+		staleTime: Infinity, // Дані залишаються актуальними завжди
+		cacheTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false,
+	});
+}
+
+// Використання useMutation для створення нового складу (ware)
+export function useCreateStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((newStorage: StorageDTO) => postStorage(newStorage), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після створення нового складу
+		},
+	});
+}
+
+// Використання useMutation для оновлення існуючого складу (ware)
+export function useUpdateStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((updatedStorage: StorageDTO) => putStorage(updatedStorage), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після оновлення складу
+		},
+	});
+}
+
+// Використання useMutation для видалення складу (ware)
+export function useDeleteStorage() {
+	const queryClient = useQueryClient();
+	return useMutation((id: number) => deleteStorage(id), {
+		onSuccess: () => {
+			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після видалення складу
+		},
+	});
 }

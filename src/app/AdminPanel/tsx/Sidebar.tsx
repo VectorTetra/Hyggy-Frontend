@@ -21,7 +21,7 @@ import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 //import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import Blog from './Blog';
-import Link from 'next/link';
+import { removeToken } from '@/pages/api/TokenApi';
 
 const drawerWidth = 240;
 
@@ -190,13 +190,15 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
-					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
 					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
-					<a href="../AdminPanelLogin">
+					<a href="../AdminPanelLogin" onClick={() => {
+						removeToken();
+					}}>
 						<MenuItem
 							icon={<LogoutIcon />}
 							text="Вихід"

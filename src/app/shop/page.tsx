@@ -65,6 +65,7 @@ export default function Shop() {
                                     center={[place.latitude, place.longitude]}
                                     zoom={20}
                                     style={{ width: '100%', height: '100%' }}
+                                    maxZoom={18}
                                 >
                                     <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

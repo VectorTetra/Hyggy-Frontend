@@ -10,17 +10,17 @@ import BlockShops from './BlockShops';
 
 export interface LayoutProps {
   children: React.ReactNode;
-  headerType?: 'header1' | 'header2' | 'null'; // Определение типа хедера
-  footerType?: 'footer1' | 'footer2'; // Определение типа футера
-  pageMetadata?: {
+  headerType?: 'header1' | 'header2' | 'null'; // Визначення типу хедера
+  footerType?: 'footer1' | 'footer2' | 'null'; // Визначення типу футера
+  pageMetadata?: {    // Додайте цей блок
     title: string;
     description: string;
   };
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', footerType = 'footer1', pageMetadata }) => {
-  const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
-  const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
+  const { isMainPageMenuOpened } = useMainPageMenuStore();
+  const { isMainPageMenuShopsOpened } = useMainPageMenuShops();
 
   React.useEffect(() => {
     if (pageMetadata) {
@@ -37,6 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', foote
       {isMainPageMenuShopsOpened && <BlockShops />}
       <main>{children}</main>
       {footerType === 'footer1' && <Footer1 />}
+      {footerType === 'null' && null}
     </>
   );
 };

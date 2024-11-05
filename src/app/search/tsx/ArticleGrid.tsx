@@ -4,7 +4,7 @@ import ImageWithFallback from "../../sharedComponents/ImageWithFallback";
 export default function ArticleGrid(props: any) {
 	return (
 		<div id={styles.articleGrid}>
-			{props.articles.map((article: any) => (
+			{props.blogs.map((article: any) => (
 				<Link className={styles.articleLink} key={article.id} href={`/article/${article.id}`}>
 
 					<div className={styles.articleImageContainer}>

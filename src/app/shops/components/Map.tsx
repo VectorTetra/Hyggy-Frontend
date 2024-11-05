@@ -96,7 +96,11 @@ export
     useEffect(() => {
       const fetchShops = async () => {
         try {
-          const data = await getShops(); // Передай параметри, якщо необхідно
+          const data = await getShops({
+            SearchParameter: "Query",
+            PageNumber: 1,
+            PageSize: 150
+          }); // Передай параметри, якщо необхідно
           setPlaces(data);
           console.log(data);
         } catch (error) {
@@ -125,6 +129,7 @@ export
         center={[50.4546600, 30.5238000]} // Центр карти
         zoom={5.5}
         style={{ width: "100%", height: "100%" }} // Розмір контейнера для карти
+        maxZoom={18}
       >
         {/* Використання OpenStreetMap як джерела тайлів */}
         <TileLayer
@@ -143,7 +148,7 @@ export
                 click: () => handleMarkerClick(place)
               }}
             >
-              Інфо-вікно для вибраного місця
+              {/* Інфо-вікно для вибраного місця */}
               {selectedPlace && selectedPlace.name === place.name && (
                 <Popup
                   position={[place.latitude, place.longitude]}

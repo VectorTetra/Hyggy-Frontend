@@ -1,151 +1,144 @@
 "use client"; // Завжди на стороні клієнта
 import styles from "./page.module.css";
-import { Ware, Article } from "@/types/searchTypes";
+import { useWares, Ware } from "@/pages/api/WareApi";
+import { useBlogs, Blog } from "@/pages/api/BlogApi";
 import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import TabBar from "./tsx/TabBar";
 import SearchHeader from "./tsx/SearchHeader";
 import FilterBar from "./tsx/FilterBar";
-import Loading from "./loading";
 import WareGrid from "./tsx/WareGrid";
 import ArticleGrid from "./tsx/ArticleGrid";
 import FilterSidebar from "./tsx/FilterSidebar";
 import FilterStickerPanel from "./tsx/FilterStickerPanel";
-import { handleSearch, sortWares } from "@/services/searchPageLogic";
+//import { useHandleSearch, sortWares } from "@/services/searchPageLogic";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
-import { isEqual } from "lodash";
-import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+import { useQueryState, parseAsArrayOf, parseAsJson } from 'nuqs'; // Імпортуємо nuqs
 import SortingSidebar from "./tsx/SortingSidebar";
+import { CircularProgress } from "@mui/material";
+import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
+import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
+import { useWareStatuses } from "@/pages/api/WareStatusApi";
 
-
+interface Filter {
+  id: string; // або number, в залежності від типу вашого id
+  name: string;
+}
 export default function SearchPage() {
-  const [loading, setLoading] = useState(true);
-  const [results, setResults] = useState<{
-    foundWares: Ware[];
-    foundArticles: Article[];
-  }>({
-    foundWares: [],
-    foundArticles: [],
-  });
-
-  // Використовуємо nuqs для зчитування параметрів запиту
   const [query] = useQueryState("query", { scroll: false, history: "replace", shallow: true });
   const [type] = useQueryState("type", { scroll: false, history: "replace", shallow: true });
   const [priceRange] = useQueryState("f_0", { scroll: false, history: "replace", shallow: true });
-  const [categories] = useQueryState("f_1", { scroll: false, history: "replace", shallow: true });
-  const [trademarks] = useQueryState("f_2", { scroll: false, history: "replace", shallow: true });
-  const [statuses] = useQueryState("f_3", { scroll: false, history: "replace", shallow: true });
+  const [categories] = useQueryState<Filter[] | null>("f_1", parseAsArrayOf(parseAsJson()));
+  const [trademarks] = useQueryState<Filter[] | null>("f_2", parseAsArrayOf(parseAsJson()));
+  const [statuses] = useQueryState<Filter[] | null>("f_3", parseAsArrayOf(parseAsJson()));
   const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
   const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
+  const [loading, setLoading] = useState(true);
+  const { setMinPossible, setMaxPossible, waresBeforeCategories, setWaresBeforeCategories,
+    activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore();
 
-  const { setMinPossible, setMaxPossible,
-    waresBeforeCategories, setWaresBeforeCategories,
-    activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore(); // Додаємо стан для мін і макс можливих цін
-
-  (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = ""; // Блокуємо/розблоковуємо скрол
   useEffect(() => {
-    async function performSearch() {
-      if (!loading) {
-        setLoading(true);
-      }
-      try {
+    (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = "";
+  }, []);
 
-        if (activeTab !== type) setActiveTab(type || "wares");
+  const { data: foundWareCategories = [], isLoading: isWareCategories3Loading } = useWareCategories3({
+    SearchParameter: "Query",
+    QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
+  const { data: foundTrademarks = [], isLoading: isWareTrademarksLoading } = useWareTrademarks({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
+  const { data: foundWareStatuses = [], isLoading: isWareStatusesLoading } = useWareStatuses({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
+  const { data: foundWares = [], isLoading: isFoundWaresLoading } = useWares({
+    SearchParameter: "Query",
+    QueryAny: query,
+    MinPrice: priceRange ? Number(priceRange?.split("_")[0]) : null,
+    MaxPrice: priceRange ? Number(priceRange?.split("_")[1]) : null,
+    StringCategory3Ids: categories?.map(category => category.id).join('|'),
+    StringTrademarkIds: trademarks?.map(trademark => trademark.id).join('|'),
+    StringStatusIds: statuses?.map(status => status.id).join('|'),
+    Sorting: sort,
+    MinDiscount: sale ? 0.1 : null,
+    MaxDiscount: sale ? 100 : null,
+    PageNumber: 1,
+    PageSize: 1000
+  });
+  const { data: wares = [], isLoading: isWaresLoading } = useWares({
+    SearchParameter: "Query",
+    QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000
+  });
 
-        let { foundWares, foundArticles } = await handleSearch(query || "");
+  const { data: foundBlogs = [], isLoading: isBlogsLoading } = useBlogs({
+    SearchParameter: "Query",
+    QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000
+  });
 
-        const prices = foundWares.map((ware) => Math.ceil(ware.price * ((100 - ware.discount) / 100)));
-        const minPrice = Math.min(...prices);
-        const maxPrice = Math.max(...prices);
-
-        setMinPossible(minPrice);
-        setMaxPossible(maxPrice);
-
-        if (priceRange) {
-          const minUrlPrice = Number(priceRange.split("_")[0]);
-          const maxUrlPrice = Number(priceRange.split("_")[1]);
-
-          foundWares = foundWares.filter((ware) => {
-            const price = Math.ceil(ware.price * ((100 - ware.discount) / 100));
-            return price >= minUrlPrice && price <= maxUrlPrice;
-          });
-        }
-
-        const sortedWares = sortWares(foundWares);
-        const sortedWaresBeforeCategories = sortWares(waresBeforeCategories);
-        if (!isEqual(sortedWares, sortedWaresBeforeCategories)) {
-          setWaresBeforeCategories(foundWares);
-        }
-
-        const categoriesFromUrl = categories ? categories.split("|").filter(Boolean) : [];
-        if (categoriesFromUrl.length > 0) {
-          foundWares = foundWares.filter((ware) => {
-            return categoriesFromUrl.includes(ware.category);
-          });
-        }
-
-        const trademarksFromUrl = trademarks ? trademarks.split("|").filter(Boolean) : [];
-        if (trademarksFromUrl.length > 0) {
-          foundWares = foundWares.filter((ware) => {
-            return ware.trademark && trademarksFromUrl.includes(ware.trademark);
-          });
-        }
-
-        const statusesFromUrl = statuses ? statuses.split("|").filter(Boolean) : [];
-        if (statusesFromUrl.length > 0) {
-          foundWares = foundWares.filter((ware) => {
-            return statusesFromUrl.every((status) => ware.tag.includes(status));
-          });
-        }
-
-        if (sale) {
-          foundWares = foundWares.filter((ware) => ware.discount > 0);
-        }
-        foundWares = sortWares(foundWares, sort || "default");
-        setResults({ foundWares, foundArticles });
-
-      } catch (error) {
-        console.error("Error during search:", error);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(() => {
+    if (!isWaresLoading && wares.length) {
+      const prices = wares.map(ware => ware.finalPrice).filter(price => price !== undefined);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      setMinPossible(Math.floor(minPrice));
+      setMaxPossible(Math.ceil(maxPrice));
     }
-    performSearch();
-  }, [query, type, priceRange, categories, trademarks, statuses, sale, sort]);
+  }, [isWaresLoading, wares]);
 
-  if (loading) {
-    return (
-      <Layout headerType="header1" footerType="footer1">
-        <Loading />
-      </Layout>
-    );
-  }
+  const allLoadings = isFoundWaresLoading
+    || isWaresLoading
+    || isBlogsLoading
+    || isWareCategories3Loading
+    || isWareTrademarksLoading
+    || isWareStatusesLoading;
 
+  console.log("SearchPage.tsx, foundWares: ", foundWares);
+  console.log("SearchPage.tsx, foundBlogs: ", foundBlogs);
+  console.log("SearchPage.tsx, foundWareCategories: ", foundWareCategories);
+  console.log("SearchPage.tsx, foundTrademarks: ", foundTrademarks);
+  console.log("SearchPage.tsx, foundWareStatuses: ", foundWareStatuses);
   return (
-    <Layout headerType="header1" footerType="footer1">
+
+    <Layout headerType="header1" footerType='footer1'>
       <div className={styles.main}>
-        <TabBar
-          waresQuantity={results.foundWares.length}
-          articlesQuantity={results.foundArticles.length}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          query={query}
-        />
-        <SearchHeader
-          foundWaresQuantity={results.foundWares.length}
-          foundArticlesQuantity={results.foundArticles.length}
-          activeTab={activeTab}
-          query={query}
-        />
-        {activeTab === "wares" && <FilterBar />}
-        <div style={{ minHeight: "32px", margin: "16px 0" }}>
-          <FilterStickerPanel />
-        </div>
-        {activeTab === "wares" && <WareGrid wares={results.foundWares} />}
-        {activeTab === "articles" && <ArticleGrid articles={results.foundArticles} />}
-        <FilterSidebar wares={waresBeforeCategories} foundWares={results.foundWares} />
-        <SortingSidebar />
+        {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />}
+        <>
+          {!allLoadings && <>
+            <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
+            <SearchHeader foundWaresQuantity={foundWares.length}
+              foundBlogsQuantity={foundBlogs.length}
+              activeTab={activeTab}
+              query={query}
+              loading={!allLoadings} />
+            {activeTab === "wares" && <FilterBar />}
+            <div style={{ minHeight: "32px", margin: "16px 0" }}>
+              <FilterStickerPanel />
+            </div>
+            {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
+            {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
+          </>}
+          <FilterSidebar wares={wares || []} foundWares={foundWares || []}
+            categories={foundWareCategories || []} trademarks={foundTrademarks || []}
+            statuses={foundWareStatuses || []}
+          />
+          <SortingSidebar />
+        </>
       </div>
     </Layout>
+
   );
 }
+
