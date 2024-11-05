@@ -4,7 +4,10 @@ const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
 const AllShops = lazy(() => import('./AllShops'));
 const NewShop = lazy(() => import('./NewShop'));
 const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
+const Blog = lazy(() => import ('./Blog'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+
+
 
 import Clients from './Clients';
 
@@ -36,7 +39,7 @@ export default function Content() {
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
-				{activeTab === 'blog' && <div>Блоги</div>}
+				{activeTab === 'blog' && <Blog />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
 			</Suspense>
 		</Box>)

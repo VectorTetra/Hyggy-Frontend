@@ -4,9 +4,54 @@
 			"Surname": "Іваненко",
 			"email": "user123@gmail.com",
 			"urlphoto": "../images/menedger.png",
-			"country": "Україна",
 			"numberphone": "+380661112233"
 		},
+		"orders": [
+			{
+				"orderId": "12345",
+				"date": "2024-10-30",
+				"status": "виконан",
+				"isPaid": true,
+				"items": [
+					{
+						"productId": "1",
+						"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
+						"shortName": "HOKKSUND",
+						"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
+						"price": 899
+					},
+					{
+						"productId": "1",
+						"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
+						"shortName": "HOKKSUND",
+						"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
+						"price": 899
+					},
+					{
+						"productId": "2",
+						"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/246014",
+						"shortName": "JONAS",
+						"longName": "Диван JONAS розкладний темно-сірий",
+						"price": 3499
+					}
+				]
+			},
+			{
+				"orderId": "12346",
+				"date": "2024-10-28",
+				"status": "виконується",
+				"isPaid": false,
+				"items": [
+					{
+						"productId": "3",
+						"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/38059",
+						"shortName": "KABIN",
+						"longName": "Шафа для одягу KABIN 3 двері біла",
+						"price": 1799
+					}
+				]
+			}
+		],
 		"favorites": [
 			{
 				"id": 1,
@@ -316,6 +361,26 @@
 				"rating": 4.3,
 				"imageSrc": "https://cdn4.jysk.com/getimage/wd3.medium/144501",
 				"category": "Покривала"
+			}
+		],
+		"lastReviews": [
+			{
+				"productId": "1",
+				"Username": "Milena",
+				"rating": 3.5,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
+				"shortName": "HOKKSUND",
+				"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
+				"text": "Тумба шикарна. Все, як в описі. Розмір і колір відповідають дійснсті"
+			},
+			{
+				"productId": "1",
+				"Username": "Milena",
+				"rating": 3.5,
+				"imageSrc": "https://cdn3.jysk.com/getimage/wd3.medium/212223",
+				"shortName": "HOKKSUND",
+				"longName": "Тумба приліжкова HOKKSUND 1пол натуральний дуб",
+				"text": "Тумба шикарна. Все, як в описі. Розмір і колір відповідають дійснсті"
 			}
 		]
 	}
