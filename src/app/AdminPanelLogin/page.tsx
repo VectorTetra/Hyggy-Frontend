@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { AuthorizeAsWorker, getDecodedToken } from '@/pages/api/TokenApi';
+import { Authorize, getDecodedToken } from '@/pages/api/TokenApi';
 import { toast } from 'react-toastify';
 
 export default function Login() {
@@ -24,7 +24,7 @@ export default function Login() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		AuthorizeAsWorker({ Email: email, Password: password }).then((response) => {
+		Authorize({ Email: email, Password: password }).then((response) => {
 			if (response.isAuthSuccessfull) {
 				router.push('/AdminPanel');
 				toast.success('Ви успішно увійшли в систему!');
