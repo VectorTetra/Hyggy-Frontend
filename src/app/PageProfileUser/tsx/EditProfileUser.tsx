@@ -3,20 +3,30 @@ import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import data from '../PageProfileUser.json';
+import { Customer, useUpdateCustomer, CustomerPutDTO } from "@/pages/api/CustomerApi";
+import { toast } from "react-toastify";
+import { getDecodedToken, validateToken } from "@/pages/api/TokenApi";
 
 
-export default function EditProfileUser({ onSave }) {
+export default function EditProfileUser({ onSave, user }: { onSave: any, user: Customer }) {
 
-    const [name, setName] = useState(data.profile.Name);
-    const [surname, setSurname] = useState(data.profile.Surname);
-    const [phone, setPhone] = useState(data.profile.numberphone);
+    const [name, setName] = useState(user.name);
+    const [surname, setSurname] = useState(user.surname);
+    const [phone, setPhone] = useState(user.phone ? user.phone : "");
     const router = useRouter();
 
-    const handleSaveChanges = () => {
-        data.profile.Name = name;
-        data.profile.Surname = surname;
-        data.profile.numberphone = phone;
-        alert("Дані успішно оновлено!");
+    const handleSaveChanges = async () => {
+        let updatedUser = await useUpdateCustomer({
+            Name: name,
+            Surname: surname,
+            Email: user.email,
+            Id: getDecodedToken()?.nameid,
+            Phone: phone,
+            AvatarPath: user.avatarPath,
+            FavoriteWareIds: user.favoriteWareIds,
+            OrderIds: user.orderIds
+        });
+        toast.success("Дані успішно оновлено!");
         onSave();
     };
 

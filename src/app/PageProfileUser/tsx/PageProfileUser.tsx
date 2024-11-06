@@ -8,6 +8,10 @@ import EditProfileUser from "./EditProfileUser";
 import OrdersUser from './OrdersUser';
 import CompletedOrdersUser from './CompletedOrdersUser';
 import ReviewsUser from './ReviewsUser';
+import { getDecodedToken, removeToken, validateToken } from '@/pages/api/TokenApi';
+import { Customer, useCustomers } from "@/pages/api/CustomerApi";
+import { useWares } from "@/pages/api/WareApi";
+import { CircularProgress } from "@mui/material";
 
 export default function PageProfileUser(props) {
 
@@ -15,6 +19,18 @@ export default function PageProfileUser(props) {
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);
     const router = useRouter();
     const [activeTab, setActiveTab] = useState('orders');
+    const [customer, setCustomer] = useState<Customer | null>(null);
+    const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
+        SearchParameter: "Query",
+        Id: getDecodedToken()?.nameid
+    });
+
+    const { data: favoriteWares = [], isLoading: favoriteWaresLoading, isSuccess: favoriteWaresSuccess } = useWares({
+        SearchParameter: "Query",
+        StringIds: customer?.favoriteWareIds.join("|")
+    });
+
+    const isAuthorized = validateToken().status === 200;
 
     const handleEdit = () => {
         setIsEditing(true); // Устанавливаем состояние редактирования
@@ -26,12 +42,18 @@ export default function PageProfileUser(props) {
     };
 
     useEffect(() => {
-        const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
+        // const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
         if (!isAuthorized) {
             router.push('/'); // Переход на главную страницу, если не авторизован
         }
-    }, []);
+        //console.log(getDecodedToken());
 
+    }, []);
+    useEffect(() => {
+        if (customerSuccess) {
+            setCustomer(customers[0]);
+        }
+    }, [customerSuccess])
     // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const file = event.target.files?.[0];
     //     if (file) {
@@ -65,7 +87,7 @@ export default function PageProfileUser(props) {
 
         // Загрузка нового изображения на ImageKit
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('photos', file);
         formData.append('fileName', file.name);
 
         try {
@@ -106,14 +128,11 @@ export default function PageProfileUser(props) {
         data.profile.urlphoto = newUrl; // Или сохраните его в состоянии с помощью setState
     };
 
-
-
-
     // Функция для выхода
     const handleLogout = () => {
         const userConfirmed = window.confirm("Ви дійсно бажаєте вийти з власного кабінету");
         if (userConfirmed) {
-            localStorage.setItem('isAuthorized', 'false');
+            removeToken();
             router.push("/");
         }
     };
@@ -122,7 +141,7 @@ export default function PageProfileUser(props) {
     const handleDeleteAccount = () => {
         const userConfirmed = window.confirm("Ви дійсно бажаєте видалити свій акаунт?");
         if (userConfirmed) {
-            localStorage.setItem('isAuthorized', 'false');
+            removeToken();
             router.push("/");
         }
     };
@@ -130,7 +149,7 @@ export default function PageProfileUser(props) {
     const renderActiveTabContent = () => {
         // Если мы редактируем профиль, то отображаем форму редактирования
         if (isEditing) {
-            return <EditProfileUser onSave={handleSaveChanges} />
+            return <EditProfileUser onSave={handleSaveChanges} user={customer} />
         }
 
         // В противном случае, отображаем контент для активной вкладки
@@ -148,20 +167,24 @@ export default function PageProfileUser(props) {
                     <div><ReviewsUser /></div>
                 );
             case 'favorites':
+                console.log(customer);
+                console.log(favoriteWares);
                 return (
                     <div>
                         <h2 className={styles.h2}>Обране</h2>
-                        <WareGrid wares={data.favorites} itemsPerPage={8} />
+                        {allSuccess && favoriteWares.length === 0 && "У Вас ще немає обраних товарів"}
+                        {allSuccess && favoriteWares.length > 0 && <WareGrid wares={favoriteWares} itemsPerPage={8} />}
                     </div>
                 );
             default:
                 return null;
         }
     };
-
+    const allSuccess = customerSuccess && favoriteWaresSuccess;
     return (
         <div>
-            <div className={styles.pageBackground}>
+            {!allSuccess && <CircularProgress />}
+            {allSuccess && <div className={styles.pageBackground}>
                 <h2 className={styles.pageTitle}>Профіль</h2>
                 <div className={styles.profileContainer}>
                     <div className={styles.profileBlock}>
@@ -170,20 +193,20 @@ export default function PageProfileUser(props) {
                                 className={imagePreviewUrl ? styles.profileImageContainerOrange : styles.profileImageContainerMustard}
                             >
                                 {imagePreviewUrl ? (
-                                    <img src={imagePreviewUrl} className={styles.profileImage} alt="profile" />
+                                    <img src={customer?.avatarPath ? customer.avatarPath : imagePreviewUrl} className={styles.profileImage} alt="profile" />
                                 ) : (
                                     <div className={styles.placeholder}>Фото</div>
                                 )}
                             </div>
                             <div className={styles.profileText}>
-                                <h3 className={styles.h3}>{data.profile.Name} {data.profile.Surname}</h3>
+                                <h3 className={styles.h3}>{customer?.name} {customer?.surname}</h3>
                             </div>
                         </div>
                         <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
                         <input type="file" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                         <ul className={styles.profileDetails}>
-                            <li>Електронна пошта: {data.profile.email}</li>
-                            <li>Номер телефону: {data.profile.numberphone}</li>
+                            <li>Електронна пошта: {customer?.email}</li>
+                            <li>Номер телефону: {customer?.phone ? customer.phone : "Не призначено"}</li>
                         </ul>
                         <div className={styles.deleteAccountButtonContainer}>
                             <button className={styles.deleteAccountButton} onClick={handleDeleteAccount}>Видалити</button>
@@ -204,7 +227,7 @@ export default function PageProfileUser(props) {
                 <div className={styles.tabContent}>
                     {renderActiveTabContent()}
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }
