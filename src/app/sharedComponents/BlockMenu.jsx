@@ -46,7 +46,17 @@ export default function BlockMenu({ foundWareCategories }) {
         }
     };
 
+    useEffect(() => {
+        if (isMainPageMenuOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
 
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMainPageMenuOpened]);
     // Закрытие меню при клике вне его области
     useEffect(() => {
         const handleClickOutside = (event) => {
