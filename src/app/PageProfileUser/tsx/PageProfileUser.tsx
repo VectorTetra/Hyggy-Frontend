@@ -15,6 +15,7 @@ import { CircularProgress } from "@mui/material";
 import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
 import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
+import { useQueryState } from "nuqs";
 
 export default function PageProfileUser(props) {
 
@@ -22,7 +23,7 @@ export default function PageProfileUser(props) {
     const queryClient = useQueryClient();
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState('orders');
+    const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: 'orders' });
     let [customer, setCustomer] = useState<Customer | null>(null);
     const { mutateAsync: updateCustomer } = useUpdateCustomer();
     const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
