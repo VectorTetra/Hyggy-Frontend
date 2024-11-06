@@ -16,6 +16,7 @@ import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/I
 import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
+import FavoriteWaresUser from "./FavoriteWaresUser";
 
 export default function PageProfileUser(props) {
 
@@ -32,8 +33,8 @@ export default function PageProfileUser(props) {
     });
 
     const { data: favoriteWares = [], isLoading: favoriteWaresLoading, isSuccess: favoriteWaresSuccess } = useWares({
-        SearchParameter: "Query",
-        StringIds: customer?.favoriteWareIds.join("|")
+        SearchParameter: "GetFavoritesByCustomerId",
+        CustomerId: getDecodedToken()?.nameid
     });
 
     const isAuthorized = validateToken().status === 200;
@@ -195,14 +196,10 @@ export default function PageProfileUser(props) {
                     <div><ReviewsUser /></div>
                 );
             case 'favorites':
-                console.log(customer);
-                console.log(favoriteWares);
+                // console.log(customer);
+                // console.log(favoriteWares);
                 return (
-                    <div>
-                        <h2 className={styles.h2}>Обране</h2>
-                        {allSuccess && favoriteWares.length === 0 && "У Вас ще немає обраних товарів"}
-                        {allSuccess && favoriteWares.length > 0 && <WareGrid wares={favoriteWares} itemsPerPage={8} />}
-                    </div>
+                    <FavoriteWaresUser />
                 );
             default:
                 return null;

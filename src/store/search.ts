@@ -44,6 +44,8 @@ interface SearchStore {
   setCategoriesMap: (map: Record<string, string>) => void;
   setTrademarksMap: (map: Record<string, string>) => void;
   setStatusesMap: (map: Record<string, string>) => void;
+  favoriteWareIds: number[];
+  setFavoriteWareIds: (favoriteWareIds: number[]) => void;
 }
 
 const useSearchStore = create<SearchStore>((set) => ({
@@ -77,6 +79,8 @@ const useSearchStore = create<SearchStore>((set) => ({
   setCategoriesMap: (map) => set({ categoriesMap: map }),
   setTrademarksMap: (map) => set({ trademarksMap: map }),
   setStatusesMap: (map) => set({ statusesMap: map }),
+  favoriteWareIds: [],
+  setFavoriteWareIds: (favoriteWareIds) => set({ favoriteWareIds }),
 }));
 
 export default useSearchStore;
