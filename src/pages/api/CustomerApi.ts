@@ -8,7 +8,7 @@ export class CustomerQueryParams {
     Name?: string | null;
     Surname?: string | null;
     Email?: string | null;
-    Phone?: string | null;
+    PhoneNumber?: string | null;
     OrderId?: number | null;
     PageNumber?: number | null;
     PageSize?: number | null;
@@ -22,10 +22,10 @@ export class CustomerPutDTO {
     Name: string
     Surname: string;
     Email: string;
-    Phone?: string | null;
+    PhoneNumber?: string | null;
     AvatarPath?: string | null;
-    FavoriteWareIds: number[] = [];
-    OrderIds: number[] = [];
+    FavoriteWareIds: number[];
+    OrderIds: number[];
 }
 export class Customer {
     id: string;
@@ -34,7 +34,7 @@ export class Customer {
     orderIds: number[];
     email: string;
     emailConfirmed: boolean;
-    phone?: string | null;
+    phoneNumber?: string | null;
     avatarPath?: string | null;
     favoriteWareIds: number[];
     executedOrdersSum: number;
@@ -91,21 +91,28 @@ export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Q
 }
 
 // Використання useMutation для оновлення існуючого складу (customer)
-export function useUpdateCustomer(p0: { Name: string; Surname: string; Email: string; Id: string | undefined; Phone: string; AvatarPath: string | null | undefined; FavoriteWareIds: number[]; OrderIds: number[]; }) {
+export function useUpdateCustomer() {
     const queryClient = useQueryClient();
-    return useMutation((updatedCustomer: CustomerPutDTO) => putCustomer(updatedCustomer), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('customers'); // Оновлює кеш даних після оновлення складу
-        },
-    });
+
+    return useMutation(
+        (updatedCustomer: CustomerPutDTO) => putCustomer(updatedCustomer),
+        {
+            onSuccess: () => {
+                // Інвалідуємо і рефетчимо дані клієнтів
+                queryClient.invalidateQueries('customers', { refetchActive: true });
+            },
+        }
+    );
 }
+
+
 
 // Використання useMutation для видалення складу (customer)
 export function useDeleteCustomer() {
     const queryClient = useQueryClient();
     return useMutation((id: string) => deleteCustomer(id), {
         onSuccess: () => {
-            queryClient.invalidateQueries('customers'); // Оновлює кеш даних після видалення складу
+            queryClient.invalidateQueries('customers', { refetchActive: true });
         },
     });
 }
