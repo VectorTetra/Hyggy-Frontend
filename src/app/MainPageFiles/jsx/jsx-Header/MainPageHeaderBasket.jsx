@@ -11,6 +11,7 @@ function MainPageHeaderBasket(props) {
     <Link href="/cart" className={styles.mainPageHeaderItem}>
       <div style={{ position: 'relative' }}>
         <Image
+          id={styles.mainPageHeaderUserPhoto}
           className={styles.mainPageHeaderBasketPhoto}
           src={props.basketPhotoUrl}
           alt="logo"
