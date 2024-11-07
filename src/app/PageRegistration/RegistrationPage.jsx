@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import styles from "./css/RegistrationStyles.module.css";
+import { toast } from "react-toastify";
+import { RegisterAsClient } from "@/pages/api/TokenApi";
 
 export default function RegistrationPage(props) {
     const [name, setName] = React.useState('');
@@ -40,20 +42,20 @@ export default function RegistrationPage(props) {
         // Проверка, что все поля заполнены
         if (!name || !surname || !email || !password || !confirmPassword) {
             setErrorMessage('');
-            alert('Всі поля обов\'язкові для заповнення');
+            toast.error('Всі поля обов\'язкові для заповнення');
             return;
         }
 
         // Проверка паролей
         if (password !== confirmPassword) {
             setErrorMessage('');
-            alert('Паролі не збігаються');
+            toast.error('Паролі не збігаються');
             return;
         }
 
         if (!isPasswordValid(password)) {
             setErrorMessage('');
-            alert('Пароль повинен містити мінімум 8 символів, включати хоча б одну заглавну букву і одну цифру.');
+            toast.error('Пароль повинен містити мінімум 8 символів, включати хоча б одну заглавну букву і одну цифру.');
             return;
         }
 
@@ -61,28 +63,27 @@ export default function RegistrationPage(props) {
         const allChecked = props.registration.label.every(item => checkboxStates[item.name]);
         if (!allChecked) {
             setErrorMessage('');
-            alert('Необхідно прийняти умови та підписатися на новини');
+            toast.error('Необхідно прийняти умови та підписатися на новини');
             return;
         }
-
-        // Проверка, существует ли уже такой пользователь
-        const existingUser = props.registration.RegistrationUser.find(user =>
-            user.email === email
-        );
-
-        if (existingUser) {
-            setErrorMessage('');
-            alert('Користувач з таким e-mail вже існує');
+        //const confirmationCode = generateConfirmationCode();
+        try {
+            RegisterAsClient({
+                Email: email,
+                Name: name,
+                Surname: surname,
+                Password: password,
+                ConfirmPassword: confirmPassword,
+                Role: "User"
+            })
+        } catch (error) {
+            console.log(error);
             return;
         }
-
-        const confirmationCode = generateConfirmationCode();
-
         // Регистрация прошла успешно
-        setErrorMessage('');
-        alert('Ваш обліковий запис створено. Ми відправили підтвердження на вашу пошту. Будь ласка, активуйте свій обліковий запис, натиснувши на кнопку у листі. Якщо ви не отримали листа, будь ласка, перевірте теку зі спамом або спробуйте увійти у свій обліковий запис ще раз, для того щоб ми надіслали вам повторний лист для активації.');
+        // toast.success('Ваш обліковий запис створено. Ми відправили підтвердження на вашу пошту. Будь ласка, активуйте свій обліковий запис, натиснувши на кнопку у листі. Якщо ви не отримали листа, будь ласка, перевірте теку зі спамом або спробуйте увійти у свій обліковий запис ще раз, для того щоб ми надіслали вам повторний лист для активації.');
 
-        window.location.href = './PageConfirmation';
+        //window.location.href = './PageConfirmation';
 
     };
 
@@ -158,7 +159,8 @@ export default function RegistrationPage(props) {
                                             />
                                         </td>
                                         <td>
-                                            <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}> {item.name} </label>
+                                            <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
+                                                onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
                                         </td>
                                     </tr>
 

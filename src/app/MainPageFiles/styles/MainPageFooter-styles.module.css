@@ -3,14 +3,6 @@
 }
 
 .footer-container {
-    /* display: flex;
-    color: white;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-bottom: 20px;
-    flex-grow: 1;
-    justify-content: space-evenly; */
-
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
@@ -26,18 +18,17 @@
 .flexItem {
     flex-direction: column;
     display: flex;
-    /* flex: 1;
-    flex-basis: 25vw; */
     padding: 0 25px;
 }
 
 .footer-messenger {
     display: flex;
-    margin-left: 3.5vw;
+    margin: 20px 10px 10px 0;
+    justify-content: end;
 }
 
 .footer-messenger img {
-    max-width: 30px;
+    width: 70px;
     padding: 15px;
 }
 

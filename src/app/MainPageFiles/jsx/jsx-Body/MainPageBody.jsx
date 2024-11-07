@@ -9,6 +9,7 @@ import MainPageBodyBlogButton from "./MainPageBodyBlogButton";
 import MainPageBodyAboutUs from "./MainPageBodyAboutUs";
 import MainPageBodySubscriptionForm from "./MainPageBodySubscriptionForm";
 
+
 export default function MainPageBody(props) {
 	return (
 		<div>

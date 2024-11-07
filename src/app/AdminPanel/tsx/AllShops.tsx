@@ -6,24 +6,32 @@ import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { getShops } from '@/pages/api/ShopApi';
-import NewShop from './NewShop';
+import { deleteShop, getShops } from '@/pages/api/ShopApi';
+import { toast } from 'react-toastify';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 
 export default function AllShops() {
-  const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
-  const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { clearOnDefault:true, scroll: false, history: "push", shallow: true });
-  const [data, setData] = useState([]);
+  const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
+  const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
+  const [data, setData] = useState<any | null>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
+
   const [paginationModel, setPaginationModel] = React.useState({
     page: 1,
     pageSize: 100,
   });
+
+  const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
+
   const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
     city: false, // Приховуємо колонку "Місто"
     state: false, // Приховуємо колонку "Область"
     postalCode: false, // Приховуємо колонку "Поштовий індекс"
   });
+
+  const [selectedRow, setSelectedRow] = useState<any | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const apiRef = useGridApiRef();
 
   // Функція для форматування значення
@@ -40,6 +48,25 @@ export default function AllShops() {
         typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+
+  const handleDelete = (row) => {
+    // Встановлюємо рядок для видалення та відкриваємо діалог
+    console.log("row", row);
+    setSelectedRow(row);
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedRow) {
+      console.log("selectedRow", selectedRow);
+      await deleteShop(selectedRow.id);
+      setIsDialogOpen(false);
+      // Оновлюємо список магазинів після видалення
+      setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
+      toast.info('Склад успішно видалено!');
+    }
+  };
 
   // Створюємо масив колонок з перекладеними назвами
   const columns = [
@@ -64,10 +91,12 @@ export default function AllShops() {
       minWidth: 175,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-          <Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
+
+          <Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => { setActiveNewShop(params.row.id); setActiveTab('addNewShop') }}>
             <EditIcon />
           </Button>
-          <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row.id)}>
+          <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
+
             <DeleteIcon />
           </Button>
         </Box>
@@ -75,15 +104,6 @@ export default function AllShops() {
     },
   ];
 
-  const handleEdit = (row) => {
-    // Логіка для редагування
-    console.log('Редагувати рядок:', row);
-  };
-
-  const handleDelete = (id) => {
-    // Логіка для видалення
-    console.log('Видалити рядок з ID:', id);
-  };
 
   useEffect(() => {
     const fetchStorages = async () => {
@@ -91,9 +111,13 @@ export default function AllShops() {
         const storages = await getShops({
           SearchParameter: "Query",
           PageNumber: 1,
-          PageSize: 1000
+
+          PageSize: 150
         });
+        console.log(storages);
         setData(storages);
+        setActiveNewShop(null);
+
       } catch (error) {
         console.error('Error fetching storage data:', error);
       } finally {
@@ -182,6 +206,27 @@ export default function AllShops() {
           }}
         />
       </Box>
+
+      <ConfirmationDialog
+        title="Видалити магазин?"
+        contentText={
+          selectedRow
+            ? `Ви справді хочете видалити цей магазин? : 
+            ${selectedRow.name && `${selectedRow.name},`} 
+            ${selectedRow.state && `${selectedRow.state},`} 
+                    ${selectedRow.city && `${selectedRow.city},`} 
+                    ${selectedRow.street && `${selectedRow.street},`}
+                    ${selectedRow.houseNumber && `${selectedRow.houseNumber},`}
+                    ${selectedRow.postalCode && `${selectedRow.postalCode}`}`
+            : ''
+        }
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDialogOpen(false)}
+        confirmButtonColor='#be0f0f'
+        cancelButtonColor='#248922'
+        open={isDialogOpen}
+      />
+
     </Box>
 
 

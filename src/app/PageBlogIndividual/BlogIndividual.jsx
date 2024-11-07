@@ -6,12 +6,12 @@ export default function BlogIndividual(props) {
     return (
         <div className={styles.headcontainer} >
             <img className={styles.bigimage} src={props.individualPage.urlImageHead} alt="Image" />
-            <h1>{props.individualPage.caption}</h1>
+            <h1 className={styles.h1}>{props.individualPage.caption}</h1>
             <div className={styles.contenttext} >{props.individualPage.content}</div>
             <div>
                 {props.individualPage.list.map((item, index) => (
                     <div className={styles.captiontext} key={index}>
-                        <h2>{item.caption}</h2>
+                        <h2 className={styles.h2}>{item.caption}</h2>
                         <div className={styles.contenttext}>
                             {item.content}
                             <div className={styles.imagerow}>

@@ -5,6 +5,10 @@
 .track {
 	height: 6px;
 	width: 100%;
+	display: flex;
+	/* Додайте flexbox */
+	align-items: center;
+	/* Центруйте елементи по вертикалі */
 }
 
 .thumb {
@@ -12,6 +16,9 @@
 	width: 20px;
 	background-color: #548BF4;
 	border-radius: 50%;
+	position: static !important;
+	/* transform: translateX(-50%); */
+	/* пересуває thumb в центр точки */
 }
 
 .inputs {

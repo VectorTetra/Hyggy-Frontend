@@ -12,6 +12,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ForumIcon from '@mui/icons-material/Forum';
+import LogoutIcon from '@mui/icons-material/Logout';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
 import ArticleIcon from '@mui/icons-material/Article';
 import RateReviewIcon from '@mui/icons-material/RateReview';
@@ -19,6 +21,7 @@ import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 //import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import Blog from './Blog';
+import { removeToken } from '@/pages/api/TokenApi';
 
 const drawerWidth = 240;
 
@@ -146,11 +149,18 @@ export default function Sidebar(props) {
 						},
 					}}
 				>
-					<Image src={hyggyIcon} alt="<" width={72} height={36} />
-					<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+
+					<a href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
+						<Image
+							src={hyggyIcon}
+							alt="<"
+							width={72}
+							height={36}
+						/>
+						<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
+					</a>
 				</Button>
 			</Toolbar>
-
 			<Divider sx={{ mt: 8 }} /> {/* Відступ, щоб розділювач не накладався на кнопку */}
 			<Box sx={{
 				overflowY: 'auto',
@@ -180,22 +190,30 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
-					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
 					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
+					<a href="../AdminPanelLogin" onClick={() => {
+						removeToken();
+					}}>
+						<MenuItem
+							icon={<LogoutIcon />}
+							text="Вихід"
+							value="exit"
+						/>
+					</a>
 				</List>
 			</Box>
-			<Divider />
 		</div>
 	);
 
 	const container = window !== undefined ? () => window().document.body : undefined;
 
 	return (
-		<Box>
+		<Box sx={{ zIndex: 10000 }}>
 			<CssBaseline />
 			<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="menu folders">
 				<Drawer
@@ -213,7 +231,6 @@ export default function Sidebar(props) {
 					{drawer}
 				</Drawer>
 			</Box>
-
 		</Box>
 	);
 }

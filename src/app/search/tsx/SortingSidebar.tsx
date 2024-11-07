@@ -35,56 +35,56 @@ export default function SortingSidebar(props: any) {
 					<input
 						type="radio"
 						name="sorting"
-						id="rating_desc"
-						value="rating_desc"
-						checked={sort === "rating_desc"} // Перевірка для активного радіобокса
-						onChange={() => setSort("rating_desc", { history: "replace", scroll: false })} // Зміна стану при зміні радіобокса
+						id="Rating"
+						value="Rating"
+						checked={sort === "Rating"} // Перевірка для активного радіобокса
+						onChange={() => setSort("Rating", { history: "replace", scroll: false })} // Зміна стану при зміні радіобокса
 					/>
-					<label htmlFor="rating_desc">Найкращий відгук</label>
+					<label htmlFor="Rating">Найкращий відгук</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
 					<input
 						type="radio"
 						name="sorting"
-						id="price_asc"
-						value="price_asc"
-						checked={sort === "price_asc"}
-						onChange={() => setSort("price_asc", { history: "replace", scroll: false })}
+						id="PriceAsc"
+						value="PriceAsc"
+						checked={sort === "PriceAsc"}
+						onChange={() => setSort("PriceAsc", { history: "replace", scroll: false })}
 					/>
-					<label htmlFor="price_asc">Найменша ціна</label>
+					<label htmlFor="PriceAsc">Найменша ціна</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
 					<input
 						type="radio"
 						name="sorting"
-						id="price_desc"
-						value="price_desc"
-						checked={sort === "price_desc"}
-						onChange={() => setSort("price_desc", { history: "replace", scroll: false })}
+						id="PriceDesc"
+						value="PriceDesc"
+						checked={sort === "PriceDesc"}
+						onChange={() => setSort("PriceDesc", { history: "replace", scroll: false })}
 					/>
-					<label htmlFor="price_desc">Найбільша ціна</label>
+					<label htmlFor="PriceDesc">Найбільша ціна</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
 					<input
 						type="radio"
 						name="sorting"
-						id="alphabet_asc"
-						value="alphabet_asc"
-						checked={sort === "alphabet_asc"}
-						onChange={() => setSort("alphabet_asc", { history: "replace", scroll: false })}
+						id="NameAsc"
+						value="NameAsc"
+						checked={sort === "NameAsc"}
+						onChange={() => setSort("NameAsc", { history: "replace", scroll: false })}
 					/>
-					<label htmlFor="alphabet_asc">За алфавітом (А-Я)</label>
+					<label htmlFor="NameAsc">За алфавітом (А-Я)</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
 					<input
 						type="radio"
 						name="sorting"
-						id="alphabet_desc"
-						value="alphabet_desc"
-						checked={sort === "alphabet_desc"}
-						onChange={() => setSort("alphabet_desc", { history: "replace", scroll: false })}
+						id="NameDesc"
+						value="NameDesc"
+						checked={sort === "NameDesc"}
+						onChange={() => setSort("NameDesc", { history: "replace", scroll: false })}
 					/>
-					<label htmlFor="alphabet_desc">За алфавітом (Я-А)</label>
+					<label htmlFor="NameDesc">За алфавітом (Я-А)</label>
 				</div>
 				<SidebarButtonBar />
 			</div>

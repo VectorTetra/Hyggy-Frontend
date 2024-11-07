@@ -83,6 +83,10 @@
 	line-height: 18px;
 }
 
+.statusCircleTd {
+	padding-right: 5px;
+}
+
 /* Star Ratings */
 .fullStar,
 .emptyStar,
@@ -122,6 +126,7 @@
 	min-width: 0px;
 	position: relative;
 	display: flex;
+	justify-content: center;
 }
 
 .wareCardLink {

@@ -1,17 +1,23 @@
 "use client";
 import data from './structure.json';
 import HeaderImage from './tsx/HeaderImage';
-import TextBlock from './tsx/TextBlock'; // Імпортуємо новий компонент
-import StickerBar from './tsx/StickerBar'; // Імпортуємо новий компонент
+import TextBlock from './tsx/TextBlock';
+import StickerBar from './tsx/StickerBar';
 import CardCarousel from './tsx/CardCarousel';
 import BlockArticle from './tsx/BlockArticle';
 import LinkedStickerBar from './tsx/LinkedStickerBar';
 import styles from './page.module.css';
 import Layout from '../sharedComponents/Layout';
 
-export default function WorkPage(props: any) {
+export default function WorkPage() {
+
+	const pageMetadata = {
+		title: "Робота в HYGGY",
+		description: "Робота в HYGGY",
+	};
+
 	return (
-		<Layout headerType='header1'>
+		<Layout headerType='header1' pageMetadata={pageMetadata}> {/* Передаем metadata */}
 			<div className={styles.pageContainer}>
 				{data.map((item: any) => {
 					if (item.type === "imageHeader") {
@@ -32,7 +38,7 @@ export default function WorkPage(props: any) {
 					if (item.type === "linkedStickerBar") {
 						return <LinkedStickerBar stickers={item.stickers} key={item.id} width={item.width} height={item.height} backgroundColor={item.backgroundColor} />;
 					}
-					return null; // Для випадків, коли тип не співпадає
+					return null;
 				})}
 			</div>
 		</Layout>

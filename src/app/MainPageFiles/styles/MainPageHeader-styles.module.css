@@ -41,10 +41,12 @@
 }
 
 #mainPageHeaderLogo {
-	width: clamp(100px, 15vw, 100px);
-	aspect-ratio: 1 / 1;
-	padding: 10px;
+	/* width: clamp(100px, 15vw, 100px);
+	aspect-ratio: 1 / 1; */
+	/* padding: 10px; */
 	/* margin-left: 100px; */
+	width: 110px;
+	height: 71px;
 }
 
 #horizontalBar {
@@ -153,6 +155,21 @@
 }
 
 .cartQuantityBadge {
+	position: absolute;
+	top: -5px;
+	right: -8px;
+	background-color: #00AAAD;
+	color: white;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+}
+
+.favoriteQuantityBadge {
 	position: absolute;
 	top: -5px;
 	right: -8px;

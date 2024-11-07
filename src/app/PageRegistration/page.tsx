@@ -5,9 +5,7 @@ import registrationData from "./Registration.json";
 export default function Home() {
   return (
     <Layout headerType="header1" footerType="footer1">
-      <div>
-        <RegistrationPage registration={registrationData.RegistrationPage} />
-      </div>
+      <RegistrationPage registration={registrationData.RegistrationPage} />
     </Layout>
   );
 }
