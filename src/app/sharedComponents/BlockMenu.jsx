@@ -17,15 +17,9 @@ const adaptCategories = (data) => {
         })),
     }));
 };
-export default function BlockMenu() {
+export default function BlockMenu({ foundWareCategories }) {
     const [history, setHistory] = useState([]); // История для возврата на предыдущие уровни
-    const { data: foundWareCategories = [], isLoading: isWareCategories1Loading } = useWareCategories1({
-        SearchParameter: "Query",
-        //QueryAny: query,
-        PageNumber: 1,
-        PageSize: 1000,
-        Sorting: "NameAsc"
-    });
+
     const [currentMenu, setCurrentMenu] = useState(adaptCategories(foundWareCategories));
     const [currentCategory, setCurrentCategory] = useState(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
@@ -52,7 +46,17 @@ export default function BlockMenu() {
         }
     };
 
+    useEffect(() => {
+        if (isMainPageMenuOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
 
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMainPageMenuOpened]);
     // Закрытие меню при клике вне его области
     useEffect(() => {
         const handleClickOutside = (event) => {

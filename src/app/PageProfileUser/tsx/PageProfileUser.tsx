@@ -8,13 +8,36 @@ import EditProfileUser from "./EditProfileUser";
 import OrdersUser from './OrdersUser';
 import CompletedOrdersUser from './CompletedOrdersUser';
 import ReviewsUser from './ReviewsUser';
+import { getDecodedToken, removeToken, validateToken } from '@/pages/api/TokenApi';
+import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
+import { useWares } from "@/pages/api/WareApi";
+import { CircularProgress } from "@mui/material";
+import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
+import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import { useQueryState } from "nuqs";
+import FavoriteWaresUser from "./FavoriteWaresUser";
 
 export default function PageProfileUser(props) {
 
     const [isEditing, setIsEditing] = useState(false);
+    const queryClient = useQueryClient();
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState('orders');
+    const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: 'orders' });
+    let [customer, setCustomer] = useState<Customer | null>(null);
+    const { mutateAsync: updateCustomer } = useUpdateCustomer();
+    const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
+        SearchParameter: "Query",
+        Id: getDecodedToken()?.nameid
+    });
+
+    const { data: favoriteWares = [], isLoading: favoriteWaresLoading, isSuccess: favoriteWaresSuccess } = useWares({
+        SearchParameter: "GetFavoritesByCustomerId",
+        CustomerId: getDecodedToken()?.nameid
+    });
+
+    const isAuthorized = validateToken().status === 200;
 
     const handleEdit = () => {
         setIsEditing(true); // Устанавливаем состояние редактирования
@@ -26,11 +49,19 @@ export default function PageProfileUser(props) {
     };
 
     useEffect(() => {
-        const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
+        // const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
         if (!isAuthorized) {
             router.push('/'); // Переход на главную страницу, если не авторизован
         }
+        //console.log(getDecodedToken());
+
     }, []);
+    useEffect(() => {
+        if (customerSuccess && customers.length > 0) {
+            setCustomer(customers[0]); // Оновлюємо клієнта, якщо успішно завантажено
+            console.log(customers[0]);
+        }
+    }, [customerSuccess, customers]); // Залежність від customers та customerSuccess
 
     // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const file = event.target.files?.[0];
@@ -44,16 +75,36 @@ export default function PageProfileUser(props) {
     // };
 
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreviewUrl(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-
-            // Загрузка нового изображения на ImageKit
-            await uploadImage(file);
+        const files = event.target.files;
+        if (files && customer && customer.favoriteWareIds && customer.orderIds) {
+            if (customer.avatarPath) { getPhotoByUrlAndDelete(customer.avatarPath); }
+            uploadPhotos(files).then(async (urls) => {
+                //setImagePreviewUrl(urls[0]);
+                console.log("customer?.favoriteWareIds", customer.favoriteWareIds);
+                await updateCustomer(
+                    {
+                        Name: customer.name,
+                        Surname: customer.surname,
+                        Email: customer.email,
+                        Id: getDecodedToken()?.nameid || "",
+                        PhoneNumber: customer.phoneNumber,
+                        AvatarPath: urls[0],
+                        FavoriteWareIds: customer.favoriteWareIds,
+                        OrderIds: customer.orderIds
+                    },
+                    {
+                        onSuccess: () => {
+                            console.log("Дані оновлено, починаємо рефетчинг...");
+                            queryClient.invalidateQueries('customers');
+                            toast.success("Фото профілю успішно оновлено!");
+                        },
+                        onError: (error) => {
+                            toast.error("Помилка при оновленні фото профілю!");
+                            console.error("Помилка оновлення:", error);
+                        }
+                    }
+                );
+            });
         }
     };
 
@@ -65,7 +116,7 @@ export default function PageProfileUser(props) {
 
         // Загрузка нового изображения на ImageKit
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('photos', file);
         formData.append('fileName', file.name);
 
         try {
@@ -106,14 +157,11 @@ export default function PageProfileUser(props) {
         data.profile.urlphoto = newUrl; // Или сохраните его в состоянии с помощью setState
     };
 
-
-
-
     // Функция для выхода
     const handleLogout = () => {
         const userConfirmed = window.confirm("Ви дійсно бажаєте вийти з власного кабінету");
         if (userConfirmed) {
-            localStorage.setItem('isAuthorized', 'false');
+            removeToken();
             router.push("/");
         }
     };
@@ -122,15 +170,15 @@ export default function PageProfileUser(props) {
     const handleDeleteAccount = () => {
         const userConfirmed = window.confirm("Ви дійсно бажаєте видалити свій акаунт?");
         if (userConfirmed) {
-            localStorage.setItem('isAuthorized', 'false');
+            removeToken();
             router.push("/");
         }
     };
 
     const renderActiveTabContent = () => {
         // Если мы редактируем профиль, то отображаем форму редактирования
-        if (isEditing) {
-            return <EditProfileUser onSave={handleSaveChanges} />
+        if (isEditing && customer != null) {
+            return <EditProfileUser onSave={handleSaveChanges} user={customer} />
         }
 
         // В противном случае, отображаем контент для активной вкладки
@@ -148,20 +196,20 @@ export default function PageProfileUser(props) {
                     <div><ReviewsUser /></div>
                 );
             case 'favorites':
+                // console.log(customer);
+                // console.log(favoriteWares);
                 return (
-                    <div>
-                        <h2 className={styles.h2}>Обране</h2>
-                        <WareGrid wares={data.favorites} itemsPerPage={8} />
-                    </div>
+                    <FavoriteWaresUser />
                 );
             default:
                 return null;
         }
     };
-
+    const allSuccess = customerSuccess && favoriteWaresSuccess;
     return (
         <div>
-            <div className={styles.pageBackground}>
+            {!allSuccess && <CircularProgress />}
+            {allSuccess && <div className={styles.pageBackground}>
                 <h2 className={styles.pageTitle}>Профіль</h2>
                 <div className={styles.profileContainer}>
                     <div className={styles.profileBlock}>
@@ -170,20 +218,20 @@ export default function PageProfileUser(props) {
                                 className={imagePreviewUrl ? styles.profileImageContainerOrange : styles.profileImageContainerMustard}
                             >
                                 {imagePreviewUrl ? (
-                                    <img src={imagePreviewUrl} className={styles.profileImage} alt="profile" />
+                                    <img src={customer?.avatarPath ? customer.avatarPath : imagePreviewUrl} className={styles.profileImage} alt="profile" />
                                 ) : (
                                     <div className={styles.placeholder}>Фото</div>
                                 )}
                             </div>
                             <div className={styles.profileText}>
-                                <h3 className={styles.h3}>{data.profile.Name} {data.profile.Surname}</h3>
+                                <h3 className={styles.h3}>{customer?.name} {customer?.surname}</h3>
                             </div>
                         </div>
                         <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
-                        <input type="file" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
+                        <input type="file" accept="image/*" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                         <ul className={styles.profileDetails}>
-                            <li>Електронна пошта: {data.profile.email}</li>
-                            <li>Номер телефону: {data.profile.numberphone}</li>
+                            <li>Електронна пошта: {customer?.email}</li>
+                            <li>Номер телефону: {customer?.phoneNumber ? customer.phoneNumber : "Не призначено"}</li>
                         </ul>
                         <div className={styles.deleteAccountButtonContainer}>
                             <button className={styles.deleteAccountButton} onClick={handleDeleteAccount}>Видалити</button>
@@ -204,7 +252,7 @@ export default function PageProfileUser(props) {
                 <div className={styles.tabContent}>
                     {renderActiveTabContent()}
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }
