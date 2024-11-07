@@ -12,7 +12,7 @@
 }
 
 .formSection {
-  width: 60%;
+  width: 70%;
   padding: 20px;
   border-radius: 10px;
 }
@@ -33,7 +33,6 @@
 }
 
 .formGroup label {
-  font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -41,7 +40,6 @@
 .formGroup input[type="text"],
 .formGroup input[type="password"] {
   padding: 10px;
-  font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 100%;
@@ -62,7 +60,6 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
   width: 100%;
   font-weight: bold;
 }
@@ -73,7 +70,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
   width: 100%;
   color: #00AAAD;
   text-decoration: underline;
@@ -82,7 +78,6 @@
 
 .error {
   color: red;
-  font-size: 12px;
   margin-top: 5px;
 }
 
@@ -111,10 +106,4 @@
 
 .formInput::placeholder {
   color: gray;
-}
-
-@media (max-width: 768px) {
-  .checkoutPage {
-    flex-direction: column;
-  }
 }

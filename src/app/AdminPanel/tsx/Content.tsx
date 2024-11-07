@@ -1,8 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
+const FrameWare = lazy(() => import('./FrameWare'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
+import WareAddEditFrame from './FrameWareAddEdit';
 
 import AllShops from './AllShops';
 import NewShop from './NewShop';
@@ -22,7 +24,8 @@ export default function Content() {
 			}}
 		>
 			<Suspense fallback={<CircularProgress />}>
-				{activeTab === 'products' && <div>Товари</div>}
+				{activeTab === 'products' && <FrameWare />}
+				{activeTab === 'addEditWare' && <WareAddEditFrame />}
 				{activeTab === 'warehousesList' && <WarehouseFrame />}
 				{activeTab === 'addEditWarehouse' && <WarehouseAddEditFrame />}
 				{activeTab === 'remains' && <div>Залишки</div>}
@@ -30,7 +33,7 @@ export default function Content() {
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
 				{activeTab === 'stores' && <AllShops />}
- 				{activeTab === 'addNewShop' && <NewShop />}
+				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <div>Клієнти</div>}
 				{activeTab === 'orders' && <div>Замовлення</div>}

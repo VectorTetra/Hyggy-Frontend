@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { CircularProgress } from '@mui/material';
 import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
@@ -22,10 +23,13 @@ interface CartItem {
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflow = 'auto';
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
+    setLoading(false);
   }, []);
 
   const handleRemoveItem = (index: number) => {
@@ -41,11 +45,13 @@ const CartPage = () => {
   };
 
   const calculatePDV = () => {
-    const PDVPrice = 131.67;
-    return cartItems.reduce((total, item) => {
-      return PDVPrice * item.quantity;
-    }, PDVPrice);
+    const PDVRate = 0.20;
+    const totalProductPrice = cartItems.reduce((total, item) => {
+      return total + parseFloat(item.price) * item.quantity;
+    }, 0);
+    return totalProductPrice * PDVRate;
   };
+
 
   const handleQuantityChange = (index: number, newQuantity: number) => {
     const updatedCart = [...cartItems];
@@ -77,15 +83,19 @@ const CartPage = () => {
       return totalSavings;
     }, 0);
   };
-
+  if (loading) {
+    return (
+      <CircularProgress />
+    );
+  }
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.cartPage}>
-        <center><h1>Огляд кошика</h1></center>
+        <center><h2>Огляд кошика</h2></center>
         {cartItems.length === 0 ? (
           <center>
             <p>Кошик пустий</p>
-            <Link href="/">
+            <Link href="/search">
               <button className={styles.continueButton}>Продовжити покупки</button>
             </Link>
           </center>
@@ -125,13 +135,16 @@ const CartPage = () => {
                     +
                   </button>
                 </div>
-                <div className={styles.price}>{item.price} грн</div>
+                <div className={styles.price}>
+                  <p>{item.price} грн </p>
+                  <p>{parseFloat(item.price) * item.quantity} грн</p>
+                </div>
               </div>
             ))}
           </div>
         )}
         {cartItems.length > 0 && (
-          <div className={styles.cartSummary}>
+          <div>
             <div className={styles.cartInfo}>
               {calculateTotalSavings() > 0 && (
                 <p>Загальна економія {formatPrice(calculateTotalSavings())} грн</p>
@@ -144,12 +157,14 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
-            <Link href="/cart/address">
-              <button className={styles.checkoutButton}>Продовжити покупки</button>
-            </Link>
-            <Link href="/">
-              <button className={styles.continueButton}>Завершити замовлення</button>
-            </Link>
+            <div className={styles.buttonContainer}>
+              <Link href="/cart/delivery">
+                <button className={styles.checkoutButton}>Завершити замовлення</button>
+              </Link>
+              <Link href="/search">
+                <button className={styles.continueButton}>Продовжити покупки</button>
+              </Link>
+            </div>
           </div>
         )}
       </div>

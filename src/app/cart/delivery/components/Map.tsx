@@ -39,7 +39,7 @@ const Map = ({ selectedStore, setSelectedStore, stores }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <MarkerClusterGroup>
-        {stores.slice(0, 100).map((store, index) => (
+        {stores.map((store, index) => (
           <Marker
             key={index}
             position={[store.latitude, store.longitude]}
