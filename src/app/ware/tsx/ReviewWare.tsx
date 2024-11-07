@@ -62,8 +62,8 @@ export default function ReviewWare({ product }: { product: Product }) {
       {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <p onClick={() => setIsModalOpen(false)} className={styles.close}>×</p>
-            <h1>Залишити відгук</h1>
+            <div onClick={() => setIsModalOpen(false)} className={styles.close}>&times;</div>
+            <h3>Залишити відгук</h3>
             <form onSubmit={handleSubmit}>
               <hr />
               <div className={styles.formRating}>
@@ -133,13 +133,13 @@ export default function ReviewWare({ product }: { product: Product }) {
         {product.lastReviews.map((review, index) => (
           <div key={index} className={styles.reviewItem}>
             <span className={styles.reviewerName}>{review.name}</span>
-            <span className={styles.reviewText}>{review.text}</span>
             <div className={styles.reviewContent}>
               <div className={styles.reviewRatingContainer}>
                 <StarRating rating={Number(review.rating)} />
                 <span className={styles.reviewRating}>{review.rating} / 5</span>
               </div>
             </div>
+            <span className={styles.reviewText}>{review.text}</span>
           </div>
         ))}
       </div>

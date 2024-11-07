@@ -6,6 +6,8 @@ import List from "./components/List";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { isEmpty } from "lodash";
 
 const DeliveryPage = () => {
   const [selectedStore, setSelectedStore] = useState(null);
@@ -14,6 +16,7 @@ const DeliveryPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredStores, setFilteredStores] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
   const [novaPoshtaWarehouses, setNovaPoshtaWarehouses] = useState([]);
+  const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -26,17 +29,8 @@ const DeliveryPage = () => {
 
   useEffect(() => {
     const savedDeliveryType = localStorage.getItem('selectedDeliveryType');
-
     if (savedDeliveryType) {
       setSelectedDeliveryType(savedDeliveryType);
-    }
-
-    const addressInfo = localStorage.getItem('addressInfo');
-    if (!addressInfo) {
-      router.push('/cart/address');
-    } else {
-      const parsedAddress = JSON.parse(addressInfo);
-      setSearchQuery(parsedAddress.street);
     }
   }, [selectedDeliveryType, router]);
 
@@ -44,6 +38,8 @@ const DeliveryPage = () => {
     if (selectedDeliveryType === "store") {
       setIsPaymentButtonEnabled(selectedStore !== null);
     } else if (selectedDeliveryType === "novaPoshta") {
+      setIsPaymentButtonEnabled(selectedStore !== null);
+    } else if (selectedDeliveryType === "ukrPoshta") {
       setIsPaymentButtonEnabled(selectedStore !== null);
     } else {
       setIsPaymentButtonEnabled(true);
@@ -109,7 +105,7 @@ const DeliveryPage = () => {
 
   useEffect(() => {
     const fetchWarehouses = async () => {
-      if (selectedDeliveryType === "novaPoshta") {
+      if (selectedDeliveryType === "novaPoshta" && searchQuery !== "") {
         const warehouses = await getNovaPoshtaWarehouses(searchQuery);
         setNovaPoshtaWarehouses(warehouses.map(warehouse => ({
           name: warehouse.Description,
@@ -123,7 +119,78 @@ const DeliveryPage = () => {
     };
 
     fetchWarehouses();
-  }, [searchQuery, selectedDeliveryType]);
+  }, [selectedDeliveryType]);
+
+  const getUkrPoshtaOffices = async (searchQuery) => {
+    setLoading(true);
+    setUkrPoshtaOffices([]);
+    const response = await axios.get('/api/postoffice', { params: { street_ua: searchQuery } });
+    const streetData = response.data;
+    const regionIds = streetData.Entries.Entry.map((entry) => entry.REGION_ID);
+    const uniqueRegionIds = Array.from(new Set(regionIds));
+    const allPostOffices = await Promise.all(
+      uniqueRegionIds.map(async (regionId) => {
+        const regionResponse = await axios.get('/api/region', { params: { region_id: regionId } });
+        return regionResponse.data.Entries.Entry || [];
+      })
+    );
+    const flatPostOffices = allPostOffices.flat();
+    const filteredOffices = flatPostOffices.filter((entry) =>
+      entry.STREET_UA.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const isWithinUkraineBounds = (latitude, longitude) => {
+      return (
+        latitude >= 44.384 && latitude <= 52.379 &&
+        longitude >= 22.063 && longitude <= 40.193
+      );
+    };
+
+    const uniqueOffices = filteredOffices.reduce((acc, entry) => {
+      const latitude = parseFloat(entry.LATTITUDE);
+      const longitude = parseFloat(entry.LONGITUDE);
+      if (isWithinUkraineBounds(latitude, longitude)) {
+        const exists = acc.find(item => item.address === entry.ADDRESS);
+        if (!exists) {
+          acc.push({
+            name: entry.PO_LONG,
+            address: entry.ADDRESS,
+            postalCode: entry.POSTINDEX,
+            city: entry.CITY_UA,
+            latitude: latitude,
+            longitude: longitude,
+          });
+        }
+      }
+      return acc;
+    }, []);
+
+    setUkrPoshtaOffices(uniqueOffices);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (selectedDeliveryType === "ukrPoshta" && searchQuery !== "") {
+      getUkrPoshtaOffices(searchQuery);
+    }
+  }, [selectedDeliveryType]);
+
+  const handleButtonSearch = async () => {
+    if (selectedDeliveryType === "novaPoshta") {
+      const warehouses = await getNovaPoshtaWarehouses(searchQuery);
+      setNovaPoshtaWarehouses(warehouses.map(warehouse => ({
+        name: warehouse.Description,
+        address: warehouse.ShortAddress,
+        city: warehouse.CityDescription,
+        postalCode: warehouse.PostalCodeUA,
+        latitude: parseFloat(warehouse.Latitude),
+        longitude: parseFloat(warehouse.Longitude),
+      })));
+    }
+    if (selectedDeliveryType === "ukrPoshta") {
+      await getUkrPoshtaOffices(searchQuery);
+    }
+  }
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -219,7 +286,7 @@ const DeliveryPage = () => {
 
         {selectedDeliveryType === "ukrPoshta" && (
           <div className="mt-6">
-            <i>Введіть поштовий індекс або назву вулиці, щоб знайти відділення Укрпошти.</i>
+            <i>Введіть назву вулиці, щоб знайти відділення Укрпошти.</i>
           </div>
         )}
 
@@ -227,11 +294,11 @@ const DeliveryPage = () => {
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input
-                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-[770px] h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
+                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-full h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
                 value={searchQuery}
                 onChange={handleSearch}
               />
-              <button className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
+              <button onClick={handleButtonSearch} className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
                 Пошук
               </button>
             </div>
@@ -256,11 +323,11 @@ const DeliveryPage = () => {
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input
-                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-[770px] h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
+                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-full h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
                 value={searchQuery}
                 onChange={handleSearch}
               />
-              <button className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
+              <button onClick={handleButtonSearch} className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
                 Пошук
               </button>
             </div>
@@ -284,20 +351,53 @@ const DeliveryPage = () => {
           </>
         )}
 
+        {selectedDeliveryType === "ukrPoshta" && (
+          <>
+            <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
+              <input
+                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-full h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+              <button onClick={handleButtonSearch} className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
+                Пошук
+              </button>
+            </div>
 
-        <Link href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
+            <div className="flex flex-col lg:flex-row gap-8 mt-4 mb-10">
+              <div className="w-full lg:w-1/2">
+                <h3 className="text-2xl mb-4">Виберіть відділення Укрпошти</h3>
+                {loading ? (
+                  <p>Завантаження відділень...</p>
+                ) : (
+                  <List
+                    setSelectedStore={setSelectedStore}
+                    selectedStore={selectedStore}
+                    stores={ukrPoshtaOffices}
+                  />
+                )}
+              </div>
+              <div className="bg-gray-500 shrink-0 lg:w-[613px] h-[548px]">
+                <Map setSelectedStore={setSelectedStore} selectedStore={selectedStore} stores={ukrPoshtaOffices} />
+              </div>
+            </div>
+          </>
+        )}
+
+
+        <Link href={isPaymentButtonEnabled ? "/cart/address" : "#"}>
           <center>
             <button
               type="submit"
               className={styles.submitButton}
               disabled={!isPaymentButtonEnabled}
             >
-              Виберіть тип оплати
+              Продовжити
             </button>
           </center>
         </Link>
 
-        <Link href="/cart/address">
+        <Link href="/cart">
           <button type="button" className={styles.cancelButton}>Скасувати</button>
         </Link>
       </div>

@@ -46,6 +46,7 @@ const AddressPage = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [streetSuggestions, setStreetSuggestions] = useState<string[]>([]);
+  const [deliveryCost, setDeliveryCost] = useState(0);
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("formData");
@@ -58,6 +59,13 @@ const AddressPage = () => {
 
     if (savedCartItems.length === 0) {
       router.push('/');
+    }
+
+    const deliveryInfoRaw = localStorage.getItem('deliveryInfo');
+    if (deliveryInfoRaw) {
+      const deliveryInfo = JSON.parse(deliveryInfoRaw);
+      const { deliveryCost } = deliveryInfo;
+      setDeliveryCost(deliveryCost);
     }
   }, [router]);
 
@@ -96,7 +104,7 @@ const AddressPage = () => {
 
   const fetchCitySuggestions = async (query: string) => {
     if (query.length > 2) {
-      const response = await fetch(`https://nominatim.openstreetmap.org.ua/search?city=${query}&country=Ukraine&format=json&accept-language=uk&limit=1`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?city=${query}&country=Ukraine&format=json&accept-language=uk&limit=1`);
       const data = await response.json();
       const cityNames = data.map((item: any) => item.display_name.split(',')[0]);
       setCitySuggestions(cityNames);
@@ -120,7 +128,7 @@ const AddressPage = () => {
   const fetchStreetSuggestions = async (query: string) => {
     if (query.length > 2 && formData.city) {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org.ua/search?street=${query}&city=${formData.city}&country=Ukraine&format=json&accept-language=uk`
+        `https://nominatim.openstreetmap.org/search?street=${query}&city=${formData.city}&country=Ukraine&format=json&accept-language=uk`
       );
       const data = await response.json();
       let streetNames = data.map((item: any) => item.display_name.split(',')[0].replace(/вулиця|Вулиця/i, "").trim());
@@ -195,16 +203,14 @@ const AddressPage = () => {
         houseNumber: formData.houseNumber,
       };
       localStorage.setItem('addressInfo', JSON.stringify(addressInfo));
-      window.location.href = "/cart/delivery";
+      window.location.href = "/cart/payment";
     }
   };
 
-
   const calculateTotalPrice = () => {
-    const deliveryPrice = cartItems.length > 0 && cartItems[0].selectedOption === 'delivery' ? 100 : 0;
     return cartItems.reduce((total, item) => {
       return total + parseFloat(item.price) * item.quantity;
-    }, deliveryPrice);
+    }, 0);
   };
 
   return (
@@ -321,10 +327,10 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до доставки
+                Перейти до оплати
               </button>
             </div>
-            <Link href="/cart">
+            <Link href="/cart/delivery">
               <button type="button" className={styles.cancelButton}>Скасувати</button>
             </Link>
           </form>
@@ -351,10 +357,11 @@ const AddressPage = () => {
                   </div>
                   <div className={styles.price}>
                     <p>{item.price} грн</p>
+                    <p>{parseFloat(item.price) * item.quantity} грн</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {calculateTotalPrice().toFixed(2)} грн</p>
+              <p className={styles.totalPrice}>Усього {(calculateTotalPrice() + deliveryCost).toFixed(2)} грн</p>
             </div>
           )}
         </div>

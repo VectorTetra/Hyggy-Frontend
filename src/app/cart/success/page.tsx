@@ -53,6 +53,8 @@ const SuccessPage = () => {
         setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
       } else if (selectedDeliveryType === 'courier') {
         setAddress(`${addressInfo.city}, ${addressInfo.street}, ${addressInfo.houseNumber}`);
+      } else if (selectedDeliveryType === 'ukrPoshta') {
+        setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
       }
       setDeliveryDate(formattedDate);
       setDeliveryCost(deliveryCost);
@@ -76,7 +78,7 @@ const SuccessPage = () => {
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.Page}>
-        <h1>Оплата успішна</h1>
+        <h2>Оплата успішна</h2>
       </div>
       <center><h3><b>Замовлення №123456:</b></h3></center>
       <center>
@@ -105,6 +107,7 @@ const SuccessPage = () => {
                   </div>
                   <div className={styles.price}>
                     <p>{item.price} грн</p>
+                    <p>{(parseFloat(item.price) * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
