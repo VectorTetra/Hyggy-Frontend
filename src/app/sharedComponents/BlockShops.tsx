@@ -215,6 +215,18 @@ export default function BlockShops() {
         }
     }, []);
 
+    useEffect(() => {
+        if (isMainPageMenuShopsOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMainPageMenuShopsOpened]);
+
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };

@@ -2,32 +2,50 @@
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import InputMask from 'react-input-mask';  // Імпортуємо InputMask
 import data from '../PageProfileUser.json';
-import { Customer, useUpdateCustomer, CustomerPutDTO } from "@/pages/api/CustomerApi";
+import { Customer, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { toast } from "react-toastify";
-import { getDecodedToken, validateToken } from "@/pages/api/TokenApi";
-
+import { useQueryClient } from 'react-query';
+import { getDecodedToken } from "@/pages/api/TokenApi";
 
 export default function EditProfileUser({ onSave, user }: { onSave: any, user: Customer }) {
 
     const [name, setName] = useState(user.name);
     const [surname, setSurname] = useState(user.surname);
-    const [phone, setPhone] = useState(user.phone ? user.phone : "");
+    const [phone, setPhone] = useState(user.phoneNumber ? user.phoneNumber : "");
+    const formattedPhone = phone.replace(/[^\d+]/g, "");
     const router = useRouter();
-
+    const queryClient = useQueryClient();
+    const { mutateAsync: updateCustomer } = useUpdateCustomer();
     const handleSaveChanges = async () => {
-        let updatedUser = await useUpdateCustomer({
-            Name: name,
-            Surname: surname,
-            Email: user.email,
-            Id: getDecodedToken()?.nameid,
-            Phone: phone,
-            AvatarPath: user.avatarPath,
-            FavoriteWareIds: user.favoriteWareIds,
-            OrderIds: user.orderIds
-        });
-        toast.success("Дані успішно оновлено!");
-        onSave();
+        // Видаляємо зайві символи для збереження в базі даних
+        console.log("user", user);
+        await updateCustomer(
+            {
+                Name: name,
+                Surname: surname,
+                Email: user.email,
+                Id: getDecodedToken()?.nameid || "",
+                PhoneNumber: formattedPhone,
+                AvatarPath: user.avatarPath,
+                FavoriteWareIds: user.favoriteWareIds,
+                OrderIds: user.orderIds
+            }
+            ,
+            {
+                onSuccess: () => {
+                    console.log("Дані оновлено, починаємо рефетчинг...");
+                    queryClient.invalidateQueries('customers');
+                    toast.success("Дані успішно оновлено!");
+                    onSave();
+                },
+                onError: (error) => {
+                    toast.error("Помилка при оновленні даних!");
+                    console.error("Помилка оновлення:", error);
+                }
+            }
+        );
     };
 
     const handleCancel = () => {
@@ -89,7 +107,7 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                         <TextField
                             label="Електронна пошта"
                             variant="outlined"
-                            value={data.profile.email}
+                            value={user.email}
                             disabled
                             fullWidth
                             sx={{
@@ -108,28 +126,34 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                 },
                             }}
                         />
-                        <TextField
-                            label="Номер телефону"
-                            variant="outlined"
+                        <InputMask
+                            mask="+38 (099) 999-99-99"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            fullWidth
-                            sx={{
-                                backgroundColor: '#f0f0f0',
-                                borderRadius: 2,
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: '#00AAAD',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: '#008080',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#008080',
-                                    },
-                                },
-                            }}
-                        />
+                        >
+                            {() => (
+                                <TextField
+                                    label="Номер телефону"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: '#f0f0f0',
+                                        borderRadius: 2,
+                                        '& .MuiOutlinedInput-root': {
+                                            '& fieldset': {
+                                                borderColor: '#00AAAD',
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: '#008080',
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#008080',
+                                            },
+                                        },
+                                    }}
+                                />
+                            )}
+                        </InputMask>
                         <Box display="flex" justifyContent="space-between" mt={2}>
                             <Button variant="contained" color="primary" onClick={handleSaveChanges}
                                 sx={{

@@ -7,6 +7,7 @@ import useMainPageMenuStore from "@/store/mainPageMenu";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import BlockMenu from './BlockMenu';
 import BlockShops from './BlockShops';
+import { useWareCategories1 } from '@/pages/api/WareCategory1Api';
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -21,7 +22,13 @@ export interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', footerType = 'footer1', pageMetadata }) => {
   const { isMainPageMenuOpened } = useMainPageMenuStore();
   const { isMainPageMenuShopsOpened } = useMainPageMenuShops();
-
+  const { data: foundWareCategories = [], isLoading: isWareCategories1Loading } = useWareCategories1({
+    SearchParameter: "Query",
+    //QueryAny: query,
+    PageNumber: 1,
+    PageSize: 1000,
+    Sorting: "NameAsc"
+  });
   React.useEffect(() => {
     if (pageMetadata) {
       document.title = pageMetadata.title;
@@ -33,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', foote
       {headerType === 'header1' && <Header1 />}
       {headerType === 'header2' && <Header2 />}
       {headerType === 'null' && null}
-      {isMainPageMenuOpened && <BlockMenu />}
+      {isMainPageMenuOpened && <BlockMenu foundWareCategories={foundWareCategories} />}
       {isMainPageMenuShopsOpened && <BlockShops />}
       <main>{children}</main>
       {footerType === 'footer1' && <Footer1 />}
