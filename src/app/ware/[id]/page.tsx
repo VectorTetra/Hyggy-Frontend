@@ -16,6 +16,14 @@ import {
   addToCart,
   removeFromCart
 } from '../../cart/types/Cart';
+import { useWares, Ware } from '@/pages/api/WareApi';
+import { getDecodedToken } from '@/pages/api/TokenApi';
+import FavoriteButton from '../tsx/FavoriteButton';
+import { Customer, useCustomers, useUpdateCustomer } from '@/pages/api/CustomerApi';
+import ProductImageCarousel from '../tsx/ProductImageCarousel';
+import useQueryStore from '@/store/query';
+import ProductPrice from '../tsx/ProductPrice';
+import ProductImageGallery from '../tsx/ProductImageGallery';
 
 interface CartItem {
   productDescription: string;
@@ -28,10 +36,27 @@ interface CartItem {
   selectedOption: string;
 }
 
+
 export default function WarePage() {
   const params = useParams<{ id: string }>();
-  const id = params?.id;
-  const product = jsonData.find((item) => item.id === Number(id));
+  const id = Number(params?.id);
+  const { setRefetchFavoriteWares } = useQueryStore();
+  console.log("id:", id);
+  let [customer, setCustomer] = useState<Customer | null>(null);
+  const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
+    SearchParameter: "Query",
+    Id: getDecodedToken()?.nameid
+  });
+  const { mutateAsync: updateCustomer } = useUpdateCustomer();
+  // const { data: favoriteWares = [], isLoading: isFavoriteWaresLoading, isSuccess: isFavoriteWaresSuccess } = useWares({
+  //   SearchParameter: "GetFavoritesByCustomerId",
+  //   CustomerId: getDecodedToken()?.nameid
+  // });
+  const { data: products = [], isLoading: isProductsLoading, isSuccess: isProductsSuccess } = useWares({
+    SearchParameter: "Query",
+    Id: id
+  });
+  const [product, setProduct] = useState<Ware | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
   const [showPopup, setShowPopup] = useState(false);
@@ -41,13 +66,25 @@ export default function WarePage() {
   const carouselElement = document.getElementById("imageCarousel");
   const [favorites, setFavorites] = useState<number[]>([]);
 
-  if (!product) {
-    return notFound();
-  }
+  // if (!isProductsLoading && isProductsSuccess && !product) {
+  //   return notFound();
+  // }
 
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
   }, []);
+
+  useEffect(() => {
+    if (customerSuccess && customers.length > 0) {
+      setCustomer(customers[0]);
+    }
+  }, [customerSuccess, customers]);
+
+  useEffect(() => {
+    if (isProductsSuccess && products.length > 0) {
+      setProduct(products[0])
+    }
+  }, [isProductsSuccess]);
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -71,13 +108,14 @@ export default function WarePage() {
   };
 
   const handleAddToCart = () => {
+    if (!product) return;
     const newItem = {
-      productDescription: product.productDescription,
-      productName: product.productName,
-      productImage: product.mainImage1,
+      productDescription: product.description,
+      productName: product.name,
+      productImage: product.previewImagePath,
       quantity: quantity,
-      price: product.currentPrice,
-      oldPrice: product.oldPrice,
+      price: product.finalPrice.toString(),
+      oldPrice: product.price.toString(),
       selectedOption: selectedOption,
     };
 
@@ -129,138 +167,85 @@ export default function WarePage() {
 
   carouselElement?.addEventListener("slid.bs.carousel", handleSlideChange);
 
-  const toggleFavorite = (e: React.MouseEvent, productId: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setFavorites((prevFavorites) =>
-      prevFavorites.includes(productId)
-        ? prevFavorites.filter((id) => id !== productId)
-        : [...prevFavorites, productId]
-    );
+  const toggleFavorite = async (wareId: number) => {
+    if (!customer) return;
+
+    // Оновлюємо обрані товари, не скидаючи пагінацію
+    const updatedFavorites = customer.favoriteWareIds.includes(wareId)
+      ? customer.favoriteWareIds.filter(id => id !== wareId)
+      : [...customer.favoriteWareIds, wareId];
+
+    setCustomer({
+      ...customer,
+      favoriteWareIds: updatedFavorites
+    });
+
+    // Відправка запиту на сервер
+    await updateCustomer({
+      Name: customer.name,
+      Surname: customer.surname,
+      Email: customer.email,
+      Id: getDecodedToken()?.nameid || "",
+      PhoneNumber: customer.phoneNumber,
+      AvatarPath: customer.avatarPath,
+      FavoriteWareIds: updatedFavorites,
+      OrderIds: customer.orderIds
+    });
+
+    setRefetchFavoriteWares(true);
   };
+
 
   return (
     <Layout headerType="header1" footerType="footer1">
-      <div className={styles.main}>
+      {product != null && <div className={styles.main}>
         {isMobile && (
-          <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
-            <button
-              className={styles.favoriteButton}
-              onClick={(e) => toggleFavorite(e, product.id)}
-            >
-              {favorites.includes(product.id) ? "💖" : "🖤"}
-            </button>
-            <div className="carousel-inner">
-              <div className="carousel-item active">
-                <img src={product.mainImage1} alt="Main Image 1" className={styles['carousel-image']} />
-              </div>
-              <div className="carousel-item">
-                <img src={product.mainImage2} alt="Main Image 2" className={styles['carousel-image']} />
-              </div>
-              {product.thumbnails.map((thumb, index) => (
-                <div className="carousel-item" key={index}>
-                  <img src={thumb} alt={`Thumbnail ${index + 1}`} className={styles['carousel-image']} />
-                </div>
-              ))}
-            </div>
-            <div className="carousel-indicators">
-              <button
-                type="button"
-                data-bs-target="#imageCarousel"
-                data-bs-slide-to="0"
-                className="active"
-                aria-current="true"
-                aria-label="Slide 1"
-                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#imageCarousel"
-                data-bs-slide-to="1"
-                aria-label="Slide 2"
-                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-              ></button>
-              {product.thumbnails.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  data-bs-target="#imageCarousel"
-                  data-bs-slide-to={index + 2}
-                  aria-label={`Slide ${index + 3}`}
-                  style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-                ></button>
-              ))}
-            </div>
-          </div>
+          <ProductImageCarousel product={product} customer={customer} toggleFavorite={toggleFavorite} />
         )}
         <div className={styles.productContainer}>
-          <div className={styles.imageGallery}>
-            <div className={styles.mainImageContainer}>
-              <div className={styles.mainImage}>
-                <img src={product.mainImage1} alt={product.mainImage1} />
-              </div>
-              <div className={styles.mainImage}>
-                <img src={product.mainImage2} alt={product.mainImage2} />
-              </div>
-            </div>
-            <div className={styles.thumbnails}>
-              {product.thumbnails.map((thumb, index) => (
-                <div key={index} className={styles.thumbnail}>
-                  <img src={thumb} alt={`Thumbnail ${index + 1}`} />
-                </div>
-              ))}
-            </div>
-          </div>
+          <ProductImageGallery product={product} />
           <div className={styles.productInfo}>
             <h1 className={styles.productName}>
-              {product.productName}
+              {product.name}
               {!isMobile && (
-                <button
+                <FavoriteButton
                   className={styles.favoriteButton2}
-                  onClick={(e) => toggleFavorite(e, product.id)}
-                >
-                  {favorites.includes(product.id) ? "💖" : "🖤"}
-                </button>
+                  productId={product.id}
+                  isFavorite={customer?.favoriteWareIds.includes(product.id) ?? false}
+                  toggleFavorite={toggleFavorite}
+                />
               )}
             </h1>
-            <p className={styles.productDescription}>{product.productDescription}</p>
+            <p className={styles.productDescription}>{product.description}</p>
             <div className={styles.rating}>
-              <StarRating rating={Number(product.rating)} />
-              <span>({product.reviewCount})</span>
+              <StarRating rating={Number(product.averageRating)} />
+              <span>({product.reviewIds.length})</span>
             </div>
-            <div>
-              {product.discount ? <span className={styles.discountSticker}> - {product.discount} %</span> : null}
-            </div>
-            <div className={styles.price}>
-              <span className={styles.currentPrice}>{product.currentPrice} грн / шт</span>
-              {product.oldPrice && (
-                <span className={styles.oldPrice}>{product.oldPrice} грн / шт</span>
-              )}
-            </div>
-            <p className={styles.priceDescription}>{product.priceDescription}</p>
+            <ProductPrice finalPrice={product.finalPrice} oldPrice={product.price} discount={product.discount} />
+            <p className={styles.priceDescription}>{product.description}</p>
             <hr className={styles.customHr} />
-            <h3 className={styles.deliveryTitle}>{product.deliveryTitle}</h3>
+            {/* <h3 className={styles.deliveryTitle}>{product.deliveryTitle}</h3> */}
             <div className={styles.deliveryOptionsContainer}>
               <div
                 className={`${styles.deliveryOption} ${selectedOption === "delivery" ? styles.activeOption : ""
                   }`} onClick={() => setSelectedOption("delivery")}>
                 <div className={styles.optionTitle}>Доставка</div>
-                <span className={styles.optionDot}>{product.deliveryOption.includes("Не в наявності") ? <span><svg width="12" height="12">
+                <span className={styles.optionDot}>{!product.isDeliveryAvailable ? <span><svg width="12" height="12">
                   <circle cx="6" cy="6" r="6" fill="red" />
                 </svg></span> : <span><svg width="12" height="12">
                   <circle cx="6" cy="6" r="6" fill="#33FF00" />
                 </svg></span>}</span>
-                <span>{product.deliveryOption}</span>
+                <span>{product.isDeliveryAvailable ? "Є доставка" : "Немає доставки"}</span>
               </div>
               <div className={`${styles.storeCount} ${selectedOption === "store" ? styles.activeOption : ""
                 }`} onClick={() => setSelectedOption("store")}>
                 <div className={styles.storeTitle}>В магазинах</div>
-                <span className={styles.optionDot}>{product.storeCount.includes("0") ? <span><svg width="12" height="12">
+                <span className={styles.optionDot}>{product.wareItems.every(wi => wi.quantity === 0) ? <span><svg width="12" height="12">
                   <circle cx="6" cy="6" r="6" fill="red" />
                 </svg></span> : <span><svg width="12" height="12">
                   <circle cx="6" cy="6" r="6" fill="#33FF00" />
                 </svg></span>}</span>
-                <span>В наявності в {product.storeCount} магазинах</span>
+                <span>В наявності в {product.wareItems.filter(wi => wi.quantity > 0).length} магазинах</span>
               </div>
             </div>
             <span className={styles.actions}>
@@ -295,7 +280,7 @@ export default function WarePage() {
           </div>
         </div>
         <h2 id="description" className={styles.tabTitle}>Опис</h2>
-        {product.descriptionText ? (
+        {/* {product.description ? (
           <DescriptionWare product={product} />
         ) : (
           <p>Опис недоступний.</p>
@@ -328,8 +313,8 @@ export default function WarePage() {
           </section>
         ) : (
           <p>Немає схожих товарів.</p>
-        )}
-      </div>
+        )} */}
+      </div>}
     </Layout>
   );
 }
