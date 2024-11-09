@@ -3,26 +3,22 @@ import { useState, useEffect } from "react";
 import styles from "../css/WareGrid.module.css";
 import Pagination from "../../sharedComponents/Pagination";
 import WareCard from "./WareCard";
-import { useWares, Ware } from "@/pages/api/WareApi";
+import { Ware } from "@/pages/api/WareApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
 import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { getDecodedToken } from "@/pages/api/TokenApi";
+import useQueryStore from "@/store/query";
 
 export default function WareGrid(props: any) {
-  const [favorites, setFavorites] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
   let [customer, setCustomer] = useState<Customer | null>(null);
+  const { RefetchFavoriteWares, setRefetchFavoriteWares } = useQueryStore();
   const { mutateAsync: updateCustomer } = useUpdateCustomer();
-  const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
+  const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess, refetch } = useCustomers({
     SearchParameter: "Query",
     Id: getDecodedToken()?.nameid
   });
-
-  // const { data: favoriteWares = [], isLoading: favoriteWaresLoading, isSuccess: favoriteWaresSuccess } = useWares({
-  //   SearchParameter: "Query",
-  //   StringIds: customer?.favoriteWareIds.join("|")
-  // });
 
   useEffect(() => {
     const savedShop = localStorage.getItem("selectedShop");
@@ -30,6 +26,12 @@ export default function WareGrid(props: any) {
       setSelectedShop(JSON.parse(savedShop));
     }
   }, []);
+  useEffect(() => {
+    if (RefetchFavoriteWares) {
+      refetch();  // Перезапуск запиту при зміні RefetchFavoriteWares
+      setRefetchFavoriteWares(false);  // Скидаємо стан refetch після виконання запиту
+    }
+  }, [RefetchFavoriteWares, refetch, setRefetchFavoriteWares]);
 
   useEffect(() => {
     if (customerSuccess && customers.length > 0) {
@@ -67,6 +69,8 @@ export default function WareGrid(props: any) {
       FavoriteWareIds: updatedFavorites,
       OrderIds: customer.orderIds
     });
+
+    setRefetchFavoriteWares(true);
   };
 
   const itemsPerPage = props.itemsPerPage !== undefined ? props.itemsPerPage : 20;

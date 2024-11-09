@@ -136,8 +136,8 @@ const CartPage = () => {
                   </button>
                 </div>
                 <div className={styles.price}>
-                  <p>{item.price} грн </p>
-                  <p>{parseFloat(item.price) * item.quantity} грн</p>
+                  <p>{formatPrice(parseFloat(item.price))} грн </p>
+                  <p>{formatPrice(parseFloat(item.price) * item.quantity)} грн</p>
                 </div>
               </div>
             ))}

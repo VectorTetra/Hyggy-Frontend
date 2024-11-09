@@ -8,9 +8,9 @@ interface ProductPriceProps {
 
 const ProductPrice: React.FC<ProductPriceProps> = ({ finalPrice, oldPrice, discount }) => (
     <div className={styles.price}>
-        <span className={styles.currentPrice}>{finalPrice} грн / шт</span>
+        <span className={styles.currentPrice}>{Math.ceil(finalPrice)} грн / шт</span>
         {oldPrice !== finalPrice && <span className={styles.oldPrice}>{oldPrice} грн / шт</span>}
-        {discount && <span className={styles.discountSticker}> - {discount} %</span>}
+        {discount && discount > 0 && <span className={styles.discountSticker}> - {discount} %</span>}
     </div>
 );
 

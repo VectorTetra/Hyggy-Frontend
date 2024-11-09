@@ -22,11 +22,21 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({ initialQuantity, on
     };
 
     return (
-        <div className={styles.quantityContainer}>
-            <button onClick={handleDecrease}>-</button>
-            <input type="text" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
-            <button onClick={handleIncrease}>+</button>
-        </div>
+        // <div className={styles.quantityContainer}>
+        //     <button onClick={handleDecrease}>-</button>
+        //     <input type="text" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className={styles.quantityInput} />
+        //     <button onClick={handleIncrease}>+</button>
+        // </div>
+        <span className={styles.quantityContainer}>
+            <button className={styles.quantityButton} onClick={handleDecrease}>-</button>
+            <input
+                type="text"
+                value={quantity}
+                onChange={() => onQuantityChange}
+                className={styles.quantityInput}
+            />
+            <button className={styles.quantityButton} onClick={handleIncrease}>+</button>
+        </span>
     );
 };
 

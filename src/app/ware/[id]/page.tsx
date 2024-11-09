@@ -24,6 +24,8 @@ import ProductImageCarousel from '../tsx/ProductImageCarousel';
 import useQueryStore from '@/store/query';
 import ProductPrice from '../tsx/ProductPrice';
 import ProductImageGallery from '../tsx/ProductImageGallery';
+import DeliveryOptions from '../tsx/DeliveryOptions';
+import QuantitySelector from '../tsx/QuantitySelector';
 
 interface CartItem {
   productDescription: string;
@@ -31,7 +33,6 @@ interface CartItem {
   productImage: string;
   quantity: number;
   price: string;
-
   oldPrice: string;
   selectedOption: string;
 }
@@ -62,13 +63,9 @@ export default function WarePage() {
   const [showPopup, setShowPopup] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [activeIndex, setActiveIndex] = useState(0);
   const carouselElement = document.getElementById("imageCarousel");
   const [favorites, setFavorites] = useState<number[]>([]);
-
-  // if (!isProductsLoading && isProductsSuccess && !product) {
-  //   return notFound();
-  // }
 
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
@@ -143,11 +140,11 @@ export default function WarePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      require('bootstrap/dist/js/bootstrap.bundle.min.js');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     require('bootstrap/dist/js/bootstrap.bundle.min.js');
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (showPopup) {
@@ -157,15 +154,15 @@ export default function WarePage() {
     }
   }, [showPopup]);
 
-  const handleSlide = (index) => {
-    setActiveIndex(index);
-  };
+  // const handleSlide = (index) => {
+  //   setActiveIndex(index);
+  // };
 
-  const handleSlideChange = (event) => {
-    setActiveIndex(event.to);
-  };
+  // const handleSlideChange = (event) => {
+  //   setActiveIndex(event.to);
+  // };
 
-  carouselElement?.addEventListener("slid.bs.carousel", handleSlideChange);
+  //carouselElement?.addEventListener("slid.bs.carousel", handleSlideChange);
 
   const toggleFavorite = async (wareId: number) => {
     if (!customer) return;
@@ -222,34 +219,11 @@ export default function WarePage() {
               <span>({product.reviewIds.length})</span>
             </div>
             <ProductPrice finalPrice={product.finalPrice} oldPrice={product.price} discount={product.discount} />
-            <p className={styles.priceDescription}>{product.description}</p>
+            {/* <p className={styles.priceDescription}>{product.description}</p> */}
             <hr className={styles.customHr} />
-            {/* <h3 className={styles.deliveryTitle}>{product.deliveryTitle}</h3> */}
-            <div className={styles.deliveryOptionsContainer}>
-              <div
-                className={`${styles.deliveryOption} ${selectedOption === "delivery" ? styles.activeOption : ""
-                  }`} onClick={() => setSelectedOption("delivery")}>
-                <div className={styles.optionTitle}>Доставка</div>
-                <span className={styles.optionDot}>{!product.isDeliveryAvailable ? <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="red" />
-                </svg></span> : <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                </svg></span>}</span>
-                <span>{product.isDeliveryAvailable ? "Є доставка" : "Немає доставки"}</span>
-              </div>
-              <div className={`${styles.storeCount} ${selectedOption === "store" ? styles.activeOption : ""
-                }`} onClick={() => setSelectedOption("store")}>
-                <div className={styles.storeTitle}>В магазинах</div>
-                <span className={styles.optionDot}>{product.wareItems.every(wi => wi.quantity === 0) ? <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="red" />
-                </svg></span> : <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                </svg></span>}</span>
-                <span>В наявності в {product.wareItems.filter(wi => wi.quantity > 0).length} магазинах</span>
-              </div>
-            </div>
+            <DeliveryOptions selectedOption={selectedOption} isDeliveryAvailable={product.isDeliveryAvailable} storeCount={product.wareItems.filter(wi => wi.quantity > 0).length} onSelectOption={setSelectedOption} />
             <span className={styles.actions}>
-              <span className={styles.quantityContainer}>
+              {/* <span className={styles.quantityContainer}>
                 <button className={styles.quantityButton} onClick={decreaseQuantity}>-</button>
                 <input
                   type="text"
@@ -258,7 +232,8 @@ export default function WarePage() {
                   className={styles.quantityInput}
                 />
                 <button className={styles.quantityButton} onClick={increaseQuantity}>+</button>
-              </span>
+              </span> */}
+              <QuantitySelector initialQuantity={quantity} onQuantityChange={setQuantity} />
               <button className={styles.addToCartButton} onClick={handleAddToCart}>Додати до кошика</button>
             </span>
             {showPopup && (

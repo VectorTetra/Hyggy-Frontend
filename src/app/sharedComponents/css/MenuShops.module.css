@@ -155,6 +155,7 @@
     /* Закругленные углы кнопки */
     transition: background-color 0.3s ease;
     /* Плавный переход цвета фона */
+    min-width: 170px;
 }
 
 .shopButton:hover {

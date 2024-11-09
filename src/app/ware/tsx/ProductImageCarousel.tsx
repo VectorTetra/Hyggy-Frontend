@@ -19,7 +19,7 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({ product, cu
         slidesToShow: 1,
         slidesToScroll: 1,
         dots: true,
-        arrows: true,
+        arrows: false,
         adaptiveHeight: true,
     };
 
