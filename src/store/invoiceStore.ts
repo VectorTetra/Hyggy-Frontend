@@ -15,6 +15,9 @@ interface InvoiceStore {
     removeRow: (id: number) => void;
     updateRow: (id: number, field: keyof Row, value: string) => void;
     clearRows: () => void;
+    setRows: (rows: Row[]) => void;
+    wareDetails: string;
+    setWareDetails: (newDetails: string) => void;
 }
 
 // Створення store з типізацією
@@ -33,6 +36,13 @@ const useInvoiceStore = create<InvoiceStore>((set) => ({
     })),
     clearRows: () => set(() => ({
         rows: []
+    })),
+    setRows: (rows) => set(() => ({
+        rows
+    })),
+    wareDetails: '',
+    setWareDetails: (newDetails) => set(() => ({
+        wareDetails: newDetails
     })),
 }));
 

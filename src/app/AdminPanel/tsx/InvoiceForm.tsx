@@ -1,14 +1,25 @@
 import React from 'react';
-import { TextField, Button, Box, IconButton } from '@mui/material';
+import { TextField, Button, Box, IconButton, TextareaAutosize } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useInvoiceStore from '@/store/invoiceStore';
 
 function InvoiceForm() {
     // Використовуємо Zustand store для доступу до rows та методів
-    const { rows, addRow, removeRow, updateRow, clearRows } = useInvoiceStore();
+    const { rows, addRow, removeRow, updateRow, clearRows, wareDetails, setWareDetails } = useInvoiceStore();
 
     return (
         <div>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
+                <TextareaAutosize
+                    placeholder="Введіть докладний опис товару..."
+                    minRows={3}
+                    maxRows={10}
+                    style={{ width: '100%', resize: "vertical", borderRadius: '4px', padding: '8px', border: '1px solid #ccc', margin: "0 0 20px 0" }}
+
+                    value={wareDetails}
+                    onChange={(e) => setWareDetails(e.target.value)}
+                />
+            </Box>
             {rows.map((row) => (
                 <Box key={row.id} sx={{ display: 'flex', gap: '16px', alignItems: 'center', mb: 2 }}>
                     <TextField
