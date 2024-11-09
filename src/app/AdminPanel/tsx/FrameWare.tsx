@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, GridColDef } from '@mui/x-data-grid';
 import { useDeleteWare, useWares } from '@/pages/api/WareApi';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { toast } from 'react-toastify';
-import useAdminPanelStore from '@/store/adminPanel';
 import { useQueryState } from 'nuqs';
 import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
+import StarRating from '@/app/sharedComponents/StarRating';
 
 export default function WareFrame() {
     const { mutate: deleteWare } = useDeleteWare();
     //const queryClient = useQueryClient();
+    const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { data: data = [], isLoading: dataLoading, isSuccess: success } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
-        PageSize: 500
+        PageSize: 10
     });
     const [filteredData, setFilteredData] = useState<any | null>([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -31,18 +32,76 @@ export default function WareFrame() {
         discount: false,
     });
     const apiRef = useGridApiRef();
-    const { wareId, setWareId } = useAdminPanelStore();
-    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
+    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
 
-    const columns = [
+    const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
         { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
-        { field: 'description', headerName: 'Товар', flex: 1, minWidth: 200 },
-        { field: 'price', headerName: 'Початкова ціна', flex: 0.3, minWidth: 150 },
-        { field: 'discount', headerName: 'Знижка', flex: 0.3, minWidth: 100 },
-        { field: 'finalPrice', headerName: 'Кінцева Ціна', flex: 0.3, minWidth: 150 },
-        { field: 'averageRating', headerName: 'Рейтинг', flex: 0.3, minWidth: 50 },
-        { field: 'isDeliveryAvailable', headerName: 'Доставка', flex: 0.3, width: 50 },
+        {
+            field: 'description',
+            headerName: 'Товар',
+            flex: 1,
+            minWidth: 200,
+            renderCell: (params) => {
+                const imagePath = params.row.previewImagePath;
+
+                return (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: "5px", height: "100%" }}>
+                        {imagePath && (
+                            <img
+                                src={imagePath}
+                                alt="preview"
+                                style={{
+                                    maxWidth: 40, objectFit: 'contain'
+                                }}
+                            />
+                        )}
+                        <Typography variant="body2">{params.row.description}</Typography>
+                    </Box>
+                );
+            },
+        },
+        {
+            field: 'price',
+            headerName: 'Початкова ціна',
+            flex: 0.3,
+            minWidth: 150,
+            renderCell: (params) => {
+                const price = params.value;
+                return `${price}₴`;
+            },
+        },
+        {
+            field: 'discount',
+            headerName: 'Знижка',
+            flex: 0.3,
+            minWidth: 100,
+            renderCell: (params) => {
+                const discount = params.value;
+                return `${discount}%`;
+            },
+        },
+        {
+            field: 'finalPrice',
+            headerName: 'Кінцева Ціна',
+            flex: 0.3,
+            minWidth: 150,
+            renderCell: (params) => {
+                const finalPrice = params.value;
+                return `${finalPrice}₴`;
+            },
+        },
+        {
+            field: 'averageRating',
+            headerName: 'Рейтинг',
+            flex: 0.3,
+            minWidth: 50,
+            renderCell: (params) => {
+                const rating = params.value;
+                return <StarRating rating={Number(rating)} />;
+            },
+        },
+        { field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка', flex: 0.3, width: 50 },
         {
             field: 'actions',
             headerName: 'Дії',
@@ -50,7 +109,7 @@ export default function WareFrame() {
             width: 75,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
+                    <Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => { setActiveNewWare(params.row.id); setActiveTab('addEditWare') }}>
                         <EditIcon />
                     </Button>
                     <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
@@ -60,13 +119,6 @@ export default function WareFrame() {
             ),
         },
     ];
-
-    const handleEdit = (row) => {
-        // Встановлюємо warehouseId для редагування обраного складу
-        setWareId(row.id); // Встановлюємо Id складу для редагування
-        console.log("row.id :", row.id)
-        setActiveTab("addEditWare"); // Змінюємо активну вкладку
-    };
 
     const handleDelete = (row) => {
         // Встановлюємо рядок для видалення та відкриваємо діалог
@@ -96,6 +148,7 @@ export default function WareFrame() {
         if (success) {
             setFilteredData(data);
             setLoading(false);
+            setActiveNewWare(null);
         }
         else {
             setLoading(true);
@@ -161,7 +214,7 @@ export default function WareFrame() {
                         onSearchChange={(event) => setSearchTerm(event.target.value)}
                     />
                     <Button variant="contained" sx={{ backgroundColor: "#248922" }} onClick={() => {
-                        setWareId(0);
+                        setActiveNewWare('0');
                         setActiveTab("addEditWare");
                     }}>
                         Додати

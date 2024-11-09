@@ -72,6 +72,7 @@ export class WarePutDTO {
 	ReviewIds: number[] = [];
 	TrademarkId: number | null;
 	CustomerFavoriteIds: string[] = [];
+	ImageIds: number[] = [];
 }
 export class Ware {
 	id: number;

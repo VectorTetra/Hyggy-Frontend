@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { CircularProgress } from '@mui/material';
 import {
@@ -24,6 +25,7 @@ interface CartItem {
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     document.body.style.overflow = 'auto';
@@ -83,6 +85,15 @@ const CartPage = () => {
       return totalSavings;
     }, 0);
   };
+
+  const handleContinueShopping = () => {
+    if (document.referrer.includes("/cart")) {
+      router.push("/");
+    } else {
+      router.back();
+    }
+  };
+
   if (loading) {
     return (
       <CircularProgress />
@@ -95,9 +106,12 @@ const CartPage = () => {
         {cartItems.length === 0 ? (
           <center>
             <p>Кошик пустий</p>
-            <Link href="/search">
-              <button className={styles.continueButton}>Продовжити покупки</button>
-            </Link>
+            <button
+              className={styles.continueButton}
+              onClick={handleContinueShopping}
+            >
+              Продовжити покупки
+            </button>
           </center>
         ) : (
           <div className={styles.cartItems}>
@@ -158,12 +172,15 @@ const CartPage = () => {
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
             <div className={styles.buttonContainer}>
-              <Link href="/cart/delivery">
+              <Link href="/cart/address">
                 <button className={styles.checkoutButton}>Завершити замовлення</button>
               </Link>
-              <Link href="/search">
-                <button className={styles.continueButton}>Продовжити покупки</button>
-              </Link>
+              <button
+                className={styles.continueButton}
+                onClick={handleContinueShopping}
+              >
+                Продовжити покупки
+              </button>
             </div>
           </div>
         )}
