@@ -53,6 +53,9 @@ export default function WareAddEditFrame() {
             setActiveTab('products');
         }
     }, []);
+    useEffect(() => {
+        console.log("photos", photos);
+    }, [photos]);
 
     useEffect(() => {
         const fetchWareData = async (id: number) => {
@@ -200,20 +203,31 @@ export default function WareAddEditFrame() {
                                 await deleteWareImage(imageId);
                             }));
 
+                            // // Додаємо нові зображення
+                            // const newPhotoPromises = photos.map(async (photo) => {
+                            //     const newPhotoDTO = await postWareImage({
+                            //         WareId: wareId,
+                            //         Path: photo
+                            //     });
+                            //     return newPhotoDTO;
+                            // });
+
+                            // // Чекаємо завершення всіх операцій та оновлюємо newWareImageIds
+                            // let dtoS = await Promise.all(newPhotoPromises);
+                            // dtoS.sort((a, b) => photos.indexOf(a.path) - photos.indexOf(b.path));
+
+                            // newWareImageIds = dtoS.map(dto => dto.id);
                             // Додаємо нові зображення
-                            const newPhotoPromises = photos.map(async (photo) => {
+                            const newPhotoPromises = photos.map(async (path) => {
                                 const newPhotoDTO = await postWareImage({
                                     WareId: wareId,
-                                    Path: photo
+                                    Path: path // Вказуємо кожне значення `path` з `photos`
                                 });
-                                return newPhotoDTO;
+                                return newPhotoDTO.id; // Повертаємо тільки ID для нового зображення
                             });
 
-                            // Чекаємо завершення всіх операцій та оновлюємо newWareImageIds
-                            let dtoS = await Promise.all(newPhotoPromises);
-                            dtoS.sort((a, b) => photos.indexOf(a.path) - photos.indexOf(b.path));
-
-                            newWareImageIds = dtoS.map(dto => dto.id);
+                            // Чекаємо завершення всіх операцій
+                            newWareImageIds = await Promise.all(newPhotoPromises);
 
                             console.log("newWareImageIds", newWareImageIds);
                             console.log("Ми вийшли з блока isPhotosDirty");
@@ -445,7 +459,7 @@ export default function WareAddEditFrame() {
                     </div>
                 )}
             </div> */}
-            <PhotoUploader photos={photos} setPhotos={setPhotos} UploadPhoto={UploadPhoto} removePhoto={removePhoto} />
+            <PhotoUploader photos={photos} setPhotos={setPhotos} UploadPhoto={UploadPhoto} removePhoto={removePhoto} setIsPhotosDirty={setIsPhotosDirty} />
             {loading ? (
                 <CircularProgress size={24} />
             ) : (
