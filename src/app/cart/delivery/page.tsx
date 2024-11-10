@@ -7,13 +7,15 @@ import { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { isEmpty } from "lodash";
+import { useDebounce } from 'use-debounce';
+
 
 const DeliveryPage = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [selectedDeliveryType, setSelectedDeliveryType] = useState("store");
   const [isPaymentButtonEnabled, setIsPaymentButtonEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 700);
   const [filteredStores, setFilteredStores] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
   const [novaPoshtaWarehouses, setNovaPoshtaWarehouses] = useState([]);
   const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
@@ -32,7 +34,24 @@ const DeliveryPage = () => {
     if (savedDeliveryType) {
       setSelectedDeliveryType(savedDeliveryType);
     }
+
+    const addressInfo = localStorage.getItem('addressInfo');
+    if (!addressInfo) {
+      router.push('/cart/address');
+    } else {
+      const parsedAddress = JSON.parse(addressInfo);
+      if (selectedDeliveryType === "store") {
+        setSearchQuery(``);
+      }
+      else if (selectedDeliveryType === "novaPoshta") {
+        setSearchQuery(`${parsedAddress.city}, ${parsedAddress.street}`);
+      }
+      else if (selectedDeliveryType === "ukrPoshta") {
+        setSearchQuery(`${parsedAddress.city}, ${parsedAddress.street}, ${parsedAddress.houseNumber}`);
+      }
+    }
   }, [selectedDeliveryType, router]);
+
 
   useEffect(() => {
     if (selectedDeliveryType === "store") {
@@ -83,6 +102,9 @@ const DeliveryPage = () => {
 
   const getNovaPoshtaWarehouses = async (searchQuery) => {
     setLoading(true);
+    const parts = searchQuery.split(",");
+    const cityName = parts[0]?.trim();
+    const findByString = parts[1]?.trim();
     const response = await fetch("https://api.novaposhta.ua/v2.0/json/", {
       method: "POST",
       headers: {
@@ -93,7 +115,8 @@ const DeliveryPage = () => {
         modelName: "Address",
         calledMethod: "getWarehouses",
         methodProperties: {
-          FindByString: searchQuery,
+          FindByString: findByString,
+          CityName: cityName
         },
       }),
     });
@@ -105,8 +128,8 @@ const DeliveryPage = () => {
 
   useEffect(() => {
     const fetchWarehouses = async () => {
-      if (selectedDeliveryType === "novaPoshta" && searchQuery !== "") {
-        const warehouses = await getNovaPoshtaWarehouses(searchQuery);
+      if (selectedDeliveryType === "novaPoshta" && debouncedSearchQuery !== "") {
+        const warehouses = await getNovaPoshtaWarehouses(debouncedSearchQuery);
         setNovaPoshtaWarehouses(warehouses.map(warehouse => ({
           name: warehouse.Description,
           address: warehouse.ShortAddress,
@@ -119,61 +142,53 @@ const DeliveryPage = () => {
     };
 
     fetchWarehouses();
-  }, [selectedDeliveryType]);
+  }, [selectedDeliveryType, debouncedSearchQuery]);
 
-  const getUkrPoshtaOffices = async (searchQuery) => {
+  const getCoordinates = async (address) => {
+    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+      params: {
+        q: address,
+        format: 'json',
+        limit: 1,
+      },
+    });
+    const [location] = response.data;
+    return location ? { latitude: parseFloat(location.lat).toFixed(4), longitude: parseFloat(location.lon).toFixed(4) } : null;
+  };
+
+  const getUkrPoshtaOfficesByAddress = async (searchQuery) => {
     setLoading(true);
     setUkrPoshtaOffices([]);
-    const response = await axios.get('/api/postoffice', { params: { street_ua: searchQuery } });
-    const streetData = response.data;
-    const regionIds = streetData.Entries.Entry.map((entry) => entry.REGION_ID);
-    const uniqueRegionIds = Array.from(new Set(regionIds));
-    const allPostOffices = await Promise.all(
-      uniqueRegionIds.map(async (regionId) => {
-        const regionResponse = await axios.get('/api/region', { params: { region_id: regionId } });
-        return regionResponse.data.Entries.Entry || [];
-      })
-    );
-    const flatPostOffices = allPostOffices.flat();
-    const filteredOffices = flatPostOffices.filter((entry) =>
-      entry.STREET_UA.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
-    const isWithinUkraineBounds = (latitude, longitude) => {
-      return (
-        latitude >= 44.384 && latitude <= 52.379 &&
-        longitude >= 22.063 && longitude <= 40.193
-      );
-    };
+    const coordinates = await getCoordinates(searchQuery);
 
-    const uniqueOffices = filteredOffices.reduce((acc, entry) => {
-      const latitude = parseFloat(entry.LATTITUDE);
-      const longitude = parseFloat(entry.LONGITUDE);
-      if (isWithinUkraineBounds(latitude, longitude)) {
-        const exists = acc.find(item => item.address === entry.ADDRESS);
-        if (!exists) {
-          acc.push({
-            name: entry.PO_LONG,
-            address: entry.ADDRESS,
-            postalCode: entry.POSTINDEX,
-            city: entry.CITY_UA,
-            latitude: latitude,
-            longitude: longitude,
-          });
-        }
-      }
-      return acc;
-    }, []);
+    if (!coordinates) {
+      setLoading(false);
+      return;
+    }
 
-    setUkrPoshtaOffices(uniqueOffices);
+    const response = await axios.get('/api/region', {
+      params: { lat: coordinates.latitude, long: coordinates.longitude, maxDistance: 5 }
+    });
+
+    const offices = response.data.Entries.Entry.map(entry => ({
+      name: entry.POSTFILIALNAME,
+      address: entry.ADDRESS,
+      postalCode: entry.POSTINDEX,
+      city: entry.CITYNAME,
+      latitude: parseFloat(entry.LATITUDE),
+      longitude: parseFloat(entry.LONGITUDE),
+    }));
+
+    setUkrPoshtaOffices(offices);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (selectedDeliveryType === "ukrPoshta" && searchQuery !== "") {
-      getUkrPoshtaOffices(searchQuery);
+    if (selectedDeliveryType === "ukrPoshta" && debouncedSearchQuery !== "") {
+      getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
     }
-  }, [selectedDeliveryType]);
+  }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const handleButtonSearch = async () => {
     if (selectedDeliveryType === "novaPoshta") {
@@ -188,7 +203,7 @@ const DeliveryPage = () => {
       })));
     }
     if (selectedDeliveryType === "ukrPoshta") {
-      await getUkrPoshtaOffices(searchQuery);
+      await getUkrPoshtaOfficesByAddress(searchQuery);
     }
   }
 
@@ -280,13 +295,13 @@ const DeliveryPage = () => {
 
         {selectedDeliveryType === "novaPoshta" && (
           <div className="mt-6">
-            <i>Введіть конкретне відділення Нової пошти.</i>
+            <i>Введіть повну назву вулиці, щоб знайти відділення Нової пошти.</i>
           </div>
         )}
 
         {selectedDeliveryType === "ukrPoshta" && (
           <div className="mt-6">
-            <i>Введіть назву вулиці, щоб знайти відділення Укрпошти.</i>
+            <i>Введіть повну назву вулиці, щоб знайти відділення Укрпошти.</i>
           </div>
         )}
 
@@ -384,20 +399,19 @@ const DeliveryPage = () => {
           </>
         )}
 
-
-        <Link href={isPaymentButtonEnabled ? "/cart/address" : "#"}>
+        <Link href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
           <center>
             <button
               type="submit"
               className={styles.submitButton}
               disabled={!isPaymentButtonEnabled}
             >
-              Продовжити
+              Виберіть тип оплати
             </button>
           </center>
         </Link>
 
-        <Link href="/cart">
+        <Link href="/cart/address">
           <button type="button" className={styles.cancelButton}>Скасувати</button>
         </Link>
       </div>

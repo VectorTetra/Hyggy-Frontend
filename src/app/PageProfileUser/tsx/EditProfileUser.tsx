@@ -178,6 +178,20 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                 Скасувати
                             </Button>
                         </Box>
+                        <Box display="flex" justifyContent="space-between" mt={2}>
+                            <Button variant="outlined" color="secondary" onClick={handleCancel}
+                                sx={{
+                                    backgroundColor: '#e25151',
+                                    color: 'white',
+                                    '&:hover': {
+                                        color: 'white',
+                                        backgroundColor: 'darkred',
+                                    },
+                                    width: '100%'
+                                }}>
+                                Видалити акаунт
+                            </Button>
+                        </Box>
                     </Box>
                 </Container>
             </Box>

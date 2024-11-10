@@ -27,6 +27,7 @@
 	align-items: center;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
+	padding: 0;
 }
 
 .mainPageHeaderItem {
@@ -191,6 +192,10 @@
 		height: 4vw;
 	}
 
+	/* .disappearOnAdapt {
+		font-size: clamp(14px, 2vh, 20px);
+	} */
+
 	.navbarcontainer {
 		flex-direction: column;
 		gap: 20px;
@@ -210,10 +215,22 @@
 
 	#mainPageHeaderLogoContainer {
 		justify-content: space-between;
+		padding: 0;
 	}
 
 	.geoblock {
 		order: 1;
+	}
+}
+
+@media screen and (max-width: 700px) and (min-width: 500px) {
+	.disappearOnAdapt {
+		display: none;
+	}
+
+	#mainPageHeaderLogoContainer {
+		justify-content: space-between;
+		padding: 0 20px;
 	}
 }
 
@@ -246,6 +263,7 @@
 
 	#mainPageHeaderLogoContainer {
 		justify-content: space-between;
+		padding: 0 20px;
 	}
 
 	#mainPageSale {

@@ -46,7 +46,6 @@ const AddressPage = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [streetSuggestions, setStreetSuggestions] = useState<string[]>([]);
-  const [deliveryCost, setDeliveryCost] = useState(0);
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("formData");
@@ -59,13 +58,6 @@ const AddressPage = () => {
 
     if (savedCartItems.length === 0) {
       router.push('/');
-    }
-
-    const deliveryInfoRaw = localStorage.getItem('deliveryInfo');
-    if (deliveryInfoRaw) {
-      const deliveryInfo = JSON.parse(deliveryInfoRaw);
-      const { deliveryCost } = deliveryInfo;
-      setDeliveryCost(deliveryCost);
     }
   }, [router]);
 
@@ -203,7 +195,7 @@ const AddressPage = () => {
         houseNumber: formData.houseNumber,
       };
       localStorage.setItem('addressInfo', JSON.stringify(addressInfo));
-      window.location.href = "/cart/payment";
+      window.location.href = "/cart/delivery";
     }
   };
 
@@ -327,10 +319,10 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до оплати
+                Перейти до доставка
               </button>
             </div>
-            <Link href="/cart/delivery">
+            <Link href="/cart">
               <button type="button" className={styles.cancelButton}>Скасувати</button>
             </Link>
           </form>
@@ -361,7 +353,7 @@ const AddressPage = () => {
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {(calculateTotalPrice() + deliveryCost).toFixed(2)} грн</p>
+              <p className={styles.totalPrice}>Усього {calculateTotalPrice().toFixed(2)} грн</p>
             </div>
           )}
         </div>
