@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../css/blogstyle.module.css";
+import Link from "next/link";
 
 export default function BlogMenu(props) {
     const [images, setImages] = React.useState([]);
@@ -44,7 +45,7 @@ export default function BlogMenu(props) {
         <div>
             <div className={styles.menucontainer}>
                 {props.blogPage.blogmenu.map((item, index) => (
-                    <a
+                    <Link
                         key={index}
                         href="#"
                         onClick={(e) => {
@@ -55,20 +56,20 @@ export default function BlogMenu(props) {
                         className={styles.menuitem}
                     >
                         {item.captionMenu}
-                    </a>
+                    </Link>
                 ))}
             </div>
             <hr />
             <div className={styles.imagescontainer}>
                 {images.map((item, index) => (
                     <div key={index} className={styles.imageitem}>
-                        <a
+                        <Link
                             href="#"
                             onClick={() => handleImageClick(item.caption)} // Передаем caption при клике
                         >
                             <img src={item.urlImages} alt={item.caption} />
                             <div className={styles.textmenu}>{item.caption}</div>
-                        </a>
+                        </Link>
                     </div>
                 ))}
             </div>

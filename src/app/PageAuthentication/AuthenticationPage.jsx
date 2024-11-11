@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useAuthorizeStore from "@/store/authorize";
 import { toast } from "react-toastify";
 import { Authorize, getDecodedToken } from "@/pages/api/TokenApi";
+import Link from "next/link";
 
 
 export default function AuthenticationPage(props) {
@@ -68,7 +69,7 @@ export default function AuthenticationPage(props) {
                     </form>
 
                     <div className={styles.forgotpasswordlink}>
-                        <a href="../PagePasswordReset">Забули пароль?</a>
+                        <Link href="../PagePasswordReset">Забули пароль?</Link>
                     </div>
                     <div>
                         <h2 className={styles.h2}>Створити новий обліковий запис</h2>

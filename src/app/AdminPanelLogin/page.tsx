@@ -5,6 +5,7 @@ import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment }
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Authorize, getDecodedToken } from '@/pages/api/TokenApi';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -117,7 +118,7 @@ export default function Login() {
 					Увійти
 				</Button>
 			</Box>
-			<a href="/" >
+			<Link href="/" >
 				<Button
 					variant="contained"
 					color="primary"
@@ -126,7 +127,7 @@ export default function Login() {
 				>
 					Перейти на сайт HYGGY
 				</Button>
-			</a>
+			</Link>
 		</Box>
 	);
 }

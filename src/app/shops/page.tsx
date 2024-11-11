@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Layout from "../sharedComponents/Layout";
 import Map from "./components/Map";
+import Link from "next/link";
 
 
 export default function Shops() {
@@ -16,8 +17,8 @@ export default function Shops() {
     <Layout headerType='header1' pageMetadata={pageMetadata}>
       <div className="mx-8 md:mx-24 lg:mx-24">
         <div className="flex gap-4 mt-10 ">
-          <a className="text-[12px] text-gray-400" href="#">Домашня сторінка</a>
-          <a className="text-[12px] text-gray-400" href="#">Магазини</a>
+          <Link className="text-[12px] text-gray-400" href="#">Домашня сторінка</Link>
+          <Link className="text-[12px] text-gray-400" href="#">Магазини</Link>
         </div>
         <div className="mt-10 flex justify-center">
           <h1 className="text-3xl">Знайти найближчий магазин</h1>

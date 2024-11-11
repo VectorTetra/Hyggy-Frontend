@@ -22,6 +22,7 @@ import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zus
 //import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import Blog from './Blog';
 import { removeToken } from '@/pages/api/TokenApi';
+import Link from 'next/link';
 
 const drawerWidth = 240;
 
@@ -150,7 +151,7 @@ export default function Sidebar(props) {
 					}}
 				>
 
-					<a href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
+					<Link href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
 						<Image
 							src={hyggyIcon}
 							alt="<"
@@ -158,7 +159,7 @@ export default function Sidebar(props) {
 							height={36}
 						/>
 						<span style={{ marginLeft: '8px' }}>Перейти на сайт</span>
-					</a>
+					</Link>
 				</Button>
 			</Toolbar>
 			<Divider sx={{ mt: 8 }} /> {/* Відступ, щоб розділювач не накладався на кнопку */}
@@ -190,13 +191,13 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
-					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
 					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
-					<a href="../AdminPanelLogin" onClick={() => {
+					<Link href="../AdminPanelLogin" onClick={() => {
 						removeToken();
 					}}>
 						<MenuItem
@@ -204,7 +205,7 @@ export default function Sidebar(props) {
 							text="Вихід"
 							value="exit"
 						/>
-					</a>
+					</Link>
 				</List>
 			</Box>
 		</div>

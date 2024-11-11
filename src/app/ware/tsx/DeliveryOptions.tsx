@@ -49,7 +49,7 @@ const DeliveryOptions: React.FC<DeliveryOptionsProps> = ({ selectedOption, isDel
                 </svg></span> : <span><svg width="12" height="12">
                     <circle cx="6" cy="6" r="6" fill="#33FF00" />
                 </svg></span>}</span>
-                <span>В наявності в {storeCount} магазинах</span>
+                <span>{storeCount > 0 ? `В наявності в ${storeCount} магазинах` : "Немає в наявності"}</span>
             </div>
         </div>
     );

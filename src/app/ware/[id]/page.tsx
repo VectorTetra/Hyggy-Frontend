@@ -16,7 +16,7 @@ import {
   addToCart,
   removeFromCart
 } from '../../cart/types/Cart';
-import { useWares, Ware } from '@/pages/api/WareApi';
+import { getJsonConstructorFile, useWares, Ware } from '@/pages/api/WareApi';
 import { getDecodedToken } from '@/pages/api/TokenApi';
 import FavoriteButton from '../tsx/FavoriteButton';
 import { Customer, useCustomers, useUpdateCustomer } from '@/pages/api/CustomerApi';
@@ -26,6 +26,7 @@ import ProductPrice from '../tsx/ProductPrice';
 import ProductImageGallery from '../tsx/ProductImageGallery';
 import DeliveryOptions from '../tsx/DeliveryOptions';
 import QuantitySelector from '../tsx/QuantitySelector';
+import axios from 'axios';
 
 interface CartItem {
   productDescription: string;
@@ -66,6 +67,8 @@ export default function WarePage() {
   // const [activeIndex, setActiveIndex] = useState(0);
   const carouselElement = document.getElementById("imageCarousel");
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [wareDetails, setWareDetails] = useState<string | null>(null);
+  const [wareProperties, setWareProperties] = useState<any[] | null>(null);
 
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
@@ -78,10 +81,37 @@ export default function WarePage() {
   }, [customerSuccess, customers]);
 
   useEffect(() => {
-    if (isProductsSuccess && products.length > 0) {
-      setProduct(products[0])
-    }
+    const fetchData = async () => {
+      if (isProductsSuccess && products.length > 0) {
+        setProduct(products[0]);
+        if (products[0].structureFilePath && products[0].structureFilePath.length > 0) {
+          try {
+            // Очікуємо результат виконання `getJsonConstructorFile`
+            const structFile = await getJsonConstructorFile(products[0].structureFilePath);
+            console.log(structFile);
+
+            // Перевірка та обробка отриманого JSON-файлу
+            if (Array.isArray(structFile) && structFile.length > 0) {
+              structFile.forEach((element: any) => {
+                if (element.type === "details") {
+                  setWareDetails(element.value);
+                }
+                if (element.type === "properties") {
+                  setWareProperties(element.value);
+                }
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching JSON constructor file:", error);
+          }
+        }
+      }
+    };
+
+    // Викликаємо асинхронну функцію
+    fetchData();
   }, [isProductsSuccess]);
+
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -89,20 +119,20 @@ export default function WarePage() {
     }
   }, [cartItems]);
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
-    }
-  };
+  // const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   if (!isNaN(value) && value > 0) {
+  //     setQuantity(value);
+  //   }
+  // };
 
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
+  // const increaseQuantity = () => {
+  //   setQuantity(prevQuantity => prevQuantity + 1);
+  // };
 
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
+  // const decreaseQuantity = () => {
+  //   setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  // };
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -254,12 +284,10 @@ export default function WarePage() {
             <button className={styles.tabButton} onClick={() => document.getElementById('similarProducts')?.scrollIntoView({ behavior: 'smooth' })}>Схожі товари</button>
           </div>
         </div>
-        <h2 id="description" className={styles.tabTitle}>Опис</h2>
-        {/* {product.description ? (
-          <DescriptionWare product={product} />
-        ) : (
-          <p>Опис недоступний.</p>
-        )}
+
+        <DescriptionWare article={product.article} description={wareDetails} />
+
+        {/* <h2 id="description" className={styles.tabTitle}>Опис</h2>
         <center><h3>Пов'язані статті в блозі</h3></center>
         {product.relatedArticles && product.relatedArticles.length > 0 ? (
           <ArticlesWare product={product} />

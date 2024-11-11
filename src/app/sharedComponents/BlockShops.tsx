@@ -193,6 +193,7 @@ import styles from "./css/MenuShops.module.css";
 //import blockShops from "./json/menushops.json";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
+import Link from "next/link";
 
 export default function BlockShops() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -327,7 +328,7 @@ export default function BlockShops() {
                                 <span style={{ marginLeft: "50px" }}>
                                     {shop.street},
                                     <p style={{ marginBottom: 0 }}>{shop.city}</p>
-                                    <a className={styles.customlink} href="https://jysk.ua">Як знайти магазин</a>
+                                    <Link className={styles.customlink} href="https://jysk.ua">Як знайти магазин</Link>
                                 </span>
                             </div>
                         </div>
@@ -341,7 +342,7 @@ export default function BlockShops() {
                                     </li>
                                 ))}
                             </ul>
-                            <a className={styles.customlink2} href="https://jysk.ua">Показати магазин</a>
+                            <Link className={styles.customlink2} href="https://jysk.ua">Показати магазин</Link>
                         </div>
                     </div>
                 )}

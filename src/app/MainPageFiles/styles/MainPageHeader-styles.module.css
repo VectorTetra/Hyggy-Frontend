@@ -143,6 +143,7 @@
 	text-decoration: none;
 	color: black;
 	font-weight: bold;
+	white-space: nowrap;
 }
 
 .menuText:hover {

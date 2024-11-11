@@ -145,10 +145,14 @@ export default function WareAddEditFrame() {
                 let contrFilePath = '';
                 let newWareImageIds: number[] = [];
                 if (wareId === 0) {
-                    if (rows.length > 0 || wareDetails.length > 0) {
-                        contrFilePath = await postJsonConstructorFile(wareDetails, rows);
-                        setStructureFilePath(contrFilePath);
-                    }
+                    // if (rows.length > 0 || wareDetails.length > 0) {
+                    //     contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                    //     setStructureFilePath(contrFilePath);
+                    // }
+                    //if (rows.length > 0 || wareDetails.length > 0) {
+                    contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                    setStructureFilePath(contrFilePath);
+                    //}
                     const newWare = await createWare({
                         Article: article,
                         Name: name,
@@ -176,14 +180,25 @@ export default function WareAddEditFrame() {
                     }
                 } else {
                     console.log("trademarkId", trademarkId);
+                    console.log("wareDetails", wareDetails);
+                    console.log("rows", rows);
                     if (wareId) {
-                        if ((rows.length > 0 || wareDetails.length > 0) && (!structureFilePath || structureFilePath === '')) {
+                        // if ((rows.length > 0 || wareDetails.length > 0) && (!structureFilePath || structureFilePath === '')) {
+                        //     contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                        //     setStructureFilePath(contrFilePath);
+                        // }
+                        // if ((rows.length > 0 || wareDetails.length > 0) && structureFilePath.length > 0) {
+                        //     contrFilePath = await putJsonConstructorFile(wareDetails, rows, structureFilePath);
+                        //     setStructureFilePath(contrFilePath);
+                        // }
+                        if ((!structureFilePath || structureFilePath === '')) {
                             contrFilePath = await postJsonConstructorFile(wareDetails, rows);
                             setStructureFilePath(contrFilePath);
                         }
-                        if ((rows.length > 0 || wareDetails.length > 0) && structureFilePath.length > 0) {
+                        if (structureFilePath.length > 0) {
                             contrFilePath = await putJsonConstructorFile(wareDetails, rows, structureFilePath);
                             setStructureFilePath(contrFilePath);
+                            console.log("Ми зайшли в блок structureFilePath.length > 0");
                         }
                         if (isPhotosDirty) {
                             console.log("Ми зайшли в блок isPhotosDirty");

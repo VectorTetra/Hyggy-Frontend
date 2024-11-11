@@ -236,7 +236,7 @@ export async function putJsonConstructorFile(wareDetails: string | null, warePro
 
 export async function getJsonConstructorFile(filePath: string) {
 	try {
-		const response = await axios.get(filePath);
+		const response = await axios.get(`${filePath}?timestamp=${new Date().getTime()}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching JSON constructor file:', error);
