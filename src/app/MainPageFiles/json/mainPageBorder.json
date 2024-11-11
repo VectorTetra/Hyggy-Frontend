@@ -2,16 +2,19 @@
   "borderData": {
     "mainBorder": [
       {
+        "id": 1,
         "url": "../images/Banner/UA2_6.jpg",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       },
       {
+        "id": 2,
         "url": "../images/Banner/UA5_6.jpg",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       },
       {
+        "id": 3,
         "url": "../images/Banner/UA5_7.jpg",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       }
     ]
   }
