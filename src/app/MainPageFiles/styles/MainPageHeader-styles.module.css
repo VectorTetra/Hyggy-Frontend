@@ -15,8 +15,8 @@
 	border-top-right-radius: 10px;
 }
 
-
-#mainPageSale a {
+.bannerLink {
+	cursor: pointer;
 	color: white;
 	text-decoration: none;
 }
@@ -27,6 +27,7 @@
 	align-items: center;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
+	padding: 0;
 }
 
 .mainPageHeaderItem {
@@ -41,10 +42,6 @@
 }
 
 #mainPageHeaderLogo {
-	/* width: clamp(100px, 15vw, 100px);
-	aspect-ratio: 1 / 1; */
-	/* padding: 10px; */
-	/* margin-left: 100px; */
 	width: 110px;
 	height: 71px;
 }
@@ -85,7 +82,6 @@
 
 .mainPageHeaderSearchContainer {
 	order: 0;
-
 }
 
 .inputSearch {
@@ -123,7 +119,6 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 15px;
-	/* flex-wrap: wrap; */
 }
 
 .navbarmenu {
@@ -191,6 +186,10 @@
 		height: 4vw;
 	}
 
+	/* .disappearOnAdapt {
+		font-size: clamp(14px, 2vh, 20px);
+	} */
+
 	.navbarcontainer {
 		flex-direction: column;
 		gap: 20px;
@@ -210,10 +209,22 @@
 
 	#mainPageHeaderLogoContainer {
 		justify-content: space-between;
+		padding: 0;
 	}
 
 	.geoblock {
 		order: 1;
+	}
+}
+
+@media screen and (max-width: 700px) and (min-width: 500px) {
+	.disappearOnAdapt {
+		display: none;
+	}
+
+	#mainPageHeaderLogoContainer {
+		justify-content: space-between;
+		padding: 0 20px;
 	}
 }
 
@@ -246,6 +257,7 @@
 
 	#mainPageHeaderLogoContainer {
 		justify-content: space-between;
+		padding: 0 20px;
 	}
 
 	#mainPageSale {

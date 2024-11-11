@@ -1,0 +1,93 @@
+{
+    "sale": [
+        {
+            "id": 1,
+            "urlImageHead": "../images/Banner/UA2_6.jpg",
+            "content": "З 25.12.2024 до 25.01.2025 у мережі магазинів HYGGY на вас чекатимуть неймовірні знижки до 60% на товар в категорії \"Для саду\". Скористайтеся гарною нагодою купити товари за супернизькою ціною! ",
+            "urlimage": [
+                {
+                    "text": "Меблі для відпочинку - знижка до 60%",
+                    "photo": "../images/Sale/top5.jpg"
+                },
+                {
+                    "text": "Садові стільці - знижка до 60%",
+                    "photo": "../images/Sale/topimage40.jpg"
+                },
+                {
+                    "text": "Товари для саду - знижка до 60%",
+                    "photo": "../images/Sale/topimage56.jpg"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "urlImageHead": "../images/Banner/UA5_6.jpg",
+            "content": "З 25.12.2024 до 25.01.2025 у мережі магазинів HYGGY на вас чекатимуть неймовірні знижки до 60% на товар в категорії \"Для саду\". Скористайтеся гарною нагодою купити товари за супернизькою ціною! ",
+            "urlimage": [
+                {
+                    "text": "Меблі для відпочинку - знижка до 60%",
+                    "photo": "../images/Sale/top5.jpg"
+                },
+                {
+                    "text": "Садові стільці - знижка до 60%",
+                    "photo": "../images/Sale/topimage40.jpg"
+                },
+                {
+                    "text": "Товари для саду - знижка до 60%",
+                    "photo": "../images/Sale/topimage56.jpg"
+                },
+                {
+                    "text": "Товари для саду - знижка до 60%",
+                    "photo": "../images/Sale/topimage56.jpg"
+                },
+                {
+                    "text": "Товари для саду - знижка до 60%",
+                    "photo": "../images/Sale/topimage56.jpg"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "urlImageHead": "../images/Banner/UA5_7.jpg",
+            "content": "З 25.12.2024 до 25.01.2025 у мережі магазинів HYGGY на вас чекатимуть неймовірні знижки до 60% на товар в категорії \"Для саду\". Скористайтеся гарною нагодою купити товари за супернизькою ціною! ",
+            "urlimage": [
+                {
+                    "text": "Спальня - знижка до 50%",
+                    "photo": "../images/Category/Bedroom.jpg"
+                },
+                {
+                    "text": "Ванна - знижка до 50%",
+                    "photo": "../images/Category/Bathroom.jpg"
+                },
+                {
+                    "text": "Офіс - знижка до 50%",
+                    "photo": "../images/Category/Office.jpg"
+                },
+                {
+                    "text": "Вітальня - знижка до 50%",
+                    "photo": "../images/Sale/topimage56.jpg"
+                },
+                {
+                    "text": "Кухня та їдальня - знижка до 50%",
+                    "photo": "../images/Category/Diningroom.jpg"
+                },
+                {
+                    "text": "Зберігання - знижка до 50%",
+                    "photo": "../images/Category/Storage.jpg"
+                },
+                {
+                    "text": "Для вікон - знижка до 50%",
+                    "photo": "../images/Category/Window.jpg"
+                },
+                {
+                    "text": "Для саду - знижка до 50%",
+                    "photo": "../images/Category/Garden.jpg"
+                },
+                {
+                    "text": "Для дому - знижка до 50%",
+                    "photo": "../images/Category/Forhome.jpg"
+                }
+            ]
+        }
+    ]
+}

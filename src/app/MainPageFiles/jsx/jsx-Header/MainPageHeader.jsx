@@ -10,10 +10,9 @@ import MainPageHeaderGeo from './MainPageHeaderGeo';
 import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
-import useAuthorizeStore from '@/store/authorize';
 import { validateToken } from '@/pages/api/TokenApi';
+
 function MainPageHeader(props) {
-	//const { isAuthorized, setIsAuthorized } = useAuthorizeStore();
 	const isAuthorized = validateToken().status === 200;
 	return (
 		<div id={styles.mainPageHeader}>
