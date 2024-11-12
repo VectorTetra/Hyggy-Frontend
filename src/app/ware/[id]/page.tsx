@@ -294,29 +294,30 @@ export default function WarePage() {
         ) : (
           <p>Немає пов'язаних статей.</p>
         )}
-        <hr />
+        <hr />*/}
         <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
-        {product.specifications && product.specifications.length > 0 ? (
-          <center><SpecificationWare product={product} /></center>
+        {wareProperties && wareProperties.length > 0 ? (
+          <center><SpecificationWare properties={wareProperties} /></center>
         ) : (
           <p>Характеристики недоступні.</p>
         )}
         <hr />
-        <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
+        {/* <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
         {product.lastReviews && product.lastReviews.length > 0 ? (
           <ReviewWare product={product} />
         ) : (
           <p>Немає відгуків.</p>
-        )}
+        )} */}
         <hr />
-        <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
+        {/* <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
         {product.similarProducts && product.similarProducts.length > 0 && product.similarProducts.some(p => Object.keys(p).length > 0) ? (
           <section className={styles.similarProducts}>
             <SimilarWare product={product} />
           </section>
         ) : (
           <p>Немає схожих товарів.</p>
-        )} */}
+        )}
+      </div> */}
       </div>}
     </Layout>
   );

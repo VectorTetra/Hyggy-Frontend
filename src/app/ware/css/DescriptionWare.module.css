@@ -4,6 +4,10 @@
     flex-direction: column;
 }
 
+.descriptionContainer p {
+    margin: 0;
+}
+
 .title {
     text-align: center;
 }

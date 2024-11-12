@@ -1,13 +1,13 @@
 import styles from "../css/SpecificationWare.module.css";
 import { Product } from '../types/Product';
 
-export default function SpecificationWare({ product }: { product: Product }) {
+export default function SpecificationWare({ properties }: { properties: any[] }) {
   return (
     <div className={styles.specificationsTable}>
-      {product.specifications.map((spec, index) => (
+      {properties.map((spec, index) => (
         <div key={index} className={styles.specRow}>
-          <div className={styles.specName}>{spec.name}</div>
-          <div className={styles.specValue}>{spec.value}</div>
+          <div className={styles.specName} dangerouslySetInnerHTML={{ __html: spec.propertyName }}></div>
+          <div className={styles.specValue} dangerouslySetInnerHTML={{ __html: spec.propertyValue }}></div>
         </div>
       ))}
     </div>

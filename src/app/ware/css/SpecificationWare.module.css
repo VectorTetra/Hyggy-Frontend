@@ -5,9 +5,26 @@
     margin-bottom: 30px;
 }
 
+.specificationsTable p {
+    font-size: 16px;
+    /* color: #444; */
+}
+
+.specName *,
+.specValue * {
+    background-color: #D9D9D9 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .specRow {
     display: flex;
     border-bottom: 1px solid #000000;
+    background-color: #D9D9D9;
+}
+
+.specRow {
+    background-color: #D9D9D9;
 }
 
 .specRow:last-child {
