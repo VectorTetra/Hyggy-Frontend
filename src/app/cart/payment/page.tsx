@@ -23,7 +23,7 @@ const PaymentPage = () => {
 
   useEffect(() => {
     const deliveryInfo = localStorage.getItem('deliveryInfo');
-
+    console.log("Delivery Info:" + deliveryInfo)
     if (!deliveryInfo) {
       router.push('/cart/delivery');
     }

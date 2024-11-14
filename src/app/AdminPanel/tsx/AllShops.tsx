@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 
 export default function AllShops() {
-  const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
+  const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
   const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
   const [data, setData] = useState<any | null>([]);
   const [loading, setLoading] = useState(true);
@@ -114,7 +114,6 @@ export default function AllShops() {
 
           PageSize: 150
         });
-        console.log(storages);
         setData(storages);
         setActiveNewShop(null);
 

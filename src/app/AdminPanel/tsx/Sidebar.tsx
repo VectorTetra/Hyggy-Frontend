@@ -116,12 +116,16 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 
 export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
+	const [openEmployees, setEmployees] = useState(false);
+
 	const { window } = props;
 
 	const toggleWarehouses = () => {
 		setOpenWarehouses(!openWarehouses);
 	};
-
+	const toggleEmployees =() => {
+		setEmployees(!openEmployees)
+	};
 	const drawer = (
 		<div>
 			<Toolbar
@@ -191,7 +195,10 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
 					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
-					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" />
+					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" open={openEmployees} onClick={toggleEmployees}>
+					<SubMenuItem text="Магазини" value="shopEmployees" />
+					<SubMenuItem text="Склади" value="storageEmployees" />
+				</MenuItem>
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />

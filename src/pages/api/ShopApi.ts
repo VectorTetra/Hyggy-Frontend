@@ -1,43 +1,7 @@
-// import axios from 'axios';
-// import type { NextApiRequest, NextApiResponse } from 'next';
-
-// export async function getShops(pageNumber: number = 1, pageSize: number = 1000, searchParameter: string = 'Query') {
-//   try {
-//     const response = await axios.get('http://localhost:5263/api/Shop', {
-//       params: {
-//         SearchParameter: searchParameter,
-//         PageNumber: pageNumber,
-//         PageSize: pageSize,
-//       },
-//     });
-
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching shops:', error);
-//     throw new Error('Failed to fetch shops');
-//   }
-// }
-
-// export async function CreateShop(name: string, photoUrl: string, workHours: string, addressId: number, storageId: number ) {
-//   try {
-//     const response = await axios.post('http://localhost:5263/api/Shop', {
-//         Name: name,
-//         PhotoUrl: photoUrl,
-//         WorkHours: workHours,
-//         AddressId: addressId,
-//         StorageId: storageId
-//     });
-
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching shops:', error);
-//     throw new Error('Failed to fetch shops');
-//   }
-// }
-
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+
 
 export interface ShopQueryParams {
 	SearchParameter?: string;

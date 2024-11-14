@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    font-family: "Railway", sans-serif;
+label.form-label{
+    @apply text-xs text-gray-600 font-bold uppercase block mt-6 mb-1
+}
+
+.offscreen{
+    position: absolute;
+    left: -9999px;
+}
+.instructions {
+    font-size: 0.75rem;
+    color: #fff;
+    padding: 0.25rem;
+}
+.instructions > svg {
+    margin-right: 0.25rem;
+
 }
