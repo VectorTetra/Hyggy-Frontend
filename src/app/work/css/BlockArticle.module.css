@@ -8,21 +8,29 @@
 
 .wideTextArticle {
 	display: flex;
-	background-color: #b0caa9;
+	background-color: #00AAAD;
+	color: white;
 	flex-direction: column;
 	padding: 10px 30px;
 }
 
 .wideTextArticleItem {
 	display: flex;
-	justify-content: center;
+	/* justify-content: center; */
+	text-align: justify;
+}
+
+.wideTextArticleItem h1 {
+	display: flex;
+	/* justify-content: center; */
+	text-align: center;
 }
 
 .halvedRightImageArticle {
 	display: flex;
-	background-color: #1e4673;
+	background-color: #ffffff;
 	flex-direction: row;
-	color: white;
+	color: rgb(0, 0, 0);
 }
 
 .halvedRightImageArticleText {
@@ -32,6 +40,7 @@
 	flex-direction: column;
 	width: 50%;
 	place-content: center;
+	text-align: justify;
 }
 
 .halvedRightImageArticleImageContainer {
@@ -49,8 +58,9 @@
 
 .halvedLeftImageArticle {
 	display: flex;
-	background-color: #c8e0f0;
+	background-color: #ffffff;
 	flex-direction: row;
+	color: rgb(0, 0, 0);
 
 }
 
@@ -67,6 +77,7 @@
 	flex-direction: column;
 	width: 50%;
 	place-content: center;
+	text-align: justify;
 }
 
 .blockArticle p {
@@ -100,9 +111,11 @@
 
 	.halvedRightImageArticleText {
 		width: 100%;
+		margin: 15px 0;
 	}
 
 	.halvedLeftImageArticleText {
 		width: 100%;
+		margin: 15px 0;
 	}
 }

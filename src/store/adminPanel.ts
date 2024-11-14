@@ -14,7 +14,6 @@ const useAdminPanelStore = create<AdminPanelState>((set) => ({
 	setActiveTab: (tab) => set({ activeTab: tab }),
 	warehouseId: null, // Вибрана вкладка, за замовчуванням немає вибраної
 	setWarehouseId: (id) => set({ warehouseId: id }),
-
 }));
 
 export default useAdminPanelStore;

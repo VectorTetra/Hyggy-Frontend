@@ -1,11 +1,13 @@
 import { lazy, Suspense } from 'react';
 import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
 const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
+const AllShops = lazy(() => import('./AllShops'));
+const NewShop = lazy(() => import('./NewShop'));
+const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
+const FrameWare = lazy(() => import('./FrameWare'));
+const WareAddEditFrame = lazy(() => import('./FrameWareAddEdit'));
+const Blog = lazy(() => import('./Blog'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import WarehouseAddEditFrame from './FrameWarehouseAddEdit';
-
-import AllShops from './AllShops';
-import NewShop from './NewShop';
 
 import Clients from './Clients';
 
@@ -29,7 +31,8 @@ export default function Content() {
 			}}
 		>
 			<Suspense fallback={<CircularProgress />}>
-				{activeTab === 'products' && <div>Товари</div>}
+				{activeTab === 'products' && <FrameWare />}
+				{activeTab === 'addEditWare' && <WareAddEditFrame />}
 				{activeTab === 'warehousesList' && <WarehouseFrame />}
 				{activeTab === 'addEditWarehouse' && <WarehouseAddEditFrame />}
 				{activeTab === 'remains' && <div>Залишки</div>}
@@ -44,7 +47,7 @@ export default function Content() {
 				{activeTab === 'addStorageEmployee' && <NewStorageEmployee />}
 				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
-				{activeTab === 'blog' && <div>Блоги</div>}
+				{activeTab === 'blog' && <Blog />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
 			</Suspense>
 		</Box>)

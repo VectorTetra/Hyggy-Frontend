@@ -1,15 +1,31 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import styles from "./css/mainblockmenu.module.css";
 import blockData from "./json/blockmenu.json";
 import useMainPageMenuStore from "@/store/mainPageMenu";
-export default function BlockMenu() {
+import { useWareCategories1 } from "@/pages/api/WareCategory1Api";
+const adaptCategories = (data) => {
+    return data.map((category) => ({
+        caption: category.name,
+        subCategories: category.waresCategories2.map((subCategory) => ({
+            type: subCategory.name,
+            subCategories: subCategory.waresCategories3.map((subSubCategory) => ({
+                name: subSubCategory.name,
+                // Додайте інші потрібні поля, якщо потрібно
+            })),
+        })),
+    }));
+};
+export default function BlockMenu({ foundWareCategories }) {
     const [history, setHistory] = useState([]); // История для возврата на предыдущие уровни
-    const [currentMenu, setCurrentMenu] = useState(blockData.blockData);
+
+    const [currentMenu, setCurrentMenu] = useState(adaptCategories(foundWareCategories));
     const [currentCategory, setCurrentCategory] = useState(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
 
     const menuRef = useRef(null);
+
 
     const handleCategoryClick = (category) => {
         if (category.subCategories) {
@@ -17,8 +33,7 @@ export default function BlockMenu() {
             setCurrentMenu(category.subCategories); // Переходим к подкатегориям
             setCurrentCategory(category); // Обновляем текущую категорию
         } else {
-
-            //СДЕЛАТЬ ПЕРЕХОД НА СТР. ПОИСКА ТОВАРОВ С ИДЕНТИФИКАТОРОМ КАТЕГОРИИ В URL
+            setIsMainPageMenuOpened(false);
         }
     };
 
@@ -31,7 +46,17 @@ export default function BlockMenu() {
         }
     };
 
+    useEffect(() => {
+        if (isMainPageMenuOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
 
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMainPageMenuOpened]);
     // Закрытие меню при клике вне его области
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -82,9 +107,15 @@ export default function BlockMenu() {
                 <ul className={styles.menu}>
                     {currentMenu.map((category, index) => (
                         <li key={index} className={styles.menuItem} onClick={() => handleCategoryClick(category)}>
-                            <span className={styles.menuText}>
-                                {category.caption || category.type || category.name}
-                            </span>
+                            {category.subCategories && history.length < 2 ? (
+                                <span className={styles.menuText}>
+                                    {category.caption || category.type || category.name}
+                                </span>
+                            ) : (
+                                <Link href={`/search?query=${category.name}`} className={styles.menuText}>
+                                    {category.caption || category.type || category.name}
+                                </Link>
+                            )}
                             {category.subCategories && history.length < 2 && (
                                 <span className={styles.menuIcon}>{'>'}</span>
                             )}

@@ -38,7 +38,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
   return (
     <div className={styles.popupOverlay}>
       <div className={styles.popupContent}>
-        <p onClick={onClose} className={styles.close}>×</p>
+        <div onClick={onClose} className={styles.close}>&times;</div>
         {cartItems.length === 0 ? (
           <p>Корзина пуста</p>
         ) : (
@@ -47,21 +47,20 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
               <Image src={item.productImage} alt={item.productDescription} width={197} height={191} />
               <div>
                 <p>{item.productDescription}</p>
-                <p className={styles.oldprice}>{item.oldPrice} грн</p>
                 <p className={styles.price}>{item.price} грн</p>
+                <p className={styles.oldprice}>{item.oldPrice} грн</p>
                 <p className={styles.delete} onClick={() => {
-          onRemoveItem(cartItems.length - 1); 
-        }}>Видалити</p>
+                  onRemoveItem(cartItems.length - 1);
+                }}>Видалити</p>
               </div>
             </div>
           ))
         )}
-        <hr />
         <center><hr className={styles.customHr} /></center>
         <div className={styles.deliveryInfo}>
           <p>
-                <span className={styles.info}>Доставка: </span>
-                <span className={styles.priceAmount}>{deliveryPrice} грн</span>
+            <span className={styles.info}>Доставка: </span>
+            <span className={styles.priceAmount}>{deliveryPrice} грн</span>
           </p>
           <p>
             <span className={styles.info}>Сума ({calculateQuantity()} товарів): </span>

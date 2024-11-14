@@ -21,6 +21,7 @@ import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 //import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import Blog from './Blog';
+import { removeToken } from '@/pages/api/TokenApi';
 
 const drawerWidth = 240;
 
@@ -165,7 +166,7 @@ export default function Sidebar(props) {
 				</Button>
 			</Toolbar>
 			<Divider sx={{ mt: 8 }} /> {/* Відступ, щоб розділювач не накладався на кнопку */}
-        <Box sx={{
+			<Box sx={{
 				overflowY: 'auto',
 				height: 'calc(100vh - 128px)',
 				'&::-webkit-scrollbar': {
@@ -202,13 +203,15 @@ export default function Sidebar(props) {
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
-          <a href="../AdminPanelLogin">
-					<MenuItem
-						icon={<LogoutIcon />}
-						text="Вихід"
-						value="exit"
-					/>
-				</a>
+					<a href="../AdminPanelLogin" onClick={() => {
+						removeToken();
+					}}>
+						<MenuItem
+							icon={<LogoutIcon />}
+							text="Вихід"
+							value="exit"
+						/>
+					</a>
 				</List>
 			</Box>
 		</div>

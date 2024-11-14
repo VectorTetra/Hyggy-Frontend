@@ -96,7 +96,7 @@ const AddressPage = () => {
 
   const fetchCitySuggestions = async (query: string) => {
     if (query.length > 2) {
-      const response = await fetch(`https://nominatim.openstreetmap.org.ua/search?city=${query}&country=Ukraine&format=json&accept-language=uk&limit=1`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?city=${query}&country=Ukraine&format=json&accept-language=uk&limit=1`);
       const data = await response.json();
       const cityNames = data.map((item: any) => item.display_name.split(',')[0]);
       setCitySuggestions(cityNames);
@@ -120,7 +120,7 @@ const AddressPage = () => {
   const fetchStreetSuggestions = async (query: string) => {
     if (query.length > 2 && formData.city) {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org.ua/search?street=${query}&city=${formData.city}&country=Ukraine&format=json&accept-language=uk`
+        `https://nominatim.openstreetmap.org/search?street=${query}&city=${formData.city}&country=Ukraine&format=json&accept-language=uk`
       );
       const data = await response.json();
       let streetNames = data.map((item: any) => item.display_name.split(',')[0].replace(/вулиця|Вулиця/i, "").trim());
@@ -199,12 +199,10 @@ const AddressPage = () => {
     }
   };
 
-
   const calculateTotalPrice = () => {
-    const deliveryPrice = cartItems.length > 0 && cartItems[0].selectedOption === 'delivery' ? 100 : 0;
     return cartItems.reduce((total, item) => {
       return total + parseFloat(item.price) * item.quantity;
-    }, deliveryPrice);
+    }, 0);
   };
 
   return (
@@ -321,7 +319,7 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до доставки
+                Перейти до доставка
               </button>
             </div>
             <Link href="/cart">
@@ -351,6 +349,7 @@ const AddressPage = () => {
                   </div>
                   <div className={styles.price}>
                     <p>{item.price} грн</p>
+                    <p>{parseFloat(item.price) * item.quantity} грн</p>
                   </div>
                 </div>
               ))}

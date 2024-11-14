@@ -1,29 +1,29 @@
 // File: CategoryPicker.tsx
 import useSearchStore from "@/store/search";
-import { useQueryState } from 'nuqs';
+import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/CategoryPicker.module.css";
+interface Filter {
+	id: string; // або number, в залежності від типу вашого id
+	name: string;
+}
 
 function CategoryPicker(props: any) {
 	const { isCategoryOpen, setIsCategoryOpen } = useSearchStore();
-	const [filters, setFilters] = useQueryState("f_1", { scroll: false });
+	const [filters, setFilters] = useQueryState<Filter[] | null>("f_1", parseAsArrayOf(parseAsJson()));
 
 	const onChange = (e: any) => {
 		const value = e.target.value;
-		const currentFilters = (filters || "").split("|").filter(Boolean);
+		const currentFilters: Filter[] = filters || []; // Змінюємо на масив
 
 		if (e.target.checked) {
-			// Add new filter
-			setFilters([...currentFilters, value].join("|"), { history: "replace" });
+			// Додаємо новий фільтр
+			const newFilter: Filter = { id: value, name: props.categories.find(c => c.id === Number(value))?.name };
+			console.log("newCategory", newFilter);
+			setFilters([...currentFilters, newFilter], { history: "replace" });
 		} else {
-			// Remove filter
-			const updatedFilters = currentFilters.filter((filter: any) => filter !== value);
-			if (updatedFilters.length === 0) {
-				// Remove the parameter if no filters
-				setFilters(null, { history: "replace" });
-			} else {
-				// Update parameter with new filters
-				setFilters(updatedFilters.join("|"), { history: "replace" });
-			}
+			// Видаляємо фільтр
+			const updatedFilters = currentFilters.filter((filter: Filter) => filter.id !== value);
+			setFilters(updatedFilters.length === 0 ? null : updatedFilters, { history: "replace" });
 		}
 	};
 
@@ -41,9 +41,9 @@ function CategoryPicker(props: any) {
 							<input
 								type="checkbox"
 								className={styles.checkbox}
-								value={category.name}
+								value={category.id}
 								onChange={onChange}
-								checked={(filters || "").split("|").includes(category.name)}
+								checked={filters !== null && filters?.some((filter: Filter) => Number(filter.id) === category.id)} // Перевірка, чи фільтр вибраний
 								disabled={category.isDisabled}
 							/>
 						</div>

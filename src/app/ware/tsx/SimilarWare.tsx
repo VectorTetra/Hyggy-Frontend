@@ -24,9 +24,9 @@ export default function SimilarWare({ product }: { product: Product }) {
     const handleResize = () => {
       if (window.innerWidth <= 767) {
         setItemsPerSlide(1);
-      } else if (window.innerWidth > 767 && window.innerWidth <= 1070) {
+      } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
         setItemsPerSlide(2);
-      } else if (window.innerWidth <= 1300) {
+      } else if (window.innerWidth <= 1360) {
         setItemsPerSlide(3);
       } else {
         setItemsPerSlide(4);
@@ -56,9 +56,9 @@ export default function SimilarWare({ product }: { product: Product }) {
           <div key={similarProduct.id} className={styles.similarProductCard}>
             <Link href={`/ware/${similarProduct.id}`} className={styles.wareCardLink}>
               <div className={styles.similarProductImage}>
-                <Image 
-                  src={similarProduct.imageSrc} 
-                  alt={similarProduct.longName} 
+                <Image
+                  src={similarProduct.imageSrc}
+                  alt={similarProduct.longName}
                   className={styles.wareImage}
                   layout="fill"
                   objectFit="contain"

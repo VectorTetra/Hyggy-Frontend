@@ -1,32 +1,36 @@
 "use client";
 import React from "react";
-
 import styles from "./styles/AuthenticationStyles.module.css";
 import { useRouter } from "next/navigation";
 import useAuthorizeStore from "@/store/authorize";
+import { toast } from "react-toastify";
+import { Authorize, getDecodedToken } from "@/pages/api/TokenApi";
 
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessage, setErrorMessage] = React.useState('');
-    const { setIsAuthorized } = useAuthorizeStore();
     const router = useRouter();
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const user = props.AuthenticationPage.AuthenticationInfo.find(user => user.email === email);
-        if (user && user.password === password) {
-            setErrorMessage('');
-            alert("Вхід здійснено успішно");
-            setIsAuthorized(true);
-            router.push("../PageProfileUser");
-
-        } else {
-            setIsAuthorized(false);
-            setErrorMessage('E-mail або пароль не вірні');
+        if (!email || !password) {
+            toast.error("Неправильний E-mail або пароль!")
         }
+        Authorize({ Email: email, Password: password }).then((response) => {
+            if (response.isAuthSuccessfull) {
+                router.push("../PageProfileUser");
+                toast.success('Ви успішно увійшли в особистий кабінет!');
+                const decodedToken = getDecodedToken();
+                if (decodedToken) {
+                    toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
+                }
+            }
+        });
+
+
     };
 
 

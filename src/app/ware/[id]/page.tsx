@@ -1,6 +1,5 @@
 "use client";
 import { useParams, notFound } from 'next/navigation';
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import styles from "../page.module.css";
 import Layout from "../../sharedComponents/Layout";
@@ -24,6 +23,7 @@ interface CartItem {
   productImage: string;
   quantity: number;
   price: string;
+
   oldPrice: string;
   selectedOption: string;
 }
@@ -32,16 +32,18 @@ export default function WarePage() {
   const params = useParams<{ id: string }>();
   const id = params?.id;
   const product = jsonData.find((item) => item.id === Number(id));
-
-  if (!product) {
-    return notFound();
-  }
-
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
   const [showPopup, setShowPopup] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const carouselElement = document.getElementById("imageCarousel");
+  const [favorites, setFavorites] = useState<number[]>([]);
+
+  if (!product) {
+    return notFound();
+  }
 
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
@@ -95,7 +97,7 @@ export default function WarePage() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 991);
+      setIsMobile(window.innerWidth <= 768);
     };
 
     handleResize();
@@ -117,77 +119,117 @@ export default function WarePage() {
     }
   }, [showPopup]);
 
+  const handleSlide = (index) => {
+    setActiveIndex(index);
+  };
+
+  const handleSlideChange = (event) => {
+    setActiveIndex(event.to);
+  };
+
+  carouselElement?.addEventListener("slid.bs.carousel", handleSlideChange);
+
+  const toggleFavorite = (e: React.MouseEvent, productId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFavorites((prevFavorites) =>
+      prevFavorites.includes(productId)
+        ? prevFavorites.filter((id) => id !== productId)
+        : [...prevFavorites, productId]
+    );
+  };
+
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.main}>
         {isMobile && (
           <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
+            <button
+              className={styles.favoriteButton}
+              onClick={(e) => toggleFavorite(e, product.id)}
+            >
+              {favorites.includes(product.id) ? "💖" : "🖤"}
+            </button>
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <Image
-                  src={product.mainImage1}
-                  alt={product.productName}
-                  layout="responsive"
-                  width={100}
-                  height={100}
-                />
+                <img src={product.mainImage1} alt="Main Image 1" className={styles['carousel-image']} />
               </div>
               <div className="carousel-item">
-                <Image
-                  src={product.mainImage2}
-                  alt={product.productName}
-                  layout="responsive"
-                  width={100}
-                  height={100}
-                />
+                <img src={product.mainImage2} alt="Main Image 2" className={styles['carousel-image']} />
               </div>
               {product.thumbnails.map((thumb, index) => (
                 <div className="carousel-item" key={index}>
-                  <Image
-                    src={thumb}
-                    alt={`Thumbnail ${index + 1}`}
-                    layout="responsive"
-                    width={100}
-                    height={100}
-                  />
+                  <img src={thumb} alt={`Thumbnail ${index + 1}`} className={styles['carousel-image']} />
                 </div>
               ))}
             </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
-            </button>
+            <div className="carousel-indicators">
+              <button
+                type="button"
+                data-bs-target="#imageCarousel"
+                data-bs-slide-to="0"
+                className="active"
+                aria-current="true"
+                aria-label="Slide 1"
+                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#imageCarousel"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
+              ></button>
+              {product.thumbnails.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  data-bs-target="#imageCarousel"
+                  data-bs-slide-to={index + 2}
+                  aria-label={`Slide ${index + 3}`}
+                  style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
+                ></button>
+              ))}
+            </div>
           </div>
         )}
-
         <div className={styles.productContainer}>
           <div className={styles.imageGallery}>
             <div className={styles.mainImageContainer}>
               <div className={styles.mainImage}>
-                <Image src={product.mainImage1} alt={product.productName} layout="fill" />
+                <img src={product.mainImage1} alt={product.mainImage1} />
               </div>
               <div className={styles.mainImage}>
-                <Image src={product.mainImage2} alt={product.productName} layout="fill" />
+                <img src={product.mainImage2} alt={product.mainImage2} />
               </div>
             </div>
             <div className={styles.thumbnails}>
               {product.thumbnails.map((thumb, index) => (
                 <div key={index} className={styles.thumbnail}>
-                  <Image src={thumb} alt={`Thumbnail ${index + 1}`} layout="fill" objectFit="cover" />
+                  <img src={thumb} alt={`Thumbnail ${index + 1}`} />
                 </div>
               ))}
             </div>
           </div>
           <div className={styles.productInfo}>
-            <h1 className={styles.productName}>{product.productName}</h1>
+            <h1 className={styles.productName}>
+              {product.productName}
+              {!isMobile && (
+                <button
+                  className={styles.favoriteButton2}
+                  onClick={(e) => toggleFavorite(e, product.id)}
+                >
+                  {favorites.includes(product.id) ? "💖" : "🖤"}
+                </button>
+              )}
+            </h1>
             <p className={styles.productDescription}>{product.productDescription}</p>
             <div className={styles.rating}>
               <StarRating rating={Number(product.rating)} />
               <span>({product.reviewCount})</span>
+            </div>
+            <div>
+              {product.discount ? <span className={styles.discountSticker}> - {product.discount} %</span> : null}
             </div>
             <div className={styles.price}>
               <span className={styles.currentPrice}>{product.currentPrice} грн / шт</span>
@@ -201,8 +243,7 @@ export default function WarePage() {
             <div className={styles.deliveryOptionsContainer}>
               <div
                 className={`${styles.deliveryOption} ${selectedOption === "delivery" ? styles.activeOption : ""
-                  }`}
-                onClick={() => setSelectedOption("delivery")}>
+                  }`} onClick={() => setSelectedOption("delivery")}>
                 <div className={styles.optionTitle}>Доставка</div>
                 <span className={styles.optionDot}>{product.deliveryOption.includes("Не в наявності") ? <span><svg width="12" height="12">
                   <circle cx="6" cy="6" r="6" fill="red" />
@@ -259,7 +300,7 @@ export default function WarePage() {
         ) : (
           <p>Опис недоступний.</p>
         )}
-        <h3>Пов'язані статті в блозі</h3>
+        <center><h3>Пов'язані статті в блозі</h3></center>
         {product.relatedArticles && product.relatedArticles.length > 0 ? (
           <ArticlesWare product={product} />
         ) : (

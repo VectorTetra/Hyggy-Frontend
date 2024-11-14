@@ -13,28 +13,21 @@
   justify-content: space-between;
   padding: 20px;
   border-radius: 10px;
-
 }
 
 .rating {
   display: flex;
   align-items: center;
-  font-size: 32px;
+  padding: 10px;
 }
 
 .ratingText {
   margin-left: 20px;
 }
 
-.mainText {
-  font-size: 32px;
-}
-
 .leaveReviewButton {
-  width: 420px;
-  height: 85px;
+  width: 15rem;
   padding: 10px 20px;
-  font-size: 32px;
   background-color: #00AAAD;
   color: white;
   border: none;
@@ -43,7 +36,7 @@
 }
 
 .reviewHr {
-  width: 100%; 
+  width: 100%;
 }
 
 .reviewsList {
@@ -57,7 +50,6 @@
 }
 
 .reviewerName {
-  font-size: 24px;
   font-weight: bold;
   width: 300px;
   display: inline-block;
@@ -72,16 +64,11 @@
   display: flex;
   align-items: center;
   margin-right: 20px;
-  font-size: 20px;
   width: 200px;
 }
 
 .reviewRating {
   margin-left: 10px;
-}
-
-.reviewText {
-  font-size: 24px;
 }
 
 .modalOverlay {
@@ -105,17 +92,15 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.modalContent h1{
+.modalContent h3 {
   font-weight: bold;
-  font-size: 40px;
   text-align: center;
 }
 
-.formRating{
+.formRating {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
-  font-size: 43px;
 }
 
 .formGroup {
@@ -144,7 +129,7 @@
   min-height: 100px;
 }
 
-.submitButton{
+.submitButton {
   padding: 10px 15px;
   margin-right: 10px;
   border: none;
@@ -154,15 +139,15 @@
   cursor: pointer;
 }
 
-.submitButton:hover{
+.submitButton:hover {
   opacity: 0.9;
 }
 
-.close{
-  font-size: 25px;
+.close {
   cursor: pointer;
-  text-align: right;
+  float: right;
 }
+
 
 @media screen and (max-width: 1920px) {
   .modalContent {
@@ -170,29 +155,13 @@
     padding: 50px;
   }
 
-  .formRating {
-    font-size: 24px;
-  }
-
   .formGroup {
     width: 100%;
   }
 
-  .formInput, .formTextarea {
-    font-size: 14px;
-  }
-
   .submitButton {
     padding: 8px;
-    font-size: 14px;
     width: 100%;
-  }
-
-  .leaveReviewButton {
-    width: 80%;
-    height: 50px;
-    padding: 8px;
-    font-size: 16px;
   }
 
   .overallRating {
@@ -200,24 +169,13 @@
   }
 
   .ratingText {
-    font-size: 18px;
     margin-left: 8px;
   }
+}
 
-  .mainText {
-    font-size: 20px;
-  }
-
-  .reviewerName {
-    font-size: 16px;
-  }
-
-  .reviewText {
-    font-size: 16px;
-  }
-
-  .reviewRatingContainer {
-    font-size: 14px;
+@media screen and (max-width: 1024px) {
+  .ratingText {
+    margin-left: 10px;
   }
 }
 
@@ -226,11 +184,9 @@
     width: 75%;
     padding: 50px;
   }
-}
 
-@media screen and (max-width: 1024px) {
-  .rating {
-    font-size: 24px;
+  .mainText {
+    order: -1;
   }
 
   .overallRating {
@@ -238,25 +194,6 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-  }
-
-  .ratingText {
-    margin-left: 10px;
-  }
-
-  .mainText {
-    font-size: 24px;
-  }
-
-  .leaveReviewButton {
-    width: 30%;
-    height: 60px;
-    padding: 5px 10px;
-    font-size: 1rem;
-  }
-  
-  .reviewerName {
-    width: 100%;
   }
 }
 
@@ -267,30 +204,8 @@
     padding: 10px;
   }
 
-  .overallRating {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-  }
-
-  .rating {
-    font-size: 24px;
-  }
-
   .ratingText {
     margin-left: 10px;
-  }
-
-  .mainText {
-    font-size: 24px;
-  }
-
-  .leaveReviewButton {
-    width: 60%;
-    height: 60px;
-    padding: 5px 10px;
-    font-size: 1rem;
   }
 
   .reviewItem {
@@ -298,16 +213,10 @@
   }
 
   .reviewerName {
-    font-size: 18px;
     width: 100%;
   }
 
   .reviewRatingContainer {
-    font-size: 16px;
     width: 100%;
-  }
-
-  .reviewText {
-    font-size: 18px;
   }
 }

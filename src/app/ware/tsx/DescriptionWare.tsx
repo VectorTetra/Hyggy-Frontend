@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "../css/DescriptionWare.module.css";
 import { Product } from '../types/Product';
 
@@ -11,7 +10,7 @@ export default function DescriptionWare({ product }: { product: Product }) {
         <p className={styles.articleText}>Артикул: {product.articleNum}</p>
       </div>
       <div className={styles.descImage}>
-        <Image src={product.descriptionImage} alt={product.productName} layout="fill" />
+        <img src={product.descriptionImage} alt={product.descriptionImage} />
       </div>
     </div>
   );

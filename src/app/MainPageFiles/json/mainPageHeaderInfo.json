@@ -2,21 +2,24 @@
   "headerData": {
     "info": [
       {
+        "id": 1,
         "infoSale": "Розпродаж садового асортименту до -60%",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       },
       {
+        "id": 2,
         "infoSale": "Дні матраців та ковдр. Знижки до 60%",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       },
       {
+        "id": 3,
         "infoSale": "Чудова пропозиція для вашого дому. Знижки до 50%",
-        "urlpage": "https://jysk.ua/"
+        "urlpage": "../PageSale"
       }
     ],
     "hyggyLogo": {
-      "width": "150",
-      "height": "150",
+      "width": "110",
+      "height": "71",
       "url": "/images/AdminPanel/hyggyIcon.png"
     },
     "menuPhoto": {
@@ -35,7 +38,7 @@
     "favoritePhoto": {
       "width": "50",
       "height": "50",
-      "url": "/images/user.png"
+      "url": "/images/emptyHeart.png"
     },
     "basketPhoto": {
       "width": "50",
