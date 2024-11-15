@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "../css/FAQStyles.module.css";
+import Link from "next/link";
 
 export default function ContactSection(props) {
     return (
@@ -13,9 +14,9 @@ export default function ContactSection(props) {
                     <div key={index} className={styles.contactitem}>
                         <img src={item.urlImages} alt="Image" className={styles.contactimage} />
                         <div className={styles.contactcontent}>
-                            <a href={item.urlPage}>
+                            <Link href={item.urlPage}>
                                 <div className={styles.contentstyle} >{item.contentwork}</div>
-                            </a>
+                            </Link>
                             <div className={styles.textstyle} >{item.text}</div>
                             <hr className={styles.hr} ></hr>
                         </div>
@@ -30,9 +31,9 @@ export default function ContactSection(props) {
                         </div>
                     ))}
                     <div className={styles.shopgo}>
-                        <a href={props.faqPage.urlpage}>
+                        <Link href={props.faqPage.urlpage}>
                             <div className={styles.adaptivurl}>{props.faqPage.captionshop}</div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

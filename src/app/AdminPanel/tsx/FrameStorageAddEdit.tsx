@@ -22,7 +22,7 @@ import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-lea
 import { toast } from 'react-toastify';
 import { customIcon } from '../../shops/components/Map';
 
-const WarehouseAddEditFrame = () => {
+const FrameStorageAddEdit = () => {
 	const [address, setAddress] = useState('');
 	const [oldAddress, setOldAddress] = useState('');
 	const [AddressStreet, setAddressStreet] = useState('');
@@ -371,4 +371,4 @@ const CustomMapEvents = ({ onMapClick }: { onMapClick: (event: any) => void }) =
 	return null;
 };
 
-export default WarehouseAddEditFrame;
+export default FrameStorageAddEdit;

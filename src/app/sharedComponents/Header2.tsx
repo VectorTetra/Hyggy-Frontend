@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Header2 = () => {
@@ -6,8 +7,8 @@ const Header2 = () => {
       <div>
         <h1>Шапка 2</h1>
         <nav>
-          <a href="/">Головна</a>
-          <a href="/contact">Контакти</a>
+          <Link href="/">Головна</Link>
+          <Link href="/contact">Контакти</Link>
         </nav>
       </div>
     </header>

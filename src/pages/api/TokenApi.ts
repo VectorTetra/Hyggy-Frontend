@@ -75,6 +75,10 @@ export function getDecodedToken(): JwtPayload | null {
 	if (!token) {
 		return null;
 	}
+	if (validateToken().status !== 200) {
+		removeToken();
+		return null;
+	}
 
 	return jwtDecode<JwtPayload>(token);
 }

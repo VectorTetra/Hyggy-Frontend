@@ -33,7 +33,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
   };
 
   const deliveryPrice = selectedOption === 'delivery' ? 100 : 0;
-  const totalPrice = calculateTotalPrice() + deliveryPrice;
+  const totalPrice = Math.ceil(calculateTotalPrice() + deliveryPrice);
 
   return (
     <div className={styles.popupOverlay}>
@@ -47,7 +47,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
               <Image src={item.productImage} alt={item.productDescription} width={197} height={191} />
               <div>
                 <p>{item.productDescription}</p>
-                <p className={styles.price}>{item.price} грн</p>
+                <p className={styles.price}>{Math.round(Number(item.price))} грн</p>
                 <p className={styles.oldprice}>{item.oldPrice} грн</p>
                 <p className={styles.delete} onClick={() => {
                   onRemoveItem(cartItems.length - 1);

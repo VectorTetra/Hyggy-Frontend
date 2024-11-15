@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "../css/blogstyle.module.css";
+import Link from "next/link";
 
 export default function BlogBody(props) {
     return (
@@ -12,12 +13,12 @@ export default function BlogBody(props) {
                         <div className={styles.largeimage}>
                             {category.imagesHome.length > 0 && (
                                 <div className={styles.imagewrapper}>
-                                    <a href={category.imagesHome[0].urlPage || "#"}>
+                                    <Link href={category.imagesHome[0].urlPage || "#"}>
                                         <img src={category.imagesHome[0].urlImages} alt={category.imagesHome[0].caption} />
                                         {category.imagesHome[0].caption && (
                                             <p className={styles.imagecaption}>{category.imagesHome[0].caption}</p>
                                         )}
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
                         </div>
@@ -25,12 +26,12 @@ export default function BlogBody(props) {
                             {category.imagesHome.slice(1, 5).map((image, imgIndex) => (
                                 <div key={imgIndex}>
                                     <div className={styles.imagewrapper}>
-                                        <a href={image.urlPage || "#"}>
+                                        <Link href={image.urlPage || "#"}>
                                             <img src={image.urlImages} alt={image.caption} />
                                             {image.caption && (
                                                 <p className={styles.imagecaption}>{image.caption}</p>
                                             )}
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             ))}

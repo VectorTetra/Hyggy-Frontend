@@ -3,7 +3,6 @@ import MainPageHeader from '../MainPageFiles/jsx/jsx-Header/MainPageHeader.jsx';
 import headerData from '../MainPageFiles/json/mainPageHeaderInfo.json';
 
 const Header1 = () => {
-  console.log(headerData);
   return (
     <header>
       <MainPageHeader headerData={headerData.headerData} />

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
 
 export class BlogQueryParams {
 	SearchParameter: string = "Query";
@@ -24,7 +25,7 @@ export class BlogPostDTO {
 	BlogCategory2Id: number;
 	BlogTitle: string;
 	FilePath: string;
-	Keyword: string | null;
+	Keywords: string | null;
 	PreviewImagePath: string | null;
 }
 
@@ -33,13 +34,16 @@ export class BlogPutDTO {
 	BlogCategory2Id: number;
 	BlogTitle: string;
 	FilePath: string;
-	Keyword: string | null;
+	Keywords: string | null;
 	PreviewImagePath: string | null;
 }
 
 export class Blog {
 	id: number;
 	blogCategory2Id: number;
+	blogCategory1Id: number;
+	blogCategory2Name: string;
+	blogCategory1Name: string;
 	blogTitle: string;
 	keywords: string;
 	filePath: string;
@@ -94,6 +98,63 @@ export async function deleteBlog(id: number) {
 	} catch (error) {
 		console.error('Error deleting Blog:', error);
 		throw new Error('Failed to delete Blog');
+	}
+}
+
+export async function getJsonConstructorFile(filePath: string) {
+	try {
+		const response = await axios.get(`${filePath}?timestamp=${new Date().getTime()}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching JSON constructor file:', error);
+		throw new Error('Failed to fetch JSON constructor file');
+	}
+}
+
+export async function postJsonConstructorFile(structureArray: any[] | null) {
+
+	const jsonString = JSON.stringify(structureArray);
+	const formData = new FormData();
+	formData.append('JsonConstructorItems', jsonString);
+
+	try {
+		const response = await axios.post<string>("http://www.hyggy.somee.com/api/Blog/PostJsonConstructorFile", formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+
+		// Повертаємо дані відповіді
+		return response.data;
+	} catch (error) {
+		// Обробка помилки
+		toast.error("Error posting JSON constructor file:", error);
+		// Можна додати додаткову логіку для обробки помилок (наприклад, повідомлення користувачу)
+		throw new Error("Failed to post JSON constructor file");
+	}
+}
+
+export async function putJsonConstructorFile(structureArray: any[] | null, oldConstructorFilePath: string) {
+
+	const jsonString = JSON.stringify(structureArray);
+	const formData = new FormData();
+	formData.append('oldConstructorFilePath', oldConstructorFilePath);
+	formData.append('JsonConstructorItems', jsonString);
+
+	try {
+		const response = await axios.put<string>("http://www.hyggy.somee.com/api/Blog/PutJsonConstructorFile", formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+
+		// Повертаємо дані відповіді
+		return response.data;
+	} catch (error) {
+		// Обробка помилки
+		toast.error("Error posting JSON constructor file:", error);
+		// Можна додати додаткову логіку для обробки помилок (наприклад, повідомлення користувачу)
+		throw new Error("Failed to post JSON constructor file");
 	}
 }
 

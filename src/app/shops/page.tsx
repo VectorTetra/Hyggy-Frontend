@@ -6,6 +6,7 @@ import { getShops } from '@/pages/api/ShopApi';
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 export type Place = {
   id: number;
   photoUrl: string,
@@ -122,8 +123,10 @@ export default function Shops() {
 
   return (
     <Layout headerType='header1' pageMetadata={pageMetadata}>
+
       <div className="mt-16 mx-8 md:mx-24 lg:mx-24">
         <div className="flex justify-center">
+
           <h1 className="text-3xl">Знайти найближчий магазин</h1>
         </div>
         <div className="flex flex-wrap mt-10 gap-4">

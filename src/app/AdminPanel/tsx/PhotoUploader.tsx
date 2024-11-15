@@ -4,7 +4,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhotosDirty }) {
+function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhotosDirty, maxPhotos = 5, isStarPhotoAssigned = true }) {
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -20,8 +20,8 @@ function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhoto
     const handleFileChange = (event) => {
         const files = event.target.files;
         // Якщо кількість вибраних файлів більше 5 або їх сумарна кількість з уже завантаженими файлами
-        if (files && (photos.length + files.length) > 5) {
-            toast.warning("Ви можете завантажити не більше 5 фото товару.");
+        if (files && (photos.length + files.length) > maxPhotos) {
+            toast.warning(`Ви можете завантажити не більше ${maxPhotos} фото`);
             event.target.value = ""; // Скидаємо вибір файлів
         } else {
             UploadPhoto(event); // Викликаємо вашу функцію, якщо умова пройдена
@@ -47,6 +47,7 @@ function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhoto
                 >
                     <input
                         type="file"
+                        accept='image/*'
                         style={{ display: 'none' }}
                         onChange={handleFileChange}
                         multiple
@@ -60,51 +61,56 @@ function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhoto
 
             {photos && photos.length > 0 && (
                 <div>
-                    <div style={{ marginBottom: "10px", fontStyle: "italic", userSelect: "none" }}>Подвійне натискання на фото для видалення. Фото з зірочкою буде на обкладинці товару</div>
-                    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <SortableContext items={photos}>
-                            <div style={{ display: 'flex', gap: "15px", flexWrap: "wrap" }}>
-                                {photos.map((photo, index) => (
-                                    <SortablePhoto key={photo} id={photo} photo={photo} index={index} removePhoto={removePhoto} />
-                                ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
+                    <div>
+                        <div style={{ marginBottom: "10px", fontStyle: "italic", userSelect: "none" }}>
+                            Подвійне натискання на кнопку кошику для видалення. {isStarPhotoAssigned && "Фото з зірочкою буде на обкладинці"}
+                        </div>
+                        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext items={photos}>
+                                <div style={{ display: 'flex', gap: "15px", flexWrap: "wrap" }}>
+                                    {photos.map((photo, index) => (
+                                        <SortablePhoto key={photo} id={photo} photo={photo} index={index} removePhoto={removePhoto} isStarPhotoAssigned={isStarPhotoAssigned} />
+                                    ))}
+                                </div>
+                            </SortableContext>
+                        </DndContext>
+                    </div>
+                    {photos.length < maxPhotos && <label
+                        style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.25rem',
+                            border: '1px solid #e2e8f0',
+                            backgroundColor: 'transparent',
+                            borderRadius: '1rem',
+                            fontSize: '1.25rem',
+                            color: '#718096',
+                            marginTop: '1rem'
+                        }}
+                    >
+                        <input
+                            type="file"
+                            accept='image/*'
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                            multiple
+                        />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '2rem', height: '2rem' }}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                        </svg>
+                        Довантажити фото
+                    </label>}
                 </div>
             )}
 
             {/* Кнопка для додавання нових фото */}
-            <label
-                style={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.25rem',
-                    border: '1px solid #e2e8f0',
-                    backgroundColor: 'transparent',
-                    borderRadius: '1rem',
-                    fontSize: '1.25rem',
-                    color: '#718096',
-                    marginTop: '1rem'
-                }}
-            >
-                <input
-                    type="file"
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                    multiple
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '2rem', height: '2rem' }}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
-                </svg>
-                Довантажити фото
-            </label>
         </div>
     );
 }
 
-function SortablePhoto({ id, photo, removePhoto, index }) {
+function SortablePhoto({ id, photo, removePhoto, index, isStarPhotoAssigned }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
     const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
@@ -120,7 +126,7 @@ function SortablePhoto({ id, photo, removePhoto, index }) {
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            {index === 0 && <button
+            {index === 0 && isStarPhotoAssigned && <button
                 style={{
                     cursor: 'pointer',
                     position: 'absolute',

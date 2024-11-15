@@ -6,7 +6,8 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Place } from '../page';
+import { getShops, useShops } from '@/pages/api/ShopApi';
+
 // // Налаштування іконок для маркерів
 export const customIcon = new L.Icon({
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -17,18 +18,58 @@ export const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+export type Place = {
+  id: number;
+  photoUrl: string,
+  name: string;
+  street: string;
+  houseNumber: string;
+  addressId: number,
+  storageId: number,
+  orderIds: number[],
+  shopEmployeeIds: number[],
+  postalCode: string;
+  city: string;
+  state: string;
+  workHours: string;
+  latitude: number;
+  longitude: number;
+  executedOrdersSum: number;
+};
 
-export const Map = ({ places }: { places: Place[] }) => {
-  const [selectedPlace, setSelectedPlace] = useState<Place | undefined>(undefined);
-  const router = useRouter();
-  const handleMarkerClick = (place: Place) => {
-    sessionStorage.setItem('shop', JSON.stringify(place));
+export
+  const Map = () => {
 
-    router.push('/shop');
-  }
-  useEffect(() => {
-    if (places.length === 1) {
-      handleMarkerClick(places[0]);
+    //const [places, setPlaces] = useState<Place[]>([]);
+    const { data: places = [] } = useShops({ SearchParameter: "Query", PageNumber: 1, PageSize: 150 });
+    // useEffect(() => {
+    //   const fetchShops = async () => {
+    //     try {
+    //       const data = await getShops({
+    //         SearchParameter: "Query",
+    //         PageNumber: 1,
+    //         PageSize: 150
+    //       }); // Передай параметри, якщо необхідно
+    //       setPlaces(data);
+    //       console.log(data);
+    //     } catch (error) {
+    //       console.error('Error fetching shops:', error);
+    //     }
+    //   };
+
+    //   fetchShops();
+    // }, []);
+
+    // const [position, setPosition] = useState({
+    //   lat: places[0].latitude,
+    //   lon: places[0].longitude,
+    // });
+
+    const router = useRouter();
+    const handleMarkerClick = (place: Place) => {
+      console.log(place.photoUrl);
+      sessionStorage.setItem('shop', JSON.stringify(place));
+      router.push('/shop');
     }
   }, [places.length])
   return (

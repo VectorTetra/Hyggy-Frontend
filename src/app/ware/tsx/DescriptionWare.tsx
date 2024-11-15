@@ -1,16 +1,16 @@
 import styles from "../css/DescriptionWare.module.css";
-import { Product } from '../types/Product';
 
-
-export default function DescriptionWare({ product }: { product: Product }) {
+export default function DescriptionWare({ article, description }: { article: number, description: string | null }) {
   return (
     <div className={styles.descriptionContainer}>
+      <h2 className={styles.title}>Опис</h2>
       <div className={styles.textContainer}>
-        <p className={styles.descriptionText}>{product.descriptionText}</p>
-        <p className={styles.articleText}>Артикул: {product.articleNum}</p>
-      </div>
-      <div className={styles.descImage}>
-        <img src={product.descriptionImage} alt={product.descriptionImage} />
+        {description && (
+          <div
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        )}
+        <p className={styles.articleText}>Артикул: {article}</p>
       </div>
     </div>
   );
