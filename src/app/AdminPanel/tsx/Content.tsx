@@ -1,12 +1,13 @@
 import { lazy, Suspense } from 'react';
 import { Box, Collapse, CircularProgress, CssBaseline, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, Button } from '@mui/material';
-const WarehouseFrame = lazy(() => import('./FrameWarehouse'));
+const FrameStorage = lazy(() => import('./FrameStorage'));
 const AllShops = lazy(() => import('./AllShops'));
 const NewShop = lazy(() => import('./NewShop'));
-const WarehouseAddEditFrame = lazy(() => import('./FrameWarehouseAddEdit'));
+const FrameStorageAddEdit = lazy(() => import('./FrameStorageAddEdit'));
 const FrameWare = lazy(() => import('./FrameWare'));
 const WareAddEditFrame = lazy(() => import('./FrameWareAddEdit'));
-const Blog = lazy(() => import('./Blog'));
+const FrameBlog = lazy(() => import('./FrameBlog'));
+const FrameBlogAddEdit = lazy(() => import('./FrameBlogAddEdit'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 
 import Clients from './Clients';
@@ -29,8 +30,8 @@ export default function Content() {
 			<Suspense fallback={<CircularProgress />}>
 				{activeTab === 'products' && <FrameWare />}
 				{activeTab === 'addEditWare' && <WareAddEditFrame />}
-				{activeTab === 'warehousesList' && <WarehouseFrame />}
-				{activeTab === 'addEditWarehouse' && <WarehouseAddEditFrame />}
+				{activeTab === 'warehousesList' && <FrameStorage />}
+				{activeTab === 'addEditWarehouse' && <FrameStorageAddEdit />}
 				{activeTab === 'remains' && <div>Залишки</div>}
 				{activeTab === 'supplies' && <div>Поставки</div>}
 				{activeTab === 'transfers' && <div>Переміщення</div>}
@@ -40,7 +41,8 @@ export default function Content() {
 				{activeTab === 'employees' && <div>Співробітники</div>}
 				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
-				{activeTab === 'blog' && <Blog />}
+				{activeTab === 'blog' && <FrameBlog />}
+				{activeTab === 'addEditBlog' && <FrameBlogAddEdit />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
 			</Suspense>
 		</Box>)

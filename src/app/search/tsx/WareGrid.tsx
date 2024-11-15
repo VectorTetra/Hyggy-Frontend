@@ -8,10 +8,12 @@ import { ShopGetDTO } from "@/pages/api/ShopApi";
 import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { getDecodedToken } from "@/pages/api/TokenApi";
 import useQueryStore from "@/store/query";
+import useLocalStorageStore from "@/store/localStorage";
 
 export default function WareGrid(props: any) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+  //const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+  const { selectedShop, setSelectedShop } = useLocalStorageStore();
   let [customer, setCustomer] = useState<Customer | null>(null);
   const { RefetchFavoriteWares, setRefetchFavoriteWares } = useQueryStore();
   const { mutateAsync: updateCustomer } = useUpdateCustomer();
@@ -20,12 +22,7 @@ export default function WareGrid(props: any) {
     Id: getDecodedToken()?.nameid
   });
 
-  useEffect(() => {
-    const savedShop = localStorage.getItem("selectedShop");
-    if (savedShop) {
-      setSelectedShop(JSON.parse(savedShop));
-    }
-  }, []);
+
   useEffect(() => {
     if (RefetchFavoriteWares) {
       refetch();  // Перезапуск запиту при зміні RefetchFavoriteWares

@@ -7,13 +7,17 @@ interface AdminPanelState {
 	setActiveTab: (tab: string) => void;
 	warehouseId: number | null;
 	setWarehouseId: (id: number | null) => void;
+	blogId: number | null;
+	setBlogId: (id: number | null) => void;
 }
 
 const useAdminPanelStore = create<AdminPanelState>((set) => ({
 	activeTab: null, // Вибрана вкладка, за замовчуванням немає вибраної
 	setActiveTab: (tab) => set({ activeTab: tab }),
-	warehouseId: null, // Вибрана вкладка, за замовчуванням немає вибраної
+	warehouseId: null,
 	setWarehouseId: (id) => set({ warehouseId: id }),
+	blogId: null,
+	setBlogId: (id) => set({ blogId: id }),
 }));
 
 export default useAdminPanelStore;

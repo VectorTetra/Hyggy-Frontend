@@ -16,7 +16,7 @@ import {
   addToCart,
   removeFromCart
 } from '../../cart/types/Cart';
-import { getJsonConstructorFile, useWares, Ware } from '@/pages/api/WareApi';
+import { getJsonConstructorFile, getWares, useWares, Ware } from '@/pages/api/WareApi';
 import { getDecodedToken } from '@/pages/api/TokenApi';
 import FavoriteButton from '../tsx/FavoriteButton';
 import { Customer, useCustomers, useUpdateCustomer } from '@/pages/api/CustomerApi';
@@ -27,6 +27,11 @@ import ProductImageGallery from '../tsx/ProductImageGallery';
 import DeliveryOptions from '../tsx/DeliveryOptions';
 import QuantitySelector from '../tsx/QuantitySelector';
 import axios from 'axios';
+import useWarePageMenuShops from '@/store/warePageMenuShops';
+import BlockShopsByWare from '@/app/sharedComponents/BlockShopsByWare';
+import { useWareItems } from '@/pages/api/WareItemApi';
+import useLocalStorageStore from '@/store/localStorage';
+
 
 interface CartItem {
   productDescription: string;
@@ -43,7 +48,6 @@ export default function WarePage() {
   const params = useParams<{ id: string }>();
   const id = Number(params?.id);
   const { setRefetchFavoriteWares } = useQueryStore();
-  console.log("id:", id);
   let [customer, setCustomer] = useState<Customer | null>(null);
   const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
     SearchParameter: "Query",
@@ -58,6 +62,7 @@ export default function WarePage() {
     SearchParameter: "Query",
     Id: id
   });
+
   const [product, setProduct] = useState<Ware | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
@@ -69,6 +74,8 @@ export default function WarePage() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [wareDetails, setWareDetails] = useState<string | null>(null);
   const [wareProperties, setWareProperties] = useState<any[] | null>(null);
+  const { isWarePageMenuShopsOpened, setIsWarePageMenuShopsOpened } = useWarePageMenuShops();
+  const { selectedShop } = useLocalStorageStore();
 
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
@@ -253,19 +260,18 @@ export default function WarePage() {
             <hr className={styles.customHr} />
             <DeliveryOptions selectedOption={selectedOption} isDeliveryAvailable={product.isDeliveryAvailable} storeCount={product.wareItems.filter(wi => wi.quantity > 0).length} onSelectOption={setSelectedOption} />
             <span className={styles.actions}>
-              {/* <span className={styles.quantityContainer}>
-                <button className={styles.quantityButton} onClick={decreaseQuantity}>-</button>
-                <input
-                  type="text"
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className={styles.quantityInput}
-                />
-                <button className={styles.quantityButton} onClick={increaseQuantity}>+</button>
-              </span> */}
               <QuantitySelector initialQuantity={quantity} onQuantityChange={setQuantity} />
-              <button className={styles.addToCartButton} onClick={handleAddToCart}>Додати до кошика</button>
+              <button disabled={product.wareItems.every(wi => wi.quantity === 0)}
+                style={{
+                  cursor: product.wareItems.every(wi => wi.quantity === 0) ? 'not-allowed' : 'pointer',
+                  opacity: product.wareItems.every(wi => wi.quantity === 0) ? 0.5 : 1
+                }}
+
+                className={styles.addToCartButton} onClick={selectedShop === null ? () => setIsWarePageMenuShopsOpened(true) : handleAddToCart}>
+                {product.wareItems.every(wi => wi.quantity === 0) ? "Немає в наявності" : "Додати до кошика"}
+              </button>
             </span>
+            {isWarePageMenuShopsOpened && <BlockShopsByWare wareId={id} />}
             {showPopup && (
               <CartPopup
                 cartItems={cartItems}

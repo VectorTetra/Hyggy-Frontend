@@ -20,7 +20,7 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 //import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
-import Blog from './Blog';
+import Blog from './FrameBlog';
 import { removeToken } from '@/pages/api/TokenApi';
 import Link from 'next/link';
 

@@ -5,6 +5,7 @@ import styles from "./css/mainblockmenu.module.css";
 import blockData from "./json/blockmenu.json";
 import useMainPageMenuStore from "@/store/mainPageMenu";
 import { useWareCategories1 } from "@/pages/api/WareCategory1Api";
+import { CircularProgress } from "@mui/material";
 const adaptCategories = (data) => {
     return data.map((category) => ({
         caption: category.name,
@@ -17,9 +18,15 @@ const adaptCategories = (data) => {
         })),
     }));
 };
-export default function BlockMenu({ foundWareCategories }) {
+export default function BlockMenu() {
     const [history, setHistory] = useState([]); // История для возврата на предыдущие уровни
-
+    const { data: foundWareCategories = [], isLoading: isWareCategories1Loading } = useWareCategories1({
+        SearchParameter: "Query",
+        //QueryAny: query,
+        PageNumber: 1,
+        PageSize: 1000,
+        Sorting: "NameAsc"
+    });
     const [currentMenu, setCurrentMenu] = useState(adaptCategories(foundWareCategories));
     const [currentCategory, setCurrentCategory] = useState(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
@@ -46,34 +53,56 @@ export default function BlockMenu({ foundWareCategories }) {
         }
     };
 
+    // useEffect(() => {
+    //     if (isMainPageMenuOpened) {
+    //         document.body.style.overflow = "hidden";
+    //     } else {
+    //         document.body.style.overflow = "";
+
+    //     }
+    //     return () => {
+    //         document.body.style.overflow = "";
+    //     };
+    // }, [isMainPageMenuOpened]);
+    // // Закрытие меню при клике вне его области
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (menuRef.current && !menuRef.current.contains(event.target)) {
+    //             setIsMainPageMenuOpened(false);
+    //         }
+    //     };
+
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [setIsMainPageMenuOpened]);
+
+    useEffect(() => {
+        if (!isWareCategories1Loading) {
+            const adaptedCategories = adaptCategories(foundWareCategories);
+            setCurrentMenu(adaptedCategories); // Оновлення меню після завантаження
+        }
+    }, [foundWareCategories, isWareCategories1Loading]);
+
     useEffect(() => {
         if (isMainPageMenuOpened) {
             document.body.style.overflow = "hidden";
+            if (!isWareCategories1Loading && foundWareCategories.length > 0) {
+                setCurrentMenu(adaptCategories(foundWareCategories)); // Оновлення меню при відкритті
+            }
         } else {
             document.body.style.overflow = "";
-
         }
         return () => {
             document.body.style.overflow = "";
         };
-    }, [isMainPageMenuOpened]);
-    // Закрытие меню при клике вне его области
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setIsMainPageMenuOpened(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [setIsMainPageMenuOpened]);
+    }, [isMainPageMenuOpened, foundWareCategories, isWareCategories1Loading]);
 
     return (
         <div className={styles.overlay}>
-            <div ref={menuRef} className={`${styles.menuContainer} ${currentMenu.length ? styles.show : ''}`}>
+            {isWareCategories1Loading && <CircularProgress></CircularProgress>}
+            {!isWareCategories1Loading && <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                 <div className={styles.menuHeader}>
                     {history.length === 0 ? (
                         <>
@@ -122,7 +151,7 @@ export default function BlockMenu({ foundWareCategories }) {
                         </li>
                     ))}
                 </ul>
-            </div>
+            </div>}
         </div>
     );
 }

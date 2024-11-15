@@ -29,10 +29,10 @@ export default function Login() {
 			if (response.isAuthSuccessfull) {
 				router.push('/AdminPanel');
 				toast.success('Ви успішно увійшли в систему!');
-				const decodedToken = getDecodedToken();
-				if (decodedToken) {
-					toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
-				}
+				// const decodedToken = getDecodedToken();
+				// if (decodedToken) {
+				// 	toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
+				// }
 			}
 		});
 	};

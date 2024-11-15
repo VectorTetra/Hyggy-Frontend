@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import React from 'react';
-import { Inter } from "next/font/google";
+import { Raleway } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Head from 'next/head';
 import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-const inter = Inter({ subsets: ["latin"] });
+const raleway = Raleway({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "HYGGY Все для дому",
@@ -30,7 +30,7 @@ export default function RootLayout({
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
-      <body className={inter.className}>
+      <body className={raleway.className} style={{ backgroundColor: "#f3f3f3" }}>
         <QueryClientWrapper>
           {children}
         </QueryClientWrapper>

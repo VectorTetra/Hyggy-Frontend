@@ -190,14 +190,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./css/MenuShops.module.css";
-//import blockShops from "./json/menushops.json";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import Link from "next/link";
+import useLocalStorageStore from "@/store/localStorage";
 
 export default function BlockShops() {
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+    const { selectedShop, setSelectedShop } = useLocalStorageStore();
     const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -205,23 +205,14 @@ export default function BlockShops() {
     const { data: shops, isLoading } = useShops({
         SearchParameter: "Query",
         PageNumber: 1,
-        PageSize: 1000
+        PageSize: 1000,
     });
-
-    // Перевірка локального хранилища на наявність вибраного магазину
-    useEffect(() => {
-        const savedShop = localStorage.getItem("selectedShop");
-        if (savedShop) {
-            setSelectedShop(JSON.parse(savedShop));
-        }
-    }, []);
 
     useEffect(() => {
         if (isMainPageMenuShopsOpened) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
-
         }
         return () => {
             document.body.style.overflow = "";
@@ -234,7 +225,7 @@ export default function BlockShops() {
 
     const handleShopClick = (shop: ShopGetDTO) => {
         setSelectedShop(shop);
-        localStorage.setItem("selectedShop", JSON.stringify(shop));
+        dispatchEvent(new Event("shopSelected"));
         setIsMainPageMenuShopsOpened(false);
     };
 
@@ -248,20 +239,14 @@ export default function BlockShops() {
         const currentDate = new Date();
         const currentDay = currentDate.toLocaleString("uk-UA", { weekday: "long" });
         const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
-        //console.log("currentDay", currentDay);
-        //console.log("currentTime", currentTime);
 
-        // Розбиваємо `workHours` на окремі записи за кожен день
         const workHoursArray = workHours.split("|").map((day) => {
             const [dayweek, hours] = day.split(",");
             const [open, close] = hours.split(" - ");
             return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
         });
-        //console.log("workHoursArray", workHoursArray);
 
-        // Знаходимо сьогоднішні години роботи
         const todayWorktime = workHoursArray.find((time) => time.dayweek.toLocaleLowerCase() === currentDay.toLocaleLowerCase());
-        //console.log("todayWorktime", todayWorktime);
         if (todayWorktime) {
             const [openHour, openMinute] = todayWorktime.open.split(":").map(Number);
             const [closeHour, closeMinute] = todayWorktime.close.split(":").map(Number);
@@ -287,25 +272,23 @@ export default function BlockShops() {
         return "Час роботи не доступний";
     };
 
-
-    const ShopStatus = ({ shop }) => {
+    const ShopStatus = ({ shop }: { shop: ShopGetDTO }) => {
         const [isOpen, setIsOpen] = useState(false);
 
         const toggleWorkHours = () => {
             setIsOpen(!isOpen);
         };
 
-        // Розбираємо рядок workHours на масив об'єктів для відображення
-        const parsedWorkHours = shop.workHours.split("|").map((day) => {
+        const parsedWorkHours = shop.workHours ? shop.workHours.split("|").map((day) => {
             const [dayweek, hours] = day.split(",");
             const [open, close] = hours.split(" - ");
             return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
-        });
+        }) : [];
 
         return (
             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                    <div>{checkShopStatus(shop.workHours)}</div>
+                    <div>{shop.workHours ? checkShopStatus(shop.workHours) : "Час роботи не доступний"}</div>
                     <span
                         onClick={toggleWorkHours}
                         style={{
@@ -386,7 +369,10 @@ export default function BlockShops() {
                         {isLoading ? (
                             <p>Завантаження...</p>
                         ) : (
-                            shops?.map((shop, index) => (
+                            shops?.filter((shop) =>
+                                shop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                shop.address?.toLowerCase().includes(searchTerm.toLowerCase())
+                            ).map((shop, index) => (
                                 <div key={index} className={styles.card}>
                                     <div className={styles.shopcard}>
                                         <div className={styles.shopInfo}>
@@ -406,5 +392,6 @@ export default function BlockShops() {
         </>
     );
 }
+
 
 

@@ -8,7 +8,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getShops } from '@/pages/api/ShopApi';
+import { getShops, useShops } from '@/pages/api/ShopApi';
 
 // // Налаштування іконок для маркерів
 export const customIcon = new L.Icon({
@@ -41,75 +41,25 @@ export type Place = {
 export
   const Map = () => {
 
-    const [places, setPlaces] = useState<Place[]>([
-      // {
-      //   id: "1",
-      //   photoUrl: "/images/Shops/OdessaHyggy.png",
-      //   name: "Hyggy Odessa",
-      //   address: "вул. Харківська 2/2",
-      //   postalCode: "40024",
-      //   city: "Odessa",
-      //   phoneNumber: " +380442470786",
-      //   workHours: ["10:00 - 20:00", "10:00 - 20:00"],
-      //   latitude: 46.482526, 
-      //   longitude: 30.7233095,
-      // },
-      // {
-      //   id: "2",
-      //   photoUrl: "/images/Shops/HyggyЮжне.png",
-      //   name: "Hyggy Odessa",
-      //   address: "вул. Харківська 2/2",
-      //   postalCode: "40024",
-      //   city: "Odessa",
-      //   phoneNumber: " +380442470786",
-      //   workHours: ["10:00 - 20:00", "10:00 - 20:00"],
-      //   latitude: 46.482526, 
-      //   longitude: 30.8233095,
-      // },
-      // {
-      //   id: "3",
-      //   photoUrl: "/images/Shops/JYSK Миколаїв.png",
-      //   name: "Hyggy Mykolaiv",
-      //   address: "вул. Харківська 2/2",
-      //   postalCode: "40024",
-      //   city: "Odessa",
-      //   phoneNumber: " +380442470786",
-      //   workHours: ["10:00 - 20:00", "10:00 - 20:00"],
-      //   latitude: 46.96591, 
-      //   longitude: 31.9974
-      // },
-      // {
-      //   id: "4",
-      //   photoUrl: "/images/Shops/Магазин,Суми.png",
-      //   name: "Hyggy Kharkiv",
-      //   address: "вул. Харківська 2/2",
-      //   postalCode: "40024",
-      //   city: "Odessa",
-      //   phoneNumber: " +380442470786",
-      //   workHours: ["10:00 - 20:00", "10:00 - 20:00"],
-      //   latitude: 49.988358, 
-      //   longitude: 36.232845
-      // },
+    //const [places, setPlaces] = useState<Place[]>([]);
+    const { data: places = [] } = useShops({ SearchParameter: "Query", PageNumber: 1, PageSize: 150 });
+    // useEffect(() => {
+    //   const fetchShops = async () => {
+    //     try {
+    //       const data = await getShops({
+    //         SearchParameter: "Query",
+    //         PageNumber: 1,
+    //         PageSize: 150
+    //       }); // Передай параметри, якщо необхідно
+    //       setPlaces(data);
+    //       console.log(data);
+    //     } catch (error) {
+    //       console.error('Error fetching shops:', error);
+    //     }
+    //   };
 
-    ]);
-
-    useEffect(() => {
-      const fetchShops = async () => {
-        try {
-          const data = await getShops({
-            SearchParameter: "Query",
-            PageNumber: 1,
-            PageSize: 150
-          }); // Передай параметри, якщо необхідно
-          setPlaces(data);
-          console.log(data);
-        } catch (error) {
-          console.error('Error fetching shops:', error);
-        }
-      };
-
-      fetchShops();
-    }, []);
+    //   fetchShops();
+    // }, []);
 
     // const [position, setPosition] = useState({
     //   lat: places[0].latitude,
@@ -120,7 +70,6 @@ export
     const handleMarkerClick = (place: Place) => {
       console.log(place.photoUrl);
       sessionStorage.setItem('shop', JSON.stringify(place));
-
       router.push('/shop');
     }
     const [selectedPlace, setSelectedPlace] = useState<Place | undefined>(undefined);

@@ -8,7 +8,7 @@ export default function BlockArticle({ blocks }) {
 					return (
 						<div key={index} className={styles.wideTextArticle}>
 							{block.textContent.map((textBlock: any, index: any) => (
-								<div className={styles.wideTextArticleItem}>
+								<div className={`${textBlock.type === "headerText" ? styles.wideTextArticleItemForHeader : styles.wideTextArticleItem}`}>
 									{textBlock.type === "headerText" && <h1 key={index}>{textBlock.text}</h1>}
 									{textBlock.type === "paragraph" && <p key={index}>{textBlock.text}</p>}
 								</div>

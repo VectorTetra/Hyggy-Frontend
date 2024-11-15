@@ -13,7 +13,7 @@ import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
 //import { useQueryClient } from 'react-query';
 
-export default function WarehouseFrame() {
+export default function FrameStorage() {
 	const { mutate: deleteStorage } = useDeleteStorage();
 	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({

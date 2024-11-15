@@ -53,6 +53,7 @@
     "react-slick": "^0.30.2",
     "react-slider": "^2.0.6",
     "react-toastify": "^10.0.6",
+    "react-use": "^17.5.1",
     "slick-carousel": "^1.8.1",
     "typo-js": "^1.2.4",
     "use-debounce": "^10.0.4",

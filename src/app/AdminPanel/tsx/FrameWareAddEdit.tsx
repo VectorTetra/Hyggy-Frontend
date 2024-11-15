@@ -4,7 +4,7 @@ import { useCreateWare, useUpdateWare, getWares, postJsonConstructorFile, putJso
 import { toast } from 'react-toastify';
 import { useQueryState } from 'nuqs';
 import { getWareCategories3, useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import InvoiceForm from './InvoiceForm';
+import InvoiceForm from './FrameWareInvoiceForm';
 import { useSearchParams } from 'next/navigation';
 import useInvoiceStore from '@/store/invoiceStore';
 import { uploadPhotos, getPhotoByUrlAndDelete } from '@/pages/api/ImageApi';
@@ -94,6 +94,10 @@ export default function WareAddEditFrame() {
                         // Обробка властивостей товару
                         const propertiesItem = response.find((item: any) => item.type === "properties");
                         setRows(propertiesItem && propertiesItem.value ? propertiesItem.value : []);
+                    }
+                    else {
+                        clearRows();
+                        setWareDetails("");
                     }
                 }
 
