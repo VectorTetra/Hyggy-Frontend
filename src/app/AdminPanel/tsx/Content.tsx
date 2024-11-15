@@ -12,6 +12,10 @@ import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 
 import Clients from './Clients';
 
+import ShopEmployees from './Employees/ShopEmployees';
+import NewShopEmployee from './Employees/NewShopEmployee';
+import StorageEmployees from './Employees/StorageEmployees';
+import NewStorageEmployee from './Employees/NewStorageEmployee';
 
 const drawerWidth = 240;
 
@@ -38,7 +42,10 @@ export default function Content() {
 				{activeTab === 'writeOffs' && <div>Списання</div>}
 				{activeTab === 'stores' && <AllShops />}
 				{activeTab === 'addNewShop' && <NewShop />}
-				{activeTab === 'employees' && <div>Співробітники</div>}
+				{activeTab === 'shopEmployees' && <ShopEmployees />}
+				{activeTab === 'addShopEmployee' && <NewShopEmployee />}
+				{activeTab === 'storageEmployees' && <StorageEmployees />}
+				{activeTab === 'addStorageEmployee' && <NewStorageEmployee />}
 				{activeTab === 'clients' && <Clients />}
 				{activeTab === 'orders' && <div>Замовлення</div>}
 				{activeTab === 'blog' && <FrameBlog />}

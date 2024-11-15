@@ -1,52 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, circularProgressClasses, TextField, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { getCustomers, deleteCustomer } from '@/pages/api/ClientApi';
+import { getShopEmployees, deleteShopEmployee } from '@/pages/api/EmployeesApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 
-type Customer = {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    executedOrderSum: number;
-    executedOrdersAvg: number;
-}
 
-const Clients = () => {
+const ShopEmployees = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
     const [data, setData] = useState<any | null>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
-
+    const [activeNewShopEmployee, setActiveNewShopEmployee] = useQueryState("shopemployee", { scroll: false, history: "push", shallow: true });
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const apiRef = useGridApiRef();
 
     useEffect(() => {
-        const fetchCustomers = async () => {
+        const fetchEmployees = async () => {
             try {
-                const customers = await getCustomers({
-                    SearchParameter: "Query",
-                    PageNumber: 1,
-                    PageSize: 150
-                });
-                if (!customers) {
+                const employees = await getShopEmployees();
+                if (!employees) {
                     console.log('Користувачів не знайдено');
                     return;
                 }
-                setData(customers);
+                console.log(employees);
+                setData(employees);
             } catch (error) {
                 console.error('Error fetching storage data:', error);
             } finally {
                 setLoading(false);
+                setActiveNewShopEmployee(null);
             }
         };
 
-        fetchCustomers();
+        fetchEmployees();
     }, []);
     // Фільтрація даних на основі швидкого пошуку
     const filteredData = data.filter((row) =>
@@ -65,11 +55,11 @@ const Clients = () => {
     const handleConfirmDelete = async () => {
         if (selectedRow) {
             console.log("selectedRow", selectedRow);
-            await deleteCustomer(selectedRow.id);
+            await deleteShopEmployee(selectedRow.id);
             setIsDialogOpen(false);
 
             setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
-            toast.info('Користувача успішно видалено!');
+            toast.info('Співробітника успішно видалено!');
         }
     };
     const columns = [
@@ -78,20 +68,6 @@ const Clients = () => {
         { field: 'surname', headerName: 'Прізвище', flex: 1, minWidth: 150 },
         { field: 'email', headerName: 'Пошта', flex: 0.8, minWidth: 150 },
         { field: 'phone', headerName: 'Телефон', flex: 1, minWidth: 150 },
-        {
-            field: 'executedOrdersSum',
-            headerName: 'Заг. сума замовлень',
-            flex: 0.5,
-            cellClassName: 'text-right',
-            renderCell: (params) => formatCurrency(params.value),
-        },
-        {
-            field: 'executedOrdersAvg',
-            headerName: 'Середня сума замовлень',
-            flex: 0.5,
-            cellClassName: 'text-right',
-            renderCell: (params) => formatCurrency(params.value),
-        },
         {
             field: 'actions',
             headerName: 'Дії',
@@ -107,17 +83,11 @@ const Clients = () => {
             ),
         },
     ];
-    // Функція для форматування значення
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
 
     return (
         <Box sx={{ width: '100%' }}>
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                Користувачі
+                Співробітники магазинів
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
                 <TextField
@@ -127,6 +97,9 @@ const Clients = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
                 />
+                <Button variant="contained" color="primary" onClick={() => { setActiveNewShopEmployee('0'); setActiveTab('addShopEmployee') }}>
+                    Додати
+                </Button>
             </Box>
             <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
                 <DataGrid
@@ -174,7 +147,7 @@ const Clients = () => {
                         toolbarExportLabel: 'Експорт',
                         toolbarExportCSV: 'Завантажити як CSV',
                         toolbarExportPrint: 'Друк',
-                        noRowsLabel: 'Користувачів не знайдено',
+                        noRowsLabel: 'Співробітників не знайдено',
                         noResultsOverlayLabel: 'Результатів не знайдено',
                         footerRowSelected: (count) => `Вибрано рядків: ${count}`,
                         MuiTablePagination: {
@@ -184,10 +157,10 @@ const Clients = () => {
                 />
             </Box>
             <ConfirmationDialog
-                title="Видалити користувача?"
+                title="Видалити співробітника?"
                 contentText={
                     selectedRow
-                        ? `Ви справді хочете видалити цього користувача? : 
+                        ? `Ви справді хочете видалити цього співробітника? : 
             ${selectedRow.name && `${selectedRow.name} `} 
             ${selectedRow.surname && `${selectedRow.surname},`} 
                     ${selectedRow.email && `${selectedRow.email},`} `
@@ -205,4 +178,4 @@ const Clients = () => {
     )
 }
 
-export default Clients
+export default ShopEmployees

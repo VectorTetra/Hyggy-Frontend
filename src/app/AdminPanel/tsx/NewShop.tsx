@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { getStorages } from '@/pages/api/StorageApi';
-import { postShop, putShop } from '@/pages/api/ShopApi';
+import { postShop, putShop, getShops } from '@/pages/api/ShopApi';
 import { uploadPhotos, getPhotoByUrlAndDelete } from '@/pages/api/ImageApi';
-import Uploader from './Uploader'
-import Image from 'next/image'
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { Box } from '@mui/system';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { map } from 'lodash';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { toast } from 'react-toastify';
-import { ConstructionOutlined } from '@mui/icons-material';
-import { getShops } from '@/pages/api/ShopApi';
 import { useSearchParams } from 'next/navigation';
 
 type Storage = {
@@ -263,7 +258,7 @@ export default function NewShop() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col max-w-sm mx-auto  gap-4">
       <div>
-        <label className="text-xs text-gray-600 font-bold uppercase block mt-6 mb-1" htmlFor="title">Назва магазину:</label>
+        <label className="form-label" htmlFor="title">Назва магазину:</label>
         <input
           id="title"
           name="title"
@@ -272,9 +267,9 @@ export default function NewShop() {
           onChange={e => setName(e.target.value)}
           placeholder="Назва магазину"
           className="w-full border p-2 rounded" />
-        <label className="text-xs text-gray-600 font-bold uppercase block mt-6 mb-1" htmlFor="storage">Адреса магазина:</label>
+        <label className="form-label" htmlFor="storage">Адреса магазина:</label>
         {currentAddress &&
-          <label className="text-xs text-gray-400 font-semibold uppercase block mt-6 mb-1" htmlFor="storage">Поточна адреса: {currentAddress}</label>
+          <label className="form-label" htmlFor="storage">Поточна адреса: {currentAddress}</label>
         }
         <select
           name="storage"
@@ -289,7 +284,7 @@ export default function NewShop() {
         </select>
       </div>
       <div>
-        <label className="text-xs text-gray-600 font-bold uppercase block mt-6 mb-1" htmlFor="storage">Робочі години:</label>
+        <label className="form-label" htmlFor="storage">Робочі години:</label>
         <div className='flex gap-2 items-center justify-center'>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box sx={{

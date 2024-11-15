@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from 'react'
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, MapContainerProps } from "react-leaflet";
@@ -19,6 +17,7 @@ export const customIcon = new L.Icon({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
   shadowSize: [41, 41],
 });
+
 export type Place = {
   id: number;
   photoUrl: string,
@@ -72,21 +71,22 @@ export
       sessionStorage.setItem('shop', JSON.stringify(place));
       router.push('/shop');
     }
-    const [selectedPlace, setSelectedPlace] = useState<Place | undefined>(undefined);
-    return (
-      <MapContainer
-        center={[50.4546600, 30.5238000]} // Центр карти
-        zoom={5.5}
-        style={{ width: "100%", height: "100%" }} // Розмір контейнера для карти
-        maxZoom={18}
-      >
-        {/* Використання OpenStreetMap як джерела тайлів */}
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
+  }, [places.length])
+  return (
+    <MapContainer
+      center={[50.4546600, 30.5238000]} // Центр карти
+      zoom={5.5}
+      style={{ width: "100%", height: "100%" }} // Розмір контейнера для карти
+      maxZoom={18}
+    >
+      {/* Використання OpenStreetMap як джерела тайлів */}
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
 
-        {/* Маркери для всіх місць */}
+      {/* Маркери для всіх місць */}
+      {places &&
         <MarkerClusterGroup>
           {places.map((place, index) => (
             <Marker
@@ -110,8 +110,9 @@ export
             </Marker>
           ))}
         </MarkerClusterGroup>
-      </MapContainer>
-    )
-  }
+      }
+    </MapContainer>
+  )
+}
 
 export default Map
