@@ -35,13 +35,13 @@ export type Place = {
   executedOrdersSum: number;
 };
 
-export const Map = () => {
+export const Map = ({ places }) => {
   const router = useRouter();
-  const { data: places = [] } = useShops({
-    SearchParameter: "Query",
-    PageNumber: 1,
-    PageSize: 150,
-  });
+  // const { data: places = [] } = useShops({
+  //   SearchParameter: "Query",
+  //   PageNumber: 1,
+  //   PageSize: 150,
+  // });
   const [selectedPlace, setSelectedPlace] = useState<Place | undefined>(undefined);
 
   const handleMarkerClick = (place: Place) => {

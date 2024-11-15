@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../sharedComponents/Layout";
 import Map from "./components/Map";
-import { getShops } from '@/pages/api/ShopApi';
+import { getShops, ShopDTO, ShopGetDTO } from '@/pages/api/ShopApi';
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -32,8 +32,8 @@ export default function Shops() {
     description: "Магазини HYGGY",
   };
 
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [filteredPlaces, setFilteredPlaces] = useState<Place[]>([]);
+  const [places, setPlaces] = useState<ShopGetDTO[]>([]);
+  const [filteredPlaces, setFilteredPlaces] = useState<ShopGetDTO[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [isCheckOpen, setIsCheckOpen] = useState(false);
@@ -106,15 +106,15 @@ export default function Shops() {
     // Якщо є текст пошуку, відфільтровуємо `places` за `name`, `street` або `city`
     if (searchPattern) {
       searchPlaces = searchPlaces.filter(
-        place => searchPattern.test(place.name) ||
-          searchPattern.test(place.street) ||
-          searchPattern.test(place.city)
+        place => place.name && searchPattern.test(place.name) ||
+          place.street && searchPattern.test(place.street) ||
+          place.city && searchPattern.test(place.city)
       );
     }
 
     // Якщо ввімкнено фільтр за відкритими магазинами, додатково фільтруємо `searchPlaces`
     if (isCheckOpen) {
-      searchPlaces = searchPlaces.filter(place => isOpenNow(place.workHours));
+      searchPlaces = searchPlaces.filter(place => place.workHours && isOpenNow(place.workHours));
     }
 
     // Оновлюємо список відфільтрованих магазинів
@@ -122,7 +122,7 @@ export default function Shops() {
   }
 
   return (
-    <Layout headerType='header1' pageMetadata={pageMetadata}>
+    <Layout headerType='header1'>
 
       <div className="mt-16 mx-8 md:mx-24 lg:mx-24">
         <div className="flex justify-center">
