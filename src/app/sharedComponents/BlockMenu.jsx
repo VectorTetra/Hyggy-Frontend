@@ -100,58 +100,56 @@ export default function BlockMenu() {
     }, [isMainPageMenuOpened, foundWareCategories, isWareCategories1Loading]);
 
     return (
-        <div className={styles.overlay}>
-            {isWareCategories1Loading && <CircularProgress></CircularProgress>}
-            {!isWareCategories1Loading && <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
-                <div className={styles.menuHeader}>
-                    {history.length === 0 ? (
-                        <>
-                            <div className={styles.menuContainerLogo}>
-                                <img src="/images/AdminPanel/hyggyIcon.png" alt="Logo" className={styles.logo} />
-                                <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+        isMainPageMenuOpened && <div className={styles.overlay}> <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
+            <div className={styles.menuHeader}>
+                {history.length === 0 ? (
+                    <>
+                        <div className={styles.menuContainerLogo}>
+                            <img src="/images/AdminPanel/hyggyIcon.png" alt="Logo" className={styles.logo} />
+                            <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className={styles.headermenucategory}>
+                            <button onClick={handleBackClick} className={styles.backButton}>
+                                {'<'}
+                            </button>
+                            <div className={styles.menuTitle}>
+                                {/* Отображение правильного заголовка в зависимости от уровня меню */}
+                                {history.length === 1 && currentCategory ? (
+                                    // Второй уровень 
+                                    currentCategory.caption || currentCategory.type
+                                ) : history.length === 2 && currentCategory ? (
+                                    // Третий уровень
+                                    currentCategory.type || currentCategory.name
+                                ) : ''}
                             </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className={styles.headermenucategory}>
-                                <button onClick={handleBackClick} className={styles.backButton}>
-                                    {'<'}
-                                </button>
-                                <div className={styles.menuTitle}>
-                                    {/* Отображение правильного заголовка в зависимости от уровня меню */}
-                                    {history.length === 1 && currentCategory ? (
-                                        // Второй уровень 
-                                        currentCategory.caption || currentCategory.type
-                                    ) : history.length === 2 && currentCategory ? (
-                                        // Третий уровень
-                                        currentCategory.type || currentCategory.name
-                                    ) : ''}
-                                </div>
-                                <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
-                            </div>
-                        </>
-                    )}
-                </div>
-                <hr className={styles.divider} />
-                <ul className={styles.menu}>
-                    {currentMenu.map((category, index) => (
-                        <li key={index} className={styles.menuItem} onClick={() => handleCategoryClick(category)}>
-                            {category.subCategories && history.length < 2 ? (
-                                <span className={styles.menuText}>
-                                    {category.caption || category.type || category.name}
-                                </span>
-                            ) : (
-                                <Link href={`/search?query=${category.name}`} className={styles.menuText}>
-                                    {category.caption || category.type || category.name}
-                                </Link>
-                            )}
-                            {category.subCategories && history.length < 2 && (
-                                <span className={styles.menuIcon}>{'>'}</span>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            </div>}
+                            <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+                        </div>
+                    </>
+                )}
+            </div>
+            <hr className={styles.divider} />
+            <ul className={styles.menu}>
+                {currentMenu.map((category, index) => (
+                    <li key={index} className={styles.menuItem} onClick={() => handleCategoryClick(category)}>
+                        {category.subCategories && history.length < 2 ? (
+                            <span className={styles.menuText}>
+                                {category.caption || category.type || category.name}
+                            </span>
+                        ) : (
+                            <Link href={`/search?query=${category.name}`} className={styles.menuText}>
+                                {category.caption || category.type || category.name}
+                            </Link>
+                        )}
+                        {category.subCategories && history.length < 2 && (
+                            <span className={styles.menuIcon}>{'>'}</span>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </div>
         </div>
     );
 }

@@ -341,56 +341,59 @@ export default function BlockShops() {
     }, []);
 
     return (
-        <>
-            {isMainPageMenuShopsOpened && <div className={styles.overlayBackground}></div>}
-            <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
-                <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
-                    <div className={styles.menuHeader}>
-                        <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
-                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>Х</button>
+        isMainPageMenuShopsOpened && (
+            <div>
+                <div className={styles.overlayBackground}></div>
+                <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
+                    <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
+                        <div className={styles.menuHeader}>
+                            <div className={styles.menuContainerLogo}>
+                                <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
+                                <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>Х</button>
+                            </div>
                         </div>
-                    </div>
-                    <hr className={styles.divider} />
-                    <div className={styles.searchContainer}>
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className={styles.searchInput}
-                            placeholder="Введіть місто або адресу..."
-                        />
-                        <button onClick={() => { }} className={styles.searchButton}>
-                            🔍
-                        </button>
-                    </div>
+                        <hr className={styles.divider} />
+                        <div className={styles.searchContainer}>
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                className={styles.searchInput}
+                                placeholder="Введіть місто або адресу..."
+                            />
+                            <button onClick={() => { }} className={styles.searchButton}>
+                                🔍
+                            </button>
+                        </div>
 
-                    <div className={styles.shopListContainer}>
-                        {isLoading ? (
-                            <p>Завантаження...</p>
-                        ) : (
-                            shops?.filter((shop) =>
-                                shop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                shop.address?.toLowerCase().includes(searchTerm.toLowerCase())
-                            ).map((shop, index) => (
-                                <div key={index} className={styles.card}>
-                                    <div className={styles.shopcard}>
-                                        <div className={styles.shopInfo}>
-                                            <h2 className={styles.h2}>{shop.name}</h2>
+                        <div className={styles.shopListContainer}>
+                            {isLoading ? (
+                                <p>Завантаження...</p>
+                            ) : (
+                                shops?.filter((shop) =>
+                                    shop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    shop.address?.toLowerCase().includes(searchTerm.toLowerCase())
+                                ).map((shop, index) => (
+                                    <div key={index} className={styles.card}>
+                                        <div className={styles.shopcard}>
+                                            <div className={styles.shopInfo}>
+                                                <h2 className={styles.h2}>{shop.name}</h2>
+                                            </div>
+                                            <button onClick={() => handleShopClick(shop)} className={styles.shopButton}>
+                                                Обрати магазин
+                                            </button>
                                         </div>
-                                        <button onClick={() => handleShopClick(shop)} className={styles.shopButton}>
-                                            Обрати магазин
-                                        </button>
+                                        <ShopStatus shop={shop} />
                                     </div>
-                                    <ShopStatus shop={shop} />
-                                </div>
-                            ))
-                        )}
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        </>
+        )
     );
+
 }
 
 
