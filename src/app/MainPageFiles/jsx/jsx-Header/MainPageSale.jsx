@@ -1,13 +1,33 @@
 "use client";
-import React from 'react';
-import Link from 'next/link';
+import React, { useEffect } from 'react';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import { useRouter } from "next/navigation";
+import { BlogQueryParams, useBlogs } from '@/pages/api/BlogApi';
+import { type } from 'os';
+
 
 export default function MainPageSale(props) {
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const router = useRouter();
 
+    // Используем useQuery для получения последних 3 акций
+    const { data: sales = [], isLoading, isSuccess } = useBlogs(
+        {
+            SearchParameter: "Query",
+            PageNumber: 1,
+            PageSize: 3,
+            Sorting: "IdDesc",
+            BlogCategory1Name: "Акції"
+        }
+    );
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log("OurSales", sales);
+            console.log("OurSales is Array", Array.isArray(sales));
+            console.log("OurSales type", typeof (sales));
+        }
+    }, [isSuccess]);
     // Функция для перехода к следующему элементу
     const nextSale = () => {
         setCurrentIndex((prevIndex) =>
@@ -25,13 +45,13 @@ export default function MainPageSale(props) {
     const handleBannerClick = () => {
         const selectedBanner = props.infoSales[currentIndex];
         const id = selectedBanner.id;
-        console.log('Пришло из PageSale', id);
         router.push(`../PageSale?id=${id}`);
     };
 
     return (
         <div id={styles.mainPageSale}>
             <div onClick={handleBannerClick} className={styles.bannerLink}>
+                {/* {sales[currentIndex]?.blogTitle} */}
                 {props.infoSales[currentIndex].infoSale}
             </div>
         </div>

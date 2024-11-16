@@ -115,17 +115,22 @@
 .deleteAccountButtonContainer {
   display: flex;
   justify-content: end;
-  gap: 10px;
+  gap: 20px;
 }
 
 .deleteAccountButton {
   background-color: #00AAAD;
   color: white;
+  width: 170px;
   font-size: 0.9vw;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.deleteAccountButton:hover {
+  background-color: rgba(0, 95, 96, 1);
 }
 
 .actionList {

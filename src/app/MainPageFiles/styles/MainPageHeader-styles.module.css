@@ -126,6 +126,7 @@
 	display: flex;
 }
 
+
 .geoblock {
 	display: flex;
 	align-items: center;
@@ -187,10 +188,6 @@
 		font-size: 16px;
 		height: 4vw;
 	}
-
-	/* .disappearOnAdapt {
-		font-size: clamp(14px, 2vh, 20px);
-	} */
 
 	.navbarcontainer {
 		flex-direction: column;

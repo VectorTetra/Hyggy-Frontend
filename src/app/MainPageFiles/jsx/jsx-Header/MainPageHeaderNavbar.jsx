@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from "next/link";
 import styles from '../../styles/MainPageHeader-styles.module.css';
-function MainPageHeaderNavbar(props) {
+
+export default function MainPageHeaderNavbar(props) {
 	return (
-		<div className='navbarmenu'>
+		<div className={styles.navbarmenu}>
 			{
 				props.navBar.map((item, index) => (
 					<Link prefetch={false} key={index} className={styles.menuText} href={item.url}>
@@ -14,4 +15,3 @@ function MainPageHeaderNavbar(props) {
 		</div>
 	);
 }
-export default MainPageHeaderNavbar;

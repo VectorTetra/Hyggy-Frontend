@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function BlogBody(props) {
     return (
-        <div>
+        <div className={styles.headcontainer}>
             {props.blogPage.blogBody.map((category, index) => (
                 <div key={index} className={styles.categorycontainer}>
                     <h2 className={styles.h2}>{category.caption}</h2>
@@ -16,7 +16,7 @@ export default function BlogBody(props) {
                                     <Link href={category.imagesHome[0].urlPage || "#"}>
                                         <img src={category.imagesHome[0].urlImages} alt={category.imagesHome[0].caption} />
                                         {category.imagesHome[0].caption && (
-                                            <p className={styles.imagecaption}>{category.imagesHome[0].caption}</p>
+                                            <p className={styles.imagecaption1}>{category.imagesHome[0].caption}</p>
                                         )}
                                     </Link>
                                 </div>
@@ -27,7 +27,7 @@ export default function BlogBody(props) {
                                 <div key={imgIndex}>
                                     <div className={styles.imagewrapper}>
                                         <Link href={image.urlPage || "#"}>
-                                            <img src={image.urlImages} alt={image.caption} />
+                                            <img className={styles.image} src={image.urlImages} alt={image.caption} />
                                             {image.caption && (
                                                 <p className={styles.imagecaption}>{image.caption}</p>
                                             )}

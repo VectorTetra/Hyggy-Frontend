@@ -1,18 +1,19 @@
 "use client";
-import React from "react";
+import { useState } from 'react';
 import styles from "./styles/AuthenticationStyles.module.css";
 import { useRouter } from "next/navigation";
+import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
 import { toast } from "react-toastify";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Authorize, getDecodedToken } from "@/pages/api/TokenApi";
 import Link from "next/link";
 
 
 export default function AuthenticationPage(props) {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [errorMessage, setErrorMessage] = React.useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const router = useRouter();
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,63 +34,101 @@ export default function AuthenticationPage(props) {
 
     };
 
+    // Функція для перемикання видимості пароля
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     return (
-        <div className={styles.maincontainer}>
-            <div className={styles["category-caption"]}>
-                <div className={styles.formcontainer}>
-                    <form className={styles.form} onSubmit={handleSubmit}>
-                        <div className={styles.caption}>Вхід</div>
+        <Box
+            component="div"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+                padding: '2rem',
+            }}
+        >
+            <Typography variant="h4" component="h1" gutterBottom>
+                Вхід
+            </Typography>
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                    width: '100%',
+                    maxWidth: '400px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    padding: '2rem',
+                }}
+            >
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    label="Email"
+                    variant="outlined"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                    fullWidth
+                />
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    label="Пароль"
+                    variant="outlined"
+                    type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    fullWidth
+                    InputProps={{
+                        // Додаємо іконку для перемикання видимості пароля
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    fullWidth
+                    sx={{ backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem' }}
+                >
+                    Увійти
+                </Button>
+            </Box>
 
-                        <input className={styles.formcontainerinput}
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                            placeholder="E-mail"
-                        />
-
-
-                        <input className={styles.formcontainerinput}
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="пароль"
-                        />
-
-                        {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
-
-                        <button type="submit" className={styles.submitbutton}>Увійти</button>
-
-                    </form>
-
-                    <div className={styles.forgotpasswordlink}>
-                        <Link href="../PagePasswordReset">Забули пароль?</Link>
-                    </div>
-                    <div>
-                        <h2 className={styles.h2}>Створити новий обліковий запис</h2>
-                        <div className={styles.features}>
-                            <ul className={styles.featuresul}>
-                                <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
-                                <li className={styles.featuresil}>Зберігайте історію замовлень</li>
-                                <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
-                                <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div style={{ display: "flex" }}>
-                        <button
-                            className={styles.submitbutton2}
-                            onClick={() => window.location.href = '../PageRegistration'}>
-                            Створити новий обліковий запис
-                        </button>
-                    </div>
+            <div className={styles.forgotpasswordlink}>
+                <Link href="../PagePasswordReset">Забули пароль?</Link>
+            </div>
+            <div>
+                <h2 className={styles.h2}>Створити новий обліковий запис</h2>
+                <div className={styles.features}>
+                    <ul className={styles.featuresul}>
+                        <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
+                        <li className={styles.featuresil}>Зберігайте історію замовлень</li>
+                        <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
+                        <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
+                    </ul>
                 </div>
             </div>
-        </div>
+            <div style={{ display: "flex" }}>
+                <button
+                    className={styles.submitbutton2}
+                    onClick={() => window.location.href = '../PageRegistration'}>
+                    Створити новий обліковий запис
+                </button>
+            </div>
+        </Box>
     );
 }
