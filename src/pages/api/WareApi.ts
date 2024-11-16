@@ -100,6 +100,8 @@ export class Ware {
 	imagePaths: string[];
 	trademarkName: string;
 	wareCategory3Name: string;
+	wareCategory2Name: string;
+	wareCategory1Name: string;
 	wareItems: any[];
 }
 // GET запит (вже реалізований)

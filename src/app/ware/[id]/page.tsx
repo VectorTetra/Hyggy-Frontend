@@ -1,6 +1,7 @@
 "use client";
 import { useParams, notFound } from 'next/navigation';
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "../page.module.css";
 import Layout from "../../sharedComponents/Layout";
 import StarRating from "../../sharedComponents/StarRating";
@@ -31,6 +32,7 @@ import useWarePageMenuShops from '@/store/warePageMenuShops';
 import BlockShopsByWare from '@/app/sharedComponents/BlockShopsByWare';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import useLocalStorageStore from '@/store/localStorage';
+import { useBlogs } from '@/pages/api/BlogApi';
 
 
 interface CartItem {
@@ -58,12 +60,26 @@ export default function WarePage() {
   //   SearchParameter: "GetFavoritesByCustomerId",
   //   CustomerId: getDecodedToken()?.nameid
   // });
+  const [product, setProduct] = useState<Ware | null>(null);
   const { data: products = [], isLoading: isProductsLoading, isSuccess: isProductsSuccess } = useWares({
     SearchParameter: "Query",
     Id: id
   });
+  const {
+    data: relatedBlogs = [],
+    isLoading: isRelatedBlogsLoading,
+    refetch: refetchRelatedBlogs
+  } = useBlogs({
+    SearchParameter: "Query",
+    QueryAny: product !== null ? product?.wareCategory1Name : "",
+    PageNumber: 1,
+    PageSize: 3,
+    Sorting: "IdDesc",
+  });
 
-  const [product, setProduct] = useState<Ware | null>(null);
+
+  console.log("relatedBlogs", relatedBlogs);
+
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
   const [showPopup, setShowPopup] = useState(false);
@@ -80,6 +96,14 @@ export default function WarePage() {
   useEffect(() => {
     setCartItems(getCartFromLocalStorage());
   }, []);
+
+  useEffect(() => {
+    if (product) {
+      refetchRelatedBlogs({}); // Оновлюємо список пов'язаних статей
+      console.log("product", product);
+    }
+  }, [product, refetchRelatedBlogs]);
+
 
   useEffect(() => {
     if (customerSuccess && customers.length > 0) {
@@ -290,17 +314,34 @@ export default function WarePage() {
             <button className={styles.tabButton} onClick={() => document.getElementById('similarProducts')?.scrollIntoView({ behavior: 'smooth' })}>Схожі товари</button>
           </div>
         </div>
-
-        <DescriptionWare article={product.article} description={wareDetails} />
-
-        {/* <h2 id="description" className={styles.tabTitle}>Опис</h2>
-        <center><h3>Пов'язані статті в блозі</h3></center>
-        {product.relatedArticles && product.relatedArticles.length > 0 ? (
-          <ArticlesWare product={product} />
-        ) : (
-          <p>Немає пов'язаних статей.</p>
-        )}
-        <hr />*/}
+        <h2 id="description" className={styles.tabTitle}>Опис</h2>
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <DescriptionWare article={product.article} description={wareDetails} />
+            {product && relatedBlogs && relatedBlogs.length > 0 ? (
+              <ArticlesWare blogs={relatedBlogs} />
+            ) : (
+              <p>Немає пов'язаних статей.</p>
+            )}
+          </div>
+          <div style={{ display: "flex", flex: 0.4 }}>
+            <Image
+              src={product.imagePaths.length > 1 ? product.imagePaths[1] : product.previewImagePath}
+              alt={product.name}
+              width={150} // Максимальна ширина в пікселях
+              height={200} // Максимальна висота в пікселях
+              layout='responsive' // Розмір залежить від оригінальних пропорцій зображення
+              objectFit='contain' // Показує повне зображення, не розтягуючи його
+              style={{
+                maxWidth: "100%",
+                maxHeight: "200px", // Обмеження максимальної висоти
+                height: "auto", // Автоматична висота для адаптації
+                objectFit: "contain" // Показує повне зображення, не розтягуючи його
+              }}
+            />
+          </div>
+        </div>
+        <hr />
         <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
         {wareProperties && wareProperties.length > 0 ? (
           <center><SpecificationWare properties={wareProperties} /></center>
