@@ -1,27 +1,35 @@
 "use client";
+import forgotPassword from "@/pages/api/resetpassword";
 import React from "react";
 import styles from '../css/passwordResetStyle.module.css';
 
 
-export default function EmailInput({ passwordResetData, onSwitchComponent }) {
+export default  function EmailInput({ passwordResetData, onSwitchComponent }) {
     console.log("EmailInput props:", { passwordResetData, onSwitchComponent });
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = passwordResetData.Users.find(user => user.email === email);
+        // const user = passwordResetData.Users.find(user => user.email === email);
 
-        if (user) {
-            // Генерація ссилки скидання паролю
-            const resetLink = `${window.location.href}?reset=${user.userId}`;
-            user.resetLink = resetLink;
+        // if (user) {
+        //     // Генерація ссилки скидання паролю
+        //     const resetLink = `${window.location.href}?reset=${user.userId}`;
+        //     user.resetLink = resetLink;
 
-            setMessage('');
-            alert("Посилання для скидання паролю відправлено на ваш e-mail.");
-        } else {
-            setMessage('');
-            alert("Користувача з таким e-mail не знайдено");
+        //     setMessage('');
+        //     alert("Посилання для скидання паролю відправлено на ваш e-mail.");
+        // } else {
+        //     setMessage('');
+        //     alert("Користувача з таким e-mail не знайдено");
+        // }
+        const response = await forgotPassword(email);
+        if(response){
+            alert("Ми надіслали листа на вказану вами електронну адресу. Будь ласка, перевірте папку Спам або спробуйте ще раз, якщо ви не отримали листа протягом 15 хвилин.")
+            setEmail("");
+        }else{
+            console.log("Щось пішло не так")
         }
     };
 
