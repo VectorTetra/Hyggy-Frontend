@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../css/blogstyle.module.css";
 
 export default function BlogMenu(props) {
-    const [images, setImages] = React.useState([]);
-    const [selectedCaption, setSelectedCaption] = useState(""); // Для хранения выбранного caption
+    const [images, setImages] = useState([]);
+    const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
     const router = useRouter();
 
     const loadImages = (category) => {
@@ -32,13 +32,15 @@ export default function BlogMenu(props) {
         })));
     };
 
+    const handleMenuClick = (e, caption) => {
+        e.preventDefault();
+        setSelectedCaption(caption);
+        loadImages(caption);
+    };
+
     const handleImageClick = (caption) => {
         router.push(`/PageBlogCategory?caption=${encodeURIComponent(caption)}`);
     };
-
-    React.useEffect(() => {
-        loadImages('Для дому');
-    }, []);
 
     return (
         <div>
@@ -47,12 +49,8 @@ export default function BlogMenu(props) {
                     <a
                         key={index}
                         href="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            loadImages(item.captionMenu);
-                            setSelectedCaption(item.captionMenu); // выбранный caption
-                        }}
-                        className={styles.menuitem}
+                        onClick={(e) => handleMenuClick(e, item.captionMenu)}
+                        className={`${styles.menuitem} ${selectedCaption === item.captionMenu ? styles.activeMenu : ''}`}
                     >
                         {item.captionMenu}
                     </a>
@@ -64,7 +62,7 @@ export default function BlogMenu(props) {
                     <div key={index} className={styles.imageitem}>
                         <a
                             href="#"
-                            onClick={() => handleImageClick(item.caption)} // Передаем caption при клике
+                            onClick={() => handleImageClick(item.caption)}
                         >
                             <img src={item.urlImages} alt={item.caption} />
                             <div className={styles.textmenu}>{item.caption}</div>

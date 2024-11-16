@@ -7,7 +7,7 @@ import data from '../PageProfileUser.json';
 import { Customer, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { toast } from "react-toastify";
 import { useQueryClient } from 'react-query';
-import { getDecodedToken } from "@/pages/api/TokenApi";
+import { getDecodedToken, removeToken } from "@/pages/api/TokenApi";
 
 export default function EditProfileUser({ onSave, user }: { onSave: any, user: Customer }) {
 
@@ -47,6 +47,16 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
             }
         );
     };
+
+    // Функция для удаления аккаунта
+    const handleDeleteAccount = () => {
+        const userConfirmed = window.confirm("Ви дійсно бажаєте видалити свій акаунт?");
+        if (userConfirmed) {
+            removeToken();
+            router.push("/");
+        }
+    };
+
 
     const handleCancel = () => {
         onSave();
@@ -160,8 +170,8 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                     backgroundColor: '#00AAAD',
                                     color: 'white',
                                     '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: '#00AAAD',
+                                        color: 'white',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
                                 }}>
                                 Зберегти
@@ -171,21 +181,21 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                     backgroundColor: '#00AAAD',
                                     color: 'white',
                                     '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: '#00AAAD',
+                                        color: 'white',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
                                 }}>
                                 Скасувати
                             </Button>
                         </Box>
                         <Box display="flex" justifyContent="space-between" mt={2}>
-                            <Button variant="outlined" color="secondary" onClick={handleCancel}
+                            <Button variant="outlined" color="secondary" onClick={handleDeleteAccount}
                                 sx={{
-                                    backgroundColor: '#e25151',
+                                    backgroundColor: '#00AAAD',
                                     color: 'white',
                                     '&:hover': {
                                         color: 'white',
-                                        backgroundColor: 'darkred',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
                                     width: '100%'
                                 }}>

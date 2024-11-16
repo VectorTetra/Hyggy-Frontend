@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState } from "react";
 import StarRating from '../../sharedComponents/StarRating';
 import styles from "../../ware/css/ReviewWare.module.css";
-import { Box, Typography, Table, TableBody, TableContainer, TableRow, TableCell, Avatar } from '@mui/material';
+import { Box, Typography, Table, TableBody, TableContainer, TableRow, TableCell, Avatar, Button } from '@mui/material';
 import data from '../PageProfileUser.json';
 
 export default function ReviewsUser() {
     // Проверка на наличие отзывов
     const hasReviews = data.lastReviews && data.lastReviews.length > 0;
+
+
+    // Состояния раскрытия для каждого отзыва
+    const [expandedReviews, setExpandedReviews] = useState({});
+
+    // Обработчик переключения состояния для конкретного отзыва
+    const handleToggleExpand = (index) => {
+        setExpandedReviews((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index], // Переключаем текущее состояние
+        }));
+    };
 
     return (
         <Box sx={{ padding: '20px', backgroundColor: '#f9f9f9', margin: '20px 0' }}>
@@ -50,7 +62,17 @@ export default function ReviewsUser() {
                                     </TableCell>
                                     {/* Текст отзыва */}
                                     <TableCell>
-                                        <Typography variant="body2" className={styles.reviewText}>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                display: expandedReviews[index] ? 'block' : '-webkit-box',
+                                                WebkitLineClamp: expandedReviews[index] ? 'none' : 3, // Убираем ограничение строк при разворачивании
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: expandedReviews[index] ? 'visible' : 'hidden', // Убираем обрезку текста
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={() => handleToggleExpand(index)} // Обработчик клика
+                                        >
                                             {review.text}
                                         </Typography>
                                     </TableCell>
@@ -59,7 +81,8 @@ export default function ReviewsUser() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            )}
-        </Box>
+            )
+            }
+        </Box >
     );
 }

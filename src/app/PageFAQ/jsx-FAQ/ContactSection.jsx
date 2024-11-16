@@ -5,8 +5,7 @@ import styles from "../css/FAQStyles.module.css";
 export default function ContactSection(props) {
     return (
         <div className={styles.contactsection}>
-            <div> <img src={props.faqPage.urlmenedger} alt="Image" className={styles.manedgerimage} /></div>
-            <div className={styles.captionworkstyle} >{props.faqPage.workwithclients.captionwork}</div>
+            <div className={styles.captionworkstyle}><h2>Контакти</h2></div>
             <hr></hr>
             <div>
                 {props.faqPage.infoworkwithclients.map((item, index) => (
