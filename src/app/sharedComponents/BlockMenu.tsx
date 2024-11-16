@@ -18,8 +18,8 @@ const adaptCategories = (data) => {
         })),
     }));
 };
-export default function BlockMenu() {
-    const [history, setHistory] = useState([]); // История для возврата на предыдущие уровни
+const BlockMenu: React.FC = () => {
+    const [history, setHistory] = useState<any>([]); // История для возврата на предыдущие уровни
     const { data: foundWareCategories = [], isLoading: isWareCategories1Loading } = useWareCategories1({
         SearchParameter: "Query",
         //QueryAny: query,
@@ -28,7 +28,7 @@ export default function BlockMenu() {
         Sorting: "NameAsc"
     });
     const [currentMenu, setCurrentMenu] = useState(adaptCategories(foundWareCategories));
-    const [currentCategory, setCurrentCategory] = useState(null); // Текущая категория для отображения в заголовке
+    const [currentCategory, setCurrentCategory] = useState<any>(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
 
     const menuRef = useRef(null);
@@ -99,8 +99,9 @@ export default function BlockMenu() {
         };
     }, [isMainPageMenuOpened, foundWareCategories, isWareCategories1Loading]);
 
+    if (!isMainPageMenuOpened) return null;
     return (
-        isMainPageMenuOpened && <div className={styles.overlay}> <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
+        <div className={styles.overlay}> <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
             <div className={styles.menuHeader}>
                 {history.length === 0 ? (
                     <>
@@ -153,3 +154,5 @@ export default function BlockMenu() {
         </div>
     );
 }
+
+export default BlockMenu;

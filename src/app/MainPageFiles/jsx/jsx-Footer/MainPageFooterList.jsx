@@ -16,6 +16,7 @@ export default function MainPageFooterList(props) {
                 <Link
                   className={styles["footer-itemA"]}
                   href={subItem.urlcategory}
+                  prefetch={false}
                 >
                   {subItem.name}
                 </Link>

@@ -76,21 +76,21 @@ export default function PageProfileUser(props) {
 
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files && customer && customer.favoriteWareIds && customer.orderIds) {
+        if (files && customer !== null && customer.favoriteWareIds && customer.orderIds) {
             if (customer.avatarPath) { getPhotoByUrlAndDelete(customer.avatarPath); }
             uploadPhotos(files).then(async (urls) => {
                 //setImagePreviewUrl(urls[0]);
-                console.log("customer?.favoriteWareIds", customer.favoriteWareIds);
+                console.log("customer?.favoriteWareIds", customer!.favoriteWareIds);
                 await updateCustomer(
                     {
-                        Name: customer.name,
-                        Surname: customer.surname,
-                        Email: customer.email,
+                        Name: customer!.name,
+                        Surname: customer!.surname,
+                        Email: customer!.email,
                         Id: getDecodedToken()?.nameid || "",
-                        PhoneNumber: customer.phoneNumber,
+                        PhoneNumber: customer!.phoneNumber,
                         AvatarPath: urls[0],
-                        FavoriteWareIds: customer.favoriteWareIds,
-                        OrderIds: customer.orderIds
+                        FavoriteWareIds: customer!.favoriteWareIds,
+                        OrderIds: customer!.orderIds
                     },
                     {
                         onSuccess: () => {
