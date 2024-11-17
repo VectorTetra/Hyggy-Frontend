@@ -120,7 +120,7 @@ export default function ReviewWare({ product }: { product: Product }) {
                     checked={reviewData.termsAccepted}
                     onChange={handleCheckboxChange}
                     required
-                  />&nbsp;Прийняти  <Link href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та Положення</Link>
+                  />&nbsp;Прийняти  <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та Положення</Link>
                 </label>
               </div>
               <center><button type="submit" className={styles.submitButton}> Надіслати відгук</button></center>

@@ -140,7 +140,7 @@ const BlockMenu: React.FC = () => {
                                 {category.caption || category.type || category.name}
                             </span>
                         ) : (
-                            <Link href={`/search?query=${category.name}`} className={styles.menuText}>
+                            <Link prefetch={true} href={`/search?query=${category.name}`} className={styles.menuText}>
                                 {category.caption || category.type || category.name}
                             </Link>
                         )}

@@ -67,7 +67,7 @@ export default function WareCard({
                         </svg>
                     )}
                 </button>
-                <Link href={`/ware/${ware.id}`} className={styles.wareCardLink}>
+                <Link prefetch={true} href={`/ware/${ware.id}`} className={styles.wareCardLink}>
                     <Image
                         src={ware.previewImagePath ? ware.previewImagePath : "/images/imageFallback.png"}
                         alt={ware.name}

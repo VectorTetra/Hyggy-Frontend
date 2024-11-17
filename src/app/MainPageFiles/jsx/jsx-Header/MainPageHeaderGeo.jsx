@@ -27,7 +27,7 @@ export default function MainPageHeaderGeo(props) {
         src={props.GeoPhotoUrl}
         alt="GeoPhoto"
       />
-      <Link className={styles.geoText} href="#">
+      <Link prefetch={true} className={styles.geoText} href="#">
         {shopName || "Виберіть магазин Hyggy"}
       </Link>
       <img

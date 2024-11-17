@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export class BlogQueryParams {
@@ -160,40 +159,50 @@ export async function putJsonConstructorFile(structureArray: any[] | null, oldCo
 
 // Використання useQuery для отримання списку складів (blogs)
 export function useBlogs(params: BlogQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['blogs', params], () => getBlogs(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+	return useQuery({
+		queryKey: ['blogs', params],
+		queryFn: () => getBlogs(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (blog)
 export function useCreateBlog() {
 	const queryClient = useQueryClient();
-	return useMutation((newBlog: BlogPostDTO) => postBlog(newBlog), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('blogs'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newBlog: BlogPostDTO) => postBlog(newBlog),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['blogs'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для оновлення існуючого складу (blog)
 export function useUpdateBlog() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedBlog: BlogPutDTO) => putBlog(updatedBlog), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('blogs'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newBlog: BlogPutDTO) => putBlog(newBlog),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['blogs'] }); // Оновлює кеш даних після оновлення складу
+			},
+		}
+	);
 }
 
 // Використання useMutation для видалення складу (blog)
 export function useDeleteBlog() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteBlog(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('blogs'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteBlog(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['blogs'] }); // Оновлює кеш даних після видалення складу
+			},
+		}
+	);
 }
 

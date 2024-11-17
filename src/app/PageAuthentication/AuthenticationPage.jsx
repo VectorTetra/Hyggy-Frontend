@@ -68,7 +68,7 @@ export default function AuthenticationPage(props) {
                     </form>
 
                     <div className={styles.forgotpasswordlink}>
-                        <Link href="../PagePasswordReset">Забули пароль?</Link>
+                        <Link prefetch={true} href="../PagePasswordReset">Забули пароль?</Link>
                     </div>
                     <div>
                         <h2 className={styles.h2}>Створити новий обліковий запис</h2>

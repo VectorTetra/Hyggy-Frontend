@@ -118,7 +118,7 @@ export default function Login() {
 					Увійти
 				</Button>
 			</Box>
-			<Link href="/" >
+			<Link prefetch={true} href="/" >
 				<Button
 					variant="contained"
 					color="primary"

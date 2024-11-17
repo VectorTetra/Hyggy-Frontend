@@ -180,7 +180,7 @@ const PaymentPage = () => {
                 Підтвердження
               </button>
             </div>
-            <Link href="/cart/delivery">
+            <Link prefetch={true} href="/cart/delivery">
               <button type="button" className={styles.cancelButton}>Скасувати</button>
             </Link>
           </form>

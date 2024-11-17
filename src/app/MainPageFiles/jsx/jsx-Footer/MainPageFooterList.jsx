@@ -13,10 +13,9 @@ export default function MainPageFooterList(props) {
             <div className={styles["footer-item"]}>{item.nameCategory}</div>
             {item.listCategory.map((subItem) => (
               <div key={subItem.name}>
-                <Link
+                <Link prefetch={true}
                   className={styles["footer-itemA"]}
                   href={subItem.urlcategory}
-                  prefetch={false}
                 >
                   {subItem.name}
                 </Link>

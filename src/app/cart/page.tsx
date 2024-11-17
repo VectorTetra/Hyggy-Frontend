@@ -95,7 +95,7 @@ const CartPage = () => {
         {cartItems.length === 0 ? (
           <center>
             <p>Кошик пустий</p>
-            <Link href="/search">
+            <Link prefetch={true} href="/search">
               <button className={styles.continueButton}>Продовжити покупки</button>
             </Link>
           </center>
@@ -158,10 +158,10 @@ const CartPage = () => {
             <br />
             <p className={styles.calculateTotalPrice}>Усього {formatPrice(calculateTotalPrice())} грн</p>
             <div className={styles.buttonContainer}>
-              <Link href="/cart/delivery">
+              <Link prefetch={true} href="/cart/delivery">
                 <button className={styles.checkoutButton}>Завершити замовлення</button>
               </Link>
-              <Link href="/search">
+              <Link prefetch={true} href="/search">
                 <button className={styles.continueButton}>Продовжити покупки</button>
               </Link>
             </div>

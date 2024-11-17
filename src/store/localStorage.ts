@@ -5,12 +5,23 @@ import { create } from "zustand";
 interface LocalStorageStore {
     selectedShop: ShopGetDTO | null; // Обраний магазин
     setSelectedShop: (shop: ShopGetDTO | null) => void;
+    shopToViewOnShopPage: ShopGetDTO | null;
+    setShopToViewOnShopPage: (shop: ShopGetDTO | null) => void;
 }
 
 // Функція для роботи з LocalStorage
 const getSelectedShopFromLocalStorage = () => {
     try {
         const storedShop = localStorage.getItem("selectedShop");
+        return storedShop ? JSON.parse(storedShop) : null;
+    } catch (error) {
+        console.error("Error reading selected shop from localStorage:", error);
+        return null;
+    }
+};
+const getShopToViewOnShopPageFromLocalStorage = () => {
+    try {
+        const storedShop = localStorage.getItem("shop");
         return storedShop ? JSON.parse(storedShop) : null;
     } catch (error) {
         console.error("Error reading selected shop from localStorage:", error);
@@ -30,6 +41,20 @@ const setSelectedShopToLocalStorage = (shop: ShopGetDTO | null) => {
     }
 };
 
+const setShopToViewOnShopPageToLocalStorage = (shop: ShopGetDTO | null) => {
+    try {
+        if (shop) {
+            localStorage.setItem("shop", JSON.stringify(shop));
+        } else {
+            localStorage.removeItem("shop");
+        }
+    } catch (error) {
+        console.error("Error saving selected shop to localStorage:", error);
+    }
+};
+
+
+
 // Zustand Store
 const useLocalStorageStore = create<LocalStorageStore>((set) => ({
 
@@ -37,6 +62,11 @@ const useLocalStorageStore = create<LocalStorageStore>((set) => ({
     setSelectedShop: (shop) => {
         set({ selectedShop: shop });
         setSelectedShopToLocalStorage(shop); // Оновлення LocalStorage
+    },
+    shopToViewOnShopPage: getShopToViewOnShopPageFromLocalStorage(),
+    setShopToViewOnShopPage: (shop) => {
+        set({ shopToViewOnShopPage: shop });
+        setShopToViewOnShopPageToLocalStorage(shop);
     },
 }));
 

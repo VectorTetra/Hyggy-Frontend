@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export class WareQueryParams {
@@ -249,39 +248,47 @@ export async function getJsonConstructorFile(filePath: string) {
 
 // Використання useQuery для отримання списку складів (wares)
 export function useWares(params: WareQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['wares', params], () => getWares(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false,
+	return useQuery({
+		queryKey: ['wares', params],
+		queryFn: () => getWares(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateWare() {
 	const queryClient = useQueryClient();
-	return useMutation((newWare: WarePostDTO) => postWare(newWare), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wares'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWare: WarePostDTO) => postWare(newWare),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wares'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateWare() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedWare: WarePutDTO) => putWare(updatedWare), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wares'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWare: WarePutDTO) => putWare(newWare),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wares'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteWare() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteWare(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wares'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteWare(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wares'] }); // Оновлює кеш даних після видалення складу
+			},
+		});
 }

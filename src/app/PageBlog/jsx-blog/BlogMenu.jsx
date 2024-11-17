@@ -45,7 +45,7 @@ export default function BlogMenu(props) {
         <div>
             <div className={styles.menucontainer}>
                 {props.blogPage.blogmenu.map((item, index) => (
-                    <Link
+                    <Link prefetch={true}
                         key={index}
                         href="#"
                         onClick={(e) => {
@@ -63,7 +63,7 @@ export default function BlogMenu(props) {
             <div className={styles.imagescontainer}>
                 {images.map((item, index) => (
                     <div key={index} className={styles.imageitem}>
-                        <Link
+                        <Link prefetch={true}
                             href="#"
                             onClick={() => handleImageClick(item.caption)} // Передаем caption при клике
                         >

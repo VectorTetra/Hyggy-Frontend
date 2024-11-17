@@ -6,7 +6,7 @@ function MainPageHeaderNavbar(props) {
 		<div className='navbarmenu'>
 			{
 				props.navBar.map((item, index) => (
-					<Link prefetch={false} key={index} className={styles.menuText} href={item.url}>
+					<Link prefetch={true} key={index} className={styles.menuText} href={item.url}>
 						{item.nameMenu}
 					</Link>
 				))

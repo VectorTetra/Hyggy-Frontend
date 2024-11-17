@@ -8,7 +8,7 @@ function MainPageHeaderBasket(props) {
   const cartQuantity = useCartQuantity(); // Отримуємо кількість товарів
 
   return (
-    <Link href="/cart" className={styles.mainPageHeaderItem}>
+    <Link prefetch={true} href="/cart" className={styles.mainPageHeaderItem}>
       <div style={{ position: 'relative' }}>
         <Image
           id={styles.mainPageHeaderUserPhoto}

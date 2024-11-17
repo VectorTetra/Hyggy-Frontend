@@ -66,7 +66,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ cartItems, onClose, onRemoveItem,
             <span className={styles.info}>Сума ({calculateQuantity()} товарів): </span>
             <span className={styles.priceAmount}>{totalPrice} грн</span>
           </p>
-          <Link href="/cart" passHref>
+          <Link prefetch={true} href="/cart" passHref>
             <button className={styles.resumeButton}>Продовжити</button>
           </Link>
           <p onClick={onClose} className={styles.closeButton}>Продовжити покупки</p>

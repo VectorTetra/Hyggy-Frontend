@@ -5,12 +5,15 @@ import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import Link from "next/link";
 import useLocalStorageStore from "@/store/localStorage";
+import { useRouter } from "next/navigation";
+import { set } from "lodash";
 
 const BlockShops: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const { selectedShop, setSelectedShop } = useLocalStorageStore();
+    const { selectedShop, setSelectedShop, setShopToViewOnShopPage } = useLocalStorageStore();
     const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const router = useRouter();
 
     // Використання кешованих даних з API для отримання списку магазинів
     const { data: shops, isLoading } = useShops({
@@ -96,7 +99,7 @@ const BlockShops: React.FC = () => {
             return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
         }) : [];
 
-        if (isMainPageMenuShopsOpened) return null;
+        if (!isMainPageMenuShopsOpened) return null;
         return (
             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
@@ -123,7 +126,7 @@ const BlockShops: React.FC = () => {
                                 <span style={{ marginLeft: "50px" }}>
                                     {shop.street},
                                     <p style={{ marginBottom: 0 }}>{shop.city}</p>
-                                    <Link className={styles.customlink} href="https://jysk.ua">Як знайти магазин</Link>
+                                    <Link prefetch={true} className={styles.customlink} href="https://jysk.ua">Як знайти магазин</Link>
                                 </span>
                             </div>
                         </div>
@@ -137,7 +140,11 @@ const BlockShops: React.FC = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <Link className={styles.customlink2} href="https://jysk.ua">Показати магазин</Link>
+                            <button className={styles.customlink2} onClick={() => {
+                                setShopToViewOnShopPage(shop);
+                                setIsMainPageMenuShopsOpened(false);
+                                router.push("/shop");
+                            }} >Показати магазин</button>
                         </div>
                     </div>
                 )}

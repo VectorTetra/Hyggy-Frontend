@@ -10,7 +10,7 @@ function MainPageHeaderUser(props) {
     const router = useRouter();
     const isAuthorized = validateToken().status === 200;
     return (
-        <Link href={isAuthorized ? "../PageProfileUser" : "/PageAuthentication"} className={styles.mainPageHeaderItem}>
+        <Link prefetch={true} href={isAuthorized ? "../PageProfileUser" : "/PageAuthentication"} className={styles.mainPageHeaderItem}>
             <img id={styles.mainPageHeaderUserPhoto} src={props.userPhotoUrl} alt="logo" />
             <div className={styles.disappearOnAdapt}>
                 {isAuthorized ? "Моя сторінка" : "Вхід"}
