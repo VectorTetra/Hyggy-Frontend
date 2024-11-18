@@ -5,15 +5,17 @@ interface FavoriteButtonProps {
     productId: number;
     isFavorite: boolean;
     toggleFavorite: (productId: number) => void;
+    width?: string;
+    height?: string;
 }
 
-const FavoriteButton: React.FC<FavoriteButtonProps> = ({ className, productId, isFavorite, toggleFavorite }) => (
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({ className, productId, isFavorite, toggleFavorite, width = "30px", height = "30px" }) => (
     <button className={className} onClick={() => toggleFavorite(productId)}>
         {/* {isFavorite ? "💖" : "🖤"} */}
         {isFavorite ? (
             <svg
-                width="30"
-                height="30"
+                width={width}
+                height={height}
                 viewBox="0 0 46 42"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -27,8 +29,8 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ className, productId, i
             </svg>
         ) : (
             <svg
-                width="30"
-                height="30"
+                width={width}
+                height={height}
                 viewBox="0 0 46 42"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

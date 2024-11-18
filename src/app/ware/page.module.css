@@ -62,6 +62,8 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
+  display: flex;
+  gap: 5px;
 }
 
 .productDescription {
@@ -194,7 +196,7 @@
 }
 
 .tabsHeader {
-  justify-content: center;
+  /* justify-content: center; */
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   background-color: #00AAAD;
@@ -203,6 +205,9 @@
   margin-right: calc(-50vw + 50%);
   width: calc(100vw - 10px);
   text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .tabButton {
@@ -306,8 +311,11 @@
 
   .tabsHeader {
     flex-wrap: wrap;
-    overflow-x: scroll;
+    overflow-x: auto;
     white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
   .tabButton {

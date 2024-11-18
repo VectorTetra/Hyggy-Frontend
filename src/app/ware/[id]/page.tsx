@@ -76,6 +76,15 @@ export default function WarePage() {
     PageSize: 3,
     Sorting: "IdDesc",
   });
+  const {
+    data: relatedReviews = [],
+    isLoading: isRelatedReviewsLoading,
+    refetch: refetchRelatedReviews
+  } = useReviews({
+    SearchParameter: "StringIds",
+    StringIds: product !== null ? product?.reviewIds.join("|") : "",
+    Sorting: "IdDesc",
+  });
 
 
   console.log("relatedBlogs", relatedBlogs);
@@ -99,7 +108,7 @@ export default function WarePage() {
 
   useEffect(() => {
     if (product) {
-      refetchRelatedBlogs({}); // Оновлюємо список пов'язаних статей
+      refetchRelatedBlogs(); // Оновлюємо список пов'язаних статей
       console.log("product", product);
     }
   }, [product, refetchRelatedBlogs]);
@@ -271,14 +280,16 @@ export default function WarePage() {
                   productId={product.id}
                   isFavorite={customer?.favoriteWareIds.includes(product.id) ?? false}
                   toggleFavorite={toggleFavorite}
+                  width='24px'
+                  height='24px'
                 />
               )}
             </h1>
             <p className={styles.productDescription}>{product.description}</p>
-            <div className={styles.rating}>
+            {Number(product.averageRating) > 0 && <div className={styles.rating}>
               <StarRating rating={Number(product.averageRating)} />
               <span>({product.reviewIds.length})</span>
-            </div>
+            </div>}
             <ProductPrice finalPrice={product.finalPrice} oldPrice={product.price} discount={product.discount} />
             {/* <p className={styles.priceDescription}>{product.description}</p> */}
             <hr className={styles.customHr} />
@@ -316,7 +327,7 @@ export default function WarePage() {
         </div>
         <h2 id="description" className={styles.tabTitle}>Опис</h2>
         <div style={{ display: "flex" }}>
-          <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, margin: "0 3.5rem" }}>
             <DescriptionWare article={product.article} description={wareDetails} />
             {product && relatedBlogs && relatedBlogs.length > 0 ? (
               <ArticlesWare blogs={relatedBlogs} />
