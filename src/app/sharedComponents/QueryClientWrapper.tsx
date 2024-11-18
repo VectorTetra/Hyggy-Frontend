@@ -23,7 +23,7 @@ import { PersistedClient, Persister } from "@tanstack/react-query-persist-client
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			gcTime: 1000 * 60 * 10, // Кеш неактивних запитів зберігатиметься 10 хвилин перед видаленням
+			gcTime: 1000 * 60 * 60, // Кеш неактивних запитів зберігатиметься 60 хвилин перед видаленням
 			staleTime: 1000 * 60 * 5, // Час актуальності кешованих даних
 		},
 	},

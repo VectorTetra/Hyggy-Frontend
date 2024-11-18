@@ -31,7 +31,7 @@ const BlockMenu: React.FC = () => {
     const [currentCategory, setCurrentCategory] = useState<any>(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
 
-    const menuRef = useRef(null);
+    const menuRef = useRef<HTMLDivElement | null>(null);
 
 
     const handleCategoryClick = (category) => {
@@ -53,30 +53,30 @@ const BlockMenu: React.FC = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (isMainPageMenuOpened) {
-    //         document.body.style.overflow = "hidden";
-    //     } else {
-    //         document.body.style.overflow = "";
+    useEffect(() => {
+        if (isMainPageMenuOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
 
-    //     }
-    //     return () => {
-    //         document.body.style.overflow = "";
-    //     };
-    // }, [isMainPageMenuOpened]);
-    // // Закрытие меню при клике вне его области
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (menuRef.current && !menuRef.current.contains(event.target)) {
-    //             setIsMainPageMenuOpened(false);
-    //         }
-    //     };
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMainPageMenuOpened]);
+    // Закрытие меню при клике вне его области
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMainPageMenuOpened(false);
+            }
+        };
 
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, [setIsMainPageMenuOpened]);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [setIsMainPageMenuOpened]);
 
     useEffect(() => {
         if (!isWareCategories1Loading) {

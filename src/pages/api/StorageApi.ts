@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 
 export interface StorageQueryParams {
 	SearchParameter?: string;
@@ -32,7 +32,7 @@ export async function getStorages(params: StorageQueryParams = {}) {
 		// const response = await axios.get('http://localhost:5263/api/Storage', {
 		// 		params,
 		// 	});
-	
+
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching storages:', error);
@@ -80,39 +80,47 @@ export async function deleteStorage(id: number) {
 
 // Використання useQuery для отримання списку складів (wares)
 export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['storages', params], () => getStorages(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false,
+	return useQuery({
+		queryKey: ['storages', params],
+		queryFn: () => getStorages(params),
+		// staleTime: Infinity, // Дані завжди актуальні
+		// gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateStorage() {
 	const queryClient = useQueryClient();
-	return useMutation((newStorage: StorageDTO) => postStorage(newStorage), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newStorage: StorageDTO) => postStorage(newStorage),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateStorage() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedStorage: StorageDTO) => putStorage(updatedStorage), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (updatedStorage: StorageDTO) => putStorage(updatedStorage),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteStorage() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteStorage(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('storages'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteStorage(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після видалення складу
+			},
+		});
 }

@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export class BlogCategory2QueryParams {
     SearchParameter: string = "Query";
@@ -93,39 +92,47 @@ export async function deleteBlogCategory2(id: number) {
 
 // Використання useQuery для отримання списку складів (blogCategories2)
 export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Query" }) {
-    return useQuery(['blogCategories2', params], () => getBlogCategories2(params), {
-        staleTime: Infinity, // Дані залишаються актуальними завжди
-        cacheTime: Infinity, // Дані залишаються в кеші без очищення
-        refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+    return useQuery({
+        queryKey: ['blogCategories2', params],
+        queryFn: () => getBlogCategories2(params),
+        // staleTime: Infinity, // Дані завжди актуальні
+        // gcTime: Infinity, // Дані залишаються в кеші без очищення
+        refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
     });
 }
 
 // Використання useMutation для створення нового складу (blog)
 export function useCreateBlogCategory2() {
     const queryClient = useQueryClient();
-    return useMutation((newBlogCategory2: BlogCategory2PostDTO) => postBlogCategory2(newBlogCategory2), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('blogCategories2'); // Оновлює кеш даних після створення нового складу
-        },
-    });
+    return useMutation(
+        {
+            mutationFn: (newCategory: BlogCategory2PostDTO) => postBlogCategory2(newCategory),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['blogCategories2'] }); // Оновлює кеш даних після створення складу
+            },
+        });
 }
 
 // Використання useMutation для оновлення існуючого складу (blog)
 export function useUpdateBlogCategory2() {
     const queryClient = useQueryClient();
-    return useMutation((updatedBlogCategory2: BlogCategory2PutDTO) => putBlogCategory2(updatedBlogCategory2), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('blogCategories2'); // Оновлює кеш даних після оновлення складу
-        },
-    });
+    return useMutation(
+        {
+            mutationFn: (updatedCategory: BlogCategory2PutDTO) => putBlogCategory2(updatedCategory),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['blogCategories2'] }); // Оновлює кеш даних після оновлення складу
+            },
+        });
 }
 
 // Використання useMutation для видалення складу (blog)
 export function useDeleteBlogCategory2() {
     const queryClient = useQueryClient();
-    return useMutation((id: number) => deleteBlogCategory2(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('blogCategories2'); // Оновлює кеш даних після видалення складу
-        },
-    });
+    return useMutation(
+        {
+            mutationFn: (id: number) => deleteBlogCategory2(id),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['blogCategories2'] }); // Оновлює кеш даних після видалення складу
+            },
+        });
 }

@@ -13,7 +13,7 @@ import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerA
 import { useWares } from "@/pages/api/WareApi";
 import { CircularProgress } from "@mui/material";
 import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
 import FavoriteWaresUser from "./FavoriteWaresUser";
@@ -95,7 +95,7 @@ export default function PageProfileUser(props) {
                     {
                         onSuccess: () => {
                             console.log("Дані оновлено, починаємо рефетчинг...");
-                            queryClient.invalidateQueries('customers');
+                            queryClient.invalidateQueries({ queryKey: ['customers'] });
                             toast.success("Фото профілю успішно оновлено!");
                         },
                         onError: (error) => {

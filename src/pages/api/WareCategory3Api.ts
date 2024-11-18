@@ -47,8 +47,8 @@ export function useWareCategories3(params) {
 	return useQuery({
 		queryKey: ['wareCategories3', params],
 		queryFn: () => getWareCategories3(params),
-		staleTime: Infinity, // Дані завжди актуальні
-		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		// staleTime: Infinity, // Дані завжди актуальні
+		// gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }

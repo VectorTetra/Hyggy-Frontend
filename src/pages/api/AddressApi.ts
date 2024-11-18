@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface AddressQueryParams {
 	SearchParameter: string;
@@ -85,39 +84,47 @@ export async function deleteAddress(id: number) {
 
 // Використання useQuery для отримання списку складів (wares)
 export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['addresses', params], () => getAddresses(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false,
+	return useQuery({
+		queryKey: ['addresses', params],
+		queryFn: () => getAddresses(params),
+		// staleTime: Infinity, // Дані завжди актуальні
+		// gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateAddress() {
 	const queryClient = useQueryClient();
-	return useMutation((newAddress: AddressDTO) => postAddress(newAddress), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newAddress: AddressDTO) => postAddress(newAddress),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['addresses'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateAddress() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedAddress: AddressDTO) => putAddress(updatedAddress), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (updatedAddress: AddressDTO) => putAddress(updatedAddress),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['addresses'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteAddress() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteAddress(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('addresses'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteAddress(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['addresses'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
