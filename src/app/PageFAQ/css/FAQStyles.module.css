@@ -4,6 +4,13 @@
     padding: 20px;
 }
 
+.AboutUs {
+    display: flex;
+    width: 100%;
+    background-color: white;
+    margin: 10px 0 0 0;
+}
+
 /* Левый контейнер для FAQ и общих вопросов */
 .leftcontainer {
     flex: 2;
@@ -152,6 +159,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
+.questionscolumnl {
+    margin-left: 70px;
+}
+
+.questionscolumnr {
+    margin-left: 60px;
+}
+
 
 .questiontitle {
     padding: 10px;
@@ -183,7 +198,7 @@
 .captionworkstyle {
     text-align: center;
     font-weight: bold;
-    font-size: 1.2vw;
+    font-size: 16px;
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -246,6 +261,10 @@
     object-fit: cover;
     position: relative;
     margin-top: -6vw;
+}
+
+.adaptivurl {
+    font-size: 15px;
 }
 
 
@@ -342,6 +361,10 @@
     .adaptivurl {
         font-size: 14px;
     }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
+    }
 }
 
 @media screen and (max-width: 700px) {
@@ -350,6 +373,10 @@
         place-items: center;
         padding: 0;
         margin: 0 0 20px 0;
+    }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
     }
 
     .faqcontainer h2 {
@@ -436,5 +463,9 @@
 
     .adaptivurl {
         font-size: 14px;
+    }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
     }
 }

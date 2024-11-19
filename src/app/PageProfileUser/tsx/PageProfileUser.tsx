@@ -207,28 +207,25 @@ export default function PageProfileUser(props) {
                             </div>
                             <div className={styles.profileText}>
                                 <h3 className={styles.h3}>{customer?.name} {customer?.surname}</h3>
+                                <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
+                                <input type="file" accept="image/*" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                             </div>
                         </div>
-                        <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
-                        <input type="file" accept="image/*" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                         <ul className={styles.profileDetails}>
-                            <li>Електронна пошта: {customer?.email}</li>
-                            <li>Номер телефону: {customer?.phoneNumber ? customer.phoneNumber : "Не призначено"}</li>
+                            <li><strong>Електронна пошта:</strong> {customer?.email}</li>
+                            <li><strong>Номер телефону:</strong> {customer?.phoneNumber ? customer.phoneNumber : "Не призначено"}</li>
                         </ul>
                         <div className={styles.deleteAccountButtonContainer}>
-                            {/* <button className={styles.deleteAccountButton} onClick={handleDeleteAccount}>Видалити</button> */}
                             <button className={styles.deleteAccountButton} onClick={handleEdit}>Редагувати</button>
                             <button className={styles.deleteAccountButton} onClick={handleLogout}>Вийти</button>
                         </div>
                     </div>
-
                     <div className={styles.profileBlock}>
                         <ul className={styles.actionList}>
                             <li onClick={() => { setIsEditing(false); setActiveTab('orders'); }}>Мої замовлення <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('completedOrders'); }}>Виконані замовлення <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('reviews'); }}>Мої відгуки <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('favorites'); }}>Обране <span>&rarr;</span></li>
-                            {/* <li onClick={handleLogout}>Вийти <span>&rarr;</span></li> */}
                         </ul>
                     </div>
                 </div>
