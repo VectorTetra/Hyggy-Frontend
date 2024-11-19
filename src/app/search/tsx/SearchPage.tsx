@@ -28,26 +28,7 @@ interface Filter {
 
 export default function SearchPage() {
 
-    function calculateLocalStorageSize() {
-        let totalBytes = 0;
 
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key !== null) {
-                const value = localStorage.getItem(key);
-                if (value !== null) {
-                    // Додаємо довжину ключа та значення у байтах
-                    totalBytes += key.length + value.length;
-                }
-            }
-
-            // Перетворюємо байти у мегабайти
-            const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
-            return totalMB + ' MB';
-        }
-    }
-
-    console.log('LocalStorage usage:', calculateLocalStorageSize());
     const [query] = useQueryState("query", { scroll: false, history: "replace", shallow: true });
     const [type] = useQueryState("type", { scroll: false, history: "replace", shallow: true });
     const [priceRange] = useQueryState("f_0", { scroll: false, history: "replace", shallow: true });

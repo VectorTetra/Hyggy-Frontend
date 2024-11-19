@@ -33,6 +33,7 @@ import BlockShopsByWare from '@/app/sharedComponents/BlockShopsByWare';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import useLocalStorageStore from '@/store/localStorage';
 import { useBlogs } from '@/pages/api/BlogApi';
+import { useWareReviews } from '@/pages/api/WareReviewApi';
 
 
 interface CartItem {
@@ -80,7 +81,7 @@ export default function WarePage() {
     data: relatedReviews = [],
     isLoading: isRelatedReviewsLoading,
     refetch: refetchRelatedReviews
-  } = useReviews({
+  } = useWareReviews({
     SearchParameter: "StringIds",
     StringIds: product !== null ? product?.reviewIds.join("|") : "",
     Sorting: "IdDesc",
@@ -88,6 +89,7 @@ export default function WarePage() {
 
 
   console.log("relatedBlogs", relatedBlogs);
+  console.log("relatedReviews", relatedReviews);
 
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
@@ -349,6 +351,7 @@ export default function WarePage() {
                 height: "auto", // Автоматична висота для адаптації
                 objectFit: "contain" // Показує повне зображення, не розтягуючи його
               }}
+              unoptimized={true}  // Вимикає оптимізацію зображення
             />
           </div>
         </div>
