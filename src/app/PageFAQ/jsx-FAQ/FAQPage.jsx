@@ -3,6 +3,9 @@ import styles from "../css/FAQStyles.module.css";
 import CommonQuestions from "./CommonQuestions";
 import ContactSection from "./ContactSection";
 import FAQSection from "./FAQSection";
+import MainPageBodyAboutUs from "../../MainPageFiles/jsx/jsx-Body/MainPageBodyAboutUs";
+import MainPageBodySubscriptionForm from "../../MainPageFiles/jsx/jsx-Body/MainPageBodySubscriptionForm";
+import bodyData from "../../MainPageFiles/json/mainPageBody.json";
 
 export default function FAQPage(props) {
     return (
@@ -26,6 +29,13 @@ export default function FAQPage(props) {
             </div>
             <div>
                 <CommonQuestions faqPage={props.faqPage} />
+            </div>
+            <div className={styles.AboutUs}>
+                <MainPageBodyAboutUs aboutus={bodyData.bodyData.aboutus} />
+            </div>
+            <div>
+                <MainPageBodySubscriptionForm caption={bodyData.bodyData.formmail.caption}
+                    forminfo={bodyData.bodyData.formmail.forminfo} />
             </div>
         </div>
     );

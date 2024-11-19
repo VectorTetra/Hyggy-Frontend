@@ -32,7 +32,7 @@ export default function CommonQuestions(props) {
         <div className={styles.commonquestions}>
             <h3>Найбільш поширені питання</h3>
             <div className={styles.questionscontainer}>
-                <div className={styles.questionscolumn}>
+                <div className={styles.questionscolumnl}>
                     {firstColumn.map((item) => (
                         <div
                             key={item.id}
@@ -43,7 +43,7 @@ export default function CommonQuestions(props) {
                         </div>
                     ))}
                 </div>
-                <div className={styles.questionscolumn}>
+                <div className={styles.questionscolumnr}>
                     {secondColumn.map((item) => (
                         <div
                             key={item.id}

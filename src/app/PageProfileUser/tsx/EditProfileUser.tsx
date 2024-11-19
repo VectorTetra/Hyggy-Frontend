@@ -173,6 +173,7 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                         color: 'white',
                                         backgroundColor: 'rgba(0,95,96,1)',
                                     },
+                                    width: '48%'
                                 }}>
                                 Зберегти
                             </Button>
@@ -184,6 +185,7 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                         color: 'white',
                                         backgroundColor: 'rgba(0,95,96,1)',
                                     },
+                                    width: '48%'
                                 }}>
                                 Скасувати
                             </Button>
@@ -191,7 +193,7 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                         <Box display="flex" justifyContent="space-between" mt={2}>
                             <Button variant="outlined" color="secondary" onClick={handleDeleteAccount}
                                 sx={{
-                                    backgroundColor: '#00AAAD',
+                                    backgroundColor: 'red',
                                     color: 'white',
                                     '&:hover': {
                                         color: 'white',
