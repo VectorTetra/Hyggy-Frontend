@@ -95,8 +95,8 @@ export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchPa
     return useQuery({
         queryKey: ['blogCategories2', params],
         queryFn: () => getBlogCategories2(params),
-        // staleTime: Infinity, // Дані завжди актуальні
-        // gcTime: Infinity, // Дані залишаються в кеші без очищення
+        staleTime: Infinity, // Дані завжди актуальні
+        gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
     });
 }

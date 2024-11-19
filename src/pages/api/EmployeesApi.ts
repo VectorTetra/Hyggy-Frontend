@@ -97,8 +97,8 @@ export function useShopEmployees() {
     return useQuery({
         queryKey: ['shopEmployees'],
         queryFn: () => getShopEmployees(),
-        // staleTime: Infinity, // Дані завжди актуальні
-        // gcTime: Infinity, // Дані залишаються в кеші без очищення
+        staleTime: Infinity, // Дані завжди актуальні
+        gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
     });
 }
@@ -107,8 +107,8 @@ export function useStorageEmployees() {
     return useQuery({
         queryKey: ['storageEmployees'],
         queryFn: () => getStorageEmployees(),
-        // staleTime: Infinity, // Дані завжди актуальні
-        // gcTime: Infinity, // Дані залишаються в кеші без очищення
+        staleTime: Infinity, // Дані завжди актуальні
+        gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
     });
 }

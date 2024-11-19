@@ -83,8 +83,8 @@ export function useStorages(params: StorageQueryParams = { SearchParameter: "Que
 	return useQuery({
 		queryKey: ['storages', params],
 		queryFn: () => getStorages(params),
-		// staleTime: Infinity, // Дані завжди актуальні
-		// gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }

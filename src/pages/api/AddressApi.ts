@@ -87,8 +87,8 @@ export function useAddresses(params: AddressQueryParams = { SearchParameter: "Qu
 	return useQuery({
 		queryKey: ['addresses', params],
 		queryFn: () => getAddresses(params),
-		// staleTime: Infinity, // Дані завжди актуальні
-		// gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }

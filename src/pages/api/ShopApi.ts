@@ -113,8 +113,8 @@ export function useShops(params: ShopQueryParams = { SearchParameter: "Query" })
 	return useQuery({
 		queryKey: ['Shops', params],
 		queryFn: () => getShops(params),
-		// staleTime: Infinity, // Дані завжди актуальні
-		// gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }

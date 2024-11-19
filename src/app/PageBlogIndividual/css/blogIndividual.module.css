@@ -6,6 +6,27 @@
     margin-right: 10vw;
 }
 
+.headcontainer p {
+    margin: 0;
+    /* justify-content: center;
+    display: flex; */
+}
+
+.headcontainer p:has(img) {
+    margin: 0;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.headcontainer ol,
+.headcontainer ul,
+.headcontainer menu {
+    list-style: unset;
+}
+
 .bigimage {
     margin-bottom: 40px;
 }
