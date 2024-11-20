@@ -6,84 +6,12 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import PhotoUploader from './PhotoUploader';
 //import styles from '../css/FrameBlogInvoiceForm.module.css';
-import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
-import { Resize, BaseModule } from 'quill-image-resize-module';
+//import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
+//import Table from "quill-table"; // Основний модуль для роботи з таблицями
+// import { Resize, BaseModule } from 'quill-image-resize-module';
+// import Editor from './Editor';
 
-Quill.register('modules/imageResize', ImageResize);
-
-// Реалізація MyModule всередині компонента
-// class MyModule extends BaseModule {
-//     img: any;
-//     overlay: any;
-//     requestUpdate: any;
-//     constructor(resizer) {
-//         super(resizer);
-//     }
-
-//     onCreate() {
-//         super.onCreate();
-
-//         if (this.overlay) {
-//             const positionControls = document.createElement('div');
-//             positionControls.classList.add('position-controls');
-
-//             const floatLeftButton = document.createElement('button');
-//             floatLeftButton.textContent = 'Обтікати ліворуч';
-//             floatLeftButton.addEventListener('click', () => {
-//                 this.setImagePosition('left');
-//             });
-
-//             const floatRightButton = document.createElement('button');
-//             floatRightButton.textContent = 'Обтікати праворуч';
-//             floatRightButton.addEventListener('click', () => {
-//                 this.setImagePosition('right');
-//             });
-
-//             const floatNoneButton = document.createElement('button');
-//             floatNoneButton.textContent = 'Без обтікання';
-//             floatNoneButton.addEventListener('click', () => {
-//                 this.setImagePosition('none');
-//             });
-
-//             positionControls.appendChild(floatLeftButton);
-//             positionControls.appendChild(floatRightButton);
-//             positionControls.appendChild(floatNoneButton);
-
-//             this.overlay.appendChild(positionControls);
-//         }
-//     }
-
-//     setImagePosition(position) {
-//         if (this.img) {
-//             if (position === 'left') {
-//                 this.img.style.float = 'left';
-//                 this.img.style.marginRight = '10px';
-//             } else if (position === 'right') {
-//                 this.img.style.float = 'right';
-//                 this.img.style.marginLeft = '10px';
-//             } else {
-//                 this.img.style.float = 'none';
-//             }
-
-//             if (this.requestUpdate) {
-//                 this.requestUpdate();
-//             }
-//         }
-//     }
-
-//     onDestroy() {
-//         super.onDestroy();
-//         if (this.overlay) {
-//             const positionControls = this.overlay.querySelector('.position-controls');
-//             if (positionControls) {
-//                 this.overlay.removeChild(positionControls);
-//             }
-//         }
-//     }
-
-// }
-
-
+//Quill.register('modules/imageResize', ImageResize);
 
 const FrameBlogInvoiceForm = () => {
     const {
@@ -103,25 +31,32 @@ const FrameBlogInvoiceForm = () => {
 
     const modules = {
         toolbar: [
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'indent': '-1' }, { 'indent': '+1' }],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['link', 'image'],
-            ['clean'],
+            [{ header: [1, 2, 3, 4, 5, 6] }],
+            [{ size: [] }],
+            ["bold", "italic", "underline", "strike", "blockquote"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link"],
+            ["code-block"],
+            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+            [{ align: [] }],
+            [{ script: "sub" }, { script: "super" }], // superscript/subscript
+            [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+            [{ direction: "rtl" }, "clean"],
         ],
-        imageResize: {
-            modules: ['Resize', 'DisplaySize', 'Toolbar'],
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false
         },
+        // imageResize: {
+        //     modules: ['Resize', 'DisplaySize', 'Toolbar'],
+        // },
+
     };
 
     const formats = [
         'header', 'bold', 'italic', 'underline', 'strike',
         'list', 'bullet', 'script', 'indent', 'align',
-        'color', 'background', 'link', 'image', 'table-better'
+        'color', 'background', 'link', 'image',
     ];
 
     return (
@@ -142,6 +77,9 @@ const FrameBlogInvoiceForm = () => {
                                     borderRadius: '8px',
                                 }}
                             />
+                            // <Editor value={typeof row.content === 'string' ? row.content : ''}
+                            //     handlechange={(content) => updateRowContent(row.id, content)}
+                            //     placeholder="Введіть текст абзацу блогу" />
                         ) : (
                             <div style={{
                                 flex: 1,

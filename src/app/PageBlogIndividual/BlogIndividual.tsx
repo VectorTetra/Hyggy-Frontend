@@ -3,6 +3,7 @@ import { Blog, getJsonConstructorFile, useBlogs } from "@/pages/api/BlogApi";
 import { useParams } from "next/navigation";
 import styles from "./css/blogIndividual.module.css";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function BlogIndividual(props) {
     const params = useParams();
@@ -44,21 +45,34 @@ export default function BlogIndividual(props) {
                     alt={article.blogTitle || "Blog Image"}
                 />
                 <h1 className={styles.h1}>{article.blogTitle}</h1>
-                <div>
+                <div className={styles.blogItemsСontainer}>
                     {articleItems !== null &&
                         articleItems.map((item, index) => (
-                            <div className={styles.captiontext} key={index}>
+                            <div key={index}>
                                 {item.caption && <h2 className={styles.h2}>{item.caption}</h2>}
-                                <div
-                                    className={styles.contenttext}
+                                {item.contentType === "text" && <div
+                                    className={`${styles.contenttext} ${styles.captiontext}`}
                                     dangerouslySetInnerHTML={{ __html: item.content }}
-                                />
-                                {item.urlimage1 || item.urlimage2 ? (
-                                    <div className={styles.imagerow}>
-                                        {item.urlimage1 && <img src={item.urlimage1} alt="Image 1" />}
-                                        {item.urlimage2 && <img src={item.urlimage2} alt="Image 2" />}
+                                />}
+                                {item.contentType === "image" && (
+                                    <div className={styles.flexContainer}>
+                                        {item.content.map((imageUrl: string, imgIndex: number) => (
+                                            <div key={imgIndex} className={styles.imageWrapper}>
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt={`Image ${imgIndex + 1}`}
+                                                    layout="intrinsic"
+                                                    width={400}
+                                                    height={300}
+                                                    className={styles.image}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-                                ) : null}
+                                )}
+
+
+
                             </div>
                         ))}
                 </div>

@@ -36,7 +36,7 @@
 }
 
 .contenttext {
-    font-size: 1.1vw;
+    font-size: clamp(14px, 1.3vmax, 20px);
     text-align: justify;
 }
 
@@ -52,6 +52,48 @@
     width: 50%;
     height: auto;
 }
+
+.flexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* Дозволяє перенос на наступний рядок, якщо місця недостатньо */
+    justify-content: center;
+    /* Центрує елементи по горизонталі */
+    align-items: center;
+    /* Центрує елементи по вертикалі */
+    gap: 16px;
+    /* Відступ між елементами */
+    margin-top: 16px;
+    /* Відступ зверху */
+}
+
+.imageWrapper {
+    /* position: relative;
+    flex: 1 1 calc(50% - 16px);
+    max-width: 500px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+.blogItemsСontainer {
+    margin-bottom: 50px;
+}
+
+.image {
+    object-fit: cover;
+    /* Заповнює контейнер без спотворення */
+    transition: transform 0.3s ease;
+}
+
+.image:hover {
+    transform: scale(1.05);
+    /* Ефект збільшення при наведенні */
+}
+
+
+
 
 @media screen and (max-width: 1000px) and (min-width: 500px) {
 
