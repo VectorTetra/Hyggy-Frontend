@@ -35,7 +35,7 @@
 }
 
 .footer-item {
-    color: rgb(219, 217, 217);
+    color: white;
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 22px;
@@ -46,7 +46,12 @@
 
 .footer-itemA {
     text-decoration: none;
-    color: rgb(219, 217, 217);
+    color: white;
+}
+
+.footer-itemB {
+    font-size: 22px;
+    color: white;
 }
 
 .footer-address {
