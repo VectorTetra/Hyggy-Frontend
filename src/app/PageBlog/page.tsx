@@ -10,7 +10,7 @@ export default function Home() {
   };
 
   return (
-    <Layout headerType="header1" footerType="footer1" pageMetadata={pageMetadata}>
+    <Layout headerType="header1" footerType="footer1">
       <div>
         <BlogPage blogPage={blogData.blogData} />
       </div>

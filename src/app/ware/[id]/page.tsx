@@ -334,7 +334,7 @@ export default function WarePage() {
             {product && relatedBlogs && relatedBlogs.length > 0 ? (
               <ArticlesWare blogs={relatedBlogs} />
             ) : (
-              <p>Немає пов'язаних статей.</p>
+              <p>Немає пов&apos;язаних статей.</p>
             )}
           </div>
           <div style={{ display: "flex", flex: 0.4 }}>

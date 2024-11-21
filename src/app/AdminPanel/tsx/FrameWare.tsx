@@ -12,26 +12,26 @@ import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 
 export default function WareFrame() {
-    function calculateLocalStorageSize() {
-        let totalBytes = 0;
+    // function calculateLocalStorageSize() {
+    //     let totalBytes = 0;
 
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key !== null) {
-                const value = localStorage.getItem(key);
-                if (value !== null) {
-                    // Додаємо довжину ключа та значення у байтах
-                    totalBytes += key.length + value.length;
-                }
-            }
+    //     for (let i = 0; i < localStorage.length; i++) {
+    //         const key = localStorage.key(i);
+    //         if (key !== null) {
+    //             const value = localStorage.getItem(key);
+    //             if (value !== null) {
+    //                 // Додаємо довжину ключа та значення у байтах
+    //                 totalBytes += key.length + value.length;
+    //             }
+    //         }
 
-            // Перетворюємо байти у мегабайти
-            const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
-            return totalMB + ' MB';
-        }
-    }
+    //         // Перетворюємо байти у мегабайти
+    //         const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+    //         return totalMB + ' MB';
+    //     }
+    // }
 
-    console.log('LocalStorage usage:', calculateLocalStorageSize());
+    // console.log('LocalStorage usage:', calculateLocalStorageSize());
     const { mutate: deleteWare } = useDeleteWare();
     //const queryClient = useQueryClient();
     const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });

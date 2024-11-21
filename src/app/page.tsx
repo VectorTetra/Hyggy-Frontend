@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <Layout headerType="header1" footerType="footer1">
       {/* <div> */}
-      <MainPageBorder borderData={borderData.borderData} />
+      <MainPageBorder />
       <MainPageBody bodyData={bodyData.bodyData} />
       <div></div>
       {/* </div> */}

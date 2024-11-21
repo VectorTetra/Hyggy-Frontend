@@ -1,8 +1,44 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
+export class WareCategory3QueryParams {
+	SearchParameter: string = "Query";
+	Id?: number | null;
+	NameSubstring?: string | null;
+	WareCategory1Id?: number | null;
+	WareCategory1NameSubstring?: string | null;
+	WareCategory2Id?: number | null;
+	WareCategory2NameSubstring?: string | null;
+	WareId?: number | null;
+	WareArticle?: number | null;
+	WareNameSubstring?: string | null;
+	WareDescriptionSubstring?: string | null;
+	PageNumber?: number | null;
+	PageSize?: number | null;
+	Sorting?: string | null;
+	StringIds?: string | null;
+	QueryAny?: string | null;
+}
+
+export class WareCategory3PostDTO {
+	Name: string;
+	WareCategory2Id: number;
+}
+export class WareCategory3PutDTO {
+	Id: number;
+	Name: string;
+	WareCategory2Id: number;
+	WareIds?: number[] = [];
+}
+
+export class WareCategory3 {
+	id: number;
+	waresCategory2Ids: number[];
+	name: string;
+	waresCategories2: any[];
+}
 // API запити
-export async function getWareCategories3(params) {
+export async function getWareCategories3(params: WareCategory3QueryParams = { SearchParameter: "Query" }) {
 	try {
 		const response = await axios.get('http://www.hyggy.somee.com/api/WareCategory3', { params });
 		return response.data;
@@ -12,7 +48,7 @@ export async function getWareCategories3(params) {
 	}
 }
 
-export async function postWareCategory3(WareCategory3) {
+export async function postWareCategory3(WareCategory3: WareCategory3PostDTO) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/WareCategory3', WareCategory3);
 		return response.data;
@@ -22,7 +58,7 @@ export async function postWareCategory3(WareCategory3) {
 	}
 }
 
-export async function putWareCategory3(WareCategory3) {
+export async function putWareCategory3(WareCategory3: WareCategory3PutDTO) {
 	try {
 		const response = await axios.put('http://www.hyggy.somee.com/api/WareCategory3', WareCategory3);
 		return response.data;
@@ -58,7 +94,7 @@ export function useCreateWareCategory3() {
 	const queryClient = useQueryClient();
 	return useMutation(
 		{
-			mutationFn: (newWareCategory3) => postWareCategory3(newWareCategory3),
+			mutationFn: (newWareCategory3: WareCategory3PostDTO) => postWareCategory3(newWareCategory3),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['wareCategories3'] }); // Інвалідуємо кеш після мутації
 			},
@@ -70,7 +106,7 @@ export function useUpdateWareCategory3() {
 	const queryClient = useQueryClient();
 	return useMutation(
 		{
-			mutationFn: (newWareCategory3) => putWareCategory3(newWareCategory3),
+			mutationFn: (newWareCategory3: WareCategory3PutDTO) => putWareCategory3(newWareCategory3),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['wareCategories3'] }); // Інвалідуємо кеш після мутації
 			},
