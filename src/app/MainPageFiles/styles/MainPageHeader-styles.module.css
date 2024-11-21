@@ -234,7 +234,12 @@
 
 	.navbarcontainer {
 		flex-direction: column;
-		gap: 20px;
+		gap: 10px;
+	}
+
+	#mainPageHeaderLogo {
+		width: 90px;
+		height: 45px;
 	}
 
 	#mainPageHeaderLogoMyContainer {
@@ -255,7 +260,7 @@
 	}
 
 	#mainPageHeaderLogoContainer {
-		justify-content: space-between;
+		/* justify-content: space-between; */
 		padding: 0 20px;
 	}
 
@@ -289,6 +294,23 @@
 
 	.geoblock {
 		order: 1;
+	}
+
+	#mainPageHeaderUserPhoto {
+		width: clamp(15px, 10vw, 25px);
+		height: clamp(15px, 10vw, 25px);
+	}
+
+	#mainPageHeaderBasketPhoto {
+		width: clamp(15px, 10vw, 25px);
+	}
+
+	.mainPageHeaderItem {
+		gap: 5px
+	}
+
+	#mainPageHeaderLogoContainer a {
+		margin: 0 0 0 10px;
 	}
 
 }

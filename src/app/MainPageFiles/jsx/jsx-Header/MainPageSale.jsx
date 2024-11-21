@@ -51,8 +51,8 @@ export default function MainPageSale(props) {
     return (
         <div id={styles.mainPageSale}>
             <div onClick={handleBannerClick} className={styles.bannerLink}>
-                {/* {sales[currentIndex]?.blogTitle} */}
-                {props.infoSales[currentIndex].infoSale}
+                {sales[currentIndex]?.blogTitle}
+                {/* {props.infoSales[currentIndex].infoSale} */}
             </div>
         </div>
     );
