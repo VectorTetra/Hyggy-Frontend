@@ -11,13 +11,8 @@ import { getDecodedToken, removeToken, validateToken } from '@/pages/api/TokenAp
 import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { useWares } from "@/pages/api/WareApi";
 import { CircularProgress } from "@mui/material";
-<<<<<<< HEAD
 import { getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
-import { useQueryClient } from "react-query";
-=======
-import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
 import { useQueryClient } from "@tanstack/react-query";
->>>>>>> Viktor-Page-Ware-Finishing
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
 import FavoriteWaresUser from "./FavoriteWaresUser";
@@ -70,12 +65,6 @@ export default function PageProfileUser(props) {
         if (files && customer !== null && customer.favoriteWareIds && customer.orderIds) {
             if (customer.avatarPath) { getPhotoByUrlAndDelete(customer.avatarPath); }
             uploadPhotos(files).then(async (urls) => {
-<<<<<<< HEAD
-                console.log("customer?.favoriteWareIds", customer.favoriteWareIds);
-=======
-                //setImagePreviewUrl(urls[0]);
-                console.log("customer?.favoriteWareIds", customer!.favoriteWareIds);
->>>>>>> Viktor-Page-Ware-Finishing
                 await updateCustomer(
                     {
                         Name: customer!.name,

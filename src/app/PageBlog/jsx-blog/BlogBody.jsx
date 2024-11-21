@@ -26,13 +26,9 @@ export default function BlogBody(props) {
                             {category.imagesHome.slice(1, 5).map((image, imgIndex) => (
                                 <div key={imgIndex}>
                                     <div className={styles.imagewrapper}>
-<<<<<<< HEAD
-                                        <Link href={image.urlPage || "#"}>
-                                            <img className={styles.image} src={image.urlImages} alt={image.caption} />
-=======
+
                                         <Link prefetch={true} href={image.urlPage || "#"}>
                                             <img src={image.urlImages} alt={image.caption} />
->>>>>>> Viktor-Page-Ware-Finishing
                                             {image.caption && (
                                                 <p className={styles.imagecaption}>{image.caption}</p>
                                             )}

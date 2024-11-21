@@ -31,7 +31,7 @@ export default function MainPageSale(props) {
     // Функция для перехода к следующему элементу
     const nextSale = () => {
         setCurrentIndex((prevIndex) =>
-            (prevIndex + 1) % props.infoSales.length
+            (prevIndex + 1) % sales.length
         );
     };
 
@@ -43,16 +43,15 @@ export default function MainPageSale(props) {
 
     // Обработчик клика по баннеру
     const handleBannerClick = () => {
-        const selectedBanner = props.infoSales[currentIndex];
+        const selectedBanner = sales[currentIndex];
         const id = selectedBanner.id;
-        router.push(`../PageSale?id=${id}`);
+        router.push(`../PageBlogIndividual/${id}`);
     };
 
     return (
         <div id={styles.mainPageSale}>
             <div onClick={handleBannerClick} className={styles.bannerLink}>
                 {sales[currentIndex]?.blogTitle}
-                {/* {props.infoSales[currentIndex].infoSale} */}
             </div>
         </div>
     );

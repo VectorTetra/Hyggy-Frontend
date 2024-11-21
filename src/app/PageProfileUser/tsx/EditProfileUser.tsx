@@ -6,13 +6,9 @@ import InputMask from 'react-input-mask';  // Імпортуємо InputMask
 import data from '../PageProfileUser.json';
 import { Customer, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
 import { useQueryClient } from 'react-query';
 import { getDecodedToken, removeToken } from "@/pages/api/TokenApi";
-=======
-import { useQueryClient } from '@tanstack/react-query';
-import { getDecodedToken } from "@/pages/api/TokenApi";
->>>>>>> Viktor-Page-Ware-Finishing
+
 
 export default function EditProfileUser({ onSave, user }: { onSave: any, user: Customer }) {
 
