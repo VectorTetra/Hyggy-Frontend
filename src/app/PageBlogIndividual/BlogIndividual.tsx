@@ -64,7 +64,8 @@ export default function BlogIndividual(props) {
                                                     layout="intrinsic"
                                                     width={400}
                                                     height={300}
-                                                    className={styles.image}
+                                                    className={`${styles.image} ${item.content.length > 1 ? styles.imageSmall : styles.imageBig}`}
+                                                    unoptimized
                                                 />
                                             </div>
                                         ))}
