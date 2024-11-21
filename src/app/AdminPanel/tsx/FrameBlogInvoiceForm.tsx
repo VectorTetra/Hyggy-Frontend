@@ -1,13 +1,25 @@
-import React from 'react';
-import useBlogInvoiceStore from '@/store/BlogInvoiceStore';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { Button, Box, IconButton, TextField } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
-import PhotoUploader from './PhotoUploader';
 import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
+import useBlogInvoiceStore from '@/store/BlogInvoiceStore';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, IconButton, TextField } from '@mui/material';
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import PhotoUploader from './PhotoUploader';
+import '../css/FrameBlogInvoiceForm.css';
+//import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
+//import Table from "quill-table"; // Основний модуль для роботи з таблицями
+// import { Resize, BaseModule } from 'quill-image-resize-module';
+// import Editor from './Editor';
 
+//Quill.register('modules/imageResize', ImageResize);
+// Отримуємо вбудований атрибут 'Size' з Parchment
+// const Size = Quill.import('attributors/style/size');
+
+// // Задаємо дозволені розміри
+// Size.whitelist = ['10px', '12px', '14px', '18px', '24px', '36px'];
+
+// // Реєструємо модифіковану атрибуцію
+// Quill.register(Size, true);
 const FrameBlogInvoiceForm = () => {
     const {
         rows,
@@ -24,34 +36,38 @@ const FrameBlogInvoiceForm = () => {
         setIsPhotosDirty,
     } = useBlogInvoiceStore();
 
-    // const handleAddPhoto = (id: number, photoUrl: string) => {
-    //     if (photoUrl) {
-    //         addPhoto(id, photoUrl);
-    //     }
-    // };
+    const modules = {
+        toolbar: [
+            [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+            [{ size: ["small", false, "large", "huge"] }], // Додавання вибору розміру шрифту
+            ["bold", "italic", "underline", "strike", "blockquote"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link"],
+            ["code-block"],
+            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+            [{ align: [] }],
+            [{ script: "sub" }, { script: "super" }], // superscript/subscript
+            [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+            [{ direction: "rtl" }, "clean"],
+        ],
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false
+        },
+        // imageResize: {
+        //     modules: ['Resize', 'DisplaySize', 'Toolbar'],
+        // },
 
-    // const handleReorderPhotos = (id: number, newOrder: string[]) => {
-    //     reorderPhotos(id, newOrder);
-    // };
+    };
 
-    // async function UploadPhoto(ev,id, content) {
-    //     setIsPhotosDirty(true);
-    //     const files = ev.target.files;
-    //     if (files) {
-    //         const data = await uploadPhotos(files);
-    //         updateRowContent(id,[...content, ...data]);
-    //     }
-    // }
-
-    // async function removePhoto(filename) {
-    //     setIsPhotosDirty(true);
-    //     updateRowContent(photos.filter(photo => photo !== filename));
-    //     await getPhotoByUrlAndDelete(filename);
-    // }
+    const formats = [
+        'header', 'size', 'bold', 'italic', 'underline', 'strike',
+        'list', 'bullet', 'script', 'indent', 'align',
+        'color', 'background', 'link', 'image',
+    ];
 
     return (
         <div>
-            {/* Рядки контенту */}
             <div style={{ marginBottom: '2rem' }}>
                 <h4>Вміст блогу</h4>
                 {rows.map((row) => (
@@ -60,12 +76,17 @@ const FrameBlogInvoiceForm = () => {
                             <ReactQuill
                                 value={typeof row.content === 'string' ? row.content : ''}
                                 onChange={(content) => updateRowContent(row.id, content)}
+                                modules={modules}
+                                formats={formats}
                                 placeholder="Введіть текст абзацу блогу"
                                 style={{
                                     flex: 1,
                                     borderRadius: '8px',
                                 }}
                             />
+                            // <Editor value={typeof row.content === 'string' ? row.content : ''}
+                            //     handlechange={(content) => updateRowContent(row.id, content)}
+                            //     placeholder="Введіть текст абзацу блогу" />
                         ) : (
                             <div style={{
                                 flex: 1,
@@ -114,7 +135,6 @@ const FrameBlogInvoiceForm = () => {
                 </Box>
             </div>
 
-            {/* Ключові слова */}
             <div style={{ marginBottom: '2rem' }}>
                 <h4>Ключові слова</h4>
                 {keywords.map((keyword, index) => (
@@ -140,21 +160,9 @@ const FrameBlogInvoiceForm = () => {
                     </Button>
                 </Box>
             </div>
-
-            {/* Додаткові кнопки */}
-            {/* <div>
-                <Button
-                    variant="contained"
-                    onClick={() => {
-                        console.log('Rows:', rows);
-                        console.log('Keywords:', keywords);
-                    }}
-                >
-                    Log Current State
-                </Button>
-            </div> */}
         </div>
     );
 };
 
 export default FrameBlogInvoiceForm;
+

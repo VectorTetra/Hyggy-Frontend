@@ -20,7 +20,7 @@ export default function MainPageHeaderFavoriteButton(props: any) {
         }
     }, [RefetchFavoriteWares, refetch, setRefetchFavoriteWares]);
     return (
-        <Link href={{ pathname: "../PageProfileUser", query: { tab: 'favorites' } }} className={styles.mainPageHeaderItem}>
+        <Link prefetch={true} href={{ pathname: "../PageProfileUser", query: { tab: 'favorites' } }} className={styles.mainPageHeaderItem}>
 
             <div style={{ position: "relative" }}>
                 <img id={styles.mainPageHeaderUserPhoto} src={props.favoritePhotoUrl} alt="logo" />

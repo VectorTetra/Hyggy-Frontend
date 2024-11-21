@@ -54,7 +54,7 @@ export default function SimilarWare({ product }: { product: Product }) {
       <div className={styles.carouselContainer}>
         {product.similarProducts.slice(currentSlide * itemsPerSlide, (currentSlide + 1) * itemsPerSlide).map((similarProduct) => (
           <div key={similarProduct.id} className={styles.similarProductCard}>
-            <Link href={`/ware/${similarProduct.id}`} className={styles.wareCardLink}>
+            <Link prefetch={true} href={`/ware/${similarProduct.id}`} className={styles.wareCardLink}>
               <div className={styles.similarProductImage}>
                 <Image
                   src={similarProduct.imageSrc}

@@ -5,7 +5,7 @@ export default function ArticleGrid(props: any) {
 	return (
 		<div id={styles.articleGrid}>
 			{props.blogs.map((article: any) => (
-				<Link className={styles.articleLink} key={article.id} href={`/article/${article.id}`}>
+				<Link prefetch={true} className={styles.articleLink} key={article.id} href={`/article/${article.id}`}>
 
 					<div className={styles.articleImageContainer}>
 						<ImageWithFallback

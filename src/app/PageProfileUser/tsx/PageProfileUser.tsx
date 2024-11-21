@@ -11,8 +11,13 @@ import { getDecodedToken, removeToken, validateToken } from '@/pages/api/TokenAp
 import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { useWares } from "@/pages/api/WareApi";
 import { CircularProgress } from "@mui/material";
+<<<<<<< HEAD
 import { getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
 import { useQueryClient } from "react-query";
+=======
+import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
+import { useQueryClient } from "@tanstack/react-query";
+>>>>>>> Viktor-Page-Ware-Finishing
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
 import FavoriteWaresUser from "./FavoriteWaresUser";
@@ -62,25 +67,30 @@ export default function PageProfileUser(props) {
 
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files && customer && customer.favoriteWareIds && customer.orderIds) {
+        if (files && customer !== null && customer.favoriteWareIds && customer.orderIds) {
             if (customer.avatarPath) { getPhotoByUrlAndDelete(customer.avatarPath); }
             uploadPhotos(files).then(async (urls) => {
+<<<<<<< HEAD
                 console.log("customer?.favoriteWareIds", customer.favoriteWareIds);
+=======
+                //setImagePreviewUrl(urls[0]);
+                console.log("customer?.favoriteWareIds", customer!.favoriteWareIds);
+>>>>>>> Viktor-Page-Ware-Finishing
                 await updateCustomer(
                     {
-                        Name: customer.name,
-                        Surname: customer.surname,
-                        Email: customer.email,
+                        Name: customer!.name,
+                        Surname: customer!.surname,
+                        Email: customer!.email,
                         Id: getDecodedToken()?.nameid || "",
-                        PhoneNumber: customer.phoneNumber,
+                        PhoneNumber: customer!.phoneNumber,
                         AvatarPath: urls[0],
-                        FavoriteWareIds: customer.favoriteWareIds,
-                        OrderIds: customer.orderIds
+                        FavoriteWareIds: customer!.favoriteWareIds,
+                        OrderIds: customer!.orderIds
                     },
                     {
                         onSuccess: () => {
                             console.log("Дані оновлено, починаємо рефетчинг...");
-                            queryClient.invalidateQueries('customers');
+                            queryClient.invalidateQueries({ queryKey: ['customers'] });
                             toast.success("Фото профілю успішно оновлено!");
                         },
                         onError: (error) => {

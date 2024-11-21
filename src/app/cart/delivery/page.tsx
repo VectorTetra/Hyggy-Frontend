@@ -399,7 +399,7 @@ const DeliveryPage = () => {
           </>
         )}
 
-        <Link href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
+        <Link prefetch={true} href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
           <center>
             <button
               type="submit"
@@ -411,7 +411,7 @@ const DeliveryPage = () => {
           </center>
         </Link>
 
-        <Link href="/cart/address">
+        <Link prefetch={true} href="/cart/address">
           <button type="button" className={styles.cancelButton}>Скасувати</button>
         </Link>
       </div>

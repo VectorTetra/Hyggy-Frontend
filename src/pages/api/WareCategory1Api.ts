@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export class WareCategory1QueryParams {
 	SearchParameter: string = "Query";
@@ -85,39 +84,50 @@ export async function deleteWareCategory1(id: number) {
 
 // Використання useQuery для отримання списку складів (wareCategories1)
 export function useWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['wareCategories1', params], () => getWareCategories1(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+	return useQuery({
+		queryKey: ['wareCategories1', params],
+		queryFn: () => getWareCategories1(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateWareCategory1() {
 	const queryClient = useQueryClient();
-	return useMutation((newWareCategory1: WareCategory1PostDTO) => postWareCategory1(newWareCategory1), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareCategories1'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareCategory1: WareCategory1PostDTO) => postWareCategory1(newWareCategory1),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareCategories1'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateWareCategory1() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedWareCategory1: WareCategory1PutDTO) => putWareCategory1(updatedWareCategory1), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareCategories1'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareCategory1: WareCategory1PutDTO) => putWareCategory1(newWareCategory1),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareCategories1'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteWareCategory1() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteWareCategory1(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareCategories1'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteWareCategory1(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareCategories1'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }

@@ -9,28 +9,39 @@ import L from 'leaflet';
 import { useRouter } from 'next/navigation';
 import { customIcon } from '../shops/components/Map';
 import Link from 'next/link';
+import useLocalStorageStore from '@/store/localStorage';
 
-export type Place = {
-    id: number;
-    photoUrl: string,
-    name: string;
-    street: string;
-    houseNumber: string;
-    addressId: number,
-    storageId: number,
-    orderIds: number[],
-    shopEmployeeIds: number[],
-    postalCode: string;
-    city: string;
-    state: string;
-    workHours: string;
-    latitude: number;
-    longitude: number;
-    executedOrdersSum: number;
-};
+// export type Place = {
+//     id: number;
+//     photoUrl: string,
+//     name: string;
+//     street: string;
+//     houseNumber: string;
+//     addressId: number,
+//     storageId: number,
+//     orderIds: number[],
+//     shopEmployeeIds: number[],
+//     postalCode: string;
+//     city: string;
+//     state: string;
+//     workHours: string;
+//     latitude: number;
+//     longitude: number;
+//     executedOrdersSum: number;
+// };
 export default function Shop() {
-    const [place, setPlace] = useState<Place | undefined>();
+    const { shopToViewOnShopPage: place, setShopToViewOnShopPage: setPlace } = useLocalStorageStore();
+    //const [place, setPlace] = useState<Place | undefined>();
     const markerRef = useRef(null);
+    const mapRef = useRef<L.Map | null>(null);  // Зберігаємо посилання на карту
+
+    useEffect(() => {
+        if (mapRef.current && place) {
+            // Оновлюємо центр карти, коли змінюється магазин
+            const map = mapRef.current;
+            map.setView([place.latitude, place.longitude], 20);
+        }
+    }, [place]); // Оновлюємо центр карти, коли змінюється place
     const router = useRouter();
     const daysOfWeek = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота', 'Неділя'];
 
@@ -38,12 +49,12 @@ export default function Shop() {
     const todayIndex = (new Date().getDay() + 6) % 7;
     const tomorrowIndex = (todayIndex + 1) % 7;
 
-    useEffect(() => {
-        const storedShop = sessionStorage.getItem('shop');
-        if (storedShop) {
-            setPlace(JSON.parse(storedShop));
-        }
-    }, []);
+    // useEffect(() => {
+    //     const storedShop = sessionStorage.getItem('shop');
+    //     if (storedShop) {
+    //         setPlace(JSON.parse(storedShop));
+    //     }
+    // }, []);
 
     const openGoogleMaps = () => {
         const url = `https://www.google.com/maps?q=${place?.latitude},${place?.longitude}`;
@@ -60,7 +71,7 @@ export default function Shop() {
                         <h1 className="text-3xl font-semibold">{place?.name}</h1>
                         <h3 className="mt-2 text-[14px]">{place?.street}</h3>
 
-                        <Link href="#workhours" className="text-gray-500 text-[14px] mt-5 flex gap-2 
+                        <Link prefetch={true} href="#workhours" className="text-gray-500 text-[14px] mt-5 flex gap-2 
 
                 hover:underline lg:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
@@ -69,7 +80,7 @@ export default function Shop() {
 
 
                             Робочі години</Link>
-                        <Link href='/shops' className="cursor-pointer text-gray-500 text-[14px] mt-5 flex gap-2
+                        <Link prefetch={true} href='/shops' className="cursor-pointer text-gray-500 text-[14px] mt-5 flex gap-2
 
                 hover:underline">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
@@ -80,10 +91,11 @@ export default function Shop() {
                         <div className="bg-gray-500 h-[500px] mt-4">
                             {place ? (
                                 <MapContainer
-                                    center={[place.latitude, place.longitude]}
+                                    center={[place?.latitude ?? 0, place?.longitude ?? 0]}
                                     zoom={20}
                                     style={{ width: '100%', height: '100%' }}
                                     maxZoom={18}
+                                    ref={mapRef}  // Прив'язуємо карту до ref
                                 >
                                     <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -97,7 +109,7 @@ export default function Shop() {
                                     >
                                         <Popup
                                             eventHandlers={{
-                                                popupclose: () => setPlace(undefined),
+                                                popupclose: () => setPlace(null),
                                             }}
                                         >
                                             <div className="h-52 w-60 pb-2 mt-20 mb-10">
@@ -108,7 +120,7 @@ export default function Shop() {
                                                     <div>{place.street} {place.houseNumber}</div>
                                                     <div>{place.postalCode} {place.city}</div>
                                                     <div>Тел: +380978654671</div>
-                                                    <Link
+                                                    <Link prefetch={true}
                                                         className="text-[14px] font-extralight cursor-pointer"
                                                         onClick={openGoogleMaps} href={''}                                                    >
                                                         Як знайти магазин
@@ -120,13 +132,13 @@ export default function Shop() {
                                                                 Сьогодні
                                                             </div>
                                                             <div>
-                                                                {place?.workHours.split('|')[todayIndex].split(',')[1]}
+                                                                {place?.workHours?.split('|')[todayIndex]?.split(',')[1] ?? ''}
                                                             </div>
                                                             <div>
                                                                 Завтра
                                                             </div>
                                                             <div>
-                                                                {place?.workHours.split('|')[tomorrowIndex].split(',')[1]}
+                                                                {place?.workHours?.split('|')[tomorrowIndex].split(',')[1]}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -153,7 +165,7 @@ export default function Shop() {
                                 Робочі години
                             </h1>
                             <ul className="mt-1 font-[400] space-y-0 pl-0">
-                                {place?.workHours.split('|').map((item, index) => (
+                                {place?.workHours?.split('|').map((item, index) => (
                                     <li
                                         key={index}
                                         className={`flex justify-between text-sm mb-0 ${index === todayIndex ? 'bg-yellow-200' : ''

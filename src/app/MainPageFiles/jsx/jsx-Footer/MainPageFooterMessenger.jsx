@@ -7,7 +7,7 @@ export default function MainPageFooterMessenger(props) {
         <div className={styles["footer-messenger"]}>
             {props.messenger.map((item, index) => (
                 <div key={index}>
-                    <Link href={item.urlpage}>
+                    <Link prefetch={true} href={item.urlpage}>
                         <img src={item.urlimages} />
                     </Link>
                 </div>

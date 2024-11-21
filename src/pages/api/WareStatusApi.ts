@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 
 export class WareStatusQueryParams {
 	SearchParameter: string = "Query";
@@ -85,39 +85,51 @@ export async function deleteWareStatus(id: number) {
 
 // Використання useQuery для отримання списку складів (wareStatuses)
 export function useWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['wareStatuses', params], () => getWareStatuses(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+
+	return useQuery({
+		queryKey: ['wareStatuses', params],
+		queryFn: () => getWareStatuses(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateWareStatus() {
 	const queryClient = useQueryClient();
-	return useMutation((newWareStatus: WareStatusPostDTO) => postWareStatus(newWareStatus), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareStatuses'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareStatus: WareStatusPostDTO) => postWareStatus(newWareStatus),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareStatuses'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateWareStatus() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedWareStatus: WareStatusPutDTO) => putWareStatus(updatedWareStatus), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareStatuses'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareStatus: WareStatusPutDTO) => putWareStatus(newWareStatus),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareStatuses'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteWareStatus() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteWareStatus(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareStatuses'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteWareStatus(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareStatuses'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }

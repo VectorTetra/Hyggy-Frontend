@@ -13,7 +13,7 @@ export default function ContactSection(props) {
                     <div key={index} className={styles.contactitem}>
                         <img src={item.urlImages} alt="Image" className={styles.contactimage} />
                         <div className={styles.contactcontent}>
-                            <Link href={item.urlPage}>
+                            <Link prefetch={true} href={item.urlPage}>
                                 <div className={styles.contentstyle} >{item.contentwork}</div>
                             </Link>
                             <div className={styles.textstyle} >{item.text}</div>
@@ -30,7 +30,7 @@ export default function ContactSection(props) {
                         </div>
                     ))}
                     <div className={styles.shopgo}>
-                        <Link href={props.faqPage.urlpage}>
+                        <Link prefetch={true} href={props.faqPage.urlpage}>
                             <div className={styles.adaptivurl}>{props.faqPage.captionshop}</div>
                         </Link>
                     </div>

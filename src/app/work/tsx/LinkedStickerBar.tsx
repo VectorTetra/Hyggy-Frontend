@@ -7,7 +7,7 @@ export default function LinkedStickerBar(props: any) {
 		<div className={styles.stickerBar} style={{ backgroundColor: props.backgroundColor || "white" }}>
 			{props.stickers.map((sticker: any) => {
 				return (
-					<Link href={sticker.href} key={sticker.id} className={styles.sticker}>
+					<Link prefetch={true} href={sticker.href} key={sticker.id} className={styles.sticker}>
 						<Image
 							src={sticker.stickerSrc}
 							alt={sticker.stickerAlt}

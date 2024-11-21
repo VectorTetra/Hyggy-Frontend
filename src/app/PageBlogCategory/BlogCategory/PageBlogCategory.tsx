@@ -48,7 +48,7 @@ export default function PageBlogCategory(props: any) {
                         <img src={item.imgSrc} alt={item.caption || 'Изображение'} />
                         {item.caption && <h3>{item.caption}</h3>}
                         <p>{item.title}</p>
-                        <Link href={item.link} className={styles.button}>Переглянути</Link>
+                        <Link prefetch={true} href={item.link} className={styles.button}>Переглянути</Link>
                     </div>
                 ))}
             </div>

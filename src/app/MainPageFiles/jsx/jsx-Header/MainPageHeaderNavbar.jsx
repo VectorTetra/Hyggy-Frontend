@@ -7,7 +7,7 @@ export default function MainPageHeaderNavbar(props) {
 		<div className={styles.navbarmenu}>
 			{
 				props.navBar.map((item, index) => (
-					<Link prefetch={false} key={index} className={styles.menuText} href={item.url}>
+					<Link prefetch={true} key={index} className={styles.menuText} href={item.url}>
 						{item.nameMenu}
 					</Link>
 				))

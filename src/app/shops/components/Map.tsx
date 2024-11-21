@@ -4,7 +4,9 @@ import "leaflet/dist/leaflet.css"; // Стилі Leaflet
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { useRouter } from "next/navigation";
-import { useShops } from "@/pages/api/ShopApi";
+import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
+import useLocalStorageStore from "@/store/localStorage";
+import useMainPageMenuShops from "@/store/mainPageMenuShops";
 
 // Іконка для маркерів
 export const customIcon = new L.Icon({
@@ -16,24 +18,24 @@ export const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-export type Place = {
-  id: number;
-  photoUrl: string;
-  name: string;
-  street: string;
-  houseNumber: string;
-  addressId: number;
-  storageId: number;
-  orderIds: number[];
-  shopEmployeeIds: number[];
-  postalCode: string;
-  city: string;
-  state: string;
-  workHours: string;
-  latitude: number;
-  longitude: number;
-  executedOrdersSum: number;
-};
+// export type Place = {
+//   id: number;
+//   photoUrl: string;
+//   name: string;
+//   street: string;
+//   houseNumber: string;
+//   addressId: number;
+//   storageId: number;
+//   orderIds: number[];
+//   shopEmployeeIds: number[];
+//   postalCode: string;
+//   city: string;
+//   state: string;
+//   workHours: string;
+//   latitude: number;
+//   longitude: number;
+//   executedOrdersSum: number;
+// };
 
 export const Map = ({ places }) => {
   const router = useRouter();
@@ -42,11 +44,13 @@ export const Map = ({ places }) => {
   //   PageNumber: 1,
   //   PageSize: 150,
   // });
-  const [selectedPlace, setSelectedPlace] = useState<Place | undefined>(undefined);
+  const [selectedPlace, setSelectedPlace] = useState<ShopGetDTO | undefined>(undefined);
+  const { setShopToViewOnShopPage } = useLocalStorageStore();
+  const { setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
 
-  const handleMarkerClick = (place: Place) => {
-    console.log(place.photoUrl);
-    sessionStorage.setItem("shop", JSON.stringify(place));
+  const handleMarkerClick = (place: ShopGetDTO) => {
+    setShopToViewOnShopPage(place);
+    setIsMainPageMenuShopsOpened(false);
     router.push("/shop");
   };
 

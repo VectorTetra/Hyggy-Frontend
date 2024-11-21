@@ -152,32 +152,6 @@ export default function FrameBlogAddEdit() {
                 renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" />}
                 isOptionEqualToValue={(option, value) => option.id === value?.id}
             />
-            {/* <label
-                style={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.25rem',
-                    border: '1px solid #e2e8f0',
-                    backgroundColor: 'transparent',
-                    borderRadius: '1rem',
-                    fontSize: '1.25rem',
-                    color: '#718096',
-                }}
-            >
-                <input
-                    type="file"
-                    style={{ display: 'none' }}
-                    onChange={handleSelectPreviewImage}
-                    multiple
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '2rem', height: '2rem' }}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
-                </svg>
-                Завантажити фото
-            </label> */}
-
 
             <TextField
                 label="Заголовок блогу"
@@ -197,8 +171,16 @@ export default function FrameBlogAddEdit() {
                     }
                 }}
                 removePhoto={async (filename) => {
-                    await getPhotoByUrlAndDelete(filename);
-                    setPreviewImageArray([]);
+                    try {
+                        await getPhotoByUrlAndDelete(filename);
+                        setPreviewImageArray([]);
+                    }
+                    catch (error) {
+                        console.error('Error deleting photo:', error);
+                    }
+                    finally {
+                        setPreviewImageArray([]);
+                    }
                 }}
                 setIsPhotosDirty={null}
                 maxPhotos={1}

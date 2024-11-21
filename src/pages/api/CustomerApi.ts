@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 
 export class CustomerQueryParams {
     SearchParameter: string = "Query";
@@ -83,26 +83,25 @@ export async function deleteCustomer(id: string) {
 
 // Використання useQuery для отримання списку складів (customers)
 export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }) {
-    return useQuery(['customers', params], () => getCustomers(params), {
-        staleTime: Infinity, // Дані залишаються актуальними завжди
-        cacheTime: Infinity, // Дані залишаються в кеші без очищення
-        refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+    return useQuery({
+        queryKey: ['customers', params],
+        queryFn: () => getCustomers(params),
+        staleTime: Infinity, // Дані завжди актуальні
+        gcTime: Infinity, // Дані залишаються в кеші без очищення
+        refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
     });
 }
 
 // Використання useMutation для оновлення існуючого складу (customer)
 export function useUpdateCustomer() {
     const queryClient = useQueryClient();
-
     return useMutation(
-        (updatedCustomer: CustomerPutDTO) => putCustomer(updatedCustomer),
         {
+            mutationFn: (updatedCustomer: CustomerPutDTO) => putCustomer(updatedCustomer),
             onSuccess: () => {
-                // Інвалідуємо і рефетчимо дані клієнтів
-                queryClient.invalidateQueries('customers', { refetchActive: true });
+                queryClient.invalidateQueries({ queryKey: ['customers'] }); // Оновлює кеш даних після оновлення складу
             },
-        }
-    );
+        });
 }
 
 
@@ -110,10 +109,12 @@ export function useUpdateCustomer() {
 // Використання useMutation для видалення складу (customer)
 export function useDeleteCustomer() {
     const queryClient = useQueryClient();
-    return useMutation((id: string) => deleteCustomer(id), {
-        onSuccess: () => {
-            queryClient.invalidateQueries('customers', { refetchActive: true });
-        },
-    });
+    return useMutation(
+        {
+            mutationFn: (id: string) => deleteCustomer(id),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['customers'] }); // Оновлює кеш даних після оновлення складу
+            },
+        });
 }
 

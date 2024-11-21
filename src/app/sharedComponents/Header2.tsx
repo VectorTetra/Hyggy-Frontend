@@ -7,8 +7,8 @@ const Header2 = () => {
       <div>
         <h1>Шапка 2</h1>
         <nav>
-          <Link href="/">Головна</Link>
-          <Link href="/contact">Контакти</Link>
+          <Link prefetch={true} href="/">Головна</Link>
+          <Link prefetch={true} href="/contact">Контакти</Link>
         </nav>
       </div>
     </header>

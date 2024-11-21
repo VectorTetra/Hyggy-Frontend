@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 
 export interface ShopQueryParams {
@@ -111,39 +110,47 @@ export async function deleteShop(id: number) {
 
 // Використання useQuery для отримання списку складів (Shops)
 export function useShops(params: ShopQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['Shops', params], () => getShops(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+	return useQuery({
+		queryKey: ['Shops', params],
+		queryFn: () => getShops(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (Shop)
 export function useCreateShop() {
 	const queryClient = useQueryClient();
-	return useMutation((newShop: ShopDTO) => postShop(newShop), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newShop: ShopDTO) => postShop(newShop),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після створення складу
+			},
+		});
 }
 
 // Використання useMutation для оновлення існуючого складу (Shop)
 export function useUpdateShop() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedShop: ShopDTO) => putShop(updatedShop), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newShop: ShopDTO) => putShop(newShop),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після оновлення складу
+			},
+		});
 }
 
 // Використання useMutation для видалення складу (Shop)
 export function useDeleteShop() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteShop(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('Shops'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteShop(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після видалення складу
+			}
+		});
 }

@@ -46,7 +46,7 @@ export function validateToken() {
 			return { status: 401, message: 'Ви не авторизовані' };
 		}
 
-		console.log('Token expiration date:', new Date(decodedToken.exp * 1000));
+		//console.log('Token expiration date:', new Date(decodedToken.exp * 1000));
 
 		if (decodedToken.exp < currentTime) {
 			return { status: 401, message: 'Ваш токен прострочений! ' };

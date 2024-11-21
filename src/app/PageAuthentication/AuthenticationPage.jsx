@@ -108,6 +108,7 @@ export default function AuthenticationPage(props) {
                 </Button>
             </Box>
 
+<<<<<<< HEAD
             <div className={styles.forgotpasswordlink}>
                 <Link href="../PagePasswordReset">Забули пароль?</Link>
             </div>
@@ -120,6 +121,55 @@ export default function AuthenticationPage(props) {
                         <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
                         <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
                     </ul>
+=======
+                        <input className={styles.formcontainerinput}
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                            placeholder="E-mail"
+                        />
+
+
+                        <input className={styles.formcontainerinput}
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            placeholder="пароль"
+                        />
+
+                        {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
+
+                        <button type="submit" className={styles.submitbutton}>Увійти</button>
+
+                    </form>
+
+                    <div className={styles.forgotpasswordlink}>
+                        <Link prefetch={true} href="../PagePasswordReset">Забули пароль?</Link>
+                    </div>
+                    <div>
+                        <h2 className={styles.h2}>Створити новий обліковий запис</h2>
+                        <div className={styles.features}>
+                            <ul className={styles.featuresul}>
+                                <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
+                                <li className={styles.featuresil}>Зберігайте історію замовлень</li>
+                                <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
+                                <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                        <button
+                            className={styles.submitbutton2}
+                            onClick={() => window.location.href = '../PageRegistration'}>
+                            Створити новий обліковий запис
+                        </button>
+                    </div>
+>>>>>>> Viktor-Page-Ware-Finishing
                 </div>
             </div>
             <div style={{ display: "flex" }}>

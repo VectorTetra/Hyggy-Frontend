@@ -124,7 +124,7 @@ export default function Sidebar(props) {
 	const toggleWarehouses = () => {
 		setOpenWarehouses(!openWarehouses);
 	};
-	const toggleEmployees =() => {
+	const toggleEmployees = () => {
 		setEmployees(!openEmployees)
 	};
 	const drawer = (
@@ -155,7 +155,7 @@ export default function Sidebar(props) {
 					}}
 				>
 
-					<Link href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
+					<Link prefetch={true} href="/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#00AAAD' }}>
 						<Image
 							src={hyggyIcon}
 							alt="<"
@@ -195,17 +195,17 @@ export default function Sidebar(props) {
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />
 					</MenuItem>
-					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores"/>
+					<MenuItem icon={<StoreIcon />} text="Магазини" value="stores" />
 					<MenuItem icon={<PeopleIcon />} text="Співробітники" value="employees" open={openEmployees} onClick={toggleEmployees}>
-					<SubMenuItem text="Магазини" value="shopEmployees" />
-					<SubMenuItem text="Склади" value="storageEmployees" />
-				</MenuItem>
+						<SubMenuItem text="Магазини" value="shopEmployees" />
+						<SubMenuItem text="Склади" value="storageEmployees" />
+					</MenuItem>
 
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
 					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
-					<Link href="../AdminPanelLogin" onClick={() => {
+					<Link prefetch={true} href="../AdminPanelLogin" onClick={() => {
 						removeToken();
 					}}>
 						<MenuItem

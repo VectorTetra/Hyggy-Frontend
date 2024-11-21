@@ -5,6 +5,7 @@ import styles from "../css/WareGrid.module.css";
 import StarRating from "../../sharedComponents/StarRating";
 import { Ware } from "@/pages/api/WareApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
+import FavoriteButton from "@/app/ware/tsx/FavoriteButton";
 
 type WareCardProps = {
     ware: Ware;
@@ -22,20 +23,10 @@ export default function WareCard({
     return (
         <div className={styles.wareCard}>
             <div className={styles.wareCardLinkContainer}>
-                <button
+                {/* <button
                     className={styles.favoriteButton}
                     onClick={() => toggleFavorite(ware.id)}
                 >
-                    {/* {isFavorite ? "💖" : "🖤"} */}
-                    {/* <Image
-                        src={isFavorite ? "https://ik.imagekit.io/viktochonov/fullHeart.png" : "https://ik.imagekit.io/viktochonov/emptyHeart.png?updatedAt=1731161148392"}
-                        alt={ware.name}
-                        className={styles.wareImage}
-                        layout="intrinsic"
-                        width={30}
-                        height={30}
-                        style={{ objectFit: "contain" }} // Заміна layout для об’єкта
-                    /> */}
                     {isFavorite ? (
                         <svg
                             width="30"
@@ -66,8 +57,9 @@ export default function WareCard({
                             />
                         </svg>
                     )}
-                </button>
-                <Link href={`/ware/${ware.id}`} className={styles.wareCardLink}>
+                </button> */}
+                <FavoriteButton className={styles.favoriteButton} productId={ware.id} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
+                <Link prefetch={true} href={`/ware/${ware.id}`} className={styles.wareCardLink}>
                     <Image
                         src={ware.previewImagePath ? ware.previewImagePath : "/images/imageFallback.png"}
                         alt={ware.name}

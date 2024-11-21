@@ -314,7 +314,7 @@ const AddressPage = () => {
                   checked={formData.termsAccepted}
                   onChange={handleInputChange}
                   required
-                /> Прийняти <Link href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та положення</Link>
+                /> Прийняти <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та положення</Link>
               </label>
             </div>
             <div className={styles.buttonGroup}>
@@ -322,7 +322,7 @@ const AddressPage = () => {
                 Перейти до доставка
               </button>
             </div>
-            <Link href="/cart">
+            <Link prefetch={true} href="/cart">
               <button type="button" className={styles.cancelButton}>Скасувати</button>
             </Link>
           </form>

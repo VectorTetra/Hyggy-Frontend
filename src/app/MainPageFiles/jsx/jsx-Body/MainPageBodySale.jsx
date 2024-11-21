@@ -8,7 +8,7 @@ export default function MainPageBodySale(props) {
             <div className={styles["bodysale-text"]}>
                 {props.text}
                 <br /><br />
-                <Link className={styles["text-link"]} href={props.urlpagesale}>
+                <Link prefetch={true} className={styles["text-link"]} href={props.urlpagesale}>
                     {props.text2}
                 </Link>
             </div>

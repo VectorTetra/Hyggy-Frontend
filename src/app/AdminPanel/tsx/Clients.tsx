@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, circularProgressClasses, TextField, Typography } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { getCustomers, deleteCustomer } from '@/pages/api/ClientApi';
+import { useCustomers, useDeleteCustomer } from '@/pages/api/CustomerApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
@@ -18,36 +18,18 @@ type Customer = {
 
 const Clients = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
-    const [data, setData] = useState<any | null>([]);
+    const { data: data = [], isLoading: dataLoading, isSuccess: success } = useCustomers({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000
+    });
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
-
+    const { mutate: deleteCustomer } = useDeleteCustomer();
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const apiRef = useGridApiRef();
 
-    useEffect(() => {
-        const fetchCustomers = async () => {
-            try {
-                const customers = await getCustomers({
-                    SearchParameter: "Query",
-                    PageNumber: 1,
-                    PageSize: 150
-                });
-                if (!customers) {
-                    console.log('Користувачів не знайдено');
-                    return;
-                }
-                setData(customers);
-            } catch (error) {
-                console.error('Error fetching storage data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCustomers();
-    }, []);
     // Фільтрація даних на основі швидкого пошуку
     const filteredData = data.filter((row) =>
         Object.values(row).some(
@@ -68,7 +50,7 @@ const Clients = () => {
             await deleteCustomer(selectedRow.id);
             setIsDialogOpen(false);
 
-            setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
+            //setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
             toast.info('Користувача успішно видалено!');
         }
     };
@@ -133,7 +115,7 @@ const Clients = () => {
                     rows={filteredData} // Використовуємо відфільтровані дані
                     columns={columns}
                     apiRef={apiRef}
-                    loading={loading}
+                    loading={dataLoading}
                     disableRowSelectionOnClick
                     slots={{ toolbar: GridToolbar }}
                     localeText={{

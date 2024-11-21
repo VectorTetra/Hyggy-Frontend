@@ -116,7 +116,7 @@ const SuccessPage = () => {
               </p>
             </div>
           )}
-          <Link href="/">
+          <Link prefetch={true} href="/">
             <button type="button" className={styles.cancelButton}>
               Повернутись на головну
             </button>
