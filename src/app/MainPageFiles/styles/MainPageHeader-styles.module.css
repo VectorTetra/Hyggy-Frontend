@@ -124,6 +124,7 @@
 
 .navbarmenu {
 	display: flex;
+	gap: 5px;
 }
 
 
@@ -143,13 +144,20 @@
 	font-size: 16px;
 	padding: 10px;
 	text-decoration: none;
-	color: black;
-	font-weight: bold;
+	color: #231F20;
+	font-weight: 400;
 	white-space: nowrap;
+	background-color: #E0E0E0;
 }
 
 .menuText:hover {
-	color: red;
+	background-color: #868686;
+	color: #231F20;
+}
+
+.menuText:active {
+	background-color: #00AAAD;
+	color: white;
 }
 
 .cartQuantityBadge {

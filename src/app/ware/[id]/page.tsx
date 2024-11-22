@@ -161,6 +161,20 @@ export default function WarePage() {
     }
   }, [cartItems]);
 
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 50; // Наприклад, 50px відступу
+      const elementPosition = element.getBoundingClientRect().top; // Позиція елемента відносно вікна
+      const offsetPosition = elementPosition + window.pageYOffset - offset; // Фінальна позиція з урахуванням відступу
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth", // Гладка прокрутка
+      });
+    }
+  };
+
   // const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const value = parseInt(e.target.value, 10);
   //   if (!isNaN(value) && value > 0) {
@@ -321,56 +335,41 @@ export default function WarePage() {
         </div>
         <div className={styles.tabsHeader}>
           <div>
-            <button className={styles.tabButton} onClick={() => document.getElementById('description')?.scrollIntoView({ behavior: 'smooth' })}>Опис</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('specifications')?.scrollIntoView({ behavior: 'smooth' })}>Характеристики</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}>Відгуки</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('similarProducts')?.scrollIntoView({ behavior: 'smooth' })}>Схожі товари</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('description')}>Опис</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('specifications')}>Характеристики</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('reviews')}>Відгуки</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('similarProducts')}>Схожі товари</button>
           </div>
         </div>
+        <hr id="descriptionBefore" style={{ display: "none" }} />
         <h2 id="description" className={styles.tabTitle}>Опис</h2>
         <div style={{ display: "flex" }}>
           <div style={{ display: "flex", flexDirection: "column", flex: 1, margin: "0 3.5rem" }}>
-            <DescriptionWare article={product.article} description={wareDetails} />
+            <DescriptionWare article={product.article} description={wareDetails} product={product} />
             {product && relatedBlogs && relatedBlogs.length > 0 ? (
               <ArticlesWare blogs={relatedBlogs} />
             ) : (
               <p>Немає пов&apos;язаних статей.</p>
             )}
           </div>
-          <div style={{ display: "flex", flex: 0.4 }}>
-            <Image
-              src={product.imagePaths.length > 1 ? product.imagePaths[1] : product.previewImagePath}
-              alt={product.name}
-              width={150} // Максимальна ширина в пікселях
-              height={200} // Максимальна висота в пікселях
-              layout='responsive' // Розмір залежить від оригінальних пропорцій зображення
-              objectFit='contain' // Показує повне зображення, не розтягуючи його
-              style={{
-                maxWidth: "100%",
-                maxHeight: "200px", // Обмеження максимальної висоти
-                height: "auto", // Автоматична висота для адаптації
-                objectFit: "contain" // Показує повне зображення, не розтягуючи його
-              }}
-              unoptimized={true}  // Вимикає оптимізацію зображення
-            />
-          </div>
+
         </div>
-        <hr />
+        <hr id="specificationsBefore" />
         <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
         {wareProperties && wareProperties.length > 0 ? (
           <center><SpecificationWare properties={wareProperties} /></center>
         ) : (
           <p>Характеристики недоступні.</p>
         )}
-        <hr />
-        {/* <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
-        {product.lastReviews && product.lastReviews.length > 0 ? (
+        <hr id="reviewsBefore" />
+        <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
+        {product.reviewIds && product.reviewIds.length > 0 ? (
           <ReviewWare product={product} />
         ) : (
           <p>Немає відгуків.</p>
-        )} */}
+        )}
         <hr />
-        {/* <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
+        {/* <h2 id="similarProductsBefore" className={styles.tabTitle}>Схожі товари</h2>
         {product.similarProducts && product.similarProducts.length > 0 && product.similarProducts.some(p => Object.keys(p).length > 0) ? (
           <section className={styles.similarProducts}>
             <SimilarWare product={product} />

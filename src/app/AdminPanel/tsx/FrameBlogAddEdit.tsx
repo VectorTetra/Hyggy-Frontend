@@ -79,7 +79,23 @@ export default function FrameBlogAddEdit() {
 
     const handleSave = async () => {
         // Фільтруємо пусті рядки перед оновленням стану
-        const filteredRows = rows.filter((row) => row.content.length > 0);
+        const filteredRows = rows.filter((row) => {
+            if (row.contentType !== "mixed") {
+                // Для типів, які не є "mixed", перевіряємо, що content - рядок або масив, і має length > 0
+                return (typeof row.content === "string" || Array.isArray(row.content)) && row.content.length > 0;
+            } else if (row.contentType === 'mixed' && typeof row.content === 'object' && !Array.isArray(row.content)) {
+                // Для "mixed" перевіряємо властивості text та photos
+                return (
+                    typeof row.content === "object" &&
+                    (
+                        (typeof row.content.text === "string" && row.content.text.length > 0) ||
+                        (Array.isArray(row.content.photos) && row.content.photos.length > 0)
+                    )
+                );
+            }
+            return false; // Для всіх інших випадків (на всякий випадок)
+        });
+
         setRows(filteredRows); // Оновлюємо стан з відфільтрованими рядками
         const filteredKeywords = keywords.filter((keyword) => keyword.length > 0);
         setKeywords(filteredKeywords); // Оновлюємо стан з відфільтрованими ключовими словами

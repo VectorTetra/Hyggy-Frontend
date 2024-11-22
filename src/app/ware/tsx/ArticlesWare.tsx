@@ -12,7 +12,7 @@ export default function ArticlesWare({ blogs }: { blogs: Blog[] }) {
         <div className={styles.relatedArticles}>
           {blogs.map((blog, index) => (
             <div key={index} className={styles.articleCard}>
-              <Link prefetch={true} className={styles.articleLink} href={`/article/${blog.id}`}>
+              <Link prefetch={true} className={styles.articleLink} href={`/PageBlogIndividual/${blog.id}`}>
                 <div className={styles.articleImageContainer}>
                   <Image className={styles.articleImage} src={blog.previewImagePath} alt={blog.blogTitle} layout="fill" />
                 </div>

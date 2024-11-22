@@ -4,9 +4,14 @@ import { useState } from "react";
 interface StarRatingProps {
   rating: number;
   onRatingChange?: (rating: number) => void;
+  hoverEffect?: boolean; // Новий пропс
 }
 
-export default function StarRating({ rating, onRatingChange }: StarRatingProps) {
+export default function StarRating({
+  rating,
+  onRatingChange,
+  hoverEffect = false, // Значення за замовчуванням: ефект вимкнено
+}: StarRatingProps) {
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
   const fullStars = Math.floor(hoveredRating ?? rating); // Повні зірки, з урахуванням наведення
   const partialStar = hoveredRating === null ? rating - fullStars : 0; // Часткова зірка тільки при відсутності наведення
@@ -21,11 +26,15 @@ export default function StarRating({ rating, onRatingChange }: StarRatingProps) 
   };
 
   const handleStarMouseEnter = (index: number) => {
-    setHoveredRating(index + 1);
+    if (hoverEffect) {
+      setHoveredRating(index + 1);
+    }
   };
 
   const handleStarMouseLeave = () => {
-    setHoveredRating(null);
+    if (hoverEffect) {
+      setHoveredRating(null);
+    }
   };
 
   // Додавання повних зірок

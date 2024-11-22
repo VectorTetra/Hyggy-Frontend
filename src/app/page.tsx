@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import 'react-quill/dist/quill.snow.css';
 import Layout from "./sharedComponents/Layout";
 import { MainPageBorder } from "./MainPageFiles/jsx/jsx-Border/MainPageBorder";
 import MainPageBody from "./MainPageFiles/jsx/jsx-Body/MainPageBody";

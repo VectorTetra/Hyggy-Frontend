@@ -1,10 +1,12 @@
+
 import { useState } from 'react';
 import StarRating from '../../sharedComponents/StarRating';
 import styles from "../css/ReviewWare.module.css";
-import { Product } from '../types/Product';
 import Link from 'next/link';
+import { Ware } from '@/pages/api/WareApi';
+import { useWareReviews } from '@/pages/api/WareReviewApi';
 
-export default function ReviewWare({ product }: { product: Product }) {
+export default function ReviewWare({ product }: { product: Ware }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     rating: 0,
@@ -14,7 +16,11 @@ export default function ReviewWare({ product }: { product: Product }) {
     review: '',
     termsAccepted: false,
   });
-
+  const { data: reviews = [], isLoading: isReviewsLoading, isSuccess: isReviewsSuccess } = useWareReviews({
+    SearchParameter: "StringIds",
+    StringIds: product.reviewIds.join('|'),
+    Sorting: "DateDesc",
+  });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setReviewData({ ...reviewData, [name]: value });
@@ -49,8 +55,8 @@ export default function ReviewWare({ product }: { product: Product }) {
     <div className={styles.reviewsContainer}>
       <div className={styles.overallRating}>
         <div className={styles.rating}>
-          <StarRating rating={Number(product.rating)} />
-          <span className={styles.ratingText}>{product.rating} / 5</span>
+          <StarRating rating={Number(product.averageRating)} />
+          <span className={styles.ratingText}>{product.averageRating} / 5</span>
         </div>
         <div className={styles.mainText}>Оцінка користувачів</div>
         <button
@@ -67,7 +73,7 @@ export default function ReviewWare({ product }: { product: Product }) {
             <form onSubmit={handleSubmit}>
               <hr />
               <div className={styles.formRating}>
-                <StarRating rating={reviewData.rating} onRatingChange={handleRatingChange} />
+                <StarRating rating={reviewData.rating} onRatingChange={handleRatingChange} hoverEffect={true} />
               </div>
               <div className={styles.formGroup}>
                 <input
@@ -130,9 +136,9 @@ export default function ReviewWare({ product }: { product: Product }) {
       )}
       <hr className={styles.reviewHr} />
       <div className={styles.reviewsList}>
-        {product.lastReviews.map((review, index) => (
+        {Array.isArray(reviews) && reviews.length > 0 && reviews.map((review, index) => (
           <div key={index} className={styles.reviewItem}>
-            <span className={styles.reviewerName}>{review.name}</span>
+            <span className={styles.reviewerName}>{review.customerName}</span>
             <div className={styles.reviewContent}>
               <div className={styles.reviewRatingContainer}>
                 <StarRating rating={Number(review.rating)} />
