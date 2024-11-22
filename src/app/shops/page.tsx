@@ -162,13 +162,12 @@
 
 
 "use client";
-import { useState, useEffect } from "react";
-import Layout from "../sharedComponents/Layout";
-import Map from "./components/Map";
-import dynamic from 'next/dynamic';
-import { getShops, ShopDTO, ShopGetDTO } from '@/pages/api/ShopApi';
+import { getShops, ShopGetDTO } from '@/pages/api/ShopApi';
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from "react";
+import Layout from "../sharedComponents/Layout";
 
 // Оголошуємо типи для ShopDTO та ShopGetDTO, якщо їх ще немає
 export type Place = {

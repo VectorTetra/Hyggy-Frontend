@@ -5,11 +5,11 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 export const customIcon = new L.Icon({
-  iconUrl: "/images/marker-icon.png",
+  iconUrl: "/images/marker-icon.png", // Використання локального шляху до картинки
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowUrl: "/images/marker-shadow.png",
+  shadowUrl: "/images/marker-shadow.png", // Локальний шлях
   shadowSize: [41, 41],
 });
 
