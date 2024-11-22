@@ -58,7 +58,7 @@ import Head from 'next/head';
 import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-const raleway = Raleway({ subsets: ["latin"] });
+const raleway = Raleway({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
 export const metadata: Metadata = {
   title: "HYGGY Все для дому",

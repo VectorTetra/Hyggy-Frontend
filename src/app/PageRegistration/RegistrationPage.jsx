@@ -1,191 +1,13 @@
-// "use client";
-// import React from "react";
-// import styles from "./css/RegistrationStyles.module.css";
-// import { toast } from "react-toastify";
-// import { RegisterAsClient } from "@/pages/api/TokenApi";
-
-// export default function RegistrationPage(props) {
-//     const [name, setName] = React.useState('');
-//     const [surname, setSurname] = React.useState('');
-//     const [email, setEmail] = React.useState('');
-//     const [password, setPassword] = React.useState('');
-//     const [confirmPassword, setConfirmPassword] = React.useState('');
-//     const [checkboxStates, setCheckboxStates] = React.useState({});
-//     const [errorMessage, setErrorMessage] = React.useState('');
-
-//     // Функция для проверки пароля
-//     const isPasswordValid = (password) => {
-//         // Минимум 8 символов, хотя бы одна заглавная буква и хотя бы одна цифра
-//         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-//         return passwordRegex.test(password);
-//     };
-
-//     const generateConfirmationCode = () => {
-//         return Math.floor(100000 + Math.random() * 900000).toString(); // Генерация 6-значного кода
-//     };
-
-//     // Очищаем форму, если нажата кнопка "Скасувати"
-//     const handleReset = () => {
-//         setName('');
-//         setSurname('');
-//         setEmail('');
-//         setPassword('');
-//         setConfirmPassword('');
-//         setCheckboxStates({});
-//         setErrorMessage('');
-//     };
-
-//     // Проверки
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-
-//         // Проверка, что все поля заполнены
-//         if (!name || !surname || !email || !password || !confirmPassword) {
-//             setErrorMessage('');
-//             toast.error('Всі поля обов\'язкові для заповнення');
-//             return;
-//         }
-
-//         // Проверка паролей
-//         if (password !== confirmPassword) {
-//             setErrorMessage('');
-//             toast.error('Паролі не збігаються');
-//             return;
-//         }
-
-//         if (!isPasswordValid(password)) {
-//             setErrorMessage('');
-//             toast.error('Пароль повинен містити мінімум 8 символів, включати хоча б одну заглавну букву і одну цифру.');
-//             return;
-//         }
-
-//         // Проверка всех чекбоксов
-//         const allChecked = props.registration.label.every(item => checkboxStates[item.name]);
-//         if (!allChecked) {
-//             setErrorMessage('');
-//             toast.error('Необхідно прийняти умови та підписатися на новини');
-//             return;
-//         }
-
-//         try {
-//             RegisterAsClient({
-//                 Email: email,
-//                 Name: name,
-//                 Surname: surname,
-//                 Password: password,
-//                 ConfirmPassword: confirmPassword,
-//                 Role: "User"
-//             })
-//         } catch (error) {
-//             console.log(error);
-//             return;
-//         }
-//     };
-
-//     // Обработчик изменения состояния чекбоксов
-//     const handleCheckboxChange = (name) => {
-//         setCheckboxStates(prevState => ({
-//             ...prevState,
-//             [name]: !prevState[name]
-//         }));
-//     };
-
-//     return (
-//         <div className={styles.maincontainer}>
-//             <div className={styles.formcontainer}>
-//                 <form onSubmit={handleSubmit} className={styles.form}>
-//                     <div className={styles.caption}>Створити обліковий запис</div>
-//                     <div>
-//                         <input className={styles.formInput}
-//                             type="text"
-//                             name="name"
-//                             value={name}
-//                             onChange={(e) => setName(e.target.value)}
-//                             placeholder="Ім'я *"
-//                         />
-//                     </div>
-//                     <div>
-//                         <input className={styles.formInput}
-//                             type="text"
-//                             name="surname"
-//                             value={surname}
-//                             onChange={(e) => setSurname(e.target.value)}
-//                             placeholder="Прізвище *"
-//                         />
-//                     </div>
-//                     <div>
-//                         <input className={styles.formInput}
-//                             type="email"
-//                             name="email"
-//                             value={email}
-//                             onChange={(e) => setEmail(e.target.value)}
-//                             pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-//                             placeholder="E-mail *"
-//                         />
-//                     </div>
-//                     <div>
-//                         <input className={styles.formInput}
-//                             type="password"
-//                             name="password"
-//                             value={password}
-//                             onChange={(e) => setPassword(e.target.value)}
-//                             placeholder="Пароль *"
-//                         />
-//                     </div>
-//                     <div>
-//                         <input className={styles.formInput}
-//                             type="password"
-//                             name="confirmPassword"
-//                             value={confirmPassword}
-//                             onChange={(e) => setConfirmPassword(e.target.value)}
-//                             placeholder="Повторити пароль *"
-//                         />
-//                     </div>
-//                     <div className={styles.checkboxesTableContainer}>
-//                         <table className={styles.checkboxesTable}>
-//                             <tbody>
-//                                 {props.registration.label.map((item, index) => (
-//                                     <tr key={index}>
-//                                         <td>
-//                                             <input className={styles.formCheckbox}
-//                                                 type="checkbox"
-//                                                 checked={checkboxStates[item.name] || false}
-//                                                 onChange={() => handleCheckboxChange(item.name)}
-//                                             />
-//                                         </td>
-//                                         <td>
-//                                             <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
-//                                                 onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
-//                                         </td>
-//                                     </tr>
-//                                 ))}
-//                             </tbody>
-
-//                             {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
-//                         </table >
-
-//                     </div>
-
-//                     <div>
-//                         <button type="submit" className={styles.submitbutton}>Створити обліковий запис</button>
-//                     </div>
-
-//                     <button type="button" className={styles.submitbutton2} onClick={handleReset}>Скасувати</button>
-//                 </form >
-//             </div >
-//         </div >
-//     );
-// }
-
-
 "use client";
-import { useState } from 'react';
-import styles from "./css/RegistrationStyles.module.css";
-import { useRouter } from "next/navigation";
-import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
-import { toast } from "react-toastify";
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { RegisterAsClient } from "@/pages/api/TokenApi";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { toast } from "react-toastify";
+import styles from "./css/RegistrationStyles.module.css";
+import { Raleway } from "next/font/google";
+const raleway = Raleway({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -288,9 +110,11 @@ export default function RegistrationPage(props) {
                 justifyContent: 'center',
                 minHeight: '100vh',
                 padding: '2rem',
+                fontFamily: raleway.style.fontFamily + '!important',
             }}
+            className={`${raleway.className}`}
         >
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h4" component="h1" gutterBottom sx={{ fontFamily: raleway.style.fontFamily, }}>
                 Створити обліковий запис
             </Typography>
             <Box
@@ -298,14 +122,18 @@ export default function RegistrationPage(props) {
                 onSubmit={handleSubmit}
                 sx={{
                     width: '100%',
-                    maxWidth: '400px',
+                    maxWidth: 'clamp(400px,42vmax,800px)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1rem',
                     padding: '2rem',
+                    fontFamily: raleway.style.fontFamily,
                 }}
             >
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    fontFamily: raleway.style.fontFamily + '!important',
+                    backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px'
+                }}
                     label="Ім'я"
                     variant="outlined"
                     type="text"
@@ -315,7 +143,7 @@ export default function RegistrationPage(props) {
                     fullWidth
                 />
 
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type="text"
                     label="Прізвище"
                     variant="outlined"
@@ -324,7 +152,7 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type="email"
                     label="email"
                     variant="outlined"
@@ -334,7 +162,7 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type={showPassword ? 'text' : 'password'}
                     label="Пароль"
                     value={password}
@@ -357,7 +185,7 @@ export default function RegistrationPage(props) {
                         ),
                     }}
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type={showPassword ? 'text' : 'password'}
                     label="Підтвердіть пароль"
                     value={confirmPassword}
@@ -413,7 +241,9 @@ export default function RegistrationPage(props) {
                         backgroundColor: '#00AAAD',
                         padding: '0.75rem',
                         fontSize: '1rem',
+                        fontFamily: raleway.style.fontFamily,
                         color: 'white', // Цвет текста
+                        textTransform: 'none',
                         ':hover': {
                             backgroundColor: '#008C8D', // Цвет при наведении
                         },
@@ -423,19 +253,19 @@ export default function RegistrationPage(props) {
                 </Button>
 
                 <Button
-                    variant="contained"
+                    // variant="outlined"
                     type="button"
                     color="primary"
                     fullWidth
                     onClick={handleReset}
                     sx={{
-                        backgroundColor: '#00AAAD',
+                        backgroundColor: '#f3f3f3',
                         padding: '0.75rem',
                         fontSize: '1rem',
-                        color: 'white', // Цвет текста
-                        ':hover': {
-                            backgroundColor: '#008C8D', // Цвет при наведении
-                        },
+                        fontFamily: raleway.style.fontFamily,
+                        color: '#00AAAD', // Цвет текста
+                        textDecoration: 'underline',
+                        textTransform: 'none',
                     }}
                 >
                     Скасувати

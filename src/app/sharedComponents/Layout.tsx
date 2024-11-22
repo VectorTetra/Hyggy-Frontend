@@ -1,20 +1,11 @@
 "use client";
 import React from 'react';
-import { Metadata } from 'next';
+import Footer1 from './Footer1';
 import Header1 from './Header1';
 import Header2 from './Header2';
-import Footer1 from './Footer1';
-import useMainPageMenuStore from "@/store/mainPageMenu";
-import useMainPageMenuShops from "@/store/mainPageMenuShops";
-// import BlockMenu from './BlockMenu';
-// import BlockShops from './BlockShops';
 import dynamic from 'next/dynamic';
 const DynamicBlockMenu = dynamic(() => import('./BlockMenu'));
 const DynamicBlockShops = dynamic(() => import('./BlockShops'));
-import { useWareCategories1 } from '@/pages/api/WareCategory1Api';
-import useWarePageMenuShops from '@/store/warePageMenuShops';
-import BlockShopsByWare from './BlockShopsByWare';
-import { useRouter } from 'next/router';
 
 export interface LayoutProps {
   children: React.ReactNode;
