@@ -19,7 +19,7 @@ import { CircularProgress } from "@mui/material";
 import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
 import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
 import { useWareStatuses } from "@/pages/api/WareStatusApi";
-
+import SkeletonPost from "./SkeletonPost"
 interface Filter {
   id: string; // або number, в залежності від типу вашого id
   name: string;
@@ -114,7 +114,8 @@ export default function SearchPage() {
 
     <Layout headerType="header1" footerType='footer1'>
       <div className={styles.main}>
-        {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />}
+        {/* {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />} */}
+        {allLoadings && <SkeletonPost />}
         <>
           {!allLoadings && <>
             <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />

@@ -1,12 +1,12 @@
 import React from 'react'
-import Layout from '../sharedComponents/Layout'
+import Layout from './sharedComponents/Layout'
 
 const NotFound = () => {
     return (
         <Layout>
-            <div className="flex flex-col items-center bg-[#F3F3F3]">
+            <div className="flex flex-col items-center bg-[#F3F3F3] relative">
                 <div className='w-full overflow-hidden max-h-screen relative'>
-                    <svg className='w-full h-auto' viewBox="0 0 1920 2251" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg className='w-full h-auto' viewBox="-100 300 2200 2251" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M722.805 396.694C718.5 351 661.726 378 661.726 378C624.678 518.723 553.587 595.575 549.081 619.462C545.476 638.571 663.395 640.579 722.805 639.194C722.805 662.907 705.225 735.759 686 766.5C638 863 630.323 950.923 638 957.5L765.86 863C751.442 785.317 871 465.855 874 436.678C877 407.5 819.5 402 804.41 420.581C789.32 439.161 778.149 485.413 755 527C731.851 568.588 661.726 557.149 661.726 542.09C661.726 530.043 701.5 443 722.805 396.694Z" fill="#00AAAD" stroke="#00696A" stroke-width="4" />
                         <path d="M1253.8 455.616C1249.5 409.922 1192.73 436.922 1192.73 436.922C1155.68 577.644 1084.59 654.497 1080.08 678.383C1076.48 697.492 1194.39 699.5 1253.8 698.115C1253.8 721.829 1236.22 794.681 1217 825.422C1169 921.922 1161.32 1009.84 1169 1016.42H1351C1241 938 1402 524.777 1405 495.599C1408 466.422 1350.5 460.922 1335.41 479.502C1320.32 498.082 1309.15 544.334 1286 585.922C1262.85 627.51 1192.73 616.071 1192.73 601.012C1192.73 588.965 1232.5 501.922 1253.8 455.616Z" fill="#00AAAD" stroke="#00696A" stroke-width="4" />
                         <g filter="url(#filter0_d_1469_378)">
@@ -61,7 +61,9 @@ const NotFound = () => {
 
                     </svg>
                 </div>
-
+                <div className="absolute top-[80%] left-[40%]">
+                    <p>Сторінку не знайдено</p>
+                </div>
 
             </div>
         </Layout>
