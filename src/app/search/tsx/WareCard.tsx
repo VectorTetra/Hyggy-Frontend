@@ -5,7 +5,7 @@ import styles from "../css/WareGrid.module.css";
 import StarRating from "../../sharedComponents/StarRating";
 import { Ware } from "@/pages/api/WareApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
-import FavoriteButton from "@/app/ware/tsx/FavoriteButton";
+import FavoriteButton from "@/app/sharedComponents/FavoriteButton";
 
 type WareCardProps = {
     ware: Ware;

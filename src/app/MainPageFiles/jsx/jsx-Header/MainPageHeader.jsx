@@ -10,10 +10,10 @@ import MainPageHeaderGeo from './MainPageHeaderGeo';
 import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
-import { validateToken } from '@/pages/api/TokenApi';
+import { isUser, validateToken } from '@/pages/api/TokenApi';
 
 function MainPageHeader(props) {
-	const isAuthorized = validateToken().status === 200;
+	const isAuthorized = validateToken().status === 200 && isUser();
 	return (
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />

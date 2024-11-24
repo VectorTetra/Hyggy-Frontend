@@ -1,5 +1,3 @@
-import { useState } from "react";
-import styles from "../page.module.css";
 interface FavoriteButtonProps {
     className: string;
     productId: number;

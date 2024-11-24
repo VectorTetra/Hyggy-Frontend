@@ -2,12 +2,9 @@
 import { RegisterAsClient } from "@/pages/api/TokenApi";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./css/RegistrationStyles.module.css";
-import { Raleway } from "next/font/google";
-const raleway = Raleway({ subsets: ["latin", "cyrillic", "cyrillic-ext"] });
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -18,7 +15,8 @@ export default function RegistrationPage(props) {
     const [checkboxStates, setCheckboxStates] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
-    const router = useRouter();
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Добавлено состояние для показа пароля
+
 
     // Функция для проверки пароля
     const isPasswordValid = (password) => {
@@ -27,9 +25,7 @@ export default function RegistrationPage(props) {
         return passwordRegex.test(password);
     };
 
-    const generateConfirmationCode = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString(); // Генерация 6-значного кода
-    };
+
 
     // Очищаем форму, если нажата кнопка "Скасувати"
     const handleReset = () => {
@@ -97,9 +93,6 @@ export default function RegistrationPage(props) {
         }));
     };
 
-    // Функція для перемикання видимості пароля
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-
     return (
         <Box
             component="div"
@@ -110,11 +103,10 @@ export default function RegistrationPage(props) {
                 justifyContent: 'center',
                 minHeight: '100vh',
                 padding: '2rem',
-                fontFamily: raleway.style.fontFamily + '!important',
+
             }}
-            className={`${raleway.className}`}
         >
-            <Typography variant="h4" component="h1" gutterBottom sx={{ fontFamily: raleway.style.fontFamily, }}>
+            <Typography variant="div" component="h1" gutterBottom sx={{}}>
                 Створити обліковий запис
             </Typography>
             <Box
@@ -127,11 +119,11 @@ export default function RegistrationPage(props) {
                     flexDirection: 'column',
                     gap: '1rem',
                     padding: '2rem',
-                    fontFamily: raleway.style.fontFamily,
+
                 }}
             >
                 <TextField sx={{
-                    fontFamily: raleway.style.fontFamily + '!important',
+
                     backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px'
                 }}
                     label="Ім'я"
@@ -143,7 +135,7 @@ export default function RegistrationPage(props) {
                     fullWidth
                 />
 
-                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type="text"
                     label="Прізвище"
                     variant="outlined"
@@ -152,7 +144,7 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type="email"
                     label="email"
                     variant="outlined"
@@ -162,7 +154,7 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
                     type={showPassword ? 'text' : 'password'}
                     label="Пароль"
                     value={password}
@@ -176,7 +168,7 @@ export default function RegistrationPage(props) {
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
+                                    onClick={() => setShowPassword(!showPassword)}
                                     edge="end"
                                 >
                                     {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -185,8 +177,8 @@ export default function RegistrationPage(props) {
                         ),
                     }}
                 />
-                <TextField sx={{ fontFamily: raleway.style.fontFamily, backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    type={showPassword ? 'text' : 'password'}
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     label="Підтвердіть пароль"
                     value={confirmPassword}
                     variant="outlined"
@@ -199,10 +191,10 @@ export default function RegistrationPage(props) {
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     edge="end"
                                 >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                 </IconButton>
                             </InputAdornment>
                         ),
@@ -241,7 +233,7 @@ export default function RegistrationPage(props) {
                         backgroundColor: '#00AAAD',
                         padding: '0.75rem',
                         fontSize: '1rem',
-                        fontFamily: raleway.style.fontFamily,
+
                         color: 'white', // Цвет текста
                         textTransform: 'none',
                         ':hover': {
@@ -254,7 +246,8 @@ export default function RegistrationPage(props) {
 
                 <Button
                     // variant="outlined"
-                    type="button"
+                    // type="div"
+                    // component="div"
                     color="primary"
                     fullWidth
                     onClick={handleReset}
@@ -262,7 +255,7 @@ export default function RegistrationPage(props) {
                         backgroundColor: '#f3f3f3',
                         padding: '0.75rem',
                         fontSize: '1rem',
-                        fontFamily: raleway.style.fontFamily,
+
                         color: '#00AAAD', // Цвет текста
                         textDecoration: 'underline',
                         textTransform: 'none',

@@ -4,10 +4,12 @@ import { create } from "zustand";
 
 // Інтерфейс для стану
 interface LocalStorageStore {
-    selectedShop: ShopGetDTO | null; // Обраний магазин
+    selectedShop: ShopGetDTO | null;
     setSelectedShop: (shop: ShopGetDTO | null) => void;
     shopToViewOnShopPage: ShopGetDTO | null;
     setShopToViewOnShopPage: (shop: ShopGetDTO | null) => void;
+    recentWareIds: number[];
+    addRecentWareId: (wareId: number) => void; // Додавання ідентифікатора товару
 }
 
 // Функція для роботи з LocalStorage
@@ -32,6 +34,17 @@ const getShopToViewOnShopPageFromLocalStorage = (): ShopGetDTO | null => {
     } catch (error) {
         console.error("Error reading shop to view on shop page from localStorage:", error);
         return null;
+    }
+};
+
+const getRecentWareIdsFromLocalStorage = (): number[] => {
+    if (!isClient) return [];
+    try {
+        const storedIds = localStorage.getItem("recentWareIds");
+        return storedIds ? JSON.parse(storedIds) : [];
+    } catch (error) {
+        console.error("Error reading recent ware IDs from localStorage:", error);
+        return [];
     }
 };
 
@@ -61,17 +74,38 @@ const setShopToViewOnShopPageToLocalStorage = (shop: ShopGetDTO | null): void =>
     }
 };
 
+const setRecentWareIdsToLocalStorage = (ids: number[]): void => {
+    if (!isClient) return;
+    try {
+        localStorage.setItem("recentWareIds", JSON.stringify(ids));
+    } catch (error) {
+        console.error("Error saving recent ware IDs to localStorage:", error);
+    }
+};
+
 // Zustand Store
-const useLocalStorageStore = create<LocalStorageStore>((set) => ({
-    selectedShop: isClient ? getSelectedShopFromLocalStorage() : null, // Ініціалізація з LocalStorage
+const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
+    selectedShop: isClient ? getSelectedShopFromLocalStorage() : null,
     setSelectedShop: (shop) => {
         set({ selectedShop: shop });
-        setSelectedShopToLocalStorage(shop); // Оновлення LocalStorage
+        setSelectedShopToLocalStorage(shop);
     },
     shopToViewOnShopPage: isClient ? getShopToViewOnShopPageFromLocalStorage() : null,
     setShopToViewOnShopPage: (shop) => {
         set({ shopToViewOnShopPage: shop });
         setShopToViewOnShopPageToLocalStorage(shop);
+    },
+    recentWareIds: isClient ? getRecentWareIdsFromLocalStorage() : [],
+    addRecentWareId: (wareId) => {
+        const recentWareIds = get().recentWareIds;
+        // Додавання нового ідентифікатора, якщо його ще немає
+        let updatedIds = recentWareIds.filter((id) => id !== wareId); // Видалення дубля
+        updatedIds.unshift(wareId); // Додавання на початок
+        if (updatedIds.length > 20) {
+            updatedIds = updatedIds.slice(0, 20); // Обмеження до 20 елементів
+        }
+        set({ recentWareIds: updatedIds });
+        setRecentWareIdsToLocalStorage(updatedIds); // Оновлення LocalStorage
     },
 }));
 

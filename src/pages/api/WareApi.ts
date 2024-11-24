@@ -85,6 +85,8 @@ export class Ware {
 	finalPrice: number;
 	isDeliveryAvailable: boolean;
 	wareCategory3Id: number;
+	wareCategory2Id: number;
+	wareCategory1Id: number;
 	statusIds: number[];
 	imageIds: number[];
 	priceHistoryIds: number[];

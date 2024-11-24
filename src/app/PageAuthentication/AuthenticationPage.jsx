@@ -1,11 +1,11 @@
 "use client";
-import { useState } from 'react';
-import styles from "./styles/AuthenticationStyles.module.css";
-import { useRouter } from "next/navigation";
-import { Button, TextField, Box, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
-import { toast } from "react-toastify";
+import { Authorize, isUser } from "@/pages/api/TokenApi";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Authorize, getDecodedToken } from "@/pages/api/TokenApi";
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { toast } from "react-toastify";
+import styles from "./styles/AuthenticationStyles.module.css";
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = useState('');
@@ -19,13 +19,12 @@ export default function AuthenticationPage(props) {
             toast.error("Неправильний E-mail або пароль!")
         }
         Authorize({ Email: email, Password: password }).then((response) => {
-            if (response.isAuthSuccessfull) {
+            if (response.isAuthSuccessfull && isUser()) {
                 router.push("../PageProfileUser");
                 toast.success('Ви успішно увійшли в особистий кабінет!');
-                const decodedToken = getDecodedToken();
-                if (decodedToken) {
-                    toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
-                }
+            }
+            else {
+                toast.error("Неправильний E-mail або пароль!");
             }
         });
     };

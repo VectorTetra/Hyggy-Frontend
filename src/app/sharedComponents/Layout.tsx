@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import Footer1 from './Footer1';
+import Footer2 from './Footer2';
 import Header1 from './Header1';
 import Header2 from './Header2';
 import dynamic from 'next/dynamic';
@@ -25,7 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', foote
 
       <main>{children}</main>
       {footerType === 'footer1' && <Footer1 />}
-      {footerType === 'null' && null}
+      {footerType === 'footer2' && <Footer2 />}
     </div>
   );
 };
