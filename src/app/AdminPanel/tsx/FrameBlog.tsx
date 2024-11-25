@@ -29,7 +29,7 @@ export default function FrameBlog() {
 	const { blogId, setBlogId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
-		id: false,
+		//id: false,
 		blogCategory1Name: false,
 	});
 	const apiRef = useGridApiRef();
@@ -191,6 +191,7 @@ export default function FrameBlog() {
 	useEffect(() => {
 		// if (data.length === 0)
 		// 	queryClient.invalidateQueries('storages');
+		console.log("data", data);
 		if (success) {
 			setFilteredData(data);
 			setLoading(false);
