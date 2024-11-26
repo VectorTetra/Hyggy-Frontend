@@ -30,7 +30,7 @@ export default function ReviewsUser() {
 
             {!hasReviews ? (
                 <Typography variant="body1" color="text.secondary" align="center">
-                    У Вас ще немає замовлень
+                    У Вас ще немає відгуків
                 </Typography>
             ) : (
                 <TableContainer sx={{ marginBottom: '20px', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }} component={Box}>

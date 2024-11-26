@@ -1,12 +1,15 @@
 import { useState } from "react";
-import StarRating from "../../sharedComponents/StarRating";
-import styles from "../css/ReviewDialog.module.css";
+import StarRating from "./StarRating";
+import styles from "@/app/sharedComponents/css/ReviewDialog.module.css";
 import Link from "next/link";
 import useReviewDialogStore from "@/store/reviewDialogStore";
+import { useCreateWareReview } from "@/pages/api/WareReviewApi";
+import { toast } from "react-toastify";
+import { getDecodedToken, isUser, validateToken } from "@/pages/api/TokenApi";
 
 interface ReviewModalProps {
     onClose: () => void;
-    //   onSubmit: (reviewData: ReviewData) => void;
+    wareId: number; // Додано, щоб прив'язати відгук до конкретного товару
 }
 
 export interface ReviewData {
@@ -18,7 +21,7 @@ export interface ReviewData {
     termsAccepted: boolean;
 }
 
-export default function ReviewDialog({ onClose }: ReviewModalProps) {
+export default function ReviewDialog({ onClose, wareId }: ReviewModalProps) {
     const { isModalOpen, setIsModalOpen } = useReviewDialogStore();
     const [reviewData, setReviewData] = useState<ReviewData>({
         rating: 0,
@@ -28,6 +31,9 @@ export default function ReviewDialog({ onClose }: ReviewModalProps) {
         review: "",
         termsAccepted: false,
     });
+
+    // Використання useCreateWareReview для відправки запиту
+    const { mutateAsync: createReview, isPending: isReviewPending } = useCreateWareReview();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -47,16 +53,35 @@ export default function ReviewDialog({ onClose }: ReviewModalProps) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (reviewData.rating === 0) {
-            alert("Будь ласка, вкажіть рейтинг.");
+            toast.error("Будь ласка, вкажіть рейтинг.");
             return;
         }
         if (!reviewData.termsAccepted) {
-            alert("Ви повинні прийняти Умови та Положення.");
+            toast.error("Ви повинні прийняти Умови та Положення.");
             return;
         }
-        //onSubmit(reviewData);
-        onClose();
+
+        const reviewPayload = {
+            Text: reviewData.review,
+            Theme: reviewData.topic,
+            CustomerName: reviewData.name,
+            Email: reviewData.email,
+            Rating: reviewData.rating,
+            WareId: wareId, // ID товару
+            AuthorizedCustomerId: (validateToken().status === 200 && isUser()) ? getDecodedToken()?.nameid ?? null : null, // Якщо потрібно, можна додати логіку авторизації
+        };
+
+        createReview(reviewPayload, {
+            onSuccess: () => {
+                toast.success("Відгук успішно надіслано!");
+                onClose();
+            },
+            onError: () => {
+                toast.error("Не вдалося надіслати відгук. Спробуйте ще раз.");
+            },
+        });
     };
 
     return (
@@ -130,8 +155,8 @@ export default function ReviewDialog({ onClose }: ReviewModalProps) {
                         </label>
                     </div>
                     <center>
-                        <button type="submit" className={styles.submitButton}>
-                            Надіслати відгук
+                        <button type="submit" className={styles.submitButton} disabled={isReviewPending}>
+                            {isReviewPending ? "Надсилання..." : "Надіслати відгук"}
                         </button>
                     </center>
                 </form>

@@ -135,7 +135,7 @@ export default function WareCarousel({ wares }) {
     };
 
     return (
-        <div className="carouselWrapper" id="wareCarousel">
+        <div className="carouselWrapper wareCarousel" >
             <Slider ref={sliderRef} {...settings}>
                 {paddedWares.map((wareIter, index) =>
                     wareIter ? (

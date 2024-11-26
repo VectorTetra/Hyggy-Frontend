@@ -31,6 +31,7 @@ import { useWareReviews } from '@/pages/api/WareReviewApi';
 import useLocalStorageStore from '@/store/localStorage';
 import useWarePageMenuShops from '@/store/warePageMenuShops';
 import Head from 'next/head';  // Імпортуємо компонент Head
+import RecentWares from '@/app/sharedComponents/RecentWares';
 
 
 interface CartItem {
@@ -69,14 +70,14 @@ export default function WarePage() {
     PageSize: 3,
     Sorting: "IdDesc",
   });
-  const {
-    data: relatedReviews = [],
-    refetch: refetchRelatedReviews
-  } = useWareReviews({
-    SearchParameter: "StringIds",
-    StringIds: product !== null ? product?.reviewIds.join("|") : "",
-    Sorting: "IdDesc",
-  });
+  // const {
+  //   data: relatedReviews = [],
+  //   refetch: refetchRelatedReviews
+  // } = useWareReviews({
+  //   SearchParameter: "WareId",
+  //   WareId: product !== null ? product?.id : 0,
+  //   Sorting: "IdDesc",
+  // }, product !== null);
   const {
     data: similarWares = [],
     refetch: refetchSimilarWares,
@@ -96,7 +97,6 @@ export default function WarePage() {
 
 
   console.log("relatedBlogs", relatedBlogs);
-  console.log("relatedReviews", relatedReviews);
   console.log("similarWares", similarWares);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
@@ -115,11 +115,10 @@ export default function WarePage() {
   useEffect(() => {
     if (product !== null) {
       refetchRelatedBlogs(); // Оновлюємо список пов'язаних статей
-      refetchRelatedReviews(); // Оновлюємо список пов'язаних відгуків
       refetchSimilarWares(); // Оновлюємо список схожих товарів
       addRecentWareId(product.id); // Додаємо товар до нещодавно переглянутих
     }
-  }, [product, refetchRelatedBlogs, refetchRelatedReviews, refetchSimilarWares]);
+  }, [product, refetchRelatedBlogs, refetchSimilarWares]);
 
   useEffect(() => {
     if (customerSuccess && customers.length > 0) {
@@ -255,7 +254,7 @@ export default function WarePage() {
 
 
   return (
-    <Layout headerType="header1" footerType="footer2">
+    <Layout headerType="header1" footerType="footer1">
       <Head>
         <title>{product?.name || "Відомості про товар"}</title>
         <meta name="description" content={product?.description || "Все для дому"} />
@@ -357,6 +356,7 @@ export default function WarePage() {
         ) : (
           <p>Немає схожих товарів.</p>
         )}
+        <RecentWares />
       </div>
       }
     </Layout>

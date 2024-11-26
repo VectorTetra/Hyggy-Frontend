@@ -6,7 +6,14 @@ import blockData from "./json/blockmenu.json";
 import useMainPageMenuStore from "@/store/mainPageMenu";
 import { useWareCategories1 } from "@/pages/api/WareCategory1Api";
 import { CircularProgress } from "@mui/material";
-const adaptCategories = (data) => {
+interface Category {
+    caption?: string;
+    type?: string;
+    name?: string;
+    subCategories?: Category[];
+}
+
+const adaptCategories = (data: any[]): Category[] => {
     return data.map((category) => ({
         caption: category.name,
         subCategories: category.waresCategories2.map((subCategory) => ({
@@ -27,7 +34,7 @@ const BlockMenu: React.FC = () => {
         PageSize: 1000,
         Sorting: "NameAsc"
     });
-    const [currentMenu, setCurrentMenu] = useState(adaptCategories(foundWareCategories));
+    const [currentMenu, setCurrentMenu] = useState<any[]>([]);
     const [currentCategory, setCurrentCategory] = useState<any>(null); // Текущая категория для отображения в заголовке
     const { isMainPageMenuOpened, setIsMainPageMenuOpened } = useMainPageMenuStore();
 
@@ -83,26 +90,37 @@ const BlockMenu: React.FC = () => {
 
 
     useEffect(() => {
-        if (!isWareCategories1Loading && currentMenu.length === 0) {
-            const adaptedCategories = adaptCategories(foundWareCategories);
-            setCurrentMenu(adaptedCategories);
+        if (!isWareCategories1Loading && foundWareCategories.length > 0) {
+            setCurrentMenu(adaptCategories(foundWareCategories));
         }
     }, [foundWareCategories, isWareCategories1Loading]);
 
 
+    // useEffect(() => {
+    //     if (isMainPageMenuOpened) {
+    //         document.body.style.overflow = "hidden";
+    //         if (!isWareCategories1Loading && foundWareCategories.length > 0 && currentMenu.length === 0) {
+    //             setCurrentMenu(adaptCategories(foundWareCategories));
+    //         }
+    //     } else {
+    //         document.body.style.overflow = "";
+    //     }
+    //     return () => {
+    //         document.body.style.overflow = "";
+    //     };
+    // }, [isMainPageMenuOpened, foundWareCategories, isWareCategories1Loading]);
+
     useEffect(() => {
         if (isMainPageMenuOpened) {
             document.body.style.overflow = "hidden";
-            if (!isWareCategories1Loading && foundWareCategories.length > 0 && currentMenu.length === 0) {
-                setCurrentMenu(adaptCategories(foundWareCategories));
-            }
         } else {
             document.body.style.overflow = "";
         }
         return () => {
             document.body.style.overflow = "";
         };
-    }, [isMainPageMenuOpened, foundWareCategories, isWareCategories1Loading]);
+    }, [isMainPageMenuOpened]);
+
 
     if (!isMainPageMenuOpened) return null;
     return (

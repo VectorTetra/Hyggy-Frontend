@@ -5,16 +5,28 @@ import useReviewDialogStore from '@/store/reviewDialogStore';
 import { useEffect } from 'react';
 import StarRating from '../../sharedComponents/StarRating';
 import styles from "../css/ReviewWare.module.css";
-import ReviewDialog from './ReviewDialog';
+import ReviewDialog from '../../sharedComponents/ReviewDialog';
 
 export default function ReviewWare({ product }: { product: Ware }) {
   const { isModalOpen, setIsModalOpen } = useReviewDialogStore();
 
-  const { data: reviews = [], isLoading: isReviewsLoading, isSuccess: isReviewsSuccess } = useWareReviews({
-    SearchParameter: "StringIds",
-    StringIds: product.reviewIds.join('|'),
-    Sorting: "DateDesc",
-  });
+  const { data: reviews = [], refetch } = useWareReviews(
+    {
+      SearchParameter: "WareId",
+      WareId: product ? product.id : 0,
+      Sorting: "IdDesc",
+    },
+    //false // Запит не виконується автоматично
+    true
+  );
+  console.log(reviews);
+
+  // Викликаємо refetch, коли продукт завантажено
+  useEffect(() => {
+    if (product) {
+      refetch();
+    }
+  }, [product, refetch]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -33,7 +45,7 @@ export default function ReviewWare({ product }: { product: Ware }) {
       <div className={styles.overallRating}>
         <div className={styles.rating}>
           <StarRating rating={Number(product.averageRating)} />
-          <span className={styles.ratingText}>{product.averageRating} / 5</span>
+          <span className={styles.ratingText}>{product.averageRating.toFixed(1)} / 5</span>
         </div>
         <div className={styles.mainText}>Оцінка користувачів</div>
         <button
@@ -43,7 +55,7 @@ export default function ReviewWare({ product }: { product: Ware }) {
         </button>
       </div>
       {isModalOpen && (
-        <ReviewDialog onClose={() => setIsModalOpen(false)} />
+        <ReviewDialog onClose={() => setIsModalOpen(false)} wareId={product.id} />
       )}
       <hr className={styles.reviewHr} />
       <div className={styles.reviewsList}>

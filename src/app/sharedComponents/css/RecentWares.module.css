@@ -1,3 +1,17 @@
 #recentWaresWrapper {
-    padding: 1rem 3rem;
+    padding: 2rem 0;
 }
+
+#recentWaresWrapper #wareCarousel .slick-next {
+    right: 0px;
+}
+
+#recentWaresWrapper #wareCarousel .slick-prev {
+    left: 0px;
+}
+
+/* @media screen and (max-width: 768px) {
+    #recentWaresWrapper {
+        padding: 1rem 0;
+    }
+} */

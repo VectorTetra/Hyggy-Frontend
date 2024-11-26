@@ -27,6 +27,7 @@
 .close {
     cursor: pointer;
     float: right;
+    font-size: xx-large;
 }
 
 .formRating {
