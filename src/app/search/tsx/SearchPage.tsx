@@ -38,7 +38,7 @@ export default function SearchPage() {
     const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
     const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
     const [loading, setLoading] = useState(true);
-    const { setMinPossible, setMaxPossible, waresBeforeCategories, setWaresBeforeCategories,
+    const { setMinPossible, setMaxPossible,
         activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore();
 
     useEffect(() => {

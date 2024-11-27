@@ -18,7 +18,7 @@ export default function ConfirmationPage(props) {
         console.log('code', code)
 
 
-        if (user && user.confirmationCode === code) {
+        if (user && user.confirmationCode === code && typeof window !== "undefined") {
             alert('Обліковий запис успішно створено!');
             user.confirmationStatus = true;
             window.location.href = '../MainPage'; // Перехід поки що на головну, але згодом у особистий кабінет

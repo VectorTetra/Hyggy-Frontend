@@ -1,7 +1,4 @@
 import { create } from 'zustand';
-import { useWares } from '@/pages/api/WareApi';
-import { getDecodedToken } from '@/pages/api/TokenApi';
-import { Ware } from '@/pages/api/WareApi';
 
 interface QueryStore {
     RefetchFavoriteWares: boolean;

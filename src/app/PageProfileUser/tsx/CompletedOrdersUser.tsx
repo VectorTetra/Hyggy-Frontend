@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Divider, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import data from '../PageProfileUser.json';
-import ReviewModal from './ReviewModal';
+import ReviewDialog from "@/app/sharedComponents/ReviewDialog";
+import { Ware } from "@/pages/api/WareApi";
 
 export default function CompletedOrdersUser() {
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState<Ware | null>(null);
 
     const handleToggle = (orderId: string) => {
         setExpandedOrderId(prevId => prevId === orderId ? null : orderId);
@@ -130,11 +131,10 @@ export default function CompletedOrdersUser() {
                                     </AccordionDetails>
                                 </Accordion>
                             )}
-                            {reviewModalOpen && (
-                                <ReviewModal
-                                    isOpen={reviewModalOpen}
+                            {reviewModalOpen && selectedProduct !== null && (
+                                <ReviewDialog
                                     onClose={handleCloseReviewModal}
-                                    product={selectedProduct}
+                                    wareId={selectedProduct.id}
                                 />
                             )}
                         </Box>

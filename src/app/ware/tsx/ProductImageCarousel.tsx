@@ -1,21 +1,21 @@
 import { Ware } from "@/pages/api/WareApi";
-import styles from "../page.module.css";
+import styles from "@/app/ware/css/ProductImageCarousel.module.css";
 import { Customer } from "@/pages/api/CustomerApi";
-import FavoriteButton from "./FavoriteButton";
+import FavoriteButton from "../../sharedComponents/FavoriteButton";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
+import { useFavoriteWare } from "@/app/sharedComponents/methods/useFavoriteWare";
 
 interface ProductImageCarouselProps {
     product: Ware;
-    customer: Customer | null;
-    toggleFavorite: (productId: number) => void;
 }
 
-const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({ product, customer, toggleFavorite }) => {
+const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({ product }) => {
+    const { toggleFavoriteWare, isFavorite } = useFavoriteWare();
     const settings = {
-        infinite: true,
+        infinite: false,
         slidesToShow: 1,
         slidesToScroll: 1,
         dots: true,
@@ -28,8 +28,8 @@ const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({ product, cu
             <FavoriteButton
                 className={styles.favoriteButton}
                 productId={product.id}
-                isFavorite={customer?.favoriteWareIds.includes(product.id) ?? false}
-                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite(product.id)}
+                toggleFavorite={toggleFavoriteWare}
             />
 
             <Slider {...settings}>

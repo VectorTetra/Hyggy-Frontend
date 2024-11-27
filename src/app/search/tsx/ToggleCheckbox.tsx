@@ -3,7 +3,7 @@ import styles from "../css/ToggleCheckbox.module.css";
 import React from "react";
 // Apply React Memo to prevent re-rendering
 
-const ToggleCheckbox = React.memo(() => {
+export default function ToggleCheckbox() {
   const [filter, setFilter] = useQueryState("f_4", { scroll: false });
 
   const onChange = (e: any) => {
@@ -41,6 +41,5 @@ const ToggleCheckbox = React.memo(() => {
       </label>
     </div>
   );
-});
+};
 
-export default ToggleCheckbox;

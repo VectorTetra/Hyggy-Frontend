@@ -1,15 +1,19 @@
 "use client";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import Map from "./components/Map";
-import List from "./components/List";
+//import Map from "./tsx/Map";
+import dynamic from 'next/dynamic';
+import List from "./tsx/List";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useDebounce } from 'use-debounce';
 
-
+const Map = dynamic(
+  () => import('./tsx/Map'),
+  { ssr: false }
+)
 const DeliveryPage = () => {
   const [selectedStore, setSelectedStore] = useState(null);
   const [selectedDeliveryType, setSelectedDeliveryType] = useState("store");

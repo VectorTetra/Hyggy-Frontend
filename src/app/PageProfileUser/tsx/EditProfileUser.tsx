@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import InputMask from 'react-input-mask';  // Імпортуємо InputMask
-import data from '../PageProfileUser.json';
 import { Customer, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { toast } from "react-toastify";
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { getDecodedToken, removeToken } from "@/pages/api/TokenApi";
 
 
@@ -20,7 +19,6 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
     const queryClient = useQueryClient();
     const { mutateAsync: updateCustomer } = useUpdateCustomer();
     const handleSaveChanges = async () => {
-        // Видаляємо зайві символи для збереження в базі даних
         console.log("user", user);
         await updateCustomer(
             {

@@ -107,13 +107,14 @@ export async function deleteWareReview(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareReviews)
-export function useWareReviews(params: WareReviewQueryParams = { SearchParameter: "Query" }) {
+export function useWareReviews(params: WareReviewQueryParams = { SearchParameter: "Query" }, p0: boolean) {
     return useQuery({
         queryKey: ['wareReviews', params],
         queryFn: () => getWareReviews(params),
         staleTime: Infinity, // Дані завжди актуальні
         gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+        enabled: false, // Запит не відбувається автоматично
     });
 }
 

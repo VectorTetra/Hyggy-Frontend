@@ -118,7 +118,7 @@ function SortablePhoto({ id, photo, removePhoto, index, isStarPhotoAssigned }) {
         position: "relative",
         display: "flex",
         alignItems: "center",
-        flexBasis: "30%",
+        flexBasis: "30vh",
         flexDirection: "column",
         userSelect: "none",
         cursor: "move",

@@ -104,7 +104,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
+                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY для доставки"}</span>
                             <button onClick={() => setIsWarePageMenuShopsOpened(false)} className={styles.closeButton}>
                                 Х
                             </button>

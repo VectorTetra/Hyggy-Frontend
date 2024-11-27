@@ -7,7 +7,7 @@ interface SearchFieldProps {
 	onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SearchField: React.FC<SearchFieldProps> = React.memo(({ searchTerm, onSearchChange }) => {
+const SearchField: React.FC<SearchFieldProps> = ({ searchTerm, onSearchChange }) => {
 	return (
 		<TextField
 			label="Швидкий пошук"
@@ -28,7 +28,6 @@ const SearchField: React.FC<SearchFieldProps> = React.memo(({ searchTerm, onSear
 			}}
 		/>
 	);
-});
-
+};
 
 export default SearchField;

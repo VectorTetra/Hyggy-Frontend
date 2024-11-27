@@ -27,6 +27,11 @@
 		'Android Emoji', sans-serif;
 }
 
+.favoriteButton:hover {
+	transform: scale(1.25);
+	transition: ease-in 0.1s;
+}
+
 .wareImage {
 	max-height: 100%;
 	max-width: 100%;
