@@ -28,6 +28,7 @@ export default function MainPageSale(props) {
             console.log("OurSales type", typeof (sales));
         }
     }, [isSuccess]);
+
     // Функция для перехода к следующему элементу
     const nextSale = () => {
         setCurrentIndex((prevIndex) =>

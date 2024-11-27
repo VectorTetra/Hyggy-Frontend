@@ -1,13 +1,10 @@
-/* CardCarousel.css */
-.carouselWrapper {
+.carouselWrapper1 {
 	width: 100%;
-	/* margin: auto; */
 	margin: 20px 0;
 }
 
 .slick-list {
 	overflow: hidden;
-	/* Сховати все, що виходить за межі */
 	max-height: 250px;
 }
 
@@ -17,15 +14,12 @@
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
-	/* Сховати все, що виходить за межі */
 	border-radius: 16px;
-	/* Застосуйте той же радіус закруглення */
 }
 
-.cardImage {
+.cardImage1 {
 	border-radius: 16px;
 	width: 80vw;
-	/* max-width: 100%; */
 	height: 250px;
 	object-fit: cover;
 }
@@ -64,17 +58,13 @@
 
 .slick-arrow:before {
 	color: black;
-	/* Змінити колір стрілки на білий */
 	font-size: 20px;
-	/* Змінити розмір шрифта */
 }
 
 .slick-prev {
-	left: 30px;
-	/* Відступ від лівого краю */
+	left: 40px;
 }
 
 .slick-next {
-	right: 30px;
-	/* Відступ від правого краю */
+	right: 40px;
 }
