@@ -52,7 +52,7 @@ export default function AuthenticationPage(props) {
                 onSubmit={handleSubmit}
                 sx={{
                     width: '100%',
-                    maxWidth: '400px',
+                    maxWidth: 'clamp(400px,42vmax,800px)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1rem',
@@ -101,29 +101,30 @@ export default function AuthenticationPage(props) {
                 >
                     Увійти
                 </Button>
+                <div className={styles.forgotpasswordlink}>
+                    <a href="../PagePasswordReset">Забули пароль?</a>
+                </div>
+                <div>
+                    <h2 className={styles.h2}>Створити новий обліковий запис</h2>
+                    <div className={styles.features}>
+                        <ul className={styles.featuresul}>
+                            <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
+                            <li className={styles.featuresil}>Зберігайте історію замовлень</li>
+                            <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
+                            <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style={{ display: "flex" }}>
+                    <button
+                        className={styles.submitbutton2}
+                        onClick={() => window.location.href = '../PageRegistration'}>
+                        Створити новий обліковий запис
+                    </button>
+                </div>
             </Box>
 
-            <div className={styles.forgotpasswordlink}>
-                <a href="../PagePasswordReset">Забули пароль?</a>
-            </div>
-            <div>
-                <h2 className={styles.h2}>Створити новий обліковий запис</h2>
-                <div className={styles.features}>
-                    <ul className={styles.featuresul}>
-                        <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
-                        <li className={styles.featuresil}>Зберігайте історію замовлень</li>
-                        <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
-                        <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
-                    </ul>
-                </div>
-            </div>
-            <div style={{ display: "flex" }}>
-                <button
-                    className={styles.submitbutton2}
-                    onClick={() => window.location.href = '../PageRegistration'}>
-                    Створити новий обліковий запис
-                </button>
-            </div>
+
         </Box>
     );
 }

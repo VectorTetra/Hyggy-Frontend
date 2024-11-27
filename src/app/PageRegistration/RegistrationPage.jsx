@@ -255,7 +255,6 @@ export default function RegistrationPage(props) {
                         backgroundColor: '#f3f3f3',
                         padding: '0.75rem',
                         fontSize: '1rem',
-
                         color: '#00AAAD', // Цвет текста
                         textDecoration: 'underline',
                         textTransform: 'none',

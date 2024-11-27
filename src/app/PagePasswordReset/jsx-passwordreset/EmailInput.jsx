@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from '../css/passwordResetStyle.module.css';
+import { Button } from "@mui/material";
 
 
 export default function EmailInput({ passwordResetData, onSwitchComponent }) {
