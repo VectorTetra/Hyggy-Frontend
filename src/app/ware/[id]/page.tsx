@@ -5,11 +5,6 @@ import { getJsonConstructorFile, useWares, Ware } from '@/pages/api/WareApi';
 import useQueryStore from '@/store/query';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from "react";
-import {
-  addToCart,
-  getCartFromLocalStorage,
-  removeFromCart
-} from '../../cart/types/Cart';
 import FavoriteButton from '../../sharedComponents/FavoriteButton';
 import Layout from "../../sharedComponents/Layout";
 import StarRating from "../../sharedComponents/StarRating";

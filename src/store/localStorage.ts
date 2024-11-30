@@ -47,7 +47,7 @@ interface LocalStorageStore {
     cart: CartItem[];
     addressInfo: AddressInfo | null;
     deliveryInfo: DeliveryInfo | null;
-    formData: FormData;
+    formData: FormData | null;
     selectedDeliveryType: string;
     paymentStatus: string | null;
     addToCart: (newItem: CartItem) => void;
@@ -140,34 +140,41 @@ const setRecentWareIdsToLocalStorage = (ids: number[]): void => {
 };
 
 const getCartFromLocalStorage = (): CartItem[] => {
+    if (!isClient) return [];
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
 };
 
 const saveCartToLocalStorage = (cartItems: CartItem[]): void => {
+    if (!isClient) return;
     localStorage.setItem("cart", JSON.stringify(cartItems));
     window.dispatchEvent(new Event("storage"));
 };
 
 const getAddressInfoFromLocalStorage = (): AddressInfo | null => {
+    if (!isClient) return null;
     const savedAddressInfo = localStorage.getItem("addressInfo");
     return savedAddressInfo ? JSON.parse(savedAddressInfo) : null;
 };
 
 const saveAddressInfoToLocalStorage = (addressInfo: AddressInfo | null): void => {
+    if (!isClient) return;
     localStorage.setItem("addressInfo", JSON.stringify(addressInfo));
 };
 
 const getDeliveryInfoFromLocalStorage = (): DeliveryInfo | null => {
+    if (!isClient) return null;
     const savedDeliveryInfo = localStorage.getItem("deliveryInfo");
     return savedDeliveryInfo ? JSON.parse(savedDeliveryInfo) : null;
 };
 
 const saveDeliveryInfoToLocalStorage = (deliveryInfo: DeliveryInfo | null): void => {
+    if (!isClient) return;
     localStorage.setItem("deliveryInfo", JSON.stringify(deliveryInfo));
 };
 
-const getFormDataFromLocalStorage = (): FormData => {
+const getFormDataFromLocalStorage = (): FormData | null => {
+    if (!isClient) return null;
     const savedFormData = localStorage.getItem("formData");
     return savedFormData ? JSON.parse(savedFormData) : {
         firstName: "",
@@ -182,24 +189,29 @@ const getFormDataFromLocalStorage = (): FormData => {
 };
 
 const saveFormDataToLocalStorage = (formData: FormData): void => {
+    if (!isClient) return;
     localStorage.setItem("formData", JSON.stringify(formData));
 };
 
 const getSelectedDeliveryTypeFromLocalStorage = (): string => {
+    if (!isClient) return "store";
     const savedDeliveryType = localStorage.getItem("selectedDeliveryType");
     return savedDeliveryType ? savedDeliveryType : "store";
 };
 
 const saveSelectedDeliveryTypeToLocalStorage = (selectedDeliveryType: string): void => {
+    if (!isClient) return;
     localStorage.setItem("selectedDeliveryType", selectedDeliveryType);
 };
 
 const getPaymentStatusFromLocalStorage = (): string | null => {
+    if (!isClient) return null;
     const savedPaymentStatus = localStorage.getItem("paymentStatus");
     return savedPaymentStatus ? savedPaymentStatus : null;
 };
 
 const savePaymentStatusToLocalStorage = (paymentStatus: string | null): void => {
+    if (!isClient) return;
     if (paymentStatus) {
         localStorage.setItem("paymentStatus", paymentStatus);
     } else {
