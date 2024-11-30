@@ -16,6 +16,8 @@ import ShopEmployees from './Employees/ShopEmployees';
 import NewShopEmployee from './Employees/NewShopEmployee';
 import StorageEmployees from './Employees/StorageEmployees';
 import NewStorageEmployee from './Employees/NewStorageEmployee';
+import FrameWriteoff from './FrameWriteoff';
+import FrameRemaining from './FrameRemaining';
 
 const drawerWidth = 240;
 
@@ -36,10 +38,10 @@ export default function Content() {
 				{activeTab === 'addEditWare' && <WareAddEditFrame />}
 				{activeTab === 'warehousesList' && <FrameStorage />}
 				{activeTab === 'addEditWarehouse' && <FrameStorageAddEdit />}
-				{activeTab === 'remains' && <div>Залишки</div>}
+				{activeTab === 'remains' && <FrameRemaining />}
 				{activeTab === 'supplies' && <div>Поставки</div>}
 				{activeTab === 'transfers' && <div>Переміщення</div>}
-				{activeTab === 'writeOffs' && <div>Списання</div>}
+				{activeTab === 'writeOffs' && <FrameWriteoff />}
 				{activeTab === 'stores' && <AllShops />}
 				{activeTab === 'addNewShop' && <NewShop />}
 				{activeTab === 'shopEmployees' && <ShopEmployees />}

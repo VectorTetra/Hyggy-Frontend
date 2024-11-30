@@ -21,7 +21,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const { data: wareItems = [], isLoading: isWareItemsLoading } = useWareItems({
         SearchParameter: "WareId",
         WareId: wareId,
-    });
+    }, true);
 
     const isNotAvailable = wareItems.length > 0 && wareItems.every((item) => item.quantity === 0);
 

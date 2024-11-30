@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function BlogMenu(props) {
     const [images, setImages] = useState([]);
-    const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
+    const [selectedCaption, setSelectedCaption] = useState("");
     const router = useRouter();
 
     const loadImages = (category) => {
@@ -57,7 +57,6 @@ export default function BlogMenu(props) {
                     </Link>
                 ))}
             </div>
-            <hr />
             <div className={styles.imagescontainer}>
                 {images.map((item, index) => (
                     <div key={index} className={styles.imageitem}>
