@@ -143,6 +143,10 @@ export default function WareAddEditFrame() {
     }
 
     const handleSave = async () => {
+        if (photos.length === 0) {
+            toast.error('Додайте хоча б одне фото товару, щоб його зберегти');
+            return;
+        }
         setLoading(true);
         try {
             if (wareCategory3 != null) {
@@ -182,6 +186,8 @@ export default function WareAddEditFrame() {
                         // Чекаємо завершення всіх операцій та оновлюємо newWareImageIds
                         newWareImageIds = await Promise.all(newPhotoPromises);
                     }
+                    toast.success('Товар успішно створено!');
+
                 } else {
                     console.log("trademarkId", trademarkId);
                     console.log("wareDetails", wareDetails);
@@ -245,10 +251,12 @@ export default function WareAddEditFrame() {
                             ImageIds: isPhotosDirty ? newWareImageIds : imageIds,
                             StatusIds: statusIds
                         });
+                        toast.success('Товар успішно оновлено!');
                     }
                 }
             }
         } catch (error) {
+            console.error('Error saving ware:', error);
             toast.error('Виникла помилка при збереженні товару');
         } finally {
             setLoading(false);
@@ -386,7 +394,7 @@ export default function WareAddEditFrame() {
                     variant="contained"
                     color="primary"
                     onClick={handleSave}
-                    disabled={!name || !price}
+                    disabled={!name || !price || !wareCategory3}
                 >
                     Зберегти
                 </Button>

@@ -4,6 +4,8 @@ import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import useLocalStorageStore from "@/store/localStorage";
+import InputMask from 'react-input-mask';
 
 const PaymentPage = () => {
   const [formData, setFormData] = useState({
@@ -20,18 +22,23 @@ const PaymentPage = () => {
 
   const [isFormValid, setIsFormValid] = useState(false);
   const router = useRouter();
+  const { getCartFromLocalStorage, setPaymentStatus, deliveryInfo } = useLocalStorageStore();
 
   useEffect(() => {
-    const deliveryInfo = localStorage.getItem('deliveryInfo');
-    console.log("Delivery Info:" + deliveryInfo)
     if (!deliveryInfo) {
       router.push('/cart/delivery');
     }
-  }, [router]);
+    const savedCartItems = getCartFromLocalStorage();
+    if (savedCartItems.length === 0) {
+      router.push('/');
+    }
+  }, [router, deliveryInfo]);
 
   const validateCardNumber = (value: string) => {
-    return /^\d{16}$/.test(value);
+    const sanitizedValue = value.replace(/\s+/g, '');
+    return /^\d{16}$/.test(sanitizedValue);
   };
+
 
   const validateExpiryDate = (value: string) => {
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(value)) {
@@ -111,7 +118,7 @@ const PaymentPage = () => {
     setErrors(newErrors);
 
     if (!cardNumberError && !expiryDateError && !cvvError) {
-      localStorage.setItem('paymentStatus', 'success');
+      setPaymentStatus('success');
       window.location.href = "/cart/success";
     }
   };
@@ -132,29 +139,46 @@ const PaymentPage = () => {
         <div className={styles.formSection}>
           <form>
             <div className={styles.formGroup}>
-              <input
-                type="text"
-                name="cardNumber"
+              <InputMask
+                mask="9999 9999 9999 9999"
                 value={formData.cardNumber}
                 onChange={handleInputChange}
-                required
-                placeholder="Номер карти*"
-                className={`${styles.formInput} ${errors.cardNumber ? styles.errorInput : ''}`}
-              />
+              >
+                {() => (
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    value={formData.cardNumber}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Номер карти*"
+                    className={`${styles.formInput} ${errors.cardNumber ? styles.errorInput : ''}`}
+                  />
+                )}
+              </InputMask>
               {errors.cardNumber && <p className={styles.error}>{errorMessages.cardNumber}</p>}
             </div>
 
             <div className={styles.formGroupRow}>
               <div className={styles.formGroup}>
-                <input
-                  type="text"
-                  name="expiryDate"
+                <InputMask
+                  mask="99/99"
                   value={formData.expiryDate}
                   onChange={handleInputChange}
-                  required
-                  placeholder="MM/YY*"
-                  className={`${styles.formInput} ${errors.expiryDate ? styles.errorInput : ''}`}
-                />
+                >
+                  {() => (
+                    <input
+                      type="text"
+                      name="expiryDate"
+                      value={formData.expiryDate}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="MM/YY*"
+                      className={`${styles.formInput} ${errors.expiryDate ? styles.errorInput : ''}`}
+                    />
+                  )}
+                </InputMask>
+
                 {errors.expiryDate && <p className={styles.error}>{errorMessages.expiryDate}</p>}
               </div>
               <div className={styles.formGroup}>
