@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MainPageHeaderLogo from './MainPageHeaderLogo';
 import MainPageHeaderMenu from './MainPageHeaderMenu';
 import MainPageHeaderSearch from './MainPageHeaderSearch';
@@ -11,9 +11,20 @@ import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import { validateToken } from '@/pages/api/TokenApi';
+import { getSales } from '@/pages/api/SaleApi';
 
 function MainPageHeader(props) {
+    const [sales, setSales] = useState([]);
+
 	const isAuthorized = validateToken().status === 200;
+	useEffect(() => {
+		const fetchSales = async () => {
+            const response = await getSales();
+            console.log(response)
+            setSales(response);
+        }
+		fetchSales();
+	}, [])
 	return (
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />
