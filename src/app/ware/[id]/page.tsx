@@ -11,11 +11,6 @@ import ReviewWare from '../tsx/ReviewWare';
 import SimilarWare from '../tsx/SimilarWare';
 import CartPopup from '../tsx/CartPopup';
 import jsonData from '../structure.json';
-import {
-  getCartFromLocalStorage,
-  addToCart,
-  removeFromCart
-} from '../../cart/types/Cart';
 import { getJsonConstructorFile, getWares, useWares, Ware } from '@/pages/api/WareApi';
 import { getDecodedToken } from '@/pages/api/TokenApi';
 import FavoriteButton from '../tsx/FavoriteButton';
@@ -38,7 +33,7 @@ interface CartItem {
   productName: string;
   productImage: string;
   quantity: number;
-  price: string;
+  price: number;
   oldPrice: string;
   selectedOption: string;
 }
@@ -78,8 +73,10 @@ export default function WarePage() {
   const { selectedShop } = useLocalStorageStore();
 
   useEffect(() => {
-    setCartItems(getCartFromLocalStorage());
+    // Ініціалізація кошика з localStorage через Zustand
+    setCartItems(useLocalStorageStore.getState().cart);
   }, []);
+
 
   useEffect(() => {
     if (customerSuccess && customers.length > 0) {
@@ -148,20 +145,21 @@ export default function WarePage() {
       productName: product.name,
       productImage: product.previewImagePath,
       quantity: quantity,
-      price: product.finalPrice.toString(),
+      price: product.finalPrice,
       oldPrice: product.price.toString(),
       selectedOption: selectedOption,
     };
 
-    const updatedCart = addToCart(cartItems, newItem);
-    setCartItems(updatedCart);
+    // Використовуємо метод addToCart з store для додавання товару
+    useLocalStorageStore.getState().addToCart(newItem);
     setShowPopup(true);
   };
 
+
   const handleRemoveItem = (index: number) => {
-    const updatedCart = removeFromCart(cartItems, index);
-    setCartItems(updatedCart);
+    useLocalStorageStore.getState().removeFromCart(index);
   };
+
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -274,10 +272,8 @@ export default function WarePage() {
             {isWarePageMenuShopsOpened && <BlockShopsByWare wareId={id} />}
             {showPopup && (
               <CartPopup
-                cartItems={cartItems}
-                selectedOption={selectedOption}
                 onClose={handleClosePopup}
-                onRemoveItem={handleRemoveItem}
+                selectedOption={selectedOption}
               />
             )}
           </div>

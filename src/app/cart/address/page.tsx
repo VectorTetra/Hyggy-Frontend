@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import { getCartFromLocalStorage } from "../types/Cart";
+import useLocalStorageStore from "@/store/localStorage";
 import Link from 'next/link';
+import InputMask from 'react-input-mask';
 
 interface CartItem {
   productDescription: string;
   productName: string;
   productImage: string;
   quantity: number;
-  price: string;
+  price: number;
   oldPrice: string;
   selectedOption: string;
 }
@@ -19,17 +20,6 @@ interface CartItem {
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    city: "",
-    street: "",
-    houseNumber: "",
-    email: "",
-    phone: "",
-    termsAccepted: false,
-  });
 
   const [errors, setErrors] = useState({
     firstName: false,
@@ -43,19 +33,25 @@ const AddressPage = () => {
     streetNotFound: false,
   });
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
+
   const [isFormValid, setIsFormValid] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [streetSuggestions, setStreetSuggestions] = useState<string[]>([]);
 
-  useEffect(() => {
-    const savedFormData = localStorage.getItem("formData");
-    if (savedFormData) {
-      setFormData(JSON.parse(savedFormData));
-    }
+  const {
+    formData,
+    setFormData,
+    getCartFromLocalStorage,
+    setAddressInfo,
+  } = useLocalStorageStore();
 
+  useEffect(() => {
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
-
     if (savedCartItems.length === 0) {
       router.push('/');
     }
@@ -70,15 +66,10 @@ const AddressPage = () => {
     const { name, value, type, checked } = e.target;
     const updatedValue = type === "checkbox" ? checked : value;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: updatedValue,
-    }));
-
-    localStorage.setItem("formData", JSON.stringify({
+    setFormData({
       ...formData,
       [name]: updatedValue,
-    }));
+    });
 
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -146,10 +137,10 @@ const AddressPage = () => {
   };
 
   const handleCitySelect = (city: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       city,
-    }));
+    });
     setCitySuggestions([]);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -158,10 +149,10 @@ const AddressPage = () => {
   };
 
   const handleStreetSelect = (street: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       street,
-    }));
+    });
     setStreetSuggestions([]);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -176,7 +167,7 @@ const AddressPage = () => {
       city: formData.city === "",
       street: formData.street === "",
       houseNumber: formData.houseNumber === "",
-      email: formData.email === "",
+      email: formData.email === "" || !validateEmail(formData.email),
       phone: formData.phone === "",
       cityNotFound: errors.cityNotFound,
       streetNotFound: errors.streetNotFound,
@@ -194,14 +185,14 @@ const AddressPage = () => {
         street: formData.street,
         houseNumber: formData.houseNumber,
       };
-      localStorage.setItem('addressInfo', JSON.stringify(addressInfo));
+      setAddressInfo(addressInfo);
       window.location.href = "/cart/delivery";
     }
   };
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
   };
 
@@ -297,14 +288,22 @@ const AddressPage = () => {
               />
             </div>
             <div className={styles.formGroup}>
-              <input
-                type="tel"
-                name="phone"
+              <InputMask
+                mask="+38 (099) 999-99-99"
                 value={formData.phone}
                 onChange={handleInputChange}
-                placeholder="Мобільний телефон*"
-                className={`${styles.formInput} ${errors.phone ? styles.errorInput : ''}`}
-              />
+              >
+                {() => (
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="Мобільний телефон*"
+                    className={`${styles.formInput} ${errors.phone ? styles.errorInput : ''}`}
+                  />
+                )}
+              </InputMask>
             </div>
             <div className={styles.formGroup}>
               <label>
@@ -348,12 +347,12 @@ const AddressPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{item.price} грн</p>
-                    <p>{parseFloat(item.price) * item.quantity} грн</p>
+                    <p>{Math.ceil(item.price)} грн</p>
+                    <p>{Math.ceil(item.price * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {calculateTotalPrice().toFixed(2)} грн</p>
+              <p className={styles.totalPrice}>Усього {Math.ceil(calculateTotalPrice())} грн</p>
             </div>
           )}
         </div>
