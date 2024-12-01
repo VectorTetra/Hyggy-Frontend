@@ -1,5 +1,7 @@
 "use client";
-import React, { useEffect } from 'react';
+
+import React, {useState , useEffect} from 'react';
+import Link from 'next/link';
 import styles from '../../styles/MainPageHeader-styles.module.css';
 import { useRouter } from "next/navigation";
 import { BlogQueryParams, useBlogs } from '@/pages/api/BlogApi';
@@ -38,6 +40,7 @@ export default function MainPageSale(props) {
 
     // Автоматическое переключение распродажи каждые 3 секунды
     React.useEffect(() => {
+        
         const interval = setInterval(nextSale, 3000);
         return () => clearInterval(interval); // Очистка интервала при размонтировании
     }, []);

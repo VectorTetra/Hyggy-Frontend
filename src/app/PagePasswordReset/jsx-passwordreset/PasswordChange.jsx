@@ -1,11 +1,18 @@
 "use client";
+import { resetPassword } from "@/pages/api/resetpassword";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import styles from '../css/passwordResetStyle.module.css';
+import { useRouter } from "next/navigation";
 
 export default function PasswordChange({ passwordResetData }) {
     const [newPassword, setNewPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [message, setMessage] = React.useState('');
+    const searchParams = useSearchParams();
+    const token = searchParams?.get('token');
+    const email = searchParams?.get('email');
+    const navigate = useRouter();
 
     // Получаем userId из параметра запроса
     const userId = new URLSearchParams(window.location.search).get('reset');
@@ -19,7 +26,7 @@ export default function PasswordChange({ passwordResetData }) {
     };
 
     // Обработка отправки формы
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Проверка на заполненность обоих полей
@@ -44,13 +51,20 @@ export default function PasswordChange({ passwordResetData }) {
         }
 
         // Проверка наличия пользователя и обновление пароля
-        if (user) {
-            user.newPassword = newPassword;
-            setMessage('');
-            alert("Ваш пароль успішно оновлено!");
-        } else {
-            setMessage('');
-            alert("Неправильне посилання для скидання паролю.");
+        // if (user) {
+        //     user.newPassword = newPassword;
+        //     setMessage('');
+        //     alert("Ваш пароль успішно оновлено!");
+        // } else {
+        //     setMessage('');
+        //     alert("Неправильне посилання для скидання паролю.");
+        // }
+        const response = await resetPassword(newPassword, confirmPassword, email, token);
+        if(response){
+            alert(response);
+            navigate.push('/PageAuthentication')
+        }else{
+            console.log("Щось пішло не так")
         }
     };
 

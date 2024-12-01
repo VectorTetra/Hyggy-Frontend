@@ -139,7 +139,7 @@ export function isSaler() {
 export async function Authorize(params: UserForAuthenticationDto) {
 	try {
 		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
-
+		//const response = await axios.post('http://localhost:5263/api/Customer/authenticate', params);
 		if (response.data.isAuthSuccessfull) {
 			setToken(response.data.token);
 		} else {
