@@ -4,6 +4,13 @@
     padding: 20px;
 }
 
+.AboutUs {
+    display: flex;
+    width: 100%;
+    background-color: white;
+    margin: 10px 0 0 0;
+}
+
 /* Левый контейнер для FAQ и общих вопросов */
 .leftcontainer {
     flex: 2;
@@ -24,8 +31,9 @@
 }
 
 .faqcontainer h2 {
-    font-size: 2.0vw;
+    font-size: 1.8vw;
     margin-bottom: 2vw;
+    font-weight: bold;
 }
 
 .faqcontainertext {
@@ -132,21 +140,40 @@
 .commonquestions {
     display: flex;
     flex-direction: column;
+    margin: 0 0px 40px 80px;
+    width: 90%;
+}
+
+.commonquestions h3 {
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .questionscontainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 35px;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
+
+.questionscolumnl {
+    margin-left: 70px;
+}
+
+.questionscolumnr {
+    margin-left: 60px;
+}
+
 
 .questiontitle {
     padding: 10px;
-    background-color: #f4f4f4;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    text-decoration: underline;
 }
 
 .questiontitle:hover {
@@ -155,27 +182,31 @@
 
 .contactsection {
     display: flex;
+    width: 400px;
     flex-direction: column;
     align-items: center;
-    background-color: #f0f0f0;
-    padding: 20px;
-    margin-top: 100px;
-    margin-left: 20px;
+    background-color: white;
+    border: 1px solid #eaeaea;
     border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+
 }
 
 .captionworkstyle {
     text-align: center;
     font-weight: bold;
-    font-size: 1.2vw;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .contactitem {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .contactimage {
@@ -230,6 +261,10 @@
     object-fit: cover;
     position: relative;
     margin-top: -6vw;
+}
+
+.adaptivurl {
+    font-size: 15px;
 }
 
 
@@ -326,6 +361,10 @@
     .adaptivurl {
         font-size: 14px;
     }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
+    }
 }
 
 @media screen and (max-width: 700px) {
@@ -334,6 +373,10 @@
         place-items: center;
         padding: 0;
         margin: 0 0 20px 0;
+    }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
     }
 
     .faqcontainer h2 {
@@ -420,5 +463,9 @@
 
     .adaptivurl {
         font-size: 14px;
+    }
+
+    .commonquestions {
+        margin: 10px 10px 30px 40px;
     }
 }

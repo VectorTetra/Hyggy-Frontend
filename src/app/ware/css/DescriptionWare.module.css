@@ -1,5 +1,14 @@
 .descriptionContainer {
     display: flex;
+    flex-direction: row;
+}
+
+.descriptionContainer p {
+    margin: 0;
+}
+
+.title {
+    text-align: center;
 }
 
 .textContainer {

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import styles from '../page.module.css';
 import data from '../PageProfileUser.json';
 import { useRouter } from 'next/navigation';
-import WareGrid from "@/app/search/tsx/WareGrid";
 import EditProfileUser from "./EditProfileUser";
 import OrdersUser from './OrdersUser';
 import CompletedOrdersUser from './CompletedOrdersUser';
@@ -12,8 +11,8 @@ import { getDecodedToken, removeToken, validateToken } from '@/pages/api/TokenAp
 import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { useWares } from "@/pages/api/WareApi";
 import { CircularProgress } from "@mui/material";
-import { deletePhoto, getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
-import { useQueryClient } from "react-query";
+import { getPhotoByUrlAndDelete, uploadPhotos } from "@/pages/api/ImageApi";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
 import FavoriteWaresUser from "./FavoriteWaresUser";
@@ -49,11 +48,9 @@ export default function PageProfileUser(props) {
     };
 
     useEffect(() => {
-        // const isAuthorized = localStorage.getItem('isAuthorized') === 'true';
         if (!isAuthorized) {
             router.push('/'); // Переход на главную страницу, если не авторизован
         }
-        //console.log(getDecodedToken());
 
     }, []);
     useEffect(() => {
@@ -63,39 +60,26 @@ export default function PageProfileUser(props) {
         }
     }, [customerSuccess, customers]); // Залежність від customers та customerSuccess
 
-    // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = event.target.files?.[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setImagePreviewUrl(reader.result as string);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
-
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-        if (files && customer && customer.favoriteWareIds && customer.orderIds) {
+        if (files && customer !== null && customer.favoriteWareIds && customer.orderIds) {
             if (customer.avatarPath) { getPhotoByUrlAndDelete(customer.avatarPath); }
             uploadPhotos(files).then(async (urls) => {
-                //setImagePreviewUrl(urls[0]);
-                console.log("customer?.favoriteWareIds", customer.favoriteWareIds);
                 await updateCustomer(
                     {
-                        Name: customer.name,
-                        Surname: customer.surname,
-                        Email: customer.email,
+                        Name: customer!.name,
+                        Surname: customer!.surname,
+                        Email: customer!.email,
                         Id: getDecodedToken()?.nameid || "",
-                        PhoneNumber: customer.phoneNumber,
+                        PhoneNumber: customer!.phoneNumber,
                         AvatarPath: urls[0],
-                        FavoriteWareIds: customer.favoriteWareIds,
-                        OrderIds: customer.orderIds
+                        FavoriteWareIds: customer!.favoriteWareIds,
+                        OrderIds: customer!.orderIds
                     },
                     {
                         onSuccess: () => {
                             console.log("Дані оновлено, починаємо рефетчинг...");
-                            queryClient.invalidateQueries('customers');
+                            queryClient.invalidateQueries({ queryKey: ['customers'] });
                             toast.success("Фото профілю успішно оновлено!");
                         },
                         onError: (error) => {
@@ -153,8 +137,7 @@ export default function PageProfileUser(props) {
     };
 
     const updateProfilePhotoUrl = (newUrl: string) => {
-        // Обновите URL в вашем состоянии или JSON
-        data.profile.urlphoto = newUrl; // Или сохраните его в состоянии с помощью setState
+        data.profile.urlphoto = newUrl;
     };
 
     // Функция для выхода
@@ -196,8 +179,6 @@ export default function PageProfileUser(props) {
                     <div><ReviewsUser /></div>
                 );
             case 'favorites':
-                // console.log(customer);
-                // console.log(favoriteWares);
                 return (
                     <FavoriteWaresUser />
                 );
@@ -225,27 +206,25 @@ export default function PageProfileUser(props) {
                             </div>
                             <div className={styles.profileText}>
                                 <h3 className={styles.h3}>{customer?.name} {customer?.surname}</h3>
+                                <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
+                                <input type="file" accept="image/*" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                             </div>
                         </div>
-                        <label htmlFor="uploadPhoto" className={styles.uploadLink}>Завантажити фото</label>
-                        <input type="file" accept="image/*" id="uploadPhoto" className={styles.fileInput} onChange={handleImageChange} />
                         <ul className={styles.profileDetails}>
-                            <li>Електронна пошта: {customer?.email}</li>
-                            <li>Номер телефону: {customer?.phoneNumber ? customer.phoneNumber : "Не призначено"}</li>
+                            <li><strong>Електронна пошта:</strong> {customer?.email}</li>
+                            <li><strong>Номер телефону:</strong> {customer?.phoneNumber ? customer.phoneNumber : "Не призначено"}</li>
                         </ul>
                         <div className={styles.deleteAccountButtonContainer}>
-                            <button className={styles.deleteAccountButton} onClick={handleDeleteAccount}>Видалити</button>
                             <button className={styles.deleteAccountButton} onClick={handleEdit}>Редагувати</button>
+                            <button className={styles.deleteAccountButton} onClick={handleLogout}>Вийти</button>
                         </div>
                     </div>
-
                     <div className={styles.profileBlock}>
                         <ul className={styles.actionList}>
                             <li onClick={() => { setIsEditing(false); setActiveTab('orders'); }}>Мої замовлення <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('completedOrders'); }}>Виконані замовлення <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('reviews'); }}>Мої відгуки <span>&rarr;</span></li>
                             <li onClick={() => { setIsEditing(false); setActiveTab('favorites'); }}>Обране <span>&rarr;</span></li>
-                            <li onClick={handleLogout}>Вийти <span>&rarr;</span></li>
                         </ul>
                     </div>
                 </div>

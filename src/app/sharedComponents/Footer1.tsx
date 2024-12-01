@@ -4,9 +4,7 @@ import footerData from '../MainPageFiles/json/mainPageFooter.json';
 const Footer1 = () => {
   return (
     <footer>
-      
-      <MainPageFooter footerData={footerData.footerData}/>
-      
+      <MainPageFooter footerData={footerData.footerData} />
     </footer>
   );
 };

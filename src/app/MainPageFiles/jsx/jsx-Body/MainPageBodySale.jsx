@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./../../styles/MainPageBody-styles.module.css";
 
 export default function MainPageBodySale(props) {
@@ -7,9 +8,9 @@ export default function MainPageBodySale(props) {
             <div className={styles["bodysale-text"]}>
                 {props.text}
                 <br /><br />
-                <a className={styles["text-link"]} href={props.urlpagesale}>
+                <Link prefetch={true} className={styles["text-link"]} href={props.urlpagesale}>
                     {props.text2}
-                </a>
+                </Link>
             </div>
         </div>
     );

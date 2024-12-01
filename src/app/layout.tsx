@@ -1,45 +1,37 @@
-import type { Metadata } from "next";
-import React from 'react';
-import { Inter } from "next/font/google";
+import { Metadata } from "next";
+import React from "react";
+import { Raleway } from "next/font/google";
 import "./globals.css";
-import 'bootstrap/dist/css/bootstrap.css';
-import Head from 'next/head';
+import "bootstrap/dist/css/bootstrap.css";
 import QueryClientWrapper from "./sharedComponents/QueryClientWrapper";
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const inter = Inter({ subsets: ["latin"] });
+
+const raleway = Raleway({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "HYGGY Все для дому",
   description: "Все для дому",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
   children,
-  pageMetadata,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-  pageMetadata?: Metadata;
-}>) {
-  const title = (pageMetadata?.title || metadata.title || "Default Title") as string;
-  const description = (pageMetadata?.description || metadata.description || "Default Description") as string;
-
+}) {
   return (
     <html lang="en">
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-      </Head>
-      <body className={inter.className}>
-        <QueryClientWrapper>
-          {children}
-        </QueryClientWrapper>
+      <body className={raleway.className} style={{ backgroundColor: "#f3f3f3" }}>
+        <QueryClientWrapper>{children}</QueryClientWrapper>
         <ToastContainer
           stacked={true}
           autoClose={5000}
-          position='bottom-right'
+          position="bottom-right"
           pauseOnHover={false}
-          theme='colored'
+          theme="colored"
           transition={Bounce}
           closeOnClick={true}
           hideProgressBar={false}

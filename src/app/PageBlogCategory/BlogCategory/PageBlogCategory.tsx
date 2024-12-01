@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import styles from '../page.module.css';
 import data from '../data.json';
+import Link from 'next/link';
 
 const BLOCKS_PER_PAGE = 6;
 
@@ -47,7 +48,7 @@ export default function PageBlogCategory(props: any) {
                         <img src={item.imgSrc} alt={item.caption || 'Изображение'} />
                         {item.caption && <h3>{item.caption}</h3>}
                         <p>{item.title}</p>
-                        <a href={item.link} className={styles.button}>Переглянути</a>
+                        <Link prefetch={true} href={item.link} className={styles.button}>Переглянути</Link>
                     </div>
                 ))}
             </div>

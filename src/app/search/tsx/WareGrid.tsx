@@ -1,41 +1,18 @@
 // components/WareGrid.tsx
-import { useState, useEffect } from "react";
-import styles from "../css/WareGrid.module.css";
+import { useFavoriteWare } from '@/app/sharedComponents/methods/useFavoriteWare';
+import { Ware } from "@/pages/api/WareApi";
+import useLocalStorageStore from "@/store/localStorage";
+import { useEffect, useState } from "react";
 import Pagination from "../../sharedComponents/Pagination";
+import styles from "../css/WareGrid.module.css";
 import WareCard from "./WareCard";
-import { useWares, Ware } from "@/pages/api/WareApi";
-import { ShopGetDTO } from "@/pages/api/ShopApi";
-import { Customer, useCustomers, useUpdateCustomer } from "@/pages/api/CustomerApi";
-import { getDecodedToken } from "@/pages/api/TokenApi";
+
 
 export default function WareGrid(props: any) {
-  const [favorites, setFavorites] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
-  let [customer, setCustomer] = useState<Customer | null>(null);
-  const { mutateAsync: updateCustomer } = useUpdateCustomer();
-  const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
-    SearchParameter: "Query",
-    Id: getDecodedToken()?.nameid
-  });
-
-  // const { data: favoriteWares = [], isLoading: favoriteWaresLoading, isSuccess: favoriteWaresSuccess } = useWares({
-  //   SearchParameter: "Query",
-  //   StringIds: customer?.favoriteWareIds.join("|")
-  // });
-
-  useEffect(() => {
-    const savedShop = localStorage.getItem("selectedShop");
-    if (savedShop) {
-      setSelectedShop(JSON.parse(savedShop));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (customerSuccess && customers.length > 0) {
-      setCustomer(customers[0]);
-    }
-  }, [customerSuccess, customers]);
+  //const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+  const { selectedShop } = useLocalStorageStore();
+  const { isFavorite, toggleFavoriteWare } = useFavoriteWare();
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,31 +20,7 @@ export default function WareGrid(props: any) {
     }, 0);
   }, [currentPage]);
 
-  const toggleFavorite = async (wareId: number) => {
-    if (!customer) return;
 
-    // Оновлюємо обрані товари, не скидаючи пагінацію
-    const updatedFavorites = customer.favoriteWareIds.includes(wareId)
-      ? customer.favoriteWareIds.filter(id => id !== wareId)
-      : [...customer.favoriteWareIds, wareId];
-
-    setCustomer({
-      ...customer,
-      favoriteWareIds: updatedFavorites
-    });
-
-    // Відправка запиту на сервер
-    await updateCustomer({
-      Name: customer.name,
-      Surname: customer.surname,
-      Email: customer.email,
-      Id: getDecodedToken()?.nameid || "",
-      PhoneNumber: customer.phoneNumber,
-      AvatarPath: customer.avatarPath,
-      FavoriteWareIds: updatedFavorites,
-      OrderIds: customer.orderIds
-    });
-  };
 
   const itemsPerPage = props.itemsPerPage !== undefined ? props.itemsPerPage : 20;
   const totalItems = props.wares?.length;
@@ -83,8 +36,8 @@ export default function WareGrid(props: any) {
           <WareCard
             key={ware.id}
             ware={ware}
-            isFavorite={customer?.favoriteWareIds.includes(ware.id) ?? false}
-            toggleFavorite={toggleFavorite}
+            isFavorite={isFavorite(ware.id)}
+            toggleFavorite={() => toggleFavoriteWare(ware.id)}
             selectedShop={selectedShop}
           />
         ))}

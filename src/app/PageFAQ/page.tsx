@@ -12,7 +12,7 @@ export default function Home() {
 
     <Layout headerType="header1" footerType="footer1">
       <div>
-        <FAQPage faqPage={faq.FAQ} />
+        <FAQPage faqPage={faq.FAQ} /> {/* Клієнтський компонент сторінки з питаннями та відповідями */}
       </div>
     </Layout>
 

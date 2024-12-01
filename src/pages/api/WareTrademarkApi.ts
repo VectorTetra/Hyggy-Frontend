@@ -1,6 +1,5 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export class WareTrademarkQueryParams {
 	SearchParameter: string = "Query";
@@ -90,39 +89,50 @@ export async function deleteWareTrademark(id: number) {
 
 // Використання useQuery для отримання списку складів (wareTrademarks)
 export function useWareTrademarks(params: WareTrademarkQueryParams = { SearchParameter: "Query" }) {
-	return useQuery(['wareTrademarks', params], () => getWareTrademarks(params), {
-		staleTime: Infinity, // Дані залишаються актуальними завжди
-		cacheTime: Infinity, // Дані залишаються в кеші без очищення
-		refetchOnWindowFocus: false, // Не рефетчити при фокусуванні вікна
+	return useQuery({
+		queryKey: ['wareTrademarks', params],
+		queryFn: () => getWareTrademarks(params),
+		staleTime: Infinity, // Дані завжди актуальні
+		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 	});
 }
 
 // Використання useMutation для створення нового складу (ware)
 export function useCreateWareTrademark() {
 	const queryClient = useQueryClient();
-	return useMutation((newWareTrademark: WareTrademarkPostDTO) => postWareTrademark(newWareTrademark), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareTrademarks'); // Оновлює кеш даних після створення нового складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareTrademark: WareTrademarkPostDTO) => postWareTrademark(newWareTrademark),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareTrademarks'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для оновлення існуючого складу (ware)
 export function useUpdateWareTrademark() {
 	const queryClient = useQueryClient();
-	return useMutation((updatedWareTrademark: WareTrademarkPutDTO) => putWareTrademark(updatedWareTrademark), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareTrademarks'); // Оновлює кеш даних після оновлення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (newWareTrademark: WareTrademarkPutDTO) => putWareTrademark(newWareTrademark),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareTrademarks'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }
 
 // Використання useMutation для видалення складу (ware)
 export function useDeleteWareTrademark() {
 	const queryClient = useQueryClient();
-	return useMutation((id: number) => deleteWareTrademark(id), {
-		onSuccess: () => {
-			queryClient.invalidateQueries('wareTrademarks'); // Оновлює кеш даних після видалення складу
-		},
-	});
+	return useMutation(
+		{
+			mutationFn: (id: number) => deleteWareTrademark(id),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['wareTrademarks'] }); // Інвалідуємо кеш після мутації
+			},
+		}
+	);
 }

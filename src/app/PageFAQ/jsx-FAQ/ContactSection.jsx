@@ -1,21 +1,21 @@
 "use client";
 import React from "react";
 import styles from "../css/FAQStyles.module.css";
+import Link from "next/link";
 
 export default function ContactSection(props) {
     return (
         <div className={styles.contactsection}>
-            <div> <img src={props.faqPage.urlmenedger} alt="Image" className={styles.manedgerimage} /></div>
-            <div className={styles.captionworkstyle} >{props.faqPage.workwithclients.captionwork}</div>
+            <div className={styles.captionworkstyle}><h2>Контакти</h2></div>
             <hr></hr>
             <div>
                 {props.faqPage.infoworkwithclients.map((item, index) => (
                     <div key={index} className={styles.contactitem}>
                         <img src={item.urlImages} alt="Image" className={styles.contactimage} />
                         <div className={styles.contactcontent}>
-                            <a href={item.urlPage}>
+                            <Link prefetch={true} href={item.urlPage}>
                                 <div className={styles.contentstyle} >{item.contentwork}</div>
-                            </a>
+                            </Link>
                             <div className={styles.textstyle} >{item.text}</div>
                             <hr className={styles.hr} ></hr>
                         </div>
@@ -30,9 +30,9 @@ export default function ContactSection(props) {
                         </div>
                     ))}
                     <div className={styles.shopgo}>
-                        <a href={props.faqPage.urlpage}>
+                        <Link prefetch={true} href={props.faqPage.urlpage}>
                             <div className={styles.adaptivurl}>{props.faqPage.captionshop}</div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

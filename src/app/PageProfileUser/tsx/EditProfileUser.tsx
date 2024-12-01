@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import InputMask from 'react-input-mask';  // Імпортуємо InputMask
-import data from '../PageProfileUser.json';
 import { Customer, useUpdateCustomer } from "@/pages/api/CustomerApi";
 import { toast } from "react-toastify";
-import { useQueryClient } from 'react-query';
-import { getDecodedToken } from "@/pages/api/TokenApi";
+import { useQueryClient } from '@tanstack/react-query';
+import { getDecodedToken, removeToken } from "@/pages/api/TokenApi";
+
 
 export default function EditProfileUser({ onSave, user }: { onSave: any, user: Customer }) {
 
@@ -19,7 +19,6 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
     const queryClient = useQueryClient();
     const { mutateAsync: updateCustomer } = useUpdateCustomer();
     const handleSaveChanges = async () => {
-        // Видаляємо зайві символи для збереження в базі даних
         console.log("user", user);
         await updateCustomer(
             {
@@ -36,7 +35,7 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
             {
                 onSuccess: () => {
                     console.log("Дані оновлено, починаємо рефетчинг...");
-                    queryClient.invalidateQueries('customers');
+                    queryClient.invalidateQueries({ queryKey: ['customers'] });
                     toast.success("Дані успішно оновлено!");
                     onSave();
                 },
@@ -47,6 +46,16 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
             }
         );
     };
+
+    // Функция для удаления аккаунта
+    const handleDeleteAccount = () => {
+        const userConfirmed = window.confirm("Ви дійсно бажаєте видалити свій акаунт?");
+        if (userConfirmed) {
+            removeToken();
+            router.push("/");
+        }
+    };
+
 
     const handleCancel = () => {
         onSave();
@@ -160,9 +169,10 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                     backgroundColor: '#00AAAD',
                                     color: 'white',
                                     '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: '#00AAAD',
+                                        color: 'white',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
+                                    width: '48%'
                                 }}>
                                 Зберегти
                             </Button>
@@ -171,21 +181,22 @@ export default function EditProfileUser({ onSave, user }: { onSave: any, user: C
                                     backgroundColor: '#00AAAD',
                                     color: 'white',
                                     '&:hover': {
-                                        color: 'red',
-                                        backgroundColor: '#00AAAD',
+                                        color: 'white',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
+                                    width: '48%'
                                 }}>
                                 Скасувати
                             </Button>
                         </Box>
                         <Box display="flex" justifyContent="space-between" mt={2}>
-                            <Button variant="outlined" color="secondary" onClick={handleCancel}
+                            <Button variant="outlined" color="secondary" onClick={handleDeleteAccount}
                                 sx={{
-                                    backgroundColor: '#e25151',
+                                    backgroundColor: 'red',
                                     color: 'white',
                                     '&:hover': {
                                         color: 'white',
-                                        backgroundColor: 'darkred',
+                                        backgroundColor: 'rgba(0,95,96,1)',
                                     },
                                     width: '100%'
                                 }}>

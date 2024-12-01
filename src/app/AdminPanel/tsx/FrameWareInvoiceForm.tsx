@@ -28,8 +28,8 @@ function InvoiceForm() {
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
                 <h4>Характеристики товару</h4>
             </Box>
-            {rows.map((row) => (
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "start" }}>
+            {rows.map((row, index) => (
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "start" }} key={index}>
                     <Box key={row.id} sx={{ display: 'flex', gap: '16px', alignItems: 'stretch', mb: "50px", maxWidth: "75vw" }}>
                         {/* Використовуємо ReactQuill для редагування назви характеристики */}
                         <ReactQuill

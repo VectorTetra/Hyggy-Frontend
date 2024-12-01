@@ -74,7 +74,7 @@ const NewShopEmployee = () => {
     }, [])
 
     useEffect(() => {
-        if(shops && shops.length > 0){
+        if (shops && shops.length > 0) {
             setShopId(shops[0].id)
         }
     }, [shops])
@@ -107,38 +107,38 @@ const NewShopEmployee = () => {
     }, [password, matchPwd]);
 
     useEffect(() => {
-        if(validName && validPwd && validMatch && validEmail && validSurname && validPhone){
-            setIsDisabled(false) ;
-        }else{
+        if (validName && validPwd && validMatch && validEmail && validSurname && validPhone) {
+            setIsDisabled(false);
+        } else {
             setIsDisabled(true);
         }
-        
-    },[validEmail, validSurname, validMatch, validName, validPwd, validPhone])
+
+    }, [validEmail, validSurname, validMatch, validName, validPwd, validPhone])
 
     async function handleSubmit(e) {
         e.preventDefault();
-    try {
-      if (id === "0") {
-        //Додавання співробітника
-        const response = await postShopEmployee({
-          Name: name, Surname: surname, Email: email, Phone: phone, Password: password, ConfirmPassword: matchPwd,
-          ShopId: shopId
-        });
-        toast.success(response);
-      }
-    } catch (error) {
-      console.error(error.text);
-      toast.error(error.response);
-    } finally {
-      setActiveTab('shopEmployees');
+        try {
+            if (id === "0") {
+                //Додавання співробітника
+                const response = await postShopEmployee({
+                    Name: name, Surname: surname, Email: email, Phone: phone, Password: password, ConfirmPassword: matchPwd,
+                    ShopId: shopId
+                });
+                toast.success(response);
+            }
+        } catch (error) {
+            console.error(error.text);
+            toast.error(error.response);
+        } finally {
+            setActiveTab('shopEmployees');
+        }
     }
-  }
-    
+
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col max-w-sm mx-auto  gap-4">
             <div>
-                <label className="form-label" htmlFor="name">Ім'я:</label>
+                <label className="form-label" htmlFor="name">Ім&apos;я:</label>
                 <input
                     id="name"
                     className="w-full border p-2 rounded"
@@ -211,25 +211,25 @@ const NewShopEmployee = () => {
                 </p>
                 <label className="form-label" htmlFor="pwd">Пароль:</label>
                 <div className="relative w-full">
-                <input
-                    id="pwd"
-                    className="w-full border p-2 rounded"
-                    type={showPwd ? "text" : "password"}
-                    autoComplete="off"
-                    placeholder="Укажіть пароль"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    aria-invalid={validPwd ? "false" : "true"}
-                    aria-describedby="pwdnote"
-                    onFocus={() => setPwdFocus(true)}
-                    onBlur={() => setPwdFocus(false)}
-                />
-                <button 
-                    className="absolute right-2 top-2 text-gray-600"
-                    type="button"
-                    onClick={() => setShowPwd(!showPwd)}
-                    onFocus={() => setPwdFocus(true)}
-                    onBlur={() => setPwdFocus(false)}
+                    <input
+                        id="pwd"
+                        className="w-full border p-2 rounded"
+                        type={showPwd ? "text" : "password"}
+                        autoComplete="off"
+                        placeholder="Укажіть пароль"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        aria-invalid={validPwd ? "false" : "true"}
+                        aria-describedby="pwdnote"
+                        onFocus={() => setPwdFocus(true)}
+                        onBlur={() => setPwdFocus(false)}
+                    />
+                    <button
+                        className="absolute right-2 top-2 text-gray-600"
+                        type="button"
+                        onClick={() => setShowPwd(!showPwd)}
+                        onFocus={() => setPwdFocus(true)}
+                        onBlur={() => setPwdFocus(false)}
                     >
                         <FontAwesomeIcon icon={showPwd ? faEyeSlash : faEye} />
                     </button>
@@ -240,29 +240,29 @@ const NewShopEmployee = () => {
                 </p>
                 <label className="form-label" htmlFor="match">Підтвердження паролю:</label>
                 <div className="relative w-full">
-                <input
-                    id="match"
-                    className="w-full border p-2 rounded"
-                    type={showMatch ? "text" : "password"}
-                    autoComplete="off"
-                    placeholder="Підтвердіть пароль"
-                    value={matchPwd}
-                    onChange={e => setMatchPwd(e.target.value)}
-                    aria-invalid={validMatch ? "false" : "true"}
-                    aria-describedby="matchnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                />
-                <button 
-                    className="absolute right-2 top-2 text-gray-600"
-                    type="button"
-                    onClick={() => setShowMatch(!showMatch)}
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
+                    <input
+                        id="match"
+                        className="w-full border p-2 rounded"
+                        type={showMatch ? "text" : "password"}
+                        autoComplete="off"
+                        placeholder="Підтвердіть пароль"
+                        value={matchPwd}
+                        onChange={e => setMatchPwd(e.target.value)}
+                        aria-invalid={validMatch ? "false" : "true"}
+                        aria-describedby="matchnote"
+                        onFocus={() => setMatchFocus(true)}
+                        onBlur={() => setMatchFocus(false)}
+                    />
+                    <button
+                        className="absolute right-2 top-2 text-gray-600"
+                        type="button"
+                        onClick={() => setShowMatch(!showMatch)}
+                        onFocus={() => setMatchFocus(true)}
+                        onBlur={() => setMatchFocus(false)}
                     >
                         <FontAwesomeIcon icon={showMatch ? faEyeSlash : faEye} />
                     </button>
-                </div>               
+                </div>
                 <p id="matchnote" className={matchFocus && matchPwd && !validMatch ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
                     <span className="text-[#FF385C] opacity-60">Пароль не співпадає.</span>
@@ -281,10 +281,10 @@ const NewShopEmployee = () => {
                 </select>
             </div>
             {isDisabled ? (
-            <button disabled={true} className="bg-[#00AAAD] opacity-50 cursor-not-allowed text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>) 
-            : (
-                <button className="bg-[#00AAAD]  text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>
-            )
+                <button disabled={true} className="bg-[#00AAAD] opacity-50 cursor-not-allowed text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>)
+                : (
+                    <button className="bg-[#00AAAD]  text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>
+                )
             }
         </form>
     )

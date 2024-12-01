@@ -20,11 +20,18 @@
 	text-align: justify;
 }
 
-.wideTextArticleItem h1 {
+.wideTextArticleItemForHeader {
 	display: flex;
-	/* justify-content: center; */
+	justify-content: center;
 	text-align: center;
+	margin: 10px 0;
 }
+
+/* .wideTextArticleItem h1 {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+} */
 
 .halvedRightImageArticle {
 	display: flex;

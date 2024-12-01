@@ -1,145 +1,188 @@
-"use client"; // Завжди на стороні клієнта
-import styles from "./page.module.css";
-import { useWares, Ware } from "@/pages/api/WareApi";
-import { useBlogs, Blog } from "@/pages/api/BlogApi";
-import { useState, useEffect } from "react";
-import Layout from "../sharedComponents/Layout";
-import TabBar from "./tsx/TabBar";
-import SearchHeader from "./tsx/SearchHeader";
-import FilterBar from "./tsx/FilterBar";
-import WareGrid from "./tsx/WareGrid";
-import ArticleGrid from "./tsx/ArticleGrid";
-import FilterSidebar from "./tsx/FilterSidebar";
-import FilterStickerPanel from "./tsx/FilterStickerPanel";
-//import { useHandleSearch, sortWares } from "@/services/searchPageLogic";
-import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
-import { useQueryState, parseAsArrayOf, parseAsJson } from 'nuqs'; // Імпортуємо nuqs
-import SortingSidebar from "./tsx/SortingSidebar";
-import { CircularProgress } from "@mui/material";
-import { useWareCategories3 } from "@/pages/api/WareCategory3Api";
-import { useWareTrademarks } from "@/pages/api/WareTrademarkApi";
-import { useWareStatuses } from "@/pages/api/WareStatusApi";
-import SkeletonPost from "./SkeletonPost"
-interface Filter {
-  id: string; // або number, в залежності від типу вашого id
-  name: string;
-}
-export default function SearchPage() {
-  const [query] = useQueryState("query", { scroll: false, history: "replace", shallow: true });
-  const [type] = useQueryState("type", { scroll: false, history: "replace", shallow: true });
-  const [priceRange] = useQueryState("f_0", { scroll: false, history: "replace", shallow: true });
-  const [categories] = useQueryState<Filter[] | null>("f_1", parseAsArrayOf(parseAsJson()));
-  const [trademarks] = useQueryState<Filter[] | null>("f_2", parseAsArrayOf(parseAsJson()));
-  const [statuses] = useQueryState<Filter[] | null>("f_3", parseAsArrayOf(parseAsJson()));
-  const [sale] = useQueryState("f_4", { scroll: false, history: "replace", shallow: true });
-  const [sort] = useQueryState("sort", { scroll: false, history: "replace", shallow: true });
-  const [loading, setLoading] = useState(true);
-  const { setMinPossible, setMaxPossible, waresBeforeCategories, setWaresBeforeCategories,
-    activeTab, setActiveTab, isSidebarOpen, isSortingSidebarOpen } = useSearchStore();
-
-  useEffect(() => {
-    (isSidebarOpen || isSortingSidebarOpen) ? document.body.style.overflow = "hidden" : document.body.style.overflow = "";
-  }, []);
-
-  const { data: foundWareCategories = [], isLoading: isWareCategories3Loading } = useWareCategories3({
-    SearchParameter: "Query",
-    QueryAny: query,
-    PageNumber: 1,
-    PageSize: 1000,
-    Sorting: "NameAsc"
-  });
-  const { data: foundTrademarks = [], isLoading: isWareTrademarksLoading } = useWareTrademarks({
-    SearchParameter: "Query",
-    PageNumber: 1,
-    PageSize: 1000,
-    Sorting: "NameAsc"
-  });
-  const { data: foundWareStatuses = [], isLoading: isWareStatusesLoading } = useWareStatuses({
-    SearchParameter: "Query",
-    PageNumber: 1,
-    PageSize: 1000,
-    Sorting: "NameAsc"
-  });
-  const { data: foundWares = [], isLoading: isFoundWaresLoading } = useWares({
-    SearchParameter: "Query",
-    QueryAny: query,
-    MinPrice: priceRange ? Number(priceRange?.split("_")[0]) : null,
-    MaxPrice: priceRange ? Number(priceRange?.split("_")[1]) : null,
-    StringCategory3Ids: categories?.map(category => category.id).join('|'),
-    StringTrademarkIds: trademarks?.map(trademark => trademark.id).join('|'),
-    StringStatusIds: statuses?.map(status => status.id).join('|'),
-    Sorting: sort,
-    MinDiscount: sale ? 0.1 : null,
-    MaxDiscount: sale ? 100 : null,
-    PageNumber: 1,
-    PageSize: 1000
-  });
-  const { data: wares = [], isLoading: isWaresLoading } = useWares({
-    SearchParameter: "Query",
-    QueryAny: query,
-    PageNumber: 1,
-    PageSize: 1000
-  });
-
-  const { data: foundBlogs = [], isLoading: isBlogsLoading } = useBlogs({
-    SearchParameter: "Query",
-    QueryAny: query,
-    PageNumber: 1,
-    PageSize: 1000
-  });
-
-  useEffect(() => {
-    if (!isWaresLoading && wares.length) {
-      const prices = wares.map(ware => ware.finalPrice).filter(price => price !== undefined);
-      const minPrice = Math.min(...prices);
-      const maxPrice = Math.max(...prices);
-      setMinPossible(Math.floor(minPrice));
-      setMaxPossible(Math.ceil(maxPrice));
-    }
-  }, [isWaresLoading, wares]);
-
-  const allLoadings = isFoundWaresLoading
-    || isWaresLoading
-    || isBlogsLoading
-    || isWareCategories3Loading
-    || isWareTrademarksLoading
-    || isWareStatusesLoading;
-
-  console.log("SearchPage.tsx, foundWares: ", foundWares);
-  console.log("SearchPage.tsx, foundBlogs: ", foundBlogs);
-  console.log("SearchPage.tsx, foundWareCategories: ", foundWareCategories);
-  console.log("SearchPage.tsx, foundTrademarks: ", foundTrademarks);
-  console.log("SearchPage.tsx, foundWareStatuses: ", foundWareStatuses);
+import SearchPage from "./tsx/SearchPage";
+export default function Search() {
   return (
-
-    <Layout headerType="header1" footerType='footer1'>
-      <div className={styles.main}>
-        {/* {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />} */}
-        {allLoadings && <SkeletonPost />}
-        <>
-          {!allLoadings && <>
-            <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
-            <SearchHeader foundWaresQuantity={foundWares.length}
-              foundBlogsQuantity={foundBlogs.length}
-              activeTab={activeTab}
-              query={query}
-              loading={!allLoadings} />
-            {activeTab === "wares" && <FilterBar />}
-            <div style={{ minHeight: "32px", margin: "16px 0" }}>
-              <FilterStickerPanel />
-            </div>
-            {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
-            {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
-          </>}
-          <FilterSidebar wares={wares || []} foundWares={foundWares || []}
-            categories={foundWareCategories || []} trademarks={foundTrademarks || []}
-            statuses={foundWareStatuses || []}
-          />
-          <SortingSidebar />
-        </>
-      </div>
-    </Layout>
-
+    <>
+      <SearchPage />
+    </>
   );
 }
 
+// app/search/page.tsx
+
+
+
+// import { getWares } from "@/pages/api/WareApi";
+// import SearchPage from "./tsx/SearchPage";
+// import { getBlogs } from "@/pages/api/BlogApi";
+// import { getWareCategories3 } from "@/pages/api/WareCategory3Api";
+// import { getWareTrademarks } from "@/pages/api/WareTrademarkApi";
+// import { getWareStatuses } from "@/pages/api/WareStatusApi";
+
+// async function fetchInitialData(query: string) {
+//   const [wares, blogs, categories, trademarks, statuses] = await Promise.all([
+//     getWares({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000
+//     }),
+//     getBlogs({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000
+//     }),
+//     getWareCategories3({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc"
+//     }),
+//     getWareTrademarks({
+//       SearchParameter: "Query",
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc"
+//     }),
+//     getWareStatuses({
+//       SearchParameter: "Query",
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc"
+//     })
+//   ]);
+
+//   return { wares, blogs, categories, trademarks, statuses };
+// }
+
+// export default async function Search({ searchParams }: {
+//   searchParams: {
+//     query: string,
+//     type: string,
+//     f_0: string,  // price range
+//     f_1: string,  // categories
+//     f_2: string,  // trademarks
+//     f_3: string,  // statuses
+//     f_4: string,  // sale
+//   }
+// })
+// {
+//   const query = searchParams.query || "";
+//   const initialData = await fetchInitialData(query);
+
+//   return <SearchPage initialData={initialData} query={query} />;
+// }
+
+// getWares({
+//   SearchParameter: "Query",
+//   QueryAny: query,
+//   MinPrice: minPrice,
+//   MaxPrice: maxPrice,
+//   StringCategory3Ids: categories?.join("|"),
+//   StringTrademarkIds: trademarks?.join("|"),
+//   StringStatusIds: statuses?.join("|"),
+//   MinDiscount: sale ? 0.1 : null,
+//   MaxDiscount: sale ? 100 : null,
+//   PageNumber: 1,
+//   PageSize: 1000,
+// }),
+
+
+
+// import { getWares } from "@/pages/api/WareApi";
+// import { getBlogs } from "@/pages/api/BlogApi";
+// import { getWareCategories3 } from "@/pages/api/WareCategory3Api";
+// import { getWareTrademarks } from "@/pages/api/WareTrademarkApi";
+// import { getWareStatuses } from "@/pages/api/WareStatusApi";
+// import SearchPage from "./tsx/SearchPage";
+
+// function parseSearchParams(searchParams: {
+//   query?: string;
+//   type?: string;
+//   f_0?: string; // price range
+//   f_1?: string; // categories
+//   f_2?: string; // trademarks
+//   f_3?: string; // statuses
+//   f_4?: string; // sale
+//   sort?: string;
+// }) {
+//   const query = searchParams.query || "";
+//   const minPrice = searchParams.f_0 ? Number(searchParams.f_0.split("_")[0]) : null;
+//   const maxPrice = searchParams.f_0 ? Number(searchParams.f_0.split("_")[1]) : null;
+//   const categories = searchParams.f_1 ? JSON.parse(searchParams.f_1) : null;
+//   const trademarks = searchParams.f_2 ? JSON.parse(searchParams.f_2) : null;
+//   const statuses = searchParams.f_3 ? JSON.parse(searchParams.f_3) : null;
+//   const sale = searchParams.f_4 ? true : false;
+//   const sort = searchParams.sort || null;
+
+//   return {
+//     query,
+//     minPrice,
+//     maxPrice,
+//     categories,
+//     trademarks,
+//     statuses,
+//     sale,
+//     sort,
+//   };
+// }
+
+// async function fetchInitialData(params: ReturnType<typeof parseSearchParams>) {
+//   const { query, minPrice, maxPrice, categories, trademarks, statuses, sale, sort } = params;
+
+//   const [wares, blogs, categoriesData, trademarksData, statusesData] = await Promise.all([
+
+//     getWares({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000
+//     }),
+//     getBlogs({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000,
+//     }),
+//     getWareCategories3({
+//       SearchParameter: "Query",
+//       QueryAny: query,
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc",
+//     }),
+//     getWareTrademarks({
+//       SearchParameter: "Query",
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc",
+//     }),
+//     getWareStatuses({
+//       SearchParameter: "Query",
+//       PageNumber: 1,
+//       PageSize: 1000,
+//       Sorting: "NameAsc",
+//     }),
+//   ]);
+
+//   return { wares, blogs, categories: categoriesData, trademarks: trademarksData, statuses: statusesData, sale, sort };
+// }
+
+// export default async function Search({ searchParams }: {
+//   searchParams: {
+//     query?: string;
+//     type?: string;
+//     f_0?: string;  // price range
+//     f_1?: string;  // categories
+//     f_2?: string;  // trademarks
+//     f_3?: string;  // statuses
+//     f_4?: string;  // sale
+//     sort?: string;
+//   };
+// }) {
+//   const parsedParams = parseSearchParams(searchParams);
+//   const initialData = await fetchInitialData(parsedParams);
+
+//   return <SearchPage initialData={initialData} query={parsedParams.query} />;
+// }

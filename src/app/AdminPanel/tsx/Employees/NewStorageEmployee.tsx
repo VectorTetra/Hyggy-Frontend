@@ -142,7 +142,7 @@ const NewShopEmployee = () => {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col max-w-sm mx-auto  gap-4">
             <div>
-                <label className="form-label" htmlFor="name">Ім'я:</label>
+                <label className="form-label" htmlFor="name">Ім&apos;я:</label>
                 <input
                     id="name"
                     className="w-full border p-2 rounded"

@@ -87,15 +87,20 @@
 
 .profileText {
   flex-grow: 1;
-  margin-left: 1.2vw;
+  margin-left: 1.0vw;
 }
 
 .uploadLink {
   display: block;
-  font-size: 12px;
-  color: #1f9496;
+  font-size: 14px;
+  color: #00AAAD;
   cursor: pointer;
-  margin-bottom: 10px;
+  text-decoration: underline;
+  margin-top: 15px;
+}
+
+.uploadLink:hover {
+  color: red;
 }
 
 .fileInput {
@@ -105,27 +110,37 @@
 .profileDetails {
   list-style-type: none;
   padding: 0;
-  margin: 1vw 0 2vw 10vw;
+  margin: 2vw 0 2vw 1vw;
+  font-size: 18px;
 }
 
 .profileDetails li {
-  margin-bottom: 1.2vw;
+  margin-bottom: 1vw;
+}
+
+.profileDetails li strong {
+  margin-right: 10px;
 }
 
 .deleteAccountButtonContainer {
   display: flex;
   justify-content: end;
-  gap: 10px;
+  gap: 20px;
 }
 
 .deleteAccountButton {
   background-color: #00AAAD;
   color: white;
+  width: 48%;
   font-size: 0.9vw;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.deleteAccountButton:hover {
+  background-color: rgba(0, 95, 96, 1);
 }
 
 .actionList {
@@ -148,7 +163,8 @@
 }
 
 .h3 {
-  font-size: 1.8vw;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .container {
@@ -186,6 +202,52 @@
   font-weight: bold;
 }
 
+
+/*********************************************/
+
+@media screen and (max-width: 1200px) and (min-width: 600px) {
+  .pageTitle {
+    font-size: 20px;
+  }
+
+  .pageTitle2 {
+    font-size: 20px;
+  }
+
+  .profileImageContainerMustard {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profileImageContainerOrange {
+    width: 60px;
+    height: 60px;
+  }
+
+  .h3 {
+    font-size: 18px;
+  }
+
+  .profileDetails {
+    list-style-type: none;
+    padding: 0;
+    margin: 2vw 0 3vw 0;
+    font-size: 14px;
+  }
+
+  .deleteAccountButton {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .uploadLink {
+    color: #00AAAD;
+    margin-top: 5px;
+  }
+
+}
+
+/********************************************/
 @media (max-width: 600px) {
   .pageTitle {
     font-size: 20px;
@@ -212,16 +274,22 @@
   .profileDetails {
     list-style-type: none;
     padding: 0;
-    margin: 1vw 0 5vw 0;
+    margin: 5vw 0 5vw 0;
+    font-size: 14px;
   }
 
-  .profileDetails li {
+  /* .profileDetails li {
     margin-bottom: 1.0vw;
-    font-size: 13px;
-  }
+    font-size: 12px;
+  } */
 
   .deleteAccountButton {
     font-size: 12px;
     padding: 8px;
+  }
+
+  .uploadLink {
+    color: #00AAAD;
+    margin-top: 5px;
   }
 }

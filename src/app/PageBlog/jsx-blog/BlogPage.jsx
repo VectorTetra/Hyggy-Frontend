@@ -14,12 +14,10 @@ export default function BlogPage(props) {
             <h2 className={styles.captionH2} >{props.blogPage.caption}</h2>
             <div className={styles.captionText} >{props.blogPage.text}</div>
             <hr></hr>
-            <div>
-                <BlogMenu currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
-                <hr></hr>
-                <BlogBody currentCategory={currentCategory} setCurrentCategory={setCurrentCategory} />
-            </div>
 
+            <BlogMenu blogPage={props.blogPage} />
+            <hr></hr>
+            <BlogBody blogPage={props.blogPage} />
         </div>
 
     )

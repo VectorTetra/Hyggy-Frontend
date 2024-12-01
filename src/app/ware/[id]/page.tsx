@@ -1,53 +1,160 @@
 "use client";
-import { useParams, notFound } from 'next/navigation';
-import { useState, useEffect } from "react";
-import styles from "../page.module.css";
+import { Customer, useCustomers, useUpdateCustomer } from '@/pages/api/CustomerApi';
+import { getDecodedToken } from '@/pages/api/TokenApi';
+import { getJsonConstructorFile, useWares, Ware } from '@/pages/api/WareApi';
+import useQueryStore from '@/store/query';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from "react";
+import FavoriteButton from '../../sharedComponents/FavoriteButton';
 import Layout from "../../sharedComponents/Layout";
 import StarRating from "../../sharedComponents/StarRating";
-import DescriptionWare from '../tsx/DescriptionWare';
+import styles from "../page.module.css";
 import ArticlesWare from '../tsx/ArticlesWare';
-import SpecificationWare from '../tsx/SpecificationWare';
-import ReviewWare from '../tsx/ReviewWare';
-import SimilarWare from '../tsx/SimilarWare';
 import CartPopup from '../tsx/CartPopup';
-import jsonData from '../structure.json';
-import {
-  getCartFromLocalStorage,
-  addToCart,
-  removeFromCart
-} from '../../cart/types/Cart';
+import DeliveryOptions from '../tsx/DeliveryOptions';
+import DescriptionWare from '../tsx/DescriptionWare';
+import ProductImageCarousel from '../tsx/ProductImageCarousel';
+import ProductImageGallery from '../tsx/ProductImageGallery';
+import ProductPrice from '../tsx/ProductPrice';
+import QuantitySelector from '../tsx/QuantitySelector';
+import ReviewWare from '../tsx/ReviewWare';
+import SpecificationWare from '../tsx/SpecificationWare';
+import BlockShopsByWare from '@/app/sharedComponents/BlockShopsByWare';
+import WareCarousel from '@/app/sharedComponents/WareCarousel';
+import { useBlogs } from '@/pages/api/BlogApi';
+import { useWareReviews } from '@/pages/api/WareReviewApi';
+import useLocalStorageStore from '@/store/localStorage';
+import useWarePageMenuShops from '@/store/warePageMenuShops';
+import Head from 'next/head';  // Імпортуємо компонент Head
+import RecentWares from '@/app/sharedComponents/RecentWares';
+
 
 interface CartItem {
   productDescription: string;
   productName: string;
   productImage: string;
   quantity: number;
-  price: string;
-
+  price: number;
   oldPrice: string;
   selectedOption: string;
 }
 
 export default function WarePage() {
   const params = useParams<{ id: string }>();
-  const id = params?.id;
-  const product = jsonData.find((item) => item.id === Number(id));
+  const id = Number(params?.id);
+  const { setRefetchFavoriteWares } = useQueryStore();
+  let [customer, setCustomer] = useState<Customer | null>(null);
+  const { data: customers = [], isSuccess: customerSuccess } = useCustomers({
+    SearchParameter: "Query",
+    Id: getDecodedToken()?.nameid
+  });
+  const { mutateAsync: updateCustomer } = useUpdateCustomer();
+  const [product, setProduct] = useState<Ware | null>(null);
+  const [filteredWares, setFilteredWares] = useState<Ware[]>([]);
+  const { data: products = [], isSuccess: isProductsSuccess } = useWares({
+    SearchParameter: "Query",
+    Id: id
+  });
+  const {
+    data: relatedBlogs = [],
+    refetch: refetchRelatedBlogs
+  } = useBlogs({
+    SearchParameter: "Query",
+    QueryAny: product !== null ? product?.wareCategory1Name : "",
+    PageNumber: 1,
+    PageSize: 3,
+    Sorting: "IdDesc",
+  });
+  // const {
+  //   data: relatedReviews = [],
+  //   refetch: refetchRelatedReviews
+  // } = useWareReviews({
+  //   SearchParameter: "WareId",
+  //   WareId: product !== null ? product?.id : 0,
+  //   Sorting: "IdDesc",
+  // }, product !== null);
+  const {
+    data: similarWares = [],
+    refetch: refetchSimilarWares,
+    isLoading: isSimilarWaresLoading
+  } = useWares({
+    SearchParameter: "StringCategory2Ids",
+    StringCategory2Ids: product !== null ? product?.wareCategory2Id.toString() : "",
+  });
+
+  useEffect(() => {
+    if (!isSimilarWaresLoading && similarWares.length > 0 && product !== null) {
+      // Фільтруємо дані, наприклад, щоб виключити товар з тим самим ID
+      const updatedWares = similarWares.filter(ware => ware.id !== product?.id);
+      setFilteredWares(updatedWares);
+    }
+  }, [similarWares, isSimilarWaresLoading, product]);
+
+
+  console.log("relatedBlogs", relatedBlogs);
+  console.log("similarWares", similarWares);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState("delivery");
   const [showPopup, setShowPopup] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const carouselElement = document.getElementById("imageCarousel");
-  const [favorites, setFavorites] = useState<number[]>([]);
-
-  if (!product) {
-    return notFound();
-  }
+  const [wareDetails, setWareDetails] = useState<string | null>(null);
+  const [wareProperties, setWareProperties] = useState<any[] | null>(null);
+  const { isWarePageMenuShopsOpened, setIsWarePageMenuShopsOpened } = useWarePageMenuShops();
+  const { selectedShop, addRecentWareId } = useLocalStorageStore();
 
   useEffect(() => {
-    setCartItems(getCartFromLocalStorage());
+    // Ініціалізація кошика з localStorage через Zustand
+    setCartItems(useLocalStorageStore.getState().cart);
   }, []);
+
+
+  useEffect(() => {
+    if (product !== null) {
+      refetchRelatedBlogs(); // Оновлюємо список пов'язаних статей
+      refetchSimilarWares(); // Оновлюємо список схожих товарів
+      addRecentWareId(product.id); // Додаємо товар до нещодавно переглянутих
+    }
+  }, [product, refetchRelatedBlogs, refetchSimilarWares]);
+
+  useEffect(() => {
+    if (customerSuccess && customers.length > 0) {
+      setCustomer(customers[0]);
+    }
+  }, [customerSuccess, customers]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isProductsSuccess && products.length > 0) {
+        setProduct(products[0]);
+        if (products[0].structureFilePath && products[0].structureFilePath.length > 0) {
+          try {
+            // Очікуємо результат виконання `getJsonConstructorFile`
+            const structFile = await getJsonConstructorFile(products[0].structureFilePath);
+            console.log(structFile);
+
+            // Перевірка та обробка отриманого JSON-файлу
+            if (Array.isArray(structFile) && structFile.length > 0) {
+              structFile.forEach((element: any) => {
+                if (element.type === "details") {
+                  setWareDetails(element.value);
+                }
+                if (element.type === "properties") {
+                  setWareProperties(element.value);
+                }
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching JSON constructor file:", error);
+          }
+        }
+      }
+    };
+
+    // Викликаємо асинхронну функцію
+    fetchData();
+  }, [isProductsSuccess]);
+
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -55,41 +162,43 @@ export default function WarePage() {
     }
   }, [cartItems]);
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0) {
-      setQuantity(value);
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 50; // Наприклад, 50px відступу
+      const elementPosition = element.getBoundingClientRect().top; // Позиція елемента відносно вікна
+      const offsetPosition = elementPosition + window.pageYOffset - offset; // Фінальна позиція з урахуванням відступу
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth", // Гладка прокрутка
+      });
     }
   };
 
-  const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
 
   const handleAddToCart = () => {
+    if (!product) return;
     const newItem = {
-      productDescription: product.productDescription,
-      productName: product.productName,
-      productImage: product.mainImage1,
+      productDescription: product.description,
+      productName: product.name,
+      productImage: product.previewImagePath,
       quantity: quantity,
-      price: product.currentPrice,
-      oldPrice: product.oldPrice,
+      price: product.finalPrice,
+      oldPrice: product.price.toString(),
       selectedOption: selectedOption,
     };
 
-    const updatedCart = addToCart(cartItems, newItem);
-    setCartItems(updatedCart);
+    // Використовуємо метод addToCart з store для додавання товару
+    useLocalStorageStore.getState().addToCart(newItem);
     setShowPopup(true);
   };
 
+
   const handleRemoveItem = (index: number) => {
-    const updatedCart = removeFromCart(cartItems, index);
-    setCartItems(updatedCart);
+    useLocalStorageStore.getState().removeFromCart(index);
   };
+
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -106,12 +215,6 @@ export default function WarePage() {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      require('bootstrap/dist/js/bootstrap.bundle.min.js');
-    }
-  }, []);
-
-  useEffect(() => {
     if (showPopup) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -119,217 +222,139 @@ export default function WarePage() {
     }
   }, [showPopup]);
 
-  const handleSlide = (index) => {
-    setActiveIndex(index);
+  const toggleFavorite = async (wareId: number) => {
+    if (!customer) return;
+
+    // Оновлюємо обрані товари, не скидаючи пагінацію
+    const updatedFavorites = customer.favoriteWareIds.includes(wareId)
+      ? customer.favoriteWareIds.filter(id => id !== wareId)
+      : [...customer.favoriteWareIds, wareId];
+
+    setCustomer({
+      ...customer,
+      favoriteWareIds: updatedFavorites
+    });
+
+    // Відправка запиту на сервер
+    await updateCustomer({
+      Name: customer.name,
+      Surname: customer.surname,
+      Email: customer.email,
+      Id: getDecodedToken()?.nameid || "",
+      PhoneNumber: customer.phoneNumber,
+      AvatarPath: customer.avatarPath,
+      FavoriteWareIds: updatedFavorites,
+      OrderIds: customer.orderIds
+    });
+
+    setRefetchFavoriteWares(true);
   };
 
-  const handleSlideChange = (event) => {
-    setActiveIndex(event.to);
-  };
-
-  carouselElement?.addEventListener("slid.bs.carousel", handleSlideChange);
-
-  const toggleFavorite = (e: React.MouseEvent, productId: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setFavorites((prevFavorites) =>
-      prevFavorites.includes(productId)
-        ? prevFavorites.filter((id) => id !== productId)
-        : [...prevFavorites, productId]
-    );
-  };
 
   return (
     <Layout headerType="header1" footerType="footer1">
-      <div className={styles.main}>
+      <Head>
+        <title>{product?.name || "Відомості про товар"}</title>
+        <meta name="description" content={product?.description || "Все для дому"} />
+      </Head>
+
+      {product != null && <div className={styles.main}>
         {isMobile && (
-          <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
-            <button
-              className={styles.favoriteButton}
-              onClick={(e) => toggleFavorite(e, product.id)}
-            >
-              {favorites.includes(product.id) ? "💖" : "🖤"}
-            </button>
-            <div className="carousel-inner">
-              <div className="carousel-item active">
-                <img src={product.mainImage1} alt="Main Image 1" className={styles['carousel-image']} />
-              </div>
-              <div className="carousel-item">
-                <img src={product.mainImage2} alt="Main Image 2" className={styles['carousel-image']} />
-              </div>
-              {product.thumbnails.map((thumb, index) => (
-                <div className="carousel-item" key={index}>
-                  <img src={thumb} alt={`Thumbnail ${index + 1}`} className={styles['carousel-image']} />
-                </div>
-              ))}
-            </div>
-            <div className="carousel-indicators">
-              <button
-                type="button"
-                data-bs-target="#imageCarousel"
-                data-bs-slide-to="0"
-                className="active"
-                aria-current="true"
-                aria-label="Slide 1"
-                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-              ></button>
-              <button
-                type="button"
-                data-bs-target="#imageCarousel"
-                data-bs-slide-to="1"
-                aria-label="Slide 2"
-                style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-              ></button>
-              {product.thumbnails.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  data-bs-target="#imageCarousel"
-                  data-bs-slide-to={index + 2}
-                  aria-label={`Slide ${index + 3}`}
-                  style={{ backgroundColor: '#00AAAD', width: '12px', height: '12px', borderRadius: '50%' }}
-                ></button>
-              ))}
-            </div>
-          </div>
+          <ProductImageCarousel product={product} />
         )}
         <div className={styles.productContainer}>
-          <div className={styles.imageGallery}>
-            <div className={styles.mainImageContainer}>
-              <div className={styles.mainImage}>
-                <img src={product.mainImage1} alt={product.mainImage1} />
-              </div>
-              <div className={styles.mainImage}>
-                <img src={product.mainImage2} alt={product.mainImage2} />
-              </div>
-            </div>
-            <div className={styles.thumbnails}>
-              {product.thumbnails.map((thumb, index) => (
-                <div key={index} className={styles.thumbnail}>
-                  <img src={thumb} alt={`Thumbnail ${index + 1}`} />
-                </div>
-              ))}
-            </div>
-          </div>
+          <ProductImageGallery product={product} />
           <div className={styles.productInfo}>
             <h1 className={styles.productName}>
-              {product.productName}
+              {product.name}
               {!isMobile && (
-                <button
+                <FavoriteButton
                   className={styles.favoriteButton2}
-                  onClick={(e) => toggleFavorite(e, product.id)}
-                >
-                  {favorites.includes(product.id) ? "💖" : "🖤"}
-                </button>
+                  productId={product.id}
+                  isFavorite={customer?.favoriteWareIds.includes(product.id) ?? false}
+                  toggleFavorite={toggleFavorite}
+                  width='24px'
+                  height='24px'
+                />
               )}
             </h1>
-            <p className={styles.productDescription}>{product.productDescription}</p>
-            <div className={styles.rating}>
-              <StarRating rating={Number(product.rating)} />
-              <span>({product.reviewCount})</span>
-            </div>
-            <div>
-              {product.discount ? <span className={styles.discountSticker}> - {product.discount} %</span> : null}
-            </div>
-            <div className={styles.price}>
-              <span className={styles.currentPrice}>{product.currentPrice} грн / шт</span>
-              {product.oldPrice && (
-                <span className={styles.oldPrice}>{product.oldPrice} грн / шт</span>
-              )}
-            </div>
-            <p className={styles.priceDescription}>{product.priceDescription}</p>
+            <p className={styles.productDescription}>{product.description}</p>
+            {Number(product.averageRating) > 0 && <div className={styles.rating}>
+              <StarRating rating={Number(product.averageRating)} />
+              <span>({product.reviewIds.length})</span>
+            </div>}
+            <ProductPrice finalPrice={product.finalPrice} oldPrice={product.price} discount={product.discount} />
+            {/* <p className={styles.priceDescription}>{product.description}</p> */}
             <hr className={styles.customHr} />
-            <h3 className={styles.deliveryTitle}>{product.deliveryTitle}</h3>
-            <div className={styles.deliveryOptionsContainer}>
-              <div
-                className={`${styles.deliveryOption} ${selectedOption === "delivery" ? styles.activeOption : ""
-                  }`} onClick={() => setSelectedOption("delivery")}>
-                <div className={styles.optionTitle}>Доставка</div>
-                <span className={styles.optionDot}>{product.deliveryOption.includes("Не в наявності") ? <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="red" />
-                </svg></span> : <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                </svg></span>}</span>
-                <span>{product.deliveryOption}</span>
-              </div>
-              <div className={`${styles.storeCount} ${selectedOption === "store" ? styles.activeOption : ""
-                }`} onClick={() => setSelectedOption("store")}>
-                <div className={styles.storeTitle}>В магазинах</div>
-                <span className={styles.optionDot}>{product.storeCount.includes("0") ? <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="red" />
-                </svg></span> : <span><svg width="12" height="12">
-                  <circle cx="6" cy="6" r="6" fill="#33FF00" />
-                </svg></span>}</span>
-                <span>В наявності в {product.storeCount} магазинах</span>
-              </div>
-            </div>
+            <DeliveryOptions selectedOption={selectedOption} isDeliveryAvailable={product.isDeliveryAvailable} storeCount={product.wareItems.filter(wi => wi.quantity > 0).length} onSelectOption={setSelectedOption} />
             <span className={styles.actions}>
-              <span className={styles.quantityContainer}>
-                <button className={styles.quantityButton} onClick={decreaseQuantity}>-</button>
-                <input
-                  type="text"
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className={styles.quantityInput}
-                />
-                <button className={styles.quantityButton} onClick={increaseQuantity}>+</button>
-              </span>
-              <button className={styles.addToCartButton} onClick={handleAddToCart}>Додати до кошика</button>
+              <QuantitySelector initialQuantity={quantity} onQuantityChange={setQuantity} />
+              <button disabled={product.wareItems.every(wi => wi.quantity === 0)}
+                style={{
+                  cursor: product.wareItems.every(wi => wi.quantity === 0) ? 'not-allowed' : 'pointer',
+                  opacity: product.wareItems.every(wi => wi.quantity === 0) ? 0.5 : 1
+                }}
+
+                className={styles.addToCartButton} onClick={selectedShop === null ? () => setIsWarePageMenuShopsOpened(true) : handleAddToCart}>
+                {product.wareItems.every(wi => wi.quantity === 0) ? "Немає в наявності" : "Додати до кошика"}
+              </button>
             </span>
+            {isWarePageMenuShopsOpened && <BlockShopsByWare wareId={id} />}
             {showPopup && (
               <CartPopup
-                cartItems={cartItems}
-                selectedOption={selectedOption}
                 onClose={handleClosePopup}
-                onRemoveItem={handleRemoveItem}
+                selectedOption={selectedOption}
               />
             )}
           </div>
         </div>
         <div className={styles.tabsHeader}>
           <div>
-            <button className={styles.tabButton} onClick={() => document.getElementById('description')?.scrollIntoView({ behavior: 'smooth' })}>Опис</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('specifications')?.scrollIntoView({ behavior: 'smooth' })}>Характеристики</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}>Відгуки</button>
-            <button className={styles.tabButton} onClick={() => document.getElementById('similarProducts')?.scrollIntoView({ behavior: 'smooth' })}>Схожі товари</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('description')}>Опис</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('specifications')}>Характеристики</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('reviews')}>Відгуки</button>
+            <button className={styles.tabButton} onClick={() => scrollToSection('similarProducts')}>Схожі товари</button>
           </div>
         </div>
+        <hr id="descriptionBefore" style={{ display: "none" }} />
         <h2 id="description" className={styles.tabTitle}>Опис</h2>
-        {product.descriptionText ? (
-          <DescriptionWare product={product} />
-        ) : (
-          <p>Опис недоступний.</p>
-        )}
-        <center><h3>Пов'язані статті в блозі</h3></center>
-        {product.relatedArticles && product.relatedArticles.length > 0 ? (
-          <ArticlesWare product={product} />
-        ) : (
-          <p>Немає пов'язаних статей.</p>
-        )}
-        <hr />
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, margin: "0 3.5rem" }}>
+            <DescriptionWare article={product.article} description={wareDetails} product={product} />
+            {product && relatedBlogs && relatedBlogs.length > 0 ? (
+              <ArticlesWare blogs={relatedBlogs} />
+            ) : (
+              <p>Немає пов&apos;язаних статей.</p>
+            )}
+          </div>
+
+        </div>
+        <hr id="specificationsBefore" />
         <h2 id="specifications" className={styles.tabTitle}>Характеристики</h2>
-        {product.specifications && product.specifications.length > 0 ? (
-          <center><SpecificationWare product={product} /></center>
+        {wareProperties && wareProperties.length > 0 ? (
+          <center><SpecificationWare properties={wareProperties} /></center>
         ) : (
           <p>Характеристики недоступні.</p>
         )}
-        <hr />
+        <hr id="reviewsBefore" />
         <h2 id="reviews" className={styles.tabTitle}>Відгуки</h2>
-        {product.lastReviews && product.lastReviews.length > 0 ? (
+        {product.reviewIds && product.reviewIds.length > 0 ? (
           <ReviewWare product={product} />
         ) : (
           <p>Немає відгуків.</p>
         )}
         <hr />
-        <h2 id="similarProducts" className={styles.tabTitle}>Схожі товари</h2>
-        {product.similarProducts && product.similarProducts.length > 0 && product.similarProducts.some(p => Object.keys(p).length > 0) ? (
-          <section className={styles.similarProducts}>
-            <SimilarWare product={product} />
+        <h2 id="similarProductsBefore" className={styles.tabTitle}>Схожі товари</h2>
+        {(similarWares && similarWares.length > 0) ? (
+          <section id="similarProducts" className={styles.similarProducts}>
+            <WareCarousel wares={filteredWares} />
           </section>
         ) : (
           <p>Немає схожих товарів.</p>
         )}
+        <RecentWares />
       </div>
+      }
     </Layout>
   );
 }

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "../css/blogstyle.module.css";
+import Link from "next/link";
 import { getBlogMainCategories } from "@/pages/api/BlogMainCategory";
 import { getBlogSubCatsByMainCat } from "@/pages/api/BlogSubCategory";
 
@@ -9,6 +10,14 @@ import { getBlogSubCatsByMainCat } from "@/pages/api/BlogSubCategory";
 //     const [images, setImages] = React.useState([]);
 //     const [selectedCaption, setSelectedCaption] = useState(""); // Для хранения выбранного caption
 //     const router = useRouter();
+
+
+
+export default function BlogMenu(props) {
+    const [images, setImages] = useState([]);
+    const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
+    const router = useRouter();
+
 
 //     const [category, setCategory] = useState("");
 
@@ -25,7 +34,6 @@ import { getBlogSubCatsByMainCat } from "@/pages/api/BlogSubCategory";
     
 //     const loadImages = (category) => {
 //         let categoryKey = '';
-
 //         switch (category) {
 //             case 'Для дому':
 //                 categoryKey = 'homemenu';

@@ -7,60 +7,60 @@
 			"textsale": "Облаштуйте свою оселю у скандинавському стилі та відчуйте хюґе! Наша спеціальна акція пропонує вам можливість створити ідеальний простір для відпочинку та релаксації. У цій категорії ви знайдете всі товари, на які зараз діє акційна ціна.",
 			"textsale2": "Також, ви можете переглянути всі актуальні знижки тут.",
 			"urlimage": "../images/Sale.jpg",
-			"urlsale": "https://jysk.ua/"
+			"urlsale": "/search?f_4=sale"
 		},
 		"category": [
 			{
 				"nameCategory": "Спальня",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Спальня",
 				"urlimage": "../images/Category/Bedroom.jpg",
 				"alt": "Спальня"
 			},
 			{
 				"nameCategory": "Ванна",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Ванна",
 				"urlimage": "../images/Category/Bathroom.jpg",
 				"alt": "Ванна"
 			},
 			{
 				"nameCategory": "Офіс",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Офіс",
 				"urlimage": "../images/Category/Office.jpg",
 				"alt": "Офіс"
 			},
 			{
 				"nameCategory": "Вітальня",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Вітальня",
 				"urlimage": "../images/Category/Livingroom.jpg",
 				"alt": "Вітальня"
 			},
 			{
 				"nameCategory": "Кухня та їдальня",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Кухня та їдальня",
 				"urlimage": "../images/Category/Diningroom.jpg",
 				"alt": "Кухня та їдальня"
 			},
 			{
 				"nameCategory": "Зберігання",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Зберігання",
 				"urlimage": "../images/Category/Storage.jpg",
 				"alt": "Зберігання"
 			},
 			{
 				"nameCategory": "Для вікон",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Для вікон",
 				"urlimage": "../images/Category/Window.jpg",
 				"alt": "Для вікон"
 			},
 			{
 				"nameCategory": "Для саду",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Для саду",
 				"urlimage": "../images/Category/Garden.jpg",
 				"alt": "Для саду"
 			},
 			{
 				"nameCategory": "Для дому",
-				"urlcategory": "https://jysk.ua/",
+				"urlcategory": "/search?query=Для дому",
 				"urlimage": "../images/Category/Forhome.jpg",
 				"alt": "Для дому"
 			}

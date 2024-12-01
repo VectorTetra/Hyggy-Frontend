@@ -2,13 +2,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from '../../styles/MainPageHeader-styles.module.css';
-import { useCartQuantity } from "@/app/cart/types/Cart";
+import useLocalStorageStore from "@/store/localStorage";
 
 function MainPageHeaderBasket(props) {
-  const cartQuantity = useCartQuantity(); // Отримуємо кількість товарів
-
+  const cartQuantity = useLocalStorageStore((state) => state.cartQuantity);
   return (
-    <Link href="/cart" className={styles.mainPageHeaderItem}>
+    <Link prefetch={true} href="/cart" className={styles.mainPageHeaderItem}>
       <div style={{ position: 'relative' }}>
         <Image
           id={styles.mainPageHeaderUserPhoto}

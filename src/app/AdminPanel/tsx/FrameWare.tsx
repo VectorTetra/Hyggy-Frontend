@@ -12,13 +12,33 @@ import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 
 export default function WareFrame() {
+    // function calculateLocalStorageSize() {
+    //     let totalBytes = 0;
+
+    //     for (let i = 0; i < localStorage.length; i++) {
+    //         const key = localStorage.key(i);
+    //         if (key !== null) {
+    //             const value = localStorage.getItem(key);
+    //             if (value !== null) {
+    //                 // Додаємо довжину ключа та значення у байтах
+    //                 totalBytes += key.length + value.length;
+    //             }
+    //         }
+
+    //         // Перетворюємо байти у мегабайти
+    //         const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+    //         return totalMB + ' MB';
+    //     }
+    // }
+
+    // console.log('LocalStorage usage:', calculateLocalStorageSize());
     const { mutate: deleteWare } = useDeleteWare();
     //const queryClient = useQueryClient();
     const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { data: data = [], isLoading: dataLoading, isSuccess: success } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
-        PageSize: 10
+        PageSize: 1000
     });
     const [filteredData, setFilteredData] = useState<any | null>([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -197,7 +217,6 @@ export default function WareFrame() {
                 position: 'sticky', // Фіксована позиція
                 top: 0, // Залишається зверху
                 left: 0,
-                backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
                 zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
                 width: "100%",
                 padding: '0' // Додаємо відступи для панелі

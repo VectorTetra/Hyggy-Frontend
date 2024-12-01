@@ -60,25 +60,17 @@ export default function BlogBody() {
     
     return (
         <div className={styles.headcontainer}>
-            {blogPage.blogBody.map((category, index) => (
+            {props.blogPage.blogBody.map((category, index) => (
                 <div key={index} className={styles.categorycontainer}>
                     <h2 className={styles.h2}>{category.caption}</h2>
                     <div className={styles.categorycontent}>
                         <div className={styles.largeimage}>
                             {category.imagesHome.length > 0 && (
                                 <div className={styles.imagewrapper}>
-                                    <Link
-                                        prefetch={true}
-                                        href={category.imagesHome[0].urlPage || "#"}
-                                    >
-                                        <img
-                                            src={category.imagesHome[0].urlImages}
-                                            alt={category.imagesHome[0].caption}
-                                        />
+                                    <Link prefetch={true} href={category.imagesHome[0].urlPage || "#"}>
+                                        <img src={category.imagesHome[0].urlImages} alt={category.imagesHome[0].caption} />
                                         {category.imagesHome[0].caption && (
-                                            <p className={styles.imagecaption1}>
-                                                {category.imagesHome[0].caption}
-                                            </p>
+                                            <p className={styles.imagecaption1}>{category.imagesHome[0].caption}</p>
                                         )}
                                     </Link>
                                 </div>
@@ -88,10 +80,7 @@ export default function BlogBody() {
                             {category.imagesHome.slice(1, 5).map((image, imgIndex) => (
                                 <div key={imgIndex}>
                                     <div className={styles.imagewrapper}>
-                                        <Link
-                                            prefetch={true}
-                                            href={image.urlPage || "#"}
-                                        >
+                                        <Link prefetch={true} href={image.urlPage || "#"}>
                                             <img src={image.urlImages} alt={image.caption} />
                                             {image.caption && (
                                                 <p className={styles.imagecaption}>

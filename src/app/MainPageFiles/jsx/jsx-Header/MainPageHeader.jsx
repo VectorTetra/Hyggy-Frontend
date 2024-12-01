@@ -16,7 +16,7 @@ import { getSales } from '@/pages/api/SaleApi';
 function MainPageHeader(props) {
     const [sales, setSales] = useState([]);
 
-	const isAuthorized = validateToken().status === 200;
+	const isAuthorized = validateToken().status === 200 && isUser();
 	useEffect(() => {
 		const fetchSales = async () => {
             const response = await getSales();
@@ -25,6 +25,7 @@ function MainPageHeader(props) {
         }
 		fetchSales();
 	}, [])
+
 	return (
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />

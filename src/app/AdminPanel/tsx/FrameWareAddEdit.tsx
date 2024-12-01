@@ -4,7 +4,7 @@ import { useCreateWare, useUpdateWare, getWares, postJsonConstructorFile, putJso
 import { toast } from 'react-toastify';
 import { useQueryState } from 'nuqs';
 import { getWareCategories3, useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import InvoiceForm from './InvoiceForm';
+import InvoiceForm from './FrameWareInvoiceForm';
 import { useSearchParams } from 'next/navigation';
 import useInvoiceStore from '@/store/invoiceStore';
 import { uploadPhotos, getPhotoByUrlAndDelete } from '@/pages/api/ImageApi';
@@ -95,6 +95,10 @@ export default function WareAddEditFrame() {
                         const propertiesItem = response.find((item: any) => item.type === "properties");
                         setRows(propertiesItem && propertiesItem.value ? propertiesItem.value : []);
                     }
+                    else {
+                        clearRows();
+                        setWareDetails("");
+                    }
                 }
 
             } catch (error) {
@@ -139,16 +143,24 @@ export default function WareAddEditFrame() {
     }
 
     const handleSave = async () => {
+        if (photos.length === 0) {
+            toast.error('Додайте хоча б одне фото товару, щоб його зберегти');
+            return;
+        }
         setLoading(true);
         try {
             if (wareCategory3 != null) {
                 let contrFilePath = '';
                 let newWareImageIds: number[] = [];
                 if (wareId === 0) {
-                    if (rows.length > 0 || wareDetails.length > 0) {
-                        contrFilePath = await postJsonConstructorFile(wareDetails, rows);
-                        setStructureFilePath(contrFilePath);
-                    }
+                    // if (rows.length > 0 || wareDetails.length > 0) {
+                    //     contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                    //     setStructureFilePath(contrFilePath);
+                    // }
+                    //if (rows.length > 0 || wareDetails.length > 0) {
+                    contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                    setStructureFilePath(contrFilePath);
+                    //}
                     const newWare = await createWare({
                         Article: article,
                         Name: name,
@@ -174,16 +186,29 @@ export default function WareAddEditFrame() {
                         // Чекаємо завершення всіх операцій та оновлюємо newWareImageIds
                         newWareImageIds = await Promise.all(newPhotoPromises);
                     }
+                    toast.success('Товар успішно створено!');
+
                 } else {
                     console.log("trademarkId", trademarkId);
+                    console.log("wareDetails", wareDetails);
+                    console.log("rows", rows);
                     if (wareId) {
-                        if ((rows.length > 0 || wareDetails.length > 0) && (!structureFilePath || structureFilePath === '')) {
+                        // if ((rows.length > 0 || wareDetails.length > 0) && (!structureFilePath || structureFilePath === '')) {
+                        //     contrFilePath = await postJsonConstructorFile(wareDetails, rows);
+                        //     setStructureFilePath(contrFilePath);
+                        // }
+                        // if ((rows.length > 0 || wareDetails.length > 0) && structureFilePath.length > 0) {
+                        //     contrFilePath = await putJsonConstructorFile(wareDetails, rows, structureFilePath);
+                        //     setStructureFilePath(contrFilePath);
+                        // }
+                        if ((!structureFilePath || structureFilePath === '')) {
                             contrFilePath = await postJsonConstructorFile(wareDetails, rows);
                             setStructureFilePath(contrFilePath);
                         }
-                        if ((rows.length > 0 || wareDetails.length > 0) && structureFilePath.length > 0) {
+                        if (structureFilePath.length > 0) {
                             contrFilePath = await putJsonConstructorFile(wareDetails, rows, structureFilePath);
                             setStructureFilePath(contrFilePath);
+                            console.log("Ми зайшли в блок structureFilePath.length > 0");
                         }
                         if (isPhotosDirty) {
                             console.log("Ми зайшли в блок isPhotosDirty");
@@ -226,10 +251,12 @@ export default function WareAddEditFrame() {
                             ImageIds: isPhotosDirty ? newWareImageIds : imageIds,
                             StatusIds: statusIds
                         });
+                        toast.success('Товар успішно оновлено!');
                     }
                 }
             }
         } catch (error) {
+            console.error('Error saving ware:', error);
             toast.error('Виникла помилка при збереженні товару');
         } finally {
             setLoading(false);
@@ -367,7 +394,7 @@ export default function WareAddEditFrame() {
                     variant="contained"
                     color="primary"
                     onClick={handleSave}
-                    disabled={!name || !price}
+                    disabled={!name || !price || !wareCategory3}
                 >
                     Зберегти
                 </Button>

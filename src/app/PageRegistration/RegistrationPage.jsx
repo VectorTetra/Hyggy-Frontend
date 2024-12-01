@@ -1,17 +1,22 @@
 "use client";
-import React from "react";
-import styles from "./css/RegistrationStyles.module.css";
-import { toast } from "react-toastify";
 import { RegisterAsClient } from "@/pages/api/TokenApi";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
+import { toast } from "react-toastify";
+import styles from "./css/RegistrationStyles.module.css";
 
 export default function RegistrationPage(props) {
-    const [name, setName] = React.useState('');
-    const [surname, setSurname] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [checkboxStates, setCheckboxStates] = React.useState({});
-    const [errorMessage, setErrorMessage] = React.useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [checkboxStates, setCheckboxStates] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Добавлено состояние для показа пароля
+
 
     // Функция для проверки пароля
     const isPasswordValid = (password) => {
@@ -20,9 +25,7 @@ export default function RegistrationPage(props) {
         return passwordRegex.test(password);
     };
 
-    const generateConfirmationCode = () => {
-        return Math.floor(100000 + Math.random() * 900000).toString(); // Генерация 6-значного кода
-    };
+
 
     // Очищаем форму, если нажата кнопка "Скасувати"
     const handleReset = () => {
@@ -66,7 +69,7 @@ export default function RegistrationPage(props) {
             toast.error('Необхідно прийняти умови та підписатися на новини');
             return;
         }
-        //const confirmationCode = generateConfirmationCode();
+
         try {
             RegisterAsClient({
                 Email: email,
@@ -80,11 +83,6 @@ export default function RegistrationPage(props) {
             console.log(error);
             return;
         }
-        // Регистрация прошла успешно
-        // toast.success('Ваш обліковий запис створено. Ми відправили підтвердження на вашу пошту. Будь ласка, активуйте свій обліковий запис, натиснувши на кнопку у листі. Якщо ви не отримали листа, будь ласка, перевірте теку зі спамом або спробуйте увійти у свій обліковий запис ще раз, для того щоб ми надіслали вам повторний лист для активації.');
-
-        //window.location.href = './PageConfirmation';
-
     };
 
     // Обработчик изменения состояния чекбоксов
@@ -96,89 +94,175 @@ export default function RegistrationPage(props) {
     };
 
     return (
-        <div className={styles.maincontainer}>
-            <div className={styles.formcontainer}>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <div className={styles.caption}>Створити обліковий запис</div>
-                    <div>
-                        <input className={styles.formInput}
-                            type="text"
-                            name="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Ім'я *"
-                        />
-                    </div>
-                    <div>
-                        <input className={styles.formInput}
-                            type="text"
-                            name="surname"
-                            value={surname}
-                            onChange={(e) => setSurname(e.target.value)}
-                            placeholder="Прізвище *"
-                        />
-                    </div>
-                    <div>
-                        <input className={styles.formInput}
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                            placeholder="E-mail *"
-                        />
-                    </div>
-                    <div>
-                        <input className={styles.formInput}
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Пароль *"
-                        />
-                    </div>
-                    <div>
-                        <input className={styles.formInput}
-                            type="password"
-                            name="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            placeholder="Повторити пароль *"
-                        />
-                    </div>
-                    <div className={styles.checkboxesTableContainer}>
-                        <table className={styles.checkboxesTable}>
-                            <tbody>
-                                {props.registration.label.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>
-                                            <input className={styles.formCheckbox}
-                                                type="checkbox"
-                                                checked={checkboxStates[item.name] || false}
-                                                onChange={() => handleCheckboxChange(item.name)}
-                                            />
-                                        </td>
-                                        <td>
-                                            <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
-                                                onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
-                                        </td>
-                                    </tr>
+        <Box
+            component="div"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+                padding: '2rem',
 
-                                ))}
-                            </tbody>
+            }}
+        >
+            <Typography variant="div" component="h1" gutterBottom sx={{}}>
+                Створити обліковий запис
+            </Typography>
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                    width: '100%',
+                    maxWidth: 'clamp(400px,42vmax,800px)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    padding: '2rem',
 
-                            {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
-                        </table >
+                }}
+            >
+                <TextField sx={{
 
-                    </div>
+                    backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px'
+                }}
+                    label="Ім'я"
+                    variant="outlined"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    fullWidth
+                />
 
-                    <div>
-                        <button type="submit" className={styles.submitbutton}>Створити обліковий запис</button>
-                    </div>
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    type="text"
+                    label="Прізвище"
+                    variant="outlined"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    required
+                    fullWidth
+                />
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    type="email"
+                    label="email"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                    required
+                    fullWidth
+                />
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    type={showPassword ? 'text' : 'password'}
+                    label="Пароль"
+                    value={password}
+                    variant="outlined"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    fullWidth
+                    InputProps={{
+                        // Додаємо іконку для перемикання видимості пароля
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    label="Підтвердіть пароль"
+                    value={confirmPassword}
+                    variant="outlined"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    fullWidth
+                    InputProps={{
+                        // Додаємо іконку для перемикання видимості пароля
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    edge="end"
+                                >
+                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <div className={styles.checkboxesTableContainer}>
+                    <table className={styles.checkboxesTable}>
+                        <tbody>
+                            {props.registration.label.map((item, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <input className={styles.formCheckbox}
+                                            type="checkbox"
+                                            checked={checkboxStates[item.name] || false}
+                                            onChange={() => handleCheckboxChange(item.name)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
+                                            onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
 
-                    <button type="button" className={styles.submitbutton2} onClick={handleReset}>Скасувати</button>
-                </form >
-            </div >
-        </div >
+                        {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
+                    </table >
+                </div>
+
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    fullWidth
+                    sx={{
+                        backgroundColor: '#00AAAD',
+                        padding: '0.75rem',
+                        fontSize: '1rem',
+
+                        color: 'white', // Цвет текста
+                        textTransform: 'none',
+                        ':hover': {
+                            backgroundColor: '#008C8D', // Цвет при наведении
+                        },
+                    }}
+                >
+                    Створити обліковий запис
+                </Button>
+
+                <Button
+                    // variant="outlined"
+                    // type="div"
+                    // component="div"
+                    color="primary"
+                    fullWidth
+                    onClick={handleReset}
+                    sx={{
+                        backgroundColor: '#f3f3f3',
+                        padding: '0.75rem',
+                        fontSize: '1rem',
+                        color: '#00AAAD', // Цвет текста
+                        textDecoration: 'underline',
+                        textTransform: 'none',
+                    }}
+                >
+                    Скасувати
+                </Button>
+            </Box>
+        </Box >
     );
 }

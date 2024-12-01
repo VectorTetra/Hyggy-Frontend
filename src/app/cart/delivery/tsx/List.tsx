@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 
-const List = ({ selectedStore, setSelectedStore, stores }) => {
-    const refs = useRef([]);
+const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType }) => {
+    const refs = useRef<(HTMLDivElement | null)[]>([]);
 
     const handleCheckboxChange = (store) => {
         setSelectedStore(store);
@@ -29,7 +29,7 @@ const List = ({ selectedStore, setSelectedStore, stores }) => {
                         <div
                             key={index}
                             className="mb-4"
-                            ref={el => refs.current[index] = el}
+                            ref={el => { refs.current[index] = el; }}
                         >
                             <label className="block font-bold text-lg">
                                 <input
@@ -40,8 +40,11 @@ const List = ({ selectedStore, setSelectedStore, stores }) => {
                                 />
                                 {store.name}
                             </label>
-                            <p className="text-gray-600"></p>
-                            <p className="text-gray-600">{store.address}, {store.city}, {store.postalCode}.</p>
+                            <p className="text-gray-600">
+                                {selectedDeliveryType === "store"
+                                    ? `${store.street}, ${store.houseNumber}, ${store.city}, ${store.postalCode}`
+                                    : `${store.address}, ${store.city}, ${store.postalCode}`}
+                            </p>
                         </div>
                     ))}
                 </div>
