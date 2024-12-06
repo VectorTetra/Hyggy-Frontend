@@ -2,9 +2,10 @@
 import React from "react";
 import styles from "../css/blogstyle.module.css";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function BlogBody() {
-    const {currentCategory,setCurrentCategory}= useBlogCategoryPageState();
+    //const {currentCategory,setCurrentCategory}= useBlogCategoryPageState();
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const [homeCategories, setHomeCategories] = useState([]);
@@ -50,14 +51,14 @@ export default function BlogBody() {
 
 
 
-    const getImages = async (categoryId) =>{
+    const getImages = async (categoryId) => {
         const response = await getBlogSubCatsByMainCat({
             SearchParameter: "BlogCategory1Id",
             BlogCategory1Id: categoryId
-        });    
+        });
         setSubCategories(response);
     }
-    
+
     return (
         <div className={styles.headcontainer}>
             {props.blogPage.blogBody.map((category, index) => (

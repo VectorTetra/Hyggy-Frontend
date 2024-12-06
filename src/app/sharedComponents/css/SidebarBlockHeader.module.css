@@ -1,0 +1,19 @@
+.sidebarBlockContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.sidebarBlockHeader {
+	cursor: pointer;
+	user-select: none;
+	font-size: 14px;
+	margin: 0;
+}
+
+.sidebarBlockArrow {
+	cursor: pointer;
+	user-select: none;
+	font-size: 20px;
+	margin: 0;
+}

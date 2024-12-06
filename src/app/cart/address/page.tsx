@@ -325,7 +325,7 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до доставка
+                Перейти до доставки
               </button>
             </div>
             <Link prefetch={true} href="/cart">
