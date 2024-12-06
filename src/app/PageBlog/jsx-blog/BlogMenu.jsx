@@ -13,10 +13,10 @@ import { getBlogSubCatsByMainCat } from "@/pages/api/BlogSubCategory";
 
 
 
-export default function BlogMenu(props) {
-    const [images, setImages] = useState([]);
-    const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
-    const router = useRouter();
+// export default function BlogMenu(props) {
+//     const [images, setImages] = useState([]);
+//     const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
+//     const router = useRouter();
 
 
 //     const [category, setCategory] = useState("");
@@ -28,10 +28,10 @@ export default function BlogMenu(props) {
 
 //      };
 //      fetchCategories();
-        
+
 //         //loadImages('Для дому');
 //     }, []);
-    
+
 //     const loadImages = (category) => {
 //         let categoryKey = '';
 //         switch (category) {
@@ -59,7 +59,7 @@ export default function BlogMenu(props) {
 //         router.push(`/PageBlogCategory?caption=${encodeURIComponent(caption)}`);
 //     };
 
-   
+
 
 //     return (
 //         <div>
@@ -98,104 +98,103 @@ export default function BlogMenu(props) {
 // }
 
 export default function BlogMenu({ currentCategory, setCurrentCategory }) {
-        const [images, setImages] = React.useState([]);
-        const [selectedCaption, setSelectedCaption] = useState(""); // Для хранения выбранного caption
-        const router = useRouter();
-    
-        const [categories, setCategories] = useState([]);
-        const [categoryId, setCategoryId] = useState();
-        const [subCategories, setSubCategories] = useState([]);
+    const [images, setImages] = React.useState([]);
+    const [selectedCaption, setSelectedCaption] = useState(""); // Для хранения выбранного caption
+    const router = useRouter();
 
-        useEffect(() => {
-            const fetchCategories = async () =>{
-                const data = await getBlogMainCategories();
-                setCategories(data);
-         };
-         fetchCategories();
-        }, []);
-        
-        useEffect(() => {
-            const fetchCategories = async () =>{
-                const response = await getBlogSubCatsByMainCat({
-                    SearchParameter: "BlogCategory1Id",
-                    BlogCategory1Id: categoryId
-                });       
-                setSubCategories(response);
-         };
-         if(categoryId){
-             fetchCategories();
-         }
-        },[categoryId]);
-        
-        const loadImages = (category) => {
-            let categoryKey = '';
-    
-            switch (category) {
-                case 'Для дому':
-                    categoryKey = 'homemenu';
-                    break;
-                case 'Для сну':
-                    categoryKey = 'forsleepmenu';
-                    break;
-                case 'Для саду':
-                    categoryKey = 'forgardenmenu';
-                    break;
-                default:
-                    categoryKey = 'homemenu';
-            }
-    
-            const newImages = props.blogPage.menuimage[categoryKey] || [];
-            setImages(newImages.map(item => ({
-                ...item,
-                urlImages: item.urlImagesHome || item.urlImagesSleep || item.urlImagesGarden
-            })));
+    const [categories, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState();
+    const [subCategories, setSubCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await getBlogMainCategories();
+            setCategories(data);
         };
-    
-        const handleImageClick = (caption) => {
-            router.push(`/PageBlogCategory?caption=${encodeURIComponent(caption)}`);
+        fetchCategories();
+    }, []);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const response = await getBlogSubCatsByMainCat({
+                SearchParameter: "BlogCategory1Id",
+                BlogCategory1Id: categoryId
+            });
+            setSubCategories(response);
         };
-    
-       
-    
-        return (
-            <div>
-                <div className={styles.menucontainer}>
-                    {categories.slice(0,3).map((category, index) => (
-                        <a
-                            key={index}
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setCurrentCategory(category.name);
-                                setCategoryId(category.id)
-                                setSelectedCaption(category.name); // выбранный caption
-                            }}
-                            className={styles.menuitem}
-                        >
-                            {category.name}
-                        </a>
-                    ))}
-                </div>
-                {subCategories.length > 0 && 
-                <div>
-                <hr />
-                <div className={styles.imagescontainer}>
-                    {subCategories.map((subCat, index) => (
-                        <div key={index} className={styles.imageitem}>
-                            <a
-                                href="#"
-                                // onClick={() => handleImageClick(item.caption)} // Передаем caption при клике
-                            >
-                                <img src={subCat.previewImagePath
-} alt={subCat.name} />
-                                <div className={styles.textmenu}>{subCat.name}</div>
-                            </a>
-                        </div>
-                    ))}
-                </div>
-                </div>
-}
+        if (categoryId) {
+            fetchCategories();
+        }
+    }, [categoryId]);
+
+    const loadImages = (category) => {
+        let categoryKey = '';
+
+        switch (category) {
+            case 'Для дому':
+                categoryKey = 'homemenu';
+                break;
+            case 'Для сну':
+                categoryKey = 'forsleepmenu';
+                break;
+            case 'Для саду':
+                categoryKey = 'forgardenmenu';
+                break;
+            default:
+                categoryKey = 'homemenu';
+        }
+
+        const newImages = props.blogPage.menuimage[categoryKey] || [];
+        setImages(newImages.map(item => ({
+            ...item,
+            urlImages: item.urlImagesHome || item.urlImagesSleep || item.urlImagesGarden
+        })));
+    };
+
+    const handleImageClick = (caption) => {
+        router.push(`/PageBlogCategory?caption=${encodeURIComponent(caption)}`);
+    };
+
+
+
+    return (
+        <div>
+            <div className={styles.menucontainer}>
+                {categories.slice(0, 3).map((category, index) => (
+                    <a
+                        key={index}
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentCategory(category.name);
+                            setCategoryId(category.id)
+                            setSelectedCaption(category.name); // выбранный caption
+                        }}
+                        className={styles.menuitem}
+                    >
+                        {category.name}
+                    </a>
+                ))}
             </div>
-        );
+            {subCategories.length > 0 &&
+                <div>
+                    <hr />
+                    <div className={styles.imagescontainer}>
+                        {subCategories.map((subCat, index) => (
+                            <div key={index} className={styles.imageitem}>
+                                <a
+                                    href="#"
+                                // onClick={() => handleImageClick(item.caption)} // Передаем caption при клике
+                                >
+                                    <img src={subCat.previewImagePath
+                                    } alt={subCat.name} />
+                                    <div className={styles.textmenu}>{subCat.name}</div>
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             }
-        
+        </div>
+    );
+}
