@@ -2,6 +2,7 @@
 import useSearchStore from "@/store/search";
 import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/StatusPicker.module.css";
+import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
 interface Filter {
 	id: string; // або number, в залежності від типу вашого id
 	name: string;
@@ -29,9 +30,7 @@ function StatusPicker(props: any) {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => setIsStatusOpen(!isStatusOpen)} className={styles.header}>
-				Спец. пропозиції
-			</h2>
+			<SidebarBlockHeader title="Спец. пропозиції" setIsSidebarBlockOpen={setIsStatusOpen} isSidebarBlockOpen={isStatusOpen} />
 			<div className={isStatusOpen ? styles.statusOpen : styles.statusClosed}>
 				{props.statuses.map((status: any, index: any) => (
 					<div key={index} className={styles.statusItem}>

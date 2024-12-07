@@ -2,6 +2,7 @@
 import useSearchStore from "@/store/search";
 import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/CategoryPicker.module.css";
+import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
 interface Filter {
 	id: string; // або number, в залежності від типу вашого id
 	name: string;
@@ -29,9 +30,7 @@ function CategoryPicker(props: any) {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => setIsCategoryOpen(!isCategoryOpen)} className={styles.header}>
-				Категорія
-			</h2>
+			<SidebarBlockHeader title="Категорія" setIsSidebarBlockOpen={setIsCategoryOpen} isSidebarBlockOpen={isCategoryOpen} />
 			<div className={isCategoryOpen ? styles.categoryOpen : styles.categoryClosed}>
 				{props.categories.map((category: any, index: any) => (
 					<div key={index} className={styles.categoryItem}>

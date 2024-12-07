@@ -101,10 +101,11 @@
     justify-content: space-between;
     gap: 20px;
     text-align: center;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding: 100px;
+    padding-right: 100px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: white;
 }
 
 .brand-item {
@@ -165,7 +166,7 @@
 
 .aboutus-text {
     margin: 10px 0;
-    text-align: centre;
+    text-align: left;
     color: black;
 }
 
@@ -222,8 +223,8 @@
 }
 
 .form-containerin {
-    margin-left: 300px;
-    margin-right: 300px;
+    /* margin-left: 300px;
+    margin-right: 300px; */
     padding-top: 10px;
     padding-bottom: 20px;
     margin-top: 10px;
@@ -245,18 +246,31 @@
 #subscForm {
     display: flex;
     flex-direction: column;
+    padding: 0 20vh;
+    text-wrap-style: balance;
 }
 
 #termsCheckbox {
     margin-right: 10px;
+    display: flex;
 }
 
 .label {
     font-size: 14px;
     margin-top: 10px;
+    /* width: auto; */
+    text-align: left;
+    display: flex;
+    flex: 1 1 60vw;
+    max-width: 65vw;
 }
 
-.form-containerInput input[type="text"],
+.form-containerInput input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 .form-containerInput input[type="email"] {
     flex: 2;
     padding: 10px;
@@ -278,10 +292,18 @@
 
 .imageaboutus {
     max-width: 50px;
-    max-height: 50px;
+    height: 50px !important;
+    object-fit: contain;
 }
 
 @media screen and (max-width: 1000px) and (min-width: 500px) {
+
+    .form-containerInput input[type="text"],
+    .form-containerInput input[type="email"] {
+        flex: 2;
+        padding: 10px;
+        border-radius: 10px;
+    }
 
     .bodysale {
         margin: 5px 5px 5px 5px;
@@ -387,6 +409,14 @@
 }
 
 @media screen and (max-width: 500px) {
+
+    .form-containerInput input[type="text"],
+    .form-containerInput input[type="email"] {
+        flex: 2;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
     .bodysale {
         flex-direction: column;
         margin: 5px 5px 5px 5px;

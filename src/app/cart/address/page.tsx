@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 import useLocalStorageStore from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
-import { i } from "nuqs/dist/serializer-BZD8Ur_m";
+//import { i } from "nuqs/dist/serializer-BZD8Ur_m";
 
 interface CartItem {
   productDescription: string;
@@ -325,7 +325,7 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до доставка
+                Перейти до доставки
               </button>
             </div>
             <Link prefetch={true} href="/cart">

@@ -3,6 +3,7 @@
 import useSearchStore from "@/store/search";
 import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/TrademarkPicker.module.css";
+import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
 interface Filter {
 	id: string; // або number, в залежності від типу вашого id
 	name: string;
@@ -30,9 +31,7 @@ function TrademarkPicker(props: any) {
 
 	return (
 		<div className={styles.container}>
-			<h2 onClick={() => setIsTrademarksOpen(!isTrademarksOpen)} className={styles.header}>
-				Торгова марка
-			</h2>
+			<SidebarBlockHeader title="Торгова марка" setIsSidebarBlockOpen={setIsTrademarksOpen} isSidebarBlockOpen={isTrademarksOpen} />
 			<div className={isTrademarksOpen ? styles.trademarkOpen : styles.trademarkClosed}>
 				{props.trademarks.map((trademark: any, index: any) => (
 					<div key={index} className={styles.trademarkItem}>

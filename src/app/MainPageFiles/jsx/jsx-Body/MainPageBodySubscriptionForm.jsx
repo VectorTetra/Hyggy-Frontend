@@ -41,7 +41,7 @@ export default function MainPageBodySubscriptionForm(props) {
                         />
                         <input type="submit" className={styles.inputSubmit} name="subscrSubmit" value="Підписатися на розсилку" />
                     </div>
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center' }}>
                         <input
                             type="checkbox"
                             id={styles.termsCheckbox}

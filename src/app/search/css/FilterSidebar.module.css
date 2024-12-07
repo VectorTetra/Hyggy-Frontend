@@ -51,7 +51,7 @@
 }
 
 .sidebarHr {
-	width: 90%;
+	width: calc(100% - 30px);
 	text-align: center;
 	display: flex;
 	align-self: center;
