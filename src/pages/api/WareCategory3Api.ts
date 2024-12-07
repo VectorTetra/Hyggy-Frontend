@@ -31,11 +31,19 @@ export class WareCategory3PutDTO {
 	WareIds?: number[] = [];
 }
 
+// export class WareCategory3 {
+// 	id: number;
+// 	waresCategory2Ids: number[];
+// 	name: string;
+// 	waresCategories2: any[];
+// }
 export class WareCategory3 {
 	id: number;
-	waresCategory2Ids: number[];
-	name: string;
-	waresCategories2: any[];
+	name?: string | null;
+	wareCategory2Id?: number | null;
+	wareCategory1Name?: string | null;
+	wareCategory2Name?: string | null;
+	wareIds?: number[] | null;
 }
 // API запити
 export async function getWareCategories3(params: WareCategory3QueryParams = { SearchParameter: "Query" }) {
