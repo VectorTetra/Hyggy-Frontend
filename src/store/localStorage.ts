@@ -141,8 +141,16 @@ const setRecentWareIdsToLocalStorage = (ids: number[]): void => {
 
 const getCartFromLocalStorage = (): CartItem[] => {
     if (!isClient) return [];
+    console.log("isClient", isClient);
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
+};
+
+const getCartQuantityFromLocalStorage = (): number => {
+    if (!isClient) return 0;
+    const savedCart = localStorage.getItem("cart");
+    const cart = savedCart ? JSON.parse(savedCart) : [];
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
 };
 
 const saveCartToLocalStorage = (cartItems: CartItem[]): void => {
@@ -227,7 +235,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
     formData: getFormDataFromLocalStorage(),
     selectedDeliveryType: getSelectedDeliveryTypeFromLocalStorage(),
     paymentStatus: getPaymentStatusFromLocalStorage(),
-    cartQuantity: 0,
+    cartQuantity: getCartQuantityFromLocalStorage(),
     selectedShop: isClient ? getSelectedShopFromLocalStorage() : null,
     setSelectedShop: (shop) => {
         set({ selectedShop: shop });

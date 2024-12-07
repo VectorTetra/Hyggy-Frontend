@@ -5,7 +5,8 @@ import styles from '../../styles/MainPageHeader-styles.module.css';
 import useLocalStorageStore from "@/store/localStorage";
 
 function MainPageHeaderBasket(props) {
-  const cartQuantity = useLocalStorageStore((state) => state.cartQuantity);
+  const { cartQuantity } = useLocalStorageStore();
+  console.log(cartQuantity);
   return (
     <Link prefetch={true} href="/cart" className={styles.mainPageHeaderItem}>
       <div style={{ position: 'relative' }}>

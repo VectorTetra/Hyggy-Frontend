@@ -18,7 +18,7 @@ export default function FrameSupply() {
         SearchParameter: "Query",
         PageNumber: 1,
         PageSize: 1000,
-    });
+    }, true);
 
     const [filteredData, setFilteredData] = useState<any | null>([]);
     const [searchTerm, setSearchTerm] = useState('');

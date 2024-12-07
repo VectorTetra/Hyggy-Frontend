@@ -51,8 +51,9 @@
 
 .footer-itemB {
     font-size: 22px;
-    color: white;
-    font-weight: bold;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 0 20px 0;
 }
 
 .footer-address {
