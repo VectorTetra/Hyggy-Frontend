@@ -3,12 +3,12 @@
 	margin: 20px 0;
 }
 
-.slick-list {
+.carouselWrapper1 .slick-list {
 	overflow: hidden;
 	max-height: 250px;
 }
 
-.slick-slide {
+.carouselWrapper1 .slick-slide {
 	height: 240px;
 	display: flex !important;
 	justify-content: center;
@@ -17,14 +17,14 @@
 	border-radius: 16px;
 }
 
-.cardImage1 {
+.carouselWrapper1 .cardImage1 {
 	border-radius: 16px;
 	width: 80vw;
 	height: 250px;
 	object-fit: cover;
 }
 
-.cardTitle {
+.carouselWrapper1 .cardTitle {
 	text-align: center;
 	margin-top: 8px;
 	font-size: 16px;
@@ -40,7 +40,7 @@
 }
 
 
-.slick-arrow {
+.carouselWrapper1 .slick-arrow {
 	background: rgba(255, 255, 255, 0.5);
 	/* Зробіть стрілки напівпрозорими */
 	color: rgb(0, 0, 0);
@@ -56,15 +56,15 @@
 	align-items: center;
 }
 
-.slick-arrow:before {
+.carouselWrapper1 .slick-arrow:before {
 	color: black;
 	font-size: 20px;
 }
 
-.slick-prev {
+.carouselWrapper1 .slick-prev {
 	left: 40px;
 }
 
-.slick-next {
+.carouselWrapper1 .slick-next {
 	right: 40px;
 }
