@@ -3,15 +3,17 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import { getCartFromLocalStorage } from "../types/Cart";
+import useLocalStorageStore from "@/store/localStorage";
 import Link from 'next/link';
+import InputMask from 'react-input-mask';
+import { i } from "nuqs/dist/serializer-BZD8Ur_m";
 
 interface CartItem {
   productDescription: string;
   productName: string;
   productImage: string;
   quantity: number;
-  price: string;
+  price: number;
   oldPrice: string;
   selectedOption: string;
 }
@@ -19,17 +21,6 @@ interface CartItem {
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    city: "",
-    street: "",
-    houseNumber: "",
-    email: "",
-    phone: "",
-    termsAccepted: false,
-  });
 
   const [errors, setErrors] = useState({
     firstName: false,
@@ -43,26 +34,32 @@ const AddressPage = () => {
     streetNotFound: false,
   });
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
+
   const [isFormValid, setIsFormValid] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<string[]>([]);
   const [streetSuggestions, setStreetSuggestions] = useState<string[]>([]);
 
-  useEffect(() => {
-    const savedFormData = localStorage.getItem("formData");
-    if (savedFormData) {
-      setFormData(JSON.parse(savedFormData));
-    }
+  const {
+    formData,
+    setFormData,
+    getCartFromLocalStorage,
+    setAddressInfo,
+  } = useLocalStorageStore();
 
+  useEffect(() => {
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
-
     if (savedCartItems.length === 0) {
       router.push('/');
     }
   }, [router]);
 
   useEffect(() => {
-    const isValid = Object.values(formData).every(value => value !== "") && formData.termsAccepted;
+    const isValid = formData !== null && Object.values(formData).every(value => value !== "") && formData.termsAccepted;
     setIsFormValid(isValid);
   }, [formData]);
 
@@ -70,15 +67,12 @@ const AddressPage = () => {
     const { name, value, type, checked } = e.target;
     const updatedValue = type === "checkbox" ? checked : value;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: updatedValue,
-    }));
-
-    localStorage.setItem("formData", JSON.stringify({
-      ...formData,
-      [name]: updatedValue,
-    }));
+    if (formData !== null) {
+      setFormData({
+        ...formData,
+        [name]: updatedValue,
+      });
+    }
 
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -118,7 +112,7 @@ const AddressPage = () => {
   };
 
   const fetchStreetSuggestions = async (query: string) => {
-    if (query.length > 2 && formData.city) {
+    if (query.length > 2 && formData?.city) {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?street=${query}&city=${formData.city}&country=Ukraine&format=json&accept-language=uk`
       );
@@ -146,10 +140,12 @@ const AddressPage = () => {
   };
 
   const handleCitySelect = (city: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      city,
-    }));
+    if (formData !== null) {
+      setFormData({
+        ...formData,
+        city,
+      });
+    }
     setCitySuggestions([]);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -158,10 +154,12 @@ const AddressPage = () => {
   };
 
   const handleStreetSelect = (street: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      street,
-    }));
+    if (formData !== null) {
+      setFormData({
+        ...formData,
+        street,
+      });
+    }
     setStreetSuggestions([]);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -171,13 +169,13 @@ const AddressPage = () => {
 
   const validateForm = () => {
     const newErrors = {
-      firstName: formData.firstName === "",
-      lastName: formData.lastName === "",
-      city: formData.city === "",
-      street: formData.street === "",
-      houseNumber: formData.houseNumber === "",
-      email: formData.email === "",
-      phone: formData.phone === "",
+      firstName: formData?.firstName === "",
+      lastName: formData?.lastName === "",
+      city: formData?.city === "",
+      street: formData?.street === "",
+      houseNumber: formData?.houseNumber === "",
+      email: formData?.email === "" || formData?.email === undefined || !validateEmail(formData?.email),
+      phone: formData?.phone === "",
       cityNotFound: errors.cityNotFound,
       streetNotFound: errors.streetNotFound,
     };
@@ -190,18 +188,18 @@ const AddressPage = () => {
     e.preventDefault();
     if (validateForm()) {
       const addressInfo = {
-        city: formData.city,
-        street: formData.street,
-        houseNumber: formData.houseNumber,
+        city: formData?.city || "",
+        street: formData?.street || "",
+        houseNumber: formData?.houseNumber || "",
       };
-      localStorage.setItem('addressInfo', JSON.stringify(addressInfo));
+      setAddressInfo(addressInfo);
       window.location.href = "/cart/delivery";
     }
   };
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
   };
 
@@ -218,7 +216,7 @@ const AddressPage = () => {
               <input
                 type="text"
                 name="firstName"
-                value={formData.firstName}
+                value={formData?.firstName || ""}
                 onChange={handleInputChange}
                 placeholder="Ім'я*"
                 className={`${styles.formInput} ${errors.firstName ? styles.errorInput : ''}`}
@@ -228,7 +226,7 @@ const AddressPage = () => {
               <input
                 type="text"
                 name="lastName"
-                value={formData.lastName}
+                value={formData?.lastName || ""}
                 onChange={handleInputChange}
                 placeholder="Прізвище*"
                 className={`${styles.formInput} ${errors.lastName ? styles.errorInput : ''}`}
@@ -238,7 +236,7 @@ const AddressPage = () => {
               <input
                 type="text"
                 name="city"
-                value={formData.city}
+                value={formData?.city || ""}
                 onChange={handleInputChange}
                 placeholder="Місто*"
                 className={`${styles.formInput} ${errors.city || errors.cityNotFound ? styles.errorInput : ''}`}
@@ -259,7 +257,7 @@ const AddressPage = () => {
                 <input
                   type="text"
                   name="street"
-                  value={formData.street}
+                  value={formData?.street || ""}
                   onChange={handleInputChange}
                   placeholder="Вулиця*"
                   className={`${styles.formInput} ${errors.street || errors.streetNotFound ? styles.errorInput : ''}`}
@@ -279,7 +277,7 @@ const AddressPage = () => {
                 <input
                   type="text"
                   name="houseNumber"
-                  value={formData.houseNumber}
+                  value={formData?.houseNumber || ""}
                   onChange={handleInputChange}
                   placeholder="Номер будинку*"
                   className={`${styles.formInput} ${errors.houseNumber ? styles.errorInput : ''}`}
@@ -290,28 +288,36 @@ const AddressPage = () => {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                value={formData?.email || ""}
                 onChange={handleInputChange}
                 placeholder="E-mail*"
                 className={`${styles.formInput} ${errors.email ? styles.errorInput : ''}`}
               />
             </div>
             <div className={styles.formGroup}>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
+              <InputMask
+                mask="+38 (099) 999-99-99"
+                value={formData?.phone || ""}
                 onChange={handleInputChange}
-                placeholder="Мобільний телефон*"
-                className={`${styles.formInput} ${errors.phone ? styles.errorInput : ''}`}
-              />
+              >
+                {() => (
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData?.phone || ""}
+                    onChange={handleInputChange}
+                    placeholder="Мобільний телефон*"
+                    className={`${styles.formInput} ${errors.phone ? styles.errorInput : ''}`}
+                  />
+                )}
+              </InputMask>
             </div>
             <div className={styles.formGroup}>
               <label>
                 <input
                   type="checkbox"
                   name="termsAccepted"
-                  checked={formData.termsAccepted}
+                  checked={formData?.termsAccepted || false}
                   onChange={handleInputChange}
                   required
                 /> Прийняти <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та положення</Link>
@@ -348,12 +354,12 @@ const AddressPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{item.price} грн</p>
-                    <p>{parseFloat(item.price) * item.quantity} грн</p>
+                    <p>{Math.ceil(item.price)} грн</p>
+                    <p>{Math.ceil(item.price * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {calculateTotalPrice().toFixed(2)} грн</p>
+              <p className={styles.totalPrice}>Усього {Math.ceil(calculateTotalPrice())} грн</p>
             </div>
           )}
         </div>
