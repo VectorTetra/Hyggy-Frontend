@@ -105,10 +105,17 @@ export class Ware {
 	wareCategory1Name: string;
 	wareItems: any[];
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getWares(params: WareQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Ware', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -122,7 +129,7 @@ export async function getWares(params: WareQueryParams = { SearchParameter: "Que
 // POST запит для створення нового складу
 export async function postWare(Ware: WarePostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Ware', Ware);
+		const response = await axios.post(API_BASE_URL!, Ware);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Ware:', error);
@@ -137,7 +144,7 @@ export async function putWare(Ware: WarePutDTO) {
 			throw new Error('Id is required for updating a Ware');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Ware`, Ware);
+		const response = await axios.put(API_BASE_URL!, Ware);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating Ware:', error);
@@ -148,7 +155,7 @@ export async function putWare(Ware: WarePutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWare(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Ware/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Ware:', error);

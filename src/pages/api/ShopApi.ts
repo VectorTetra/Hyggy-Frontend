@@ -51,16 +51,18 @@ export interface ShopGetDTO {
 	orderIds?: number[] | null;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP in your environment variables.");
+}
 
 // GET запит (вже реалізований)
 export async function getShops(params: ShopQueryParams = {}) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Shop', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
-		// const response = await axios.get('http://localhost:5263/api/Shop', {
-		// 	params,
-		// });
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching Shops:', error);
@@ -71,8 +73,7 @@ export async function getShops(params: ShopQueryParams = {}) {
 // POST запит для створення нового складу
 export async function postShop(Shop: ShopDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Shop', Shop);
-		//const response = await axios.post('http://localhost:5263/api/Shop', Shop);
+		const response = await axios.post(API_BASE_URL!, Shop);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Shop:', error);
@@ -86,8 +87,7 @@ export async function putShop(Shop: ShopDTO) {
 		if (!Shop.Id) {
 			throw new Error('Id is required for updating a Shop');
 		}
-		//const response = await axios.put(`http://localhost:5263/api/Shop`, Shop);
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Shop`, Shop);
+		const response = await axios.put(API_BASE_URL!, Shop);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating Shop:', error);
@@ -98,9 +98,7 @@ export async function putShop(Shop: ShopDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteShop(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Shop/${id}`);
-
-		//const response = await axios.delete(`http://localhost:5263/api/Shop/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Shop:', error);

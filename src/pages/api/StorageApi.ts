@@ -23,10 +23,16 @@ export interface StorageDTO {
 	ShopId?: number | null;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getStorages(params: StorageQueryParams = {}) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Storage', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 		// const response = await axios.get('http://localhost:5263/api/Storage', {
@@ -43,7 +49,7 @@ export async function getStorages(params: StorageQueryParams = {}) {
 // POST запит для створення нового складу
 export async function postStorage(storage: StorageDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Storage', storage);
+		const response = await axios.post(API_BASE_URL!, storage);
 		//const response = await axios.post('http://localhost:5263/api/Storage', storage);
 		return response.data;
 	} catch (error) {
@@ -59,7 +65,7 @@ export async function putStorage(storage: StorageDTO) {
 			throw new Error('Id is required for updating a storage');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Storage`, storage);
+		const response = await axios.put(API_BASE_URL!, storage);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating storage:', error);
@@ -70,7 +76,7 @@ export async function putStorage(storage: StorageDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteStorage(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Storage/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting storage:', error);

@@ -39,10 +39,17 @@ export class BlogCategory2 {
     name: string;
     previewImagePath: string;
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG_CATEGORY_2;
+
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG_CATEGORY_2 in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG_CATEGORY_2 in your environment variables.");
+}
 // GET запит (вже реалізований)
 export async function getBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Query" }) {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/BlogCategory2', {
+        const response = await axios.get(API_BASE_URL!, {
             params,
         });
 
@@ -56,7 +63,7 @@ export async function getBlogCategories2(params: BlogCategory2QueryParams = { Se
 // POST запит для створення нового складу
 export async function postBlogCategory2(BlogCategory2: BlogCategory2PostDTO) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/BlogCategory2', BlogCategory2);
+        const response = await axios.post(API_BASE_URL!, BlogCategory2);
         return response.data;
     } catch (error) {
         console.error('Error creating BlogCategory2:', error);
@@ -71,7 +78,7 @@ export async function putBlogCategory2(BlogCategory2: BlogCategory2PutDTO) {
             throw new Error('Id is required for updating a BlogCategory2');
         }
 
-        const response = await axios.put(`http://www.hyggy.somee.com/api/BlogCategory2`, BlogCategory2);
+        const response = await axios.put(API_BASE_URL!, BlogCategory2);
         return response.data;
     } catch (error) {
         console.error('Error updating BlogCategory2:', error);
@@ -82,7 +89,7 @@ export async function putBlogCategory2(BlogCategory2: BlogCategory2PutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteBlogCategory2(id: number) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/BlogCategory2/${id}`);
+        const response = await axios.delete(`${API_BASE_URL!}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting BlogCategory2:', error);

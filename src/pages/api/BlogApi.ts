@@ -49,10 +49,16 @@ export class Blog {
 	previewImagePath: string;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_BLOG in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getBlogs(params: BlogQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Blog', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -66,7 +72,7 @@ export async function getBlogs(params: BlogQueryParams = { SearchParameter: "Que
 // POST запит для створення нового складу
 export async function postBlog(Blog: BlogPostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Blog', Blog);
+		const response = await axios.post(API_BASE_URL!, Blog);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Blog:', error);
@@ -81,7 +87,7 @@ export async function putBlog(Blog: BlogPutDTO) {
 			throw new Error('Id is required for updating a Blog');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Blog`, Blog);
+		const response = await axios.put(API_BASE_URL!, Blog);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating Blog:', error);
@@ -92,7 +98,7 @@ export async function putBlog(Blog: BlogPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteBlog(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Blog/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Blog:', error);

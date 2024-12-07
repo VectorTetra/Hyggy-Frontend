@@ -22,74 +22,74 @@ export interface StorageEmployeeDto {
     ConfirmPassword?: string;
     StorageId: number
 }
+const API_STORAGE_EMPLOYEE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE;
+if (!API_STORAGE_EMPLOYEE_URL) {
+    console.error("API_STORAGE_EMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE in your environment variables.");
+    throw new Error("API_STORAGE_EMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE in your environment variables.");
+}
+
+const API_SHOP_EMPLOYEE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE;
+if (!API_SHOP_EMPLOYEE_URL) {
+    console.error("API_SHOP_EMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE in your environment variables.");
+    throw new Error("API_SHOP_EMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getShopEmployees() {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/shopemployee/shopemployes');
-        // const response = await axios.get('http://localhost:5263/api/Customer', {
-        // 	params,
-        // });
+        const response = await axios.get(`${API_SHOP_EMPLOYEE_URL}/shopemployes`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Shops:', error);
-        throw new Error('Failed to fetch Shops');
+        console.error('Error fetching ShopEmployees:', error);
+        throw new Error('Failed to fetch ShopEmployees');
     }
 }
 export async function postShopEmployee(Shop: ShopEmployeeDto) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', Shop);
-        //const response = await axios.post('http://localhost:5263/api/Shop', Shop);
+        const response = await axios.post(`${API_SHOP_EMPLOYEE_URL}/register`, Shop);
         return response.data;
     } catch (error) {
-        console.error('Error creating Shop:', error);
-        throw new Error('Failed to create Shop');
+        console.error('Error creating ShopEmployee:', error);
+        throw new Error('Failed to create ShopEmployee');
     }
 }
 // DELETE запит для видалення складу за Id
 export async function deleteShopEmployee(id: string) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/shopemployee/deleteemployee?id=${id}`);
-
-        //const response = await axios.delete(`http://localhost:5263/api/Customer/${id}`);
+        const response = await axios.delete(`${API_SHOP_EMPLOYEE_URL}/deleteemployee?id=${id}`);
         return response.data;
     } catch (error) {
-        console.error('Error deleting Shop:', error);
-        throw new Error('Failed to delete Shop');
+        console.error('Error deleting ShopEmployee:', error);
+        throw new Error('Failed to delete ShopEmployee');
     }
 }
 //Запиити для співробітників складів
 export async function getStorageEmployees() {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/storageemployee/storageemployees');
-        // const response = await axios.get('http://localhost:5263/api/Customer', {
-        // 	params,
-        // });
+        const response = await axios.get(`${API_STORAGE_EMPLOYEE_URL}/storageemployees`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching Storages:', error);
-        throw new Error('Failed to fetch Storages');
+        console.error('Error fetching StorageEmployees:', error);
+        throw new Error('Failed to fetch StorageEmployees');
     }
 }
 export async function postStorageEmployee(Storage: StorageEmployeeDto) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/storageemployee/register', Storage);
-        //const response = await axios.post('http://localhost:5263/api/Storage', Storage);
+        const response = await axios.post(`${API_STORAGE_EMPLOYEE_URL}/register`, Storage);
         return response.data;
     } catch (error) {
-        console.error('Error creating Storage:', error);
-        throw new Error('Failed to create Storage');
+        console.error('Error creating StorageEmployee:', error);
+        throw new Error('Failed to create StorageEmployee');
     }
 }
 // DELETE запит для видалення складу за Id
 export async function deleteStorageEmployee(id: string) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/storageemployee/deleteemployee?id=${id}`);
-
-        //const response = await axios.delete(`http://localhost:5263/api/Customer/${id}`);
+        const response = await axios.delete(`${API_STORAGE_EMPLOYEE_URL}/deleteemployee?id=${id}`);
         return response.data;
     } catch (error) {
-        console.error('Error deleting Storage:', error);
-        throw new Error('Failed to delete Storage');
+        console.error('Error deleting StorageEmployee:', error);
+        throw new Error('Failed to delete StorageEmployee');
     }
 }
 
