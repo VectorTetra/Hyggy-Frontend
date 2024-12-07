@@ -9,6 +9,10 @@ interface AdminPanelState {
 	setWarehouseId: (id: number | null) => void;
 	blogId: number | null;
 	setBlogId: (id: number | null) => void;
+	wareId: number | null;
+	setWareId: (id: number | null) => void;
+	shopId: number | null;
+	setShopId: (id: number | null) => void;
 }
 
 const useAdminPanelStore = create<AdminPanelState>((set) => ({
@@ -18,6 +22,10 @@ const useAdminPanelStore = create<AdminPanelState>((set) => ({
 	setWarehouseId: (id) => set({ warehouseId: id }),
 	blogId: null,
 	setBlogId: (id) => set({ blogId: id }),
+	wareId: null, // Вибрана вкладка, за замовчуванням немає вибраної
+	setWareId: (id) => set({ wareId: id }),
+	shopId: null, // Вибрана вкладка, за замовчуванням немає вибраної
+	setShopId: (id) => set({ shopId: id }),
 }));
 
 export default useAdminPanelStore;

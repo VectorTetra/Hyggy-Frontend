@@ -202,16 +202,16 @@ const FrameBlogInvoiceForm = () => {
                         </div>
                     ))}
                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                        <Button variant="contained" color="primary" onClick={addTextRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addTextRow}>
                             Додати текстове поле
                         </Button>
-                        <Button variant="contained" color="primary" onClick={addImageRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addImageRow}>
                             Додати галерею
                         </Button>
-                        <Button variant="contained" color="primary" onClick={addMixedRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addMixedRow}>
                             Додати текстове поле з фото
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={clearRows}>
+                        <Button variant="contained" sx={{ backgroundColor: "#be0f0f" }} onClick={clearRows}>
                             Очистити вміст блогу
                         </Button>
                     </Box>
@@ -236,10 +236,10 @@ const FrameBlogInvoiceForm = () => {
                     </div>
                 ))}
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={addKeyword}>
+                    <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addKeyword}>
                         Додати ключове слово
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={clearKeywords}>
+                    <Button variant="contained" sx={{ backgroundColor: "#be0f0f" }} onClick={clearKeywords}>
                         Прибрати всі ключові слова
                     </Button>
                 </Box>

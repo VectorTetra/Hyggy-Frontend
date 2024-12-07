@@ -68,33 +68,33 @@
     display: flex;
     align-items: center;
     padding: 1rem;
-    justify-content: space-between;
+    justify-content: flex-start;
+    position: relative;
+    /* Добавляем позиционирование для внутреннего размещения кнопки */
 }
 
 .searchInput {
     flex-grow: 1;
     padding: 0.5rem;
+    padding-right: 2.5rem;
+    /* Оставляем пространство справа для иконки */
     background-color: rgb(238, 236, 236);
     border: 1px solid #737272;
     border-radius: 4px;
     font-size: 16px;
-    box-shadow: 8px 8px 15px #9ecfd0;
     transition: box-shadow 0.3s ease;
 }
 
-.searchInput:focus {
-    box-shadow: 12px 12px 15px #9ecfd0;
-
-}
-
-
 .searchButton {
+    position: absolute;
+    right: 30px;
+    /* Позиционируем кнопку справа в поле */
     background: none;
     border: none;
     font-size: 20px;
     cursor: pointer;
-    margin-left: 0.5rem;
 }
+
 
 .shopListContainer {
     flex-grow: 1;
@@ -104,6 +104,10 @@
     padding: 1rem;
     /* Добавьте отступы, если нужно */
     max-height: calc(100% - 20%);
+}
+
+.shopListContainer::-webkit-scrollbar {
+    width: 0px;
 }
 
 .h2 {
@@ -165,7 +169,7 @@
 
 .card {
     border: 1px solid #ccc;
-    margin: 10px 10px 10px 10px;
+    margin: 10px 0px 0px 0px;
 }
 
 .card:hover {
