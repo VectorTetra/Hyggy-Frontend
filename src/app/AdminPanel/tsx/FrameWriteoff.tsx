@@ -56,6 +56,7 @@ export default function FrameWriteoff() {
             setAvailableQuantity(0);
         }
     }, [product, store]);
+
     useEffect(() => {
         // Оновлюємо доступну кількість
         if (wareItems.length > 0) {
@@ -146,7 +147,7 @@ export default function FrameWriteoff() {
                     {(!store || !product) && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
                         Виберіть склад і товар
                     </Typography>}
-                    {isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                    {store && product && isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
                         Завантаження...
                     </Typography>}
                     {store && product && !isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
