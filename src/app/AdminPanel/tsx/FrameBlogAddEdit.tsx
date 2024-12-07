@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography, CircularProgress, Autocomplete } from '@mui/material';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useCreateBlog, useUpdateBlog, getBlogs, getJsonConstructorFile, postJsonConstructorFile, putJsonConstructorFile } from '@/pages/api/BlogApi';
 import { BlogCategory2, getBlogCategories2, useBlogCategories2 } from '@/pages/api/BlogCategory2Api';
 import PhotoUploader from './PhotoUploader';
