@@ -8,6 +8,7 @@ const FrameWare = lazy(() => import('./FrameWare'));
 const WareAddEditFrame = lazy(() => import('./FrameWareAddEdit'));
 const FrameBlog = lazy(() => import('./FrameBlog'));
 const FrameBlogAddEdit = lazy(() => import('./FrameBlogAddEdit'));
+const FrameSupply = lazy(() => import('./FrameSupply'));
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 
 import Clients from './Clients';
@@ -37,7 +38,7 @@ export default function Content() {
 				{activeTab === 'warehousesList' && <FrameStorage />}
 				{activeTab === 'addEditWarehouse' && <FrameStorageAddEdit />}
 				{activeTab === 'remains' && <div>Залишки</div>}
-				{activeTab === 'supplies' && <div>Поставки</div>}
+				{activeTab === 'supplies' && <FrameSupply />}
 				{activeTab === 'transfers' && <div>Переміщення</div>}
 				{activeTab === 'writeOffs' && <div>Списання</div>}
 				{activeTab === 'stores' && <AllShops />}

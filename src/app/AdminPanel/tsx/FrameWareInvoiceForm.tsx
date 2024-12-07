@@ -69,7 +69,7 @@ function InvoiceForm() {
                     variant="contained"
                     color="primary"
                     onClick={addRow}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, backgroundColor: "#00AAAD" }}
                 >
                     Додати рядок характеристик
                 </Button>
@@ -77,7 +77,7 @@ function InvoiceForm() {
                     variant="contained"
                     color="secondary"
                     onClick={clearRows}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, backgroundColor: "#be0f0f" }}
                 >
                     Очистити всі характеристики
                 </Button>

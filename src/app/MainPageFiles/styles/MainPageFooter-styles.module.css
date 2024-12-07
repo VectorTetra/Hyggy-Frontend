@@ -52,11 +52,11 @@
 .footer-itemB {
     font-size: 22px;
     color: white;
+    font-weight: bold;
 }
 
 .footer-address {
     margin-top: 20px;
     margin-bottom: 20px;
     margin-right: auto;
-    font-weight: bold;
 }

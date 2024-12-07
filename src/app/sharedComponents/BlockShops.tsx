@@ -7,6 +7,8 @@ import Link from "next/link";
 import useLocalStorageStore from "@/store/localStorage";
 import { useRouter } from "next/navigation";
 import { set } from "lodash";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const BlockShops: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -178,10 +180,10 @@ const BlockShops: React.FC = () => {
                             value={searchTerm}
                             onChange={handleSearchChange}
                             className={styles.searchInput}
-                            placeholder="Введіть місто або адресу..."
+                            placeholder="Введіть місто або адресу... "
                         />
                         <button onClick={() => { }} className={styles.searchButton}>
-                            🔍
+                            <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
                         </button>
                     </div>
 

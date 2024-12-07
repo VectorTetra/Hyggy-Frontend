@@ -11,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { toast } from 'react-toastify';
 import { useSearchParams } from 'next/navigation';
+import useAdminPanelStore from '@/store/adminPanel';
 
 type Storage = {
   addressId: number;
@@ -32,7 +33,7 @@ export default function NewShop() {
 
   // const [id, setId] = useState<string | null>(searchParams.get('new-edit'));
   const searchParams = useSearchParams();
-  const id = searchParams?.get("new-edit");
+  const shopId = useAdminPanelStore((state) => state.shopId);
   const [storages, setStorages] = useState<Storage[]>([])
   const [addressId, setAddressId] = useState<number>(0);
   const [storageId, setStorageId] = useState<number>(0);
@@ -74,7 +75,14 @@ export default function NewShop() {
   const [dataWorkHours, setDataWorkHours] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "stores", scroll: false, history: "push", shallow: true });
-  const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { scroll: false, history: "push", shallow: true });
+  //const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { scroll: false, history: "push", shallow: true });
+
+  useEffect(() => {
+    if (shopId === null) {
+      //setSelectedPosition(null);
+      setActiveTab('stores');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchStorages = async () => {
@@ -91,23 +99,23 @@ export default function NewShop() {
       }
     };
     fetchStorages();
-    console.log(id);
-    if (id === "0" || id === undefined) {
+    console.log(shopId);
+    if (shopId === null) {
       return;
     }
   }, []);
 
   useEffect(() => {
-    console.log(id);
+    console.log(shopId);
 
-    if (id === "0" || id === undefined) {
+    if (shopId === null) {
       return;
     }
     const fetchShops = async () => {
       try {
         const data = await getShops({
           SearchParameter: "Id",
-          Id: Number(id)
+          Id: Number(shopId)
         });
         if (Array.isArray(data) && data.length > 0) {
           setName(data[0].name);
@@ -127,7 +135,7 @@ export default function NewShop() {
       }
     };
     fetchShops();
-  }, [id])
+  }, [shopId])
 
   useEffect(() => {
     if (storages.length > 0) {
@@ -181,7 +189,7 @@ export default function NewShop() {
         toast.error("Адреса магазину обов'язкова!");
         return;
       }
-      if (id === "0") {
+      if (shopId === null) {
         //Додавання магазину
         const response = await postShop({
           Name: name, PhotoUrl: photo, WorkHours: dataWorkHours, AddressId: addressId,
@@ -192,7 +200,7 @@ export default function NewShop() {
       else {
         //Зміна магазину
         const response = await putShop({
-          Id: Number(id), Name: name, PhotoUrl: photo, WorkHours: dataWorkHours, AddressId: addressId,
+          Id: Number(shopId), Name: name, PhotoUrl: photo, WorkHours: dataWorkHours, AddressId: addressId,
           StorageId: storageId
         });
         toast.success('Магазин успішно змінено!');
@@ -205,7 +213,6 @@ export default function NewShop() {
       toast.error(error.response);
     } finally {
       setActiveTab('stores');
-      setActiveNewShop(null);
     }
   }
 
@@ -335,10 +342,10 @@ export default function NewShop() {
           </div>
         }
       </div>
-      {id === "0" ? (
+      {shopId === null ? (
         <button className="bg-[#00AAAD] text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати магазин</button>
       ) : (
-        <button className="bg-[#ada100] text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Змінити магазин</button>
+        <button className="bg-[#00AAAD] text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Змінити магазин</button>
       )}
     </form>
   )
