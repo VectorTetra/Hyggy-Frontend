@@ -217,7 +217,6 @@ export default function WareFrame() {
                 position: 'sticky', // Фіксована позиція
                 top: 0, // Залишається зверху
                 left: 0,
-                backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
                 zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
                 width: "100%",
                 padding: '0' // Додаємо відступи для панелі

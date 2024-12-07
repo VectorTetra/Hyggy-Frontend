@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import { getCartFromLocalStorage, clearCartFromLocalStorage } from "../types/Cart";
+import useLocalStorageStore from "@/store/localStorage";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,7 @@ interface CartItem {
   productName: string;
   productImage: string;
   quantity: number;
-  price: string;
+  price: number;
   oldPrice: string;
   selectedOption: string;
 }
@@ -22,10 +22,9 @@ const SuccessPage = () => {
   const [deliveryDate, setDeliveryDate] = useState("");
   const [deliveryCost, setDeliveryCost] = useState(0);
   const router = useRouter();
+  const { getCartFromLocalStorage, clearCart, addressInfo, deliveryInfo, paymentStatus, setPaymentStatus, setDeliveryInfo, setAddressInfo } = useLocalStorageStore();
 
   useEffect(() => {
-    const paymentStatus = localStorage.getItem('paymentStatus');
-
     if (paymentStatus !== 'success') {
       router.push('/cart/payment');
       return;
@@ -34,12 +33,7 @@ const SuccessPage = () => {
     const savedCartItems = getCartFromLocalStorage();
     setCartItems(savedCartItems);
 
-    const deliveryInfoRaw = localStorage.getItem('deliveryInfo');
-    const addressInfoRaw = localStorage.getItem('addressInfo');
-
-    if (deliveryInfoRaw && addressInfoRaw) {
-      const deliveryInfo = JSON.parse(deliveryInfoRaw);
-      const addressInfo = JSON.parse(addressInfoRaw);
+    if (deliveryInfo && addressInfo) {
       const { selectedDeliveryType, selectedStore, deliveryCost, deliveryDays } = deliveryInfo;
 
       const orderDate = new Date();
@@ -48,7 +42,7 @@ const SuccessPage = () => {
       const formattedDate = estimatedDeliveryDate.toLocaleDateString('uk-UA');
 
       if (selectedDeliveryType === 'store') {
-        setAddress(`${selectedStore.address}, ${selectedStore.city}, ${selectedStore.postalCode}`)
+        setAddress(`${selectedStore.street}, ${selectedStore.houseNumber}, ${selectedStore.city}, ${selectedStore.postalCode}`)
       } else if (selectedDeliveryType === 'novaPoshta') {
         setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
       } else if (selectedDeliveryType === 'courier') {
@@ -61,17 +55,17 @@ const SuccessPage = () => {
     }
 
     setTimeout(() => {
-      clearCartFromLocalStorage();
-      localStorage.removeItem('paymentStatus');
-      localStorage.removeItem('deliveryInfo');
-      localStorage.removeItem('addressInfo');
+      clearCart();
+      setPaymentStatus(null);
+      setDeliveryInfo(null);
+      setAddressInfo(null);
     }, 1000);
   }, [router]);
 
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      return total + parseFloat(item.price) * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
   };
 
@@ -106,13 +100,13 @@ const SuccessPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{item.price} грн</p>
-                    <p>{(parseFloat(item.price) * item.quantity)} грн</p>
+                    <p>{Math.ceil(item.price)} грн</p>
+                    <p>{(Math.ceil(item.price) * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
               <p className={styles.totalPrice}>
-                Усього {(calculateTotalPrice() + deliveryCost).toFixed(2)} грн
+                Усього {Math.ceil(calculateTotalPrice() + deliveryCost)} грн
               </p>
             </div>
           )}

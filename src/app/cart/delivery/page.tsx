@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useDebounce } from 'use-debounce';
+import { getShops, ShopDTO } from '@/pages/api/ShopApi';
+import useLocalStorageStore from "@/store/localStorage";
 
 const Map = dynamic(
   () => import('./tsx/Map'),
@@ -16,46 +18,34 @@ const Map = dynamic(
 )
 const DeliveryPage = () => {
   const [selectedStore, setSelectedStore] = useState(null);
-  const [selectedDeliveryType, setSelectedDeliveryType] = useState("store");
   const [isPaymentButtonEnabled, setIsPaymentButtonEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery] = useDebounce(searchQuery, 700);
-  const [filteredStores, setFilteredStores] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
   const [novaPoshtaWarehouses, setNovaPoshtaWarehouses] = useState([]);
   const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [stores, setStores] = useState<ShopDTO[]>([]);
+  const [filteredStores, setFilteredStores] = useState<ShopDTO[]>([]);
   const router = useRouter();
+  const { getCartFromLocalStorage, selectedDeliveryType, setSelectedDeliveryType, setDeliveryInfo, addressInfo } = useLocalStorageStore();
 
   const handleDeliveryTypeChange = (e) => {
     const newDeliveryType = e.target.value;
     setSelectedDeliveryType(newDeliveryType);
     setSelectedStore(null);
-    localStorage.setItem('selectedDeliveryType', newDeliveryType);
   };
 
   useEffect(() => {
-    const savedDeliveryType = localStorage.getItem('selectedDeliveryType');
-    if (savedDeliveryType) {
-      setSelectedDeliveryType(savedDeliveryType);
+    const savedCartItems = getCartFromLocalStorage();
+    if (savedCartItems.length === 0) {
+      router.push('/');
     }
-
-    const addressInfo = localStorage.getItem('addressInfo');
     if (!addressInfo) {
       router.push('/cart/address');
     } else {
-      const parsedAddress = JSON.parse(addressInfo);
-      if (selectedDeliveryType === "store") {
-        setSearchQuery(``);
-      }
-      else if (selectedDeliveryType === "novaPoshta") {
-        setSearchQuery(`${parsedAddress.city}, ${parsedAddress.street}`);
-      }
-      else if (selectedDeliveryType === "ukrPoshta") {
-        setSearchQuery(`${parsedAddress.city}, ${parsedAddress.street}, ${parsedAddress.houseNumber}`);
-      }
+      setSearchQuery(`${addressInfo.city}, ${addressInfo.street}`);
     }
-  }, [selectedDeliveryType, router]);
-
+  }, [selectedDeliveryType, router, addressInfo]);
 
   useEffect(() => {
     if (selectedDeliveryType === "store") {
@@ -79,74 +69,8 @@ const DeliveryPage = () => {
             : 0,
       deliveryDays: selectedDeliveryType === "courier" || selectedDeliveryType === "novaPoshta" || selectedDeliveryType === "ukrPoshta" ? 12 : 18
     };
-    localStorage.setItem('deliveryInfo', JSON.stringify(deliveryInfo));
+    setDeliveryInfo(deliveryInfo);
   }, [selectedDeliveryType, selectedStore]);
-
-
-
-  useEffect(() => {
-    const stores = [
-      { name: "Hyggy Odessa", address: "вул. Харківська 1/2", postalCode: "40024", city: "Odessa", latitude: 46.482526, longitude: 30.7233095 },
-      { name: "Hyggy Odessa2", address: "вул. Харківська 2/2", postalCode: "40024", city: "Odessa", latitude: 46.482526, longitude: 30.8233095 },
-      { name: "Hyggy Mykolaiv", address: "вул. Харківська 3/2", postalCode: "40024", city: "Mykolaiv", latitude: 46.96591, longitude: 31.9974 },
-      { name: "Hyggy Kharkiv", address: "вул. Харківська 4/2", postalCode: "40024", city: "Kharkiv", latitude: 49.988358, longitude: 36.232845 },
-    ];
-
-    if (searchQuery) {
-      const filtered = stores.filter(store =>
-        store.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        store.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        store.postalCode.includes(searchQuery)
-      );
-      setFilteredStores(filtered);
-    } else {
-      setFilteredStores(stores);
-    }
-  }, [searchQuery]);
-
-  const getNovaPoshtaWarehouses = async (searchQuery) => {
-    setLoading(true);
-    const parts = searchQuery.split(",");
-    const cityName = parts[0]?.trim();
-    const findByString = parts[1]?.trim();
-    const response = await fetch("https://api.novaposhta.ua/v2.0/json/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        apiKey: "93f4038537ed7f8133f22dc8694e24ff",
-        modelName: "Address",
-        calledMethod: "getWarehouses",
-        methodProperties: {
-          FindByString: findByString,
-          CityName: cityName
-        },
-      }),
-    });
-
-    const data = await response.json();
-    setLoading(false);
-    return data.data;
-  };
-
-  useEffect(() => {
-    const fetchWarehouses = async () => {
-      if (selectedDeliveryType === "novaPoshta" && debouncedSearchQuery !== "") {
-        const warehouses = await getNovaPoshtaWarehouses(debouncedSearchQuery);
-        setNovaPoshtaWarehouses(warehouses.map(warehouse => ({
-          name: warehouse.Description,
-          address: warehouse.ShortAddress,
-          city: warehouse.CityDescription,
-          postalCode: warehouse.PostalCodeUA,
-          latitude: parseFloat(warehouse.Latitude),
-          longitude: parseFloat(warehouse.Longitude),
-        })));
-      }
-    };
-
-    fetchWarehouses();
-  }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const getCoordinates = async (address) => {
     const response = await axios.get('https://nominatim.openstreetmap.org/search', {
@@ -160,6 +84,103 @@ const DeliveryPage = () => {
     return location ? { latitude: parseFloat(location.lat).toFixed(4), longitude: parseFloat(location.lon).toFixed(4) } : null;
   };
 
+  // Функция для вычисления расстояния между двумя точками (Haversine formula)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Радиус Земли в километрах
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance; // Расстояние в километрах
+  };
+
+  // Получаем ближайшие отделения Новой Почты
+  const getNearestNovaPoshtaWarehouses = async (searchQuery) => {
+    setLoading(true);
+    const coordinates = await getCoordinates(searchQuery);
+    if (!coordinates) {
+      setLoading(false);
+      return;
+    }
+
+    const cityName = searchQuery.split(",")[0]?.trim();
+    const response = await fetch("https://api.novaposhta.ua/v2.0/json/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        apiKey: "93f4038537ed7f8133f22dc8694e24ff",
+        modelName: "Address",
+        calledMethod: "getWarehouses",
+        methodProperties: {
+          CityName: cityName,
+        },
+      }),
+    });
+
+    const data = await response.json();
+
+    // Фильтруем отделения, где название начинается с "Відділення"
+    const filteredWarehouses = data.data.filter(warehouse =>
+      warehouse.Description.startsWith("Відділення")
+    ).map(warehouse => ({
+      name: warehouse.Description,
+      address: warehouse.ShortAddress,
+      city: warehouse.CityDescription,
+      postalCode: warehouse.PostalCodeUA,
+      latitude: parseFloat(warehouse.Latitude),
+      longitude: parseFloat(warehouse.Longitude),
+    }));
+
+    // Сортируем отделения по расстоянию
+    const sortedWarehouses = filteredWarehouses.map(warehouse => ({
+      ...warehouse,
+      distance: calculateDistance(coordinates.latitude, coordinates.longitude, warehouse.latitude, warehouse.longitude),
+    })).sort((a, b) => a.distance - b.distance);
+
+    // Берем только 5 ближайших
+    setNovaPoshtaWarehouses(sortedWarehouses.slice(0, 5));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (selectedDeliveryType === "novaPoshta" && debouncedSearchQuery !== "") {
+      getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
+    }
+  }, [selectedDeliveryType, debouncedSearchQuery]);
+
+  const getNearestShops = async (searchQuery) => {
+    try {
+      setLoading(true);
+      const coordinates = await getCoordinates(searchQuery);
+      if (!coordinates) {
+        setLoading(false);
+        return;
+      }
+      const data = await getShops({
+        SearchParameter: "NearestShops",
+        Latitude: parseFloat(coordinates.latitude),
+        Longitude: parseFloat(coordinates.longitude),
+      });
+      setStores(data);
+      setFilteredStores(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching shops:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDeliveryType === "store" && debouncedSearchQuery !== "") {
+      getNearestShops(debouncedSearchQuery)
+    }
+  }, [selectedDeliveryType, debouncedSearchQuery]);
+
   const getUkrPoshtaOfficesByAddress = async (searchQuery) => {
     setLoading(true);
     setUkrPoshtaOffices([]);
@@ -172,7 +193,7 @@ const DeliveryPage = () => {
     }
 
     const response = await axios.get('/api/region', {
-      params: { lat: coordinates.latitude, long: coordinates.longitude, maxDistance: 5 }
+      params: { lat: coordinates.latitude, long: coordinates.longitude, maxDistance: 100 }
     });
 
     const offices = response.data.Entries.Entry.map(entry => ({
@@ -184,7 +205,7 @@ const DeliveryPage = () => {
       longitude: parseFloat(entry.LONGITUDE),
     }));
 
-    setUkrPoshtaOffices(offices);
+    setUkrPoshtaOffices(offices.slice(0, 5));
     setLoading(false);
   };
 
@@ -196,18 +217,13 @@ const DeliveryPage = () => {
 
   const handleButtonSearch = async () => {
     if (selectedDeliveryType === "novaPoshta") {
-      const warehouses = await getNovaPoshtaWarehouses(searchQuery);
-      setNovaPoshtaWarehouses(warehouses.map(warehouse => ({
-        name: warehouse.Description,
-        address: warehouse.ShortAddress,
-        city: warehouse.CityDescription,
-        postalCode: warehouse.PostalCodeUA,
-        latitude: parseFloat(warehouse.Latitude),
-        longitude: parseFloat(warehouse.Longitude),
-      })));
+      await getNearestNovaPoshtaWarehouses(searchQuery);
     }
     if (selectedDeliveryType === "ukrPoshta") {
       await getUkrPoshtaOfficesByAddress(searchQuery);
+    }
+    if (selectedDeliveryType === "store") {
+      await getNearestShops(searchQuery);
     }
   }
 
@@ -287,7 +303,7 @@ const DeliveryPage = () => {
 
         {selectedDeliveryType === "store" && (
           <div className="mt-6">
-            <i>Введіть поштовий індекс або назву вулиці, щоб знайти найближчі магазини HYGGY.</i>
+            <i>Введіть місто і назву вулиці, щоб знайти найближчі магазини HYGGY.</i>
           </div>
         )}
 
@@ -299,13 +315,13 @@ const DeliveryPage = () => {
 
         {selectedDeliveryType === "novaPoshta" && (
           <div className="mt-6">
-            <i>Введіть повну назву вулиці, щоб знайти відділення Нової пошти.</i>
+            <i>Введіть місто і назву вулиці, щоб знайти відділення Нової пошти.</i>
           </div>
         )}
 
         {selectedDeliveryType === "ukrPoshta" && (
           <div className="mt-6">
-            <i>Введіть повну назву вулиці, щоб знайти відділення Укрпошти.</i>
+            <i>Введіть місто і назву вулиці, щоб знайти відділення Укрпошти.</i>
           </div>
         )}
 
@@ -325,11 +341,14 @@ const DeliveryPage = () => {
             <div className="flex flex-col lg:flex-row gap-8 mt-4 mb-10">
               <div className="w-full lg:w-1/2">
                 <h3 className="text-2xl mb-4">Виберіть магазин</h3>
-                <List
+                {loading ? (
+                  <p>Завантаження магазинів...</p>
+                ) : (<List
                   setSelectedStore={setSelectedStore}
                   selectedStore={selectedStore}
                   stores={filteredStores}
-                />
+                  selectedDeliveryType={selectedDeliveryType}
+                />)}
               </div>
               <div className="bg-gray-500 shrink-0 lg:w-[613px] h-[548px]">
                 <Map setSelectedStore={setSelectedStore} selectedStore={selectedStore} stores={filteredStores} />
@@ -361,6 +380,7 @@ const DeliveryPage = () => {
                     setSelectedStore={setSelectedStore}
                     selectedStore={selectedStore}
                     stores={novaPoshtaWarehouses}
+                    selectedDeliveryType={selectedDeliveryType}
                   />)}
               </div>
               <div className="bg-gray-500 shrink-0 lg:w-[613px] h-[548px]">
@@ -393,6 +413,7 @@ const DeliveryPage = () => {
                     setSelectedStore={setSelectedStore}
                     selectedStore={selectedStore}
                     stores={ukrPoshtaOffices}
+                    selectedDeliveryType={selectedDeliveryType}
                   />
                 )}
               </div>
