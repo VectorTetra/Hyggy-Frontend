@@ -73,7 +73,7 @@ export default function AboutUs() {
   };
 
   return (
-    <Layout headerType="header1" footerType='footer1' >
+    <Layout headerType="header1" footerType='footer3' >
       <div className={styles.main}>
         {data.structure.map((component: any, index: any) =>
           renderComponent(component, index)

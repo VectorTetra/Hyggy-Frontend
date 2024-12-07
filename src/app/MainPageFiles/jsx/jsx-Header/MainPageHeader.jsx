@@ -10,19 +10,19 @@ import MainPageHeaderGeo from './MainPageHeaderGeo';
 import MainPageHeaderNavbar from './MainPageHeaderNavbar';
 import MainPageSale from './MainPageSale';
 import styles from '../../styles/MainPageHeader-styles.module.css';
-import { validateToken } from '@/pages/api/TokenApi';
+import { validateToken, isUser } from '@/pages/api/TokenApi';
 import { getSales } from '@/pages/api/SaleApi';
 
 function MainPageHeader(props) {
-    const [sales, setSales] = useState([]);
+	const [sales, setSales] = useState([]);
 
 	const isAuthorized = validateToken().status === 200 && isUser();
 	useEffect(() => {
 		const fetchSales = async () => {
-            const response = await getSales();
-            console.log(response)
-            setSales(response);
-        }
+			const response = await getSales();
+			console.log(response)
+			setSales(response);
+		}
 		fetchSales();
 	}, [])
 

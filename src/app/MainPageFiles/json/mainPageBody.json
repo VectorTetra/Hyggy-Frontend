@@ -125,21 +125,21 @@
 				"captoin": "Наша історія",
 				"text": "Ми – молода компанія HYGGY, яка прагне принести у ваш дім затишок та комфорт.",
 				"urlpage": "../aboutUs",
-				"urlimage": "../images/aboutus.jpg",
+				"urlimage": "/images/aboutus.jpg",
 				"alt": "blog"
 			},
 			{
 				"captoin": "Гарантія на матраци",
 				"text": "25 років гарантії на матраци категорії GOLD.",
 				"urlpage": "../qualityAndGuarantee",
-				"urlimage": "../images/garant.png",
+				"urlimage": "/images/garant.png",
 				"alt": "blog"
 			},
 			{
 				"captoin": "Завжди низька ціна",
 				"text": "Ми пропонуємо широкий вибір товарів за привабливими низькими цінами.",
 				"urlpage": "../search?f_3={\"id\":\"1\"%252C\"name\":\"ЗАВЖДИ+НИЗЬКА+ЦІНА\"}",
-				"urlimage": "../images/price.png",
+				"urlimage": "/images/price.png",
 				"alt": "blog"
 			}
 		],

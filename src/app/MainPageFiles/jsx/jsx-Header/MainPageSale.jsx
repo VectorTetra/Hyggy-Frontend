@@ -28,6 +28,8 @@ export default function MainPageSale(props) {
             console.log("OurSales", sales);
             console.log("OurSales is Array", Array.isArray(sales));
             console.log("OurSales type", typeof (sales));
+            const interval = setInterval(nextSale, 3000);
+            return () => clearInterval(interval); // Очистка интервала при размонтировании
         }
     }, [isSuccess]);
 
@@ -37,13 +39,6 @@ export default function MainPageSale(props) {
             (prevIndex + 1) % sales.length
         );
     };
-
-    // Автоматическое переключение распродажи каждые 3 секунды
-    React.useEffect(() => {
-        
-        const interval = setInterval(nextSale, 3000);
-        return () => clearInterval(interval); // Очистка интервала при размонтировании
-    }, []);
 
     // Обработчик клика по баннеру
     const handleBannerClick = () => {
@@ -55,7 +50,7 @@ export default function MainPageSale(props) {
     return (
         <div id={styles.mainPageSale}>
             <div onClick={handleBannerClick} className={styles.bannerLink}>
-                {sales[currentIndex]?.blogTitle}
+                {isSuccess && sales[currentIndex]?.blogTitle}
             </div>
         </div>
     );
