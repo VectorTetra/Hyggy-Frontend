@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useStorages } from '@/pages/api/StorageApi';
 import { useWares } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
+import { putWareItem } from '@/pages/api/WareItemApi';
 
 export default function FrameWriteoff() {
     const [store, setStore] = useState(''); // Вибраний склад
@@ -29,7 +30,7 @@ export default function FrameWriteoff() {
     });
 
     // Завантаження складів для обраного продукту
-    const { data: wareItems = [], refetch } = useWareItems(
+    const { data: wareItems = [], isLoading, isPending, isFetched, refetch } = useWareItems(
         { SearchParameter: "Query", StorageId: storeId, WareId: productId },
         false  // Запит активний лише якщо обрано склад і товар
     );
@@ -39,8 +40,6 @@ export default function FrameWriteoff() {
         setStore(value || '');
         setStoreId(selectedStore ? selectedStore.id : null);
         setAvailableQuantity(0);
-        console.log("handleProductChange 0");
-        console.log("store", store);
     };
 
     const handleProductChange = (event, value) => {
@@ -48,8 +47,6 @@ export default function FrameWriteoff() {
         setProduct(value || '');
         setProductId(selectedProduct ? selectedProduct.id : null);
         setAvailableQuantity(0);
-        console.log("handleProductChange 0");
-        console.log("product", product);
     };
     useEffect(() => {
         // Оновлюємо доступну кількість
@@ -67,29 +64,54 @@ export default function FrameWriteoff() {
 
         } else {
             setAvailableQuantity(0);
-            console.log("handleProductChange 0");
-
         }
     }, [wareItems]);
 
     const handleQuantityChange = (event) => {
-        setQuantity(event.target.value);
+        const value = event.target.value;
+        if (Number(value) > availableQuantity) {
+            toast.error(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`);
+            setQuantity('0'); // Используем строку '0'
+        } else {
+            setQuantity(value);
+        }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const numericQuantity = Number(quantity);
+
         if (!store || !product || numericQuantity <= 0 || numericQuantity > availableQuantity) {
             toast.error('Будь ласка, заповніть всі поля або перевірте кількість!');
             return;
         }
 
-        toast.success('Списання відбулось успішно!');
-        setStore('');
-        setProduct('');
-        setAvailableQuantity(0);
-        setQuantity('');
-    };
+        if (!storeId || !productId) {
+            toast.error('Будь ласка, оберіть склад та товар!');
+            return;
+        }
 
+        try {
+            // Обновление количества товара
+            const updatedItem = await putWareItem({
+                Id: wareItems[0]?.id,
+                StorageId: storeId,
+                WareId: productId,
+                Quantity: availableQuantity - numericQuantity,
+            });
+
+            toast.success('Списання відбулось успішно!');
+            console.log('Updated WareItem:', updatedItem);
+
+            // Очистка полей после успешного обновления
+            setStore('');
+            setProduct('');
+            setAvailableQuantity(0);
+            setQuantity('');
+        } catch (error) {
+            console.error(error.message);
+            toast.error('Не вдалося оновити кількість. Спробуйте ще раз!');
+        }
+    };
 
     return (
         <Box sx={{ p: 2 }}>
@@ -111,15 +133,26 @@ export default function FrameWriteoff() {
                     renderInput={(params) => <TextField {...params} label="Виберіть товар" variant="outlined" fullWidth />}
                     sx={{ flex: 2 }}
                 />
-                <TextField
-                    type="number"
-                    value={quantity}
-                    onChange={handleQuantityChange}
-                    placeholder={`Доступно: ${availableQuantity}`}
-                    disabled={!product}
-                    fullWidth
-                    sx={{ flex: 1, maxWidth: 150 }}
-                />
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <TextField
+                        type="number"
+                        value={quantity}
+                        onChange={handleQuantityChange}
+                        placeholder={`Доступно: ${availableQuantity}`}
+                        disabled={!product}
+                        fullWidth
+                        sx={{ flex: 1, maxWidth: 150 }}
+                    />
+                    {(!store || !product) && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                        Виберіть склад і товар
+                    </Typography>}
+                    {isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                        Завантаження...
+                    </Typography>}
+                    {store && product && !isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                        Всього в наявності - {availableQuantity}
+                    </Typography>}
+                </Box>
             </Box>
             <Button
                 variant="contained"
