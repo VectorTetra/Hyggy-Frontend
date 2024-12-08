@@ -50,10 +50,16 @@ export class WareItem {
     storageId: number;
     quantity: number;
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_ITEM;
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_ITEM in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_ITEM in your environment variables.");
+}
 // GET запит (вже реалізований)
 export async function getWareItems(params: WareItemQueryParams = { SearchParameter: "Query" }) {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/WareItem', {
+        const response = await axios.get(API_BASE_URL!, {
             params,
         });
 
@@ -67,7 +73,7 @@ export async function getWareItems(params: WareItemQueryParams = { SearchParamet
 // POST запит для створення нового складу
 export async function postWareItem(WareItem: WareItemPostDTO) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/WareItem', WareItem);
+        const response = await axios.post(API_BASE_URL!, WareItem);
         return response.data;
     } catch (error) {
         console.error('Error creating WareItem:', error);
@@ -82,7 +88,7 @@ export async function putWareItem(WareItem: WareItemPutDTO) {
             throw new Error('Id is required for updating a WareItem');
         }
 
-        const response = await axios.put(`http://www.hyggy.somee.com/api/WareItem`, WareItem);
+        const response = await axios.put(API_BASE_URL!, WareItem);
         return response.data;
     } catch (error) {
         console.error('Error updating WareItem:', error);
@@ -93,7 +99,7 @@ export async function putWareItem(WareItem: WareItemPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareItem(id: number) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/WareItem/${id}`);
+        const response = await axios.delete(`${API_BASE_URL!}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting WareItem:', error);

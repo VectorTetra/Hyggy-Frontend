@@ -36,10 +36,17 @@ export class WareTrademark {
 	wareCategory2Id: number;
 	name: string;
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_TRADEMARK;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_TRADEMARK in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_TRADEMARK in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getWareTrademarks(params: WareTrademarkQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/WareTrademark', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -53,7 +60,7 @@ export async function getWareTrademarks(params: WareTrademarkQueryParams = { Sea
 // POST запит для створення нового складу
 export async function postWareTrademark(WareTrademark: WareTrademarkPostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/WareTrademark', WareTrademark);
+		const response = await axios.post(API_BASE_URL!, WareTrademark);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating WareTrademark:', error);
@@ -68,7 +75,7 @@ export async function putWareTrademark(WareTrademark: WareTrademarkPutDTO) {
 			throw new Error('Id is required for updating a WareTrademark');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/WareTrademark`, WareTrademark);
+		const response = await axios.put(API_BASE_URL!, WareTrademark);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating WareTrademark:', error);
@@ -79,7 +86,7 @@ export async function putWareTrademark(WareTrademark: WareTrademarkPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareTrademark(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/WareTrademark/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting WareTrademark:', error);
