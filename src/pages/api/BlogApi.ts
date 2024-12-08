@@ -123,7 +123,7 @@ export async function postJsonConstructorFile(structureArray: any[] | null) {
 	formData.append('JsonConstructorItems', jsonString);
 
 	try {
-		const response = await axios.post<string>("http://www.hyggy.somee.com/api/Blog/PostJsonConstructorFile", formData, {
+		const response = await axios.post<string>(`${API_BASE_URL!}/PostJsonConstructorFile`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -147,7 +147,7 @@ export async function putJsonConstructorFile(structureArray: any[] | null, oldCo
 	formData.append('JsonConstructorItems', jsonString);
 
 	try {
-		const response = await axios.put<string>("http://www.hyggy.somee.com/api/Blog/PutJsonConstructorFile", formData, {
+		const response = await axios.put<string>(`${API_BASE_URL!}/PutJsonConstructorFile`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
