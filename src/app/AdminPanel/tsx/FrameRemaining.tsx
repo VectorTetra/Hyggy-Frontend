@@ -1,6 +1,5 @@
 import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares, Ware } from '@/pages/api/WareApi';
-import { useWareItems } from '@/pages/api/WareItemApi';
 import { Autocomplete, Box, Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
@@ -18,7 +17,6 @@ export default function FrameRemaining() {
     const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
     const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
     const [filteredData, setFilteredData] = useState<any | null>([]);
-    const [aggregatedWareItems, setAggregatedWareItems] = useState<any | null>([]);
     const apiRef = useGridApiRef();
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
         discount: false,
@@ -33,7 +31,6 @@ export default function FrameRemaining() {
         PageSize: 1000,
     });
 
-    // Загружаємо список товарів
     const { data: wares = [], isLoading: dataLoading, isSuccess: success, refetch: refetchWares } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
@@ -49,43 +46,10 @@ export default function FrameRemaining() {
         PageSize: 1000,
         Sorting: "WareCategory2NameThenCategory3NameAsc"
     });
-    // Завантаження складів для обраного продукту
-    const { data: wareItems = [], refetch } = useWareItems(
-        {
-            SearchParameter: "Query",
-            PageNumber: 1,
-            PageSize: 100000,
-            WareCategory3Id: selectedCategory?.id || null,
-            StorageId: selectedStorage?.id || null,
-            //QueryAny: debouncedSearchTerm.length > 0 ? debouncedSearchTerm : null,
-        },
-        true  // Запит активний лише якщо обрано склад і товар
-    );
 
-    useEffect(() => {
-        refetchWares();
-        refetch();
-    }, [selectedCategory, selectedStorage]);
-
-
-    useEffect(() => {
-        // Оновлюємо доступну кількість
-        if (wareItems.length > 0) {
-            console.log("WareItems:", wareItems);
-            console.log("aggregateWareItems:", aggregateWareItems(wareItems));
-            setAggregatedWareItems(aggregateWareItems(wareItems));
-        }
-    }, [wareItems]);
-
-
-    //поиск по строке поиска и по категории
     useEffect(() => {
         refetchWares();
     }, [debouncedSearchTerm, selectedCategory]);
-
-    // const handleClick = () => {
-    //     setShowExpandableBlock((prev) => !prev); // Переключаем состояние
-    // };
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 200 },
@@ -109,7 +73,7 @@ export default function FrameRemaining() {
                                 }}
                             />
                         )}
-                        <Typography variant="body2">{params.row.description}</Typography>
+                        <Typography variant="body2" sx={{ textWrap: "stable" }}>{params.row.description}</Typography>
                     </Box>
                 );
             },
@@ -134,11 +98,12 @@ export default function FrameRemaining() {
             maxWidth: 100,
             cellClassName: 'text-right',
             renderCell: (params) => {
-                const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
+                const totalQuantity = selectedStorage ?
+                    (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.quantity || 0)
+                    :
+                    (params.value || 0);
                 return (
                     <Box >
-                        {/* {!selectedCategory && !selectedStorage && params.row.totalWareItemsQuantity}
-                        {(selectedCategory || selectedStorage) && Number(totalQuantity)} */}
                         {totalQuantity}
                     </Box>
                 );
@@ -151,19 +116,13 @@ export default function FrameRemaining() {
             maxWidth: 150,
             cellClassName: 'text-right',
             renderCell: (params) => {
-                // Форматуємо результат (наприклад, додаємо валюту)
-                // Отримуємо значення totalQuantity і price
-                const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
-                const price = params.row.finalPrice || 0;
-
-                // Обчислюємо загальну суму
-                const totalSum = totalQuantity * price;
+                const totalSum = selectedStorage ?
+                    (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.totalSum || 0)
+                    :
+                    (params.value || 0);
                 return (
                     <Box>
-                        {/* {formatCurrency(params.row.totalWareItemsSum)} */}
                         {formatCurrency(totalSum)}
-
-
                     </Box>
                 );
             },
@@ -237,33 +196,58 @@ export default function FrameRemaining() {
         return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
     };
 
-    //Функція для підрахунку загальної кількості по wareId
-    const aggregateWareItems = (items) => {
-        const aggregated = {};
-        items.forEach((item) => {
-            if (!aggregated[item.wareId]) {
-                aggregated[item.wareId] = { wareId: item.wareId, totalQuantity: 0 };
-            }
-            aggregated[item.wareId].totalQuantity += item.quantity;
-        });
-        // Повертаємо масив для гріда
-        return Object.values(aggregated);
-    };
-    // const aggregateWareItems = (items) => {
-    //     return items.reduce((acc, item) => {
-    //         acc[item.wareId] = acc[item.wareId] || { wareId: item.wareId, totalQuantity: 0 };
-    //         acc[item.wareId].totalQuantity += item.quantity;
-    //         return acc;
-    //     }, {});
-    // };
 
+
+    // useEffect(() => {
+    //     if (success && wares.length > 0 && !selectedStorage) {
+    //         setFilteredData(wares);
+    //         setLoading(false);
+    //     }
+    //     if (success && wares.length > 0 && selectedStorage) {
+    //         const filteredWares = wares.filter(ware => ware.wareItems.some(item => (item.storageId === selectedStorage.id && item.quantity > 0)));
+    //         setFilteredData(filteredWares);
+    //         setLoading(false);
+    //     }
+    // }, [wares, success, selectedStorage]);
 
     useEffect(() => {
         if (success && wares.length > 0) {
-            setFilteredData(wares);
+            setLoading(true);
+            let updatedFilteredData;
+
+            if (!selectedStorage) {
+                // Якщо склад не вибрано, повертаємо всі товари
+                updatedFilteredData = wares.map(ware => ({
+                    ...ware,
+                    totalWareItemsQuantity: ware.wareItems.reduce((sum, item) => sum + item.quantity, 0),
+                    totalWareItemsSum: ware.wareItems.reduce((sum, item) => sum + item.quantity * (ware.finalPrice || ware.price), 0),
+                }));
+            } else {
+                // Якщо вибрано склад, фільтруємо товари за складом
+                const filteredWares = wares.filter(ware =>
+                    ware.wareItems.some(item => item.storageId === selectedStorage.id && item.quantity > 0)
+                );
+
+                updatedFilteredData = filteredWares.map(ware => {
+                    const relevantItems = ware.wareItems.filter(item => item.storageId === selectedStorage.id);
+                    const totalQuantity = relevantItems.reduce((sum, item) => sum + item.quantity, 0);
+                    const totalSum = relevantItems.reduce(
+                        (sum, item) => sum + item.quantity * (ware.finalPrice || ware.price),
+                        0
+                    );
+
+                    return {
+                        ...ware,
+                        totalWareItemsQuantity: totalQuantity,
+                        totalWareItemsSum: totalSum,
+                    };
+                });
+            }
+
+            setFilteredData(updatedFilteredData);
             setLoading(false);
         }
-    }, [wares, success]);
+    }, [wares, success, selectedStorage]);
 
     return (
         <Box sx={{ p: 2 }}>

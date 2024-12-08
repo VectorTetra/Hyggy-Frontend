@@ -49,6 +49,7 @@ export class WareItem {
     wareId: number;
     storageId: number;
     quantity: number;
+    totalSum: number;
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_ITEM;
