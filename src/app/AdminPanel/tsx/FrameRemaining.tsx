@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, MenuItem, Select, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Autocomplete } from '@mui/material';
-import { useStorages } from '@/pages/api/StorageApi';
-import { useWares } from '@/pages/api/WareApi';
+import { Storage, useStorages } from '@/pages/api/StorageApi';
+import { useWares, Ware } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import SearchField from './SearchField';
 import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, GridColDef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs';
 import { useDebounce } from 'use-debounce';
 import FrameExpandableBlock from './FrameExpandableBlock';
+import '../css/WarehouseFrame.css';
+import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
+import { Sort } from '@mui/icons-material';
 
 export default function FrameRemaining() {
-    const [store, setStore] = useState(''); //по складу
-    const [product, setProduct] = useState(''); //по товару
+    // const [store, setStore] = useState(''); //по складу
+    // const [product, setProduct] = useState(''); //по товару
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const [totals, setTotals] = useState({});
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState('');
     const [totalQuantity, setTotalQuantity] = useState(0);
-    const [storeId, setStoreId] = useState(null); // ID складу
+    const [selectedStorage, setSelectedStorage] = useState<Storage | null>(null); // ID складу
+    const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
+
     const [productId, setProductId] = useState(null); // ID товару
-    const [selectedCategory, setSelectedCategory] = useState(''); //по категории
+    const [selectedCategory, setSelectedCategory] = useState<WareCategory3 | null>(null); //по категории
     const [searchTerm, setSearchTerm] = useState('');
     const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
     const [filteredData, setFilteredData] = useState<any | null>([]);
+    const [aggregatedWareItems, setAggregatedWareItems] = useState<any | null>([]);
     const apiRef = useGridApiRef();
     const storagesData = []; // Данные для storages
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
@@ -41,76 +47,85 @@ export default function FrameRemaining() {
     });
 
     // Загружаємо список товарів
-    const { data: wares = [], isLoading: dataLoading, isSuccess: success } = useWares({
+    const { data: wares = [], isLoading: dataLoading, isSuccess: success, refetch: refetchWares } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
         PageSize: 1000,
+        Category3Id: selectedCategory?.id || null,
+        QueryAny: debouncedSearchTerm.length > 0 ? debouncedSearchTerm : null,
     });
 
+    // Загружаємо список категорій товарів
+    const { data: wareCategories = [] } = useWareCategories3({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000,
+        Sorting: "WareCategory2NameThenCategory3NameAsc"
+    });
     // Завантаження складів для обраного продукту
     const { data: wareItems = [], refetch } = useWareItems(
-        //{ SearchParameter: "Query", StorageId: storeId, WareId: productId },
-        { SearchParameter: "Query", PageNumber: 1, PageSize: 100000, },
+        {
+            SearchParameter: "Query",
+            PageNumber: 1,
+            PageSize: 100000,
+            WareCategory3Id: selectedCategory?.id || null,
+            StorageId: selectedStorage?.id || null,
+            //QueryAny: debouncedSearchTerm.length > 0 ? debouncedSearchTerm : null,
+        },
         true  // Запит активний лише якщо обрано склад і товар
     );
 
     console.log("Data from useWareItems:", wareItems);
 
     //Обработчик изменения значения для выбора склада (store)
-    const handleStoreChange = (event, value) => {
-        const selectedStore = storages.find((s) => `${s.shopName ? s.shopName : "Загальний склад"} - ${s.city}, ${s.street} ${s.houseNumber}` === value);
-        setStore(value || '');
-        setStoreId(selectedStore ? selectedStore.id : null);
-        setAvailableQuantity(0);
-    };
+    // const handleStoreChange = (event, value) => {
+    //     const selectedStore = storages.find((s) => `${s.shopName ? s.shopName : "Загальний склад"} - ${s.city}, ${s.street} ${s.houseNumber}` === value);
+    //     setSelectedStorage(selectedStore ? selectedStore.id : null);
+    //     setAvailableQuantity(0);
+    // };
 
-    // Обновляем выбранную категорию
-    const handleCategoryChange = (event, value) => {
-        setSelectedCategory(value || '');
-    };
+    // // Обновляем выбранную категорию
+    // const handleCategoryChange = (event, value) => {
+    //     setSelectedCategory(value || '');
+    // };
 
     useEffect(() => {
         // Оновлюємо доступну кількість
-        if (store !== null && product !== null) {
-            refetch();
+        if (selectedStorage !== null && selectedCategory !== null) {
+            console.log("wareItems:", wareItems);
+            console.log("selectedCategory:", selectedCategory);
+            console.log("selectedStorage:", selectedStorage);
         } else {
             setAvailableQuantity(0);
         }
-    }, [product, store]);
+        refetch();
+    }, [selectedCategory, selectedStorage]);
 
 
     useEffect(() => {
         // Оновлюємо доступну кількість
         if (wareItems.length > 0) {
-            // Берем количество с первого склада
-            setAvailableQuantity(wareItems[0].quantity);
+            // // Берем количество с первого склада
+            // setAvailableQuantity(wareItems[0].quantity);
 
-            // Считаем общее количество по всем складам
-            const total = wareItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
-            setTotalQuantity(total);
+            // // Считаем общее количество по всем складам
+            // const total = wareItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            // setTotalQuantity(total);
 
-            console.log("Пришёл первый склад:", wareItems[11].quantity);
-            console.log("Total Quantity:", total);
+            // console.log("Пришёл первый склад:", wareItems[11].quantity);
+            // console.log("Total Quantity:", total);
+            setAggregatedWareItems(aggregateWareItems(wareItems));
         } else {
             setAvailableQuantity(0);
             setTotalQuantity(0); // Если товаров нет
         }
     }, [wareItems]);
 
+
     //поиск по строке поиска и по категории
     useEffect(() => {
-        if (success && wares.length > 0) {
-            // Фильтрация товаров
-            const filteredResults = wares.filter((ware) => {
-                const matchesSearchTerm = ware.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
-                const matchesStore = storeId ? ware.storageId === storeId : true;
-                const matchesCategory = selectedCategory ? ware.wareCategory2Name === selectedCategory : true;
-                return matchesSearchTerm && matchesStore && matchesCategory;
-            });
-
-            setFilteredData(filteredResults);
-        }
-    }, [debouncedSearchTerm, storeId, selectedCategory, wares, success]);
+        refetchWares();
+    }, [debouncedSearchTerm, selectedCategory]);
 
     const handleClick = () => {
         setShowExpandableBlock((prev) => !prev); // Переключаем состояние
@@ -143,44 +158,57 @@ export default function FrameRemaining() {
             },
         },
         {
-            field: 'price',
+            field: 'finalPrice',
             headerName: 'Ціна',
             flex: 0.3,
             maxWidth: 100,
+            cellClassName: 'text-right',
             renderCell: (params) => {
                 const price = params.value;
-                return <Box sx={{ textAlign: 'right' }}>
-                    {`${price}₴`}
+                return <Box>
+                    {formatCurrency(price)}
                 </Box>
             },
         },
-
         {
             field: 'totalQuantity',
             headerName: 'Кількість',
             flex: 0.3,
             maxWidth: 100,
+            cellClassName: 'text-right',
             renderCell: (params) => {
-                console.log("Row data:", params.row);
-                const totalQuantity = totals[params.row.productId] || 0;
-                console.log('Total Quantity for row:', params.row.productId, totalQuantity);
+                //console.log("Row data:", params.row);
+                const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
+                //console.log('Total Quantity for row:', params.row.productId, totalQuantity);
                 return (
-                    <Typography>
+                    <Box >
                         {totalQuantity}
-                    </Typography>
+                    </Box>
                 );
             },
         },
-
         {
             field: 'storedWaresSum',
             headerName: 'Заг. сума товарів',
             flex: 0.3,
             maxWidth: 150,
             cellClassName: 'text-right',
-            renderCell: (params) => formatCurrency(params.value),
-        },
+            renderCell: (params) => {
+                // Отримуємо значення totalQuantity і price
+                const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
+                const price = params.row.finalPrice || 0;
 
+                // Обчислюємо загальну суму
+                const totalSum = totalQuantity * price;
+
+                // Форматуємо результат (наприклад, додаємо валюту)
+                return (
+                    <Box>
+                        {formatCurrency(totalSum)}
+                    </Box>
+                );
+            },
+        },
         {
             field: 'button',
             headerName: '',
@@ -271,12 +299,12 @@ export default function FrameRemaining() {
         }
     }, [wares, success]);
 
-    useEffect(() => {
-        console.log('Loading wares:', dataLoading);
-        console.log('Success:', success);
-        console.log('storages:', storages);
-        console.log('totals:', totals);
-    }, [dataLoading, success, wares, totals]);
+    // useEffect(() => {
+    //     console.log('Loading wares:', dataLoading);
+    //     console.log('Success:', success);
+    //     console.log('storages:', storages);
+    //     console.log('totals:', totals);
+    // }, [dataLoading, success, wares, totals]);
 
     return (
         <Box sx={{ p: 2 }}>
@@ -295,27 +323,28 @@ export default function FrameRemaining() {
                         searchTerm={searchTerm}
                         onSearchChange={(event) => setSearchTerm(event.target.value)}
                     />
+                    <Autocomplete
+                        options={storages}
+                        getOptionLabel={(option: Storage) =>
+                            `${option.shopName}, 
+                            ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, 
+                            ${option.city || 'Невідоме місто'}, 
+                            ${option.postalCode || ''}`
+                        }
+                        value={selectedStorage || null}
+                        onChange={(event, newValue) => setSelectedStorage(newValue)}
+                        renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
+                        isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    />
+                    <Autocomplete
+                        options={wareCategories}
+                        getOptionLabel={(option: WareCategory3) => `${option.wareCategory2Name} - ${option.name}`}
+                        value={selectedCategory || null}
+                        onChange={(event, newValue) => setSelectedCategory(newValue)}
+                        renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth />}
+                        isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    />
 
-                    {/* Поле для выбора склада*/}
-                    <Autocomplete
-                        value={store}
-                        onChange={handleStoreChange}
-                        options={storages.map((s) => s.shopName)}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />
-                        )}
-                    />
-                    {/* Поле для выбора категории*/}
-                    <Autocomplete
-                        value={selectedCategory}
-                        onChange={handleCategoryChange}
-                        options={wares
-                            .map((p) => p.wareCategory2Name)
-                            .filter((category, index, array) => array.indexOf(category) === index)}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth />
-                        )}
-                    />
                 </Box>
             </Box>
             <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">

@@ -164,7 +164,7 @@ export async function putJsonConstructorFile(structureArray: any[] | null, oldCo
 }
 
 // Використання useQuery для отримання списку складів (blogs)
-export function useBlogs(params: BlogQueryParams = { SearchParameter: "Query" }) {
+export function useBlogs(params: BlogQueryParams = { SearchParameter: "Paged", PageNumber: 1, PageSize: 1000 }) {
 	return useQuery({
 		queryKey: ['blogs', params],
 		queryFn: () => getBlogs(params),

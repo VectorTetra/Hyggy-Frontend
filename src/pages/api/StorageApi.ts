@@ -22,6 +22,22 @@ export interface StorageDTO {
 	Id?: number | null;
 	ShopId?: number | null;
 }
+export interface Storage {
+	id: number;
+	shopId?: number | null;
+	addressId?: number | null;
+	// Для результатів Get-запитів
+	shopName?: string | null; // Назва магазину
+	street?: string | null; // Назва вулиці
+	houseNumber?: string | null; // Номер будинку
+	city?: string | null; // Місто
+	state?: string | null; // Область або штат
+	postalCode?: string | null; // Поштовий індекс
+	latitude?: number | null; // Географічна широта
+	longitude?: number | null; // Географічна довгота
+	storedWaresSum?: number | null; // Загальна сума товарів
+}
+
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE;
 if (!API_BASE_URL) {

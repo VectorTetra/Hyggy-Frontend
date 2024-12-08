@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getBlogs } from './BlogApi';
 
-
-export class BlogMainCategoryQuery {
+export class BlogCategory1Query {
     SearchParameter: string = "Query";
     Id?: number | null;
     BlogTitle?: string | null;
@@ -18,8 +19,12 @@ export class BlogMainCategoryQuery {
     Sorting?: string | null;
     QueryAny?: string | null;
 }
-
-export async function getBlogMainCategories(params: BlogMainCategoryQuery = { SearchParameter: "Paged", PageNumber: 1, PageSize: 4 }) {
+export class BlogCategory1 {
+    id: number;
+    name: string;
+    blogCategory2Ids: number[] = [];
+}
+export async function getBlogCategories(params: BlogCategory1Query = { SearchParameter: "Paged", PageNumber: 1, PageSize: 4 }) {
     try {
         const response = await axios.get('http://www.hyggy.somee.com/api/BlogCategory1', {
             params,
@@ -30,4 +35,16 @@ export async function getBlogMainCategories(params: BlogMainCategoryQuery = { Se
         console.error('Error fetching Blogs:', error);
         throw new Error('Failed to fetch Blogs');
     }
+}
+
+export function useBlogsCategories1(params: BlogCategory1Query = {
+    SearchParameter: "Paged", PageNumber: 1, PageSize: 10
+}) {
+    return useQuery({
+        queryKey: ['blogs', params],
+        queryFn: () => getBlogCategories(params),
+        staleTime: Infinity,
+        gcTime: Infinity,
+        refetchOnWindowFocus: false
+    });
 }

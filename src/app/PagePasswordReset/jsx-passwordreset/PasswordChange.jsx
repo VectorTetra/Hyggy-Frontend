@@ -1,14 +1,18 @@
 "use client";
 import { resetPassword } from "@/pages/api/resetpassword";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, {useState} from "react";
 import styles from '../css/passwordResetStyle.module.css';
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function PasswordChange({ passwordResetData }) {
     const [newPassword, setNewPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [message, setMessage] = React.useState('');
+    const [showPwd, setShowPwd] = useState(false);
+    const [showMatch, setShowMatch] = useState(false);
     const searchParams = useSearchParams();
     const token = searchParams?.get('token');
     const email = searchParams?.get('email');
@@ -80,22 +84,34 @@ export default function PasswordChange({ passwordResetData }) {
             <div className={styles.formcontainer}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.caption}>Введіть новий пароль</div>
-
+                    <div className="relative">
                     <input className={styles.formInput}
-                        type="password"
+                        type={showPwd ? "text" : "password"}
                         placeholder="Введіть новий пароль"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                     />
+                    <button className={styles.showPassword}
+                            type="button"
+                            onClick={() => setShowPwd(!showPwd)}>
+                        <FontAwesomeIcon icon={showPwd ?faEyeSlash : faEye } />
+                    </button>
+                    </div>
+                    
 
-
+                    <div className="relative">
                     <input className={styles.formInput}
-                        type="password"
+                        type={showMatch ? "text" : "password"}
                         placeholder="Повторіть новий пароль"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-
+                    <button className={styles.showPassword}
+                            type="button"
+                            onClick={() => setShowMatch(!showMatch)}>
+                        <FontAwesomeIcon icon={showMatch ?faEyeSlash : faEye } />
+                    </button>
+                    </div>
                     <div>
                         <button type="submit" className={styles.submitbutton}>Підтвердити</button>
                     </div>

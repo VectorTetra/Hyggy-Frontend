@@ -98,7 +98,7 @@ export async function deleteBlogCategory2(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (blogCategories2)
-export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Query" }) {
+export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Paged", PageNumber: 1, PageSize: 50 }) {
     return useQuery({
         queryKey: ['blogCategories2', params],
         queryFn: () => getBlogCategories2(params),

@@ -107,7 +107,6 @@ export default function FrameWriteoff() {
             setProduct('');
             setAvailableQuantity(0);
             setQuantity('');
-            refetch();
         } catch (error) {
             console.error(error.message);
             toast.error('Не вдалося оновити кількість. Спробуйте ще раз!');

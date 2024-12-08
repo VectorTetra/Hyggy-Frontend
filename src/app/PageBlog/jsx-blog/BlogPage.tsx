@@ -7,17 +7,16 @@ import BlogBody from "./BlogBody";
 
 
 export default function BlogPage(props) {
-    const [currentCategory, setCurrentCategory] = useState("");
-    
+
     return (
         <div>
             <h2 className={styles.captionH2} >{props.blogPage.caption}</h2>
             <div className={styles.captionText} >{props.blogPage.text}</div>
             <hr></hr>
 
-            <BlogMenu blogPage={props.blogPage} />
+            <BlogMenu />
             <hr></hr>
-            <BlogBody blogPage={props.blogPage} />
+            <BlogBody />
         </div>
 
     )
