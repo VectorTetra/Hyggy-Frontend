@@ -34,6 +34,28 @@ class AuthResponseDto {
 	token: string | null;
 }
 
+
+const API_ACCOUNT_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_ACCOUNT;
+if (!API_ACCOUNT_URL) {
+	console.error("API_ACCOUNT_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_ACCOUNT in your environment variables.");
+	throw new Error("API_ACCOUNT_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_ACCOUNT in your environment variables.");
+}
+const API_SHOPEMPLOYEE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE;
+if (!API_SHOPEMPLOYEE_URL) {
+	console.error("API_SHOPEMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE in your environment variables.");
+	throw new Error("API_SHOPEMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP_EMPLOYEE in your environment variables.");
+}
+const API_STORAGEEMPLOYEE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE;
+if (!API_STORAGEEMPLOYEE_URL) {
+	console.error("API_STORAGEEMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE in your environment variables.");
+	throw new Error("API_STORAGEEMPLOYEE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE_EMPLOYEE in your environment variables.");
+}
+const API_CUSTOMER_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER;
+if (!API_CUSTOMER_URL) {
+	console.error("API_CUSTOMER_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER in your environment variables.");
+	throw new Error("API_CUSTOMER_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER in your environment variables.");
+}
+
 /** Перевіряємо, чи ми в браузері */
 function isBrowser(): boolean {
 	return typeof window !== 'undefined';
@@ -138,8 +160,8 @@ export function isSaler() {
 
 export async function Authorize(params: UserForAuthenticationDto) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
-		//const response = await axios.post('http://localhost:5263/api/Customer/authenticate', params);
+		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
+		const response = await axios.post(API_ACCOUNT_URL!, params);
 		if (response.data.isAuthSuccessfull) {
 			setToken(response.data.token);
 		} else {
@@ -158,9 +180,28 @@ export async function Authorize(params: UserForAuthenticationDto) {
 	}
 }
 
-export async function RegisterAsWorker(params: UserForRegistrationDto) {
+export async function RegisterAsShopEmployee(params: UserForRegistrationDto) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
+		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
+		const response = await axios.post(`${API_SHOPEMPLOYEE_URL!}/register`, params);
+
+		if (response.data.message) {
+			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
+		}
+
+	} catch (error) {
+		if (error.response && error.response.data) {
+			toast.error('Помилка реєстрації: ' + error.response.data);
+		} else {
+			toast.error('Невідома помилка реєстрації');
+		}
+	}
+}
+
+export async function RegisterAsStorageEmployee(params: UserForRegistrationDto) {
+	try {
+		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
+		const response = await axios.post(`${API_STORAGEEMPLOYEE_URL!}/register`, params);
 
 		if (response.data.message) {
 			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
@@ -177,8 +218,8 @@ export async function RegisterAsWorker(params: UserForRegistrationDto) {
 
 export async function RegisterAsClient(params: UserForRegistrationDto) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Customer/register', params);
-
+		//const response = await axios.post('http://www.hyggy.somee.com/api/Customer/register', params);
+		const response = await axios.post(`${API_CUSTOMER_URL!}/register`, params);
 		if (response.data.message) {
 			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
 		}
