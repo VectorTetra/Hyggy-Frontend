@@ -1,13 +1,15 @@
 import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares, Ware } from '@/pages/api/WareApi';
 import { Autocomplete, Box, Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { DataGrid, GridColDef, GridRowsProp, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
 //import FrameExpandableBlock from './FrameExpandableBlock';
 import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
 import '../css/WarehouseFrame.css';
+import useAdminPanelStore from '@/store/adminPanel';
+import FrameExpandableBlock from './FrameExpandableBlock';
 
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
@@ -15,6 +17,7 @@ export default function FrameRemaining() {
     const [selectedCategory, setSelectedCategory] = useState<WareCategory3 | null>(null); //по категории
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
+    const { frameRemainsSidebarVisibility, setFrameRemainsSidebarVisibility, setFrameRemainsSelectedWare } = useAdminPanelStore();
     const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
     const [filteredData, setFilteredData] = useState<any | null>([]);
     const apiRef = useGridApiRef();
@@ -53,7 +56,15 @@ export default function FrameRemaining() {
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 200 },
-        { field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 200 },
+        {
+            field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 200, renderCell: (params) => {
+                return (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: "5px", height: "100%" }}>
+                        <Typography variant="body2" sx={{ textWrap: "stable" }}>{params.value}</Typography>
+                    </Box>
+                );
+            }
+        },
         {
             field: 'description',
             headerName: 'Товар',
@@ -128,13 +139,14 @@ export default function FrameRemaining() {
             },
         },
         {
-            field: 'button',
+            field: 'actions',
             headerName: '',
             flex: 0.3,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
 
                     <Button
+                        key={params.row.id}
                         sx={{
                             minWidth: '100px',
                             padding: '5px',
@@ -146,69 +158,21 @@ export default function FrameRemaining() {
                         }}
                         title="Залишки"
                         variant="outlined"
-                        onClick={() => setIsVisible(!isVisible)}
+                        onClick={() => { setFrameRemainsSelectedWare(params.row); setFrameRemainsSidebarVisibility(true) }}
                     >
                         Залишки
                     </Button>
-
-                    {/* Блок с таблицей */}
-                    <Box
-                        sx={{
-                            width: '100%',
-                            mt: 1, // Отступ между кнопкой и блоком
-                            overflow: 'hidden',
-                            maxHeight: isVisible ? '500px' : '0', // Анимация роста высоты
-                            transition: 'max-height 0.5s ease-out', // Плавное изменение высоты
-                        }}
-                    >
-                        {isVisible && (
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Склад</TableCell>
-                                            <TableCell align="right">Залишки</TableCell>
-                                            <TableCell align="right">Загальна сума</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    {/* <TableBody>
-                                        {filteredStorages.map((storage) => (
-                                            <TableRow key={storage.id}>
-                                                <TableCell>{storage.name}</TableCell>
-                                                <TableCell align="right">{storage.quantity}</TableCell>
-                                                <TableCell align="right">{storage.total}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody> */}
-                                </Table>
-                            </TableContainer>
-                        )}
-                    </Box>
                 </Box>
             ),
         }
     ];
 
-    // Функція для форматування значення
+
     const formatCurrency = (value) => {
         if (value === null || value === undefined) return '0';
         const roundedValue = Math.round(value * 100) / 100;
         return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
     };
-
-
-
-    // useEffect(() => {
-    //     if (success && wares.length > 0 && !selectedStorage) {
-    //         setFilteredData(wares);
-    //         setLoading(false);
-    //     }
-    //     if (success && wares.length > 0 && selectedStorage) {
-    //         const filteredWares = wares.filter(ware => ware.wareItems.some(item => (item.storageId === selectedStorage.id && item.quantity > 0)));
-    //         setFilteredData(filteredWares);
-    //         setLoading(false);
-    //     }
-    // }, [wares, success, selectedStorage]);
 
     useEffect(() => {
         if (success && wares.length > 0) {
@@ -250,159 +214,273 @@ export default function FrameRemaining() {
     }, [wares, success, selectedStorage]);
 
     return (
-        <Box sx={{ p: 2 }}>
-            <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
-                Залишки
-            </Typography>
-            <Box>
-                <Box sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    alignItems: 'center',
-                    gap: 3,
-                }}>
-                    {/* Строка поиска*/}
-                    <SearchField
-                        searchTerm={searchTerm}
-                        onSearchChange={(event) => setSearchTerm(event.target.value)}
-                    />
-                    <Autocomplete
-                        options={storages}
-                        getOptionLabel={(option: Storage) =>
-                            `${option.shopName}, 
-                            ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, 
-                            ${option.city || 'Невідоме місто'}, 
-                            ${option.postalCode || ''}`
-                        }
-                        value={selectedStorage || null}
-                        onChange={(event, newValue) => setSelectedStorage(newValue)}
-                        renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
-                        isOptionEqualToValue={(option, value) => option.id === value?.id}
-                    />
-                    <Autocomplete
-                        options={wareCategories}
-                        getOptionLabel={(option: WareCategory3) => `${option.wareCategory2Name} - ${option.name}`}
-                        value={selectedCategory || null}
-                        onChange={(event, newValue) => setSelectedCategory(newValue)}
-                        renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth />}
-                        isOptionEqualToValue={(option, value) => option.id === value?.id}
-                    />
+        <div>
+            <Box sx={{ p: 2, display: frameRemainsSidebarVisibility ? "none" : "block" }}>
+                <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
+                    Залишки
+                </Typography>
+                <Box>
+                    <Box sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        alignItems: 'center',
+                        gap: 3,
+                    }}>
+                        {/* Строка поиска*/}
+                        <SearchField
+                            searchTerm={searchTerm}
+                            onSearchChange={(event) => setSearchTerm(event.target.value)}
+                        />
+                        <Autocomplete
+                            options={storages}
+                            getOptionLabel={(option: Storage) =>
+                                `${option.shopName}, 
+                                ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, 
+                                ${option.city || 'Невідоме місто'}, 
+                                ${option.postalCode || ''}`
+                            }
+                            value={selectedStorage || null}
+                            onChange={(event, newValue) => setSelectedStorage(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
+                            isOptionEqualToValue={(option, value) => option.id === value?.id}
+                        />
+                        <Autocomplete
+                            options={wareCategories}
+                            getOptionLabel={(option: WareCategory3) => `${option.wareCategory2Name} - ${option.name}`}
+                            value={selectedCategory || null}
+                            onChange={(event, newValue) => setSelectedCategory(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth />}
+                            isOptionEqualToValue={(option, value) => option.id === value?.id}
+                        />
 
+                    </Box>
+                </Box>
+                <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+                    {filteredData.length === 0 && !loading && success ? (
+                        <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
+                            Нічого не знайдено
+                        </Typography>
+                    ) : (
+                        <DataGrid
+                            className="dataGrid"
+                            rows={filteredData}
+                            rowHeight={75}
+                            columns={columns}
+                            apiRef={apiRef}
+                            loading={loading || dataLoading}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 100,
+                                        page: 0,
+                                    },
+                                },
+                                sorting: {
+                                    sortModel: [
+                                        {
+                                            field: 'wareCategory2Name',
+                                            sort: 'asc',
+                                        },
+                                    ],
+                                },
+                            }}
+                            pageSizeOptions={[5, 10, 25, 50, 100]}
+                            disableRowSelectionOnClick
+                            slots={{
+                                toolbar: GridToolbar
+
+                            }}
+                            slotProps={{
+                                toolbar: {
+                                    csvOptions: {
+                                        fileName: 'Товар',
+                                        delimiter: ';',
+                                        utf8WithBom: true,
+                                    },
+                                    printOptions: {
+                                        hideFooter: true,
+                                        hideToolbar: true,
+                                    },
+                                },
+                            }}
+
+                            columnVisibilityModel={columnVisibilityModel}
+                            onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+                            localeText={{
+                                MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
+                                columnsManagementReset: "Скинути",
+                                columnsManagementSearchTitle: "Пошук",
+                                toolbarExport: 'Експорт',
+                                toolbarExportLabel: 'Експорт',
+                                toolbarExportCSV: 'Завантажити як CSV',
+                                toolbarExportPrint: 'Друк',
+                                columnsManagementShowHideAllText: "Показати / Сховати всі",
+                                filterPanelColumns: 'Стовпці',
+                                filterPanelOperator: 'Оператор',
+                                toolbarExportExcel: "Експорт",
+                                filterPanelInputLabel: "Значення",
+                                filterPanelInputPlaceholder: 'Значення фільтра',
+                                filterOperatorContains: 'Містить',
+                                filterOperatorDoesNotContain: 'Не містить',
+                                filterOperatorEquals: 'Дорівнює',
+                                filterOperatorDoesNotEqual: 'Не дорівнює',
+                                filterOperatorStartsWith: 'Починається з',
+                                filterOperatorIsAnyOf: 'Є одним з',
+                                filterOperatorEndsWith: 'Закінчується на',
+                                filterOperatorIs: 'Дорівнює',
+                                filterOperatorNot: 'Не дорівнює',
+                                filterOperatorAfter: 'Після',
+                                filterOperatorOnOrAfter: 'Після або в цей день',
+                                filterOperatorBefore: 'До',
+                                filterOperatorOnOrBefore: 'До або в цей день',
+                                filterOperatorIsEmpty: 'Пусто',
+                                filterOperatorIsNotEmpty: 'Не пусто',
+                                columnMenuLabel: 'Меню стовпця',
+                                columnMenuShowColumns: 'Показати стовпці',
+                                columnMenuFilter: 'Фільтр',
+                                columnMenuHideColumn: 'Приховати стовпець',
+                                columnMenuUnsort: 'Скасувати сортування',
+                                columnMenuSortAsc: 'Сортувати за зростанням',
+                                columnMenuSortDesc: 'Сортувати за спаданням',
+                                toolbarDensity: 'Щільність',
+                                toolbarDensityLabel: 'Щільність',
+                                toolbarDensityCompact: 'Компактно',
+                                toolbarDensityStandard: 'Стандарт',
+                                toolbarDensityComfortable: 'Комфортно',
+                                toolbarColumns: 'Стовпці',
+                                toolbarColumnsLabel: 'Оберіть стовпці',
+                                toolbarFilters: 'Фільтри',
+                                toolbarFiltersLabel: 'Показати фільтри',
+                                toolbarFiltersTooltipHide: 'Приховати фільтри',
+                                toolbarFiltersTooltipShow: 'Показати фільтри',
+                                toolbarQuickFilterPlaceholder: 'Пошук...',
+                                toolbarQuickFilterLabel: 'Пошук',
+                                toolbarQuickFilterDeleteIconLabel: 'Очистити',
+                            }}
+                            sx={{
+                                opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+                                flexGrow: 1, // Займає доступний простір у контейнері
+                                minWidth: 800, // Мінімальна ширина DataGrid
+                                "& .MuiDataGrid-scrollbar--horizontal": {
+                                    position: 'fixed',
+                                    bottom: "5px"
+                                },
+                                "& .MuiDataGrid-cell": {
+                                    display: 'flex',
+                                }
+                            }}
+                        />
+                    )}
                 </Box>
             </Box>
-            <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
-                {filteredData.length === 0 && !loading && success ? (
-                    <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
-                        Нічого не знайдено
-                    </Typography>
-                ) : (
-                    <DataGrid
-                        className="dataGrid"
-                        rows={filteredData}
-                        columns={columns}
-                        apiRef={apiRef}
-                        loading={loading || dataLoading}
-                        initialState={{
-                            pagination: {
-                                paginationModel: {
-                                    pageSize: 100,
-                                    page: 0,
-                                },
-                            },
-                            sorting: {
-                                sortModel: [
-                                    {
-                                        field: 'wareCategory2Name',
-                                        sort: 'asc',
-                                    },
-                                ],
-                            },
-                        }}
-                        pageSizeOptions={[5, 10, 25, 50, 100]}
-                        disableRowSelectionOnClick
-                        slots={{
-                            toolbar: GridToolbar
-
-                        }}
-                        slotProps={{
-                            toolbar: {
-                                csvOptions: {
-                                    fileName: 'Товар',
-                                    delimiter: ';',
-                                    utf8WithBom: true,
-                                },
-                                printOptions: {
-                                    hideFooter: true,
-                                    hideToolbar: true,
-                                },
-                            },
-                        }}
-
-                        columnVisibilityModel={columnVisibilityModel}
-                        onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-                        localeText={{
-                            MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
-                            columnsManagementReset: "Скинути",
-                            columnsManagementSearchTitle: "Пошук",
-                            toolbarExport: 'Експорт',
-                            toolbarExportLabel: 'Експорт',
-                            toolbarExportCSV: 'Завантажити як CSV',
-                            toolbarExportPrint: 'Друк',
-                            columnsManagementShowHideAllText: "Показати / Сховати всі",
-                            filterPanelColumns: 'Стовпці',
-                            filterPanelOperator: 'Оператор',
-                            toolbarExportExcel: "Експорт",
-                            filterPanelInputLabel: "Значення",
-                            filterPanelInputPlaceholder: 'Значення фільтра',
-                            filterOperatorContains: 'Містить',
-                            filterOperatorDoesNotContain: 'Не містить',
-                            filterOperatorEquals: 'Дорівнює',
-                            filterOperatorDoesNotEqual: 'Не дорівнює',
-                            filterOperatorStartsWith: 'Починається з',
-                            filterOperatorIsAnyOf: 'Є одним з',
-                            filterOperatorEndsWith: 'Закінчується на',
-                            filterOperatorIs: 'Дорівнює',
-                            filterOperatorNot: 'Не дорівнює',
-                            filterOperatorAfter: 'Після',
-                            filterOperatorOnOrAfter: 'Після або в цей день',
-                            filterOperatorBefore: 'До',
-                            filterOperatorOnOrBefore: 'До або в цей день',
-                            filterOperatorIsEmpty: 'Пусто',
-                            filterOperatorIsNotEmpty: 'Не пусто',
-                            columnMenuLabel: 'Меню стовпця',
-                            columnMenuShowColumns: 'Показати стовпці',
-                            columnMenuFilter: 'Фільтр',
-                            columnMenuHideColumn: 'Приховати стовпець',
-                            columnMenuUnsort: 'Скасувати сортування',
-                            columnMenuSortAsc: 'Сортувати за зростанням',
-                            columnMenuSortDesc: 'Сортувати за спаданням',
-                            toolbarDensity: 'Щільність',
-                            toolbarDensityLabel: 'Щільність',
-                            toolbarDensityCompact: 'Компактно',
-                            toolbarDensityStandard: 'Стандарт',
-                            toolbarDensityComfortable: 'Комфортно',
-                            toolbarColumns: 'Стовпці',
-                            toolbarColumnsLabel: 'Оберіть стовпці',
-                            toolbarFilters: 'Фільтри',
-                            toolbarFiltersLabel: 'Показати фільтри',
-                            toolbarFiltersTooltipHide: 'Приховати фільтри',
-                            toolbarFiltersTooltipShow: 'Показати фільтри',
-                            toolbarQuickFilterPlaceholder: 'Пошук...',
-                            toolbarQuickFilterLabel: 'Пошук',
-                            toolbarQuickFilterDeleteIconLabel: 'Очистити',
-                        }}
-                        sx={{
-                            opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
-                            flexGrow: 1, // Займає доступний простір у контейнері
-                            minWidth: 800, // Мінімальна ширина DataGrid
-                            "& .MuiDataGrid-scrollbar--horizontal": {
-                                position: 'fixed',
-                                bottom: "5px"
-                            }
-                        }}
-                    />
-                )}
-            </Box>
-        </Box>
+            {frameRemainsSidebarVisibility && <FrameExpandableBlock />}
+        </div>
     );
 }
+
+// import React, { useState } from 'react';
+// import { DataGrid } from '@mui/x-data-grid';
+// import { Box, Button, Typography } from '@mui/material';
+
+// const rows = [
+//     { id: 1, name: 'Товар 1', quantity: 100 },
+//     { id: 2, name: 'Товар 2', quantity: 200 },
+//     { id: 3, name: 'Товар 3', quantity: 300 },
+// ];
+
+// const warehouseData = {
+//     1: [
+//         { id: 'w1', name: 'Склад 1', stock: 50 },
+//         { id: 'w2', name: 'Склад 2', stock: 50 },
+//     ],
+//     2: [
+//         { id: 'w1', name: 'Склад 1', stock: 120 },
+//         { id: 'w2', name: 'Склад 2', stock: 80 },
+//     ],
+//     3: [
+//         { id: 'w1', name: 'Склад 1', stock: 200 },
+//         { id: 'w2', name: 'Склад 2', stock: 100 },
+//     ],
+// };
+
+// const columns = [
+//     { field: 'name', headerName: 'Назва товару', width: 200 },
+//     { field: 'quantity', headerName: 'Кількість', width: 150 },
+//     {
+//         field: 'action',
+//         headerName: 'Дія',
+//         renderCell: (params) => (
+//             <Button
+//                 variant="contained"
+//                 size="small"
+//                 onClick={() => params.row.toggleExpandRow(params.row.id)}
+//             >
+//                 {params.row.isExpanded ? 'Закрити' : 'Показати залишки'}
+//             </Button>
+//         ),
+//         width: 200,
+//     },
+// ];
+
+// export default function ExpandableDataGrid() {
+//     const [expandedRows, setExpandedRows] = useState({});
+
+//     const toggleExpandRow = (id) => {
+//         setExpandedRows((prev) => ({
+//             ...prev,
+//             [id]: !prev[id],
+//         }));
+//     };
+
+//     return (
+//         <Box sx={{ height: 500, width: '100%' }}>
+//             <DataGrid
+//                 rows={rows.map((row) => ({
+//                     ...row,
+//                     isExpanded: expandedRows[row.id] || false,
+//                     toggleExpandRow,
+//                 }))}
+//                 columns={columns}
+//                 //disableRowSelectionOnClick
+//                 rowHeight={expandedRows ? 120 : 52} // Збільшуємо висоту при розгортанні
+//                 rowModesModel={}
+//                 components={{
+//                     Row: ({ row }) => (
+//                         <>
+//                             <Box sx={{ display: 'flex', alignItems: 'center', padding: 1 }}>
+//                                 <Typography sx={{ flex: 1 }}>{row.name}</Typography>
+//                                 <Typography>{row.quantity}</Typography>
+//                                 <Button
+//                                     size="small"
+//                                     variant="contained"
+//                                     onClick={() => toggleExpandRow(row.id)}
+//                                 >
+//                                     {expandedRows[row.id] ? 'Закрити' : 'Показати залишки'}
+//                                 </Button>
+//                             </Box>
+//                             {expandedRows[row.id] && (
+//                                 <Box
+//                                     sx={{
+//                                         marginLeft: 3,
+//                                         marginTop: 1,
+//                                         padding: 1,
+//                                         border: '1px solid #ddd',
+//                                         borderRadius: '4px',
+//                                         backgroundColor: '#f9f9f9',
+//                                     }}
+//                                 >
+//                                     <Typography variant="subtitle1">Залишки на складах:</Typography>
+//                                     {warehouseData[row.id]?.map((warehouse) => (
+//                                         <Typography key={warehouse.id} sx={{ paddingLeft: 2 }}>
+//                                             {warehouse.name}: {warehouse.stock}
+//                                         </Typography>
+//                                     ))}
+//                                 </Box>
+//                             )}
+//                         </>
+//                     ),
+//                 }}
+//             />
+//         </Box>
+//     );
+// }

@@ -94,7 +94,15 @@ const MenuItem = ({
 };
 
 // Компонент для вторинного пункту меню
-const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
+const SubMenuItem = ({
+	text,
+	value,
+	onBlur,
+}: {
+	text: string;
+	value: string;
+	onBlur?: () => void; // onBlur є опціональним
+}) => {
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const isActive = activeTab === value;
 
@@ -105,7 +113,7 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 				backgroundColor: isActive ? '#008b8d' : 'inherit', // Темніший фон, якщо активна
 				'&:hover': { backgroundColor: '#007a7d' }, // Темніший фон при наведенні
 			}}
-			onClick={() => setActiveTab(value)} // Зберігаємо вибрану вкладку
+			onClick={() => { setActiveTab(value); onBlur && onBlur() }} // Зберігаємо вибрану вкладку
 		>
 			<ListItemText
 				primary={text}
@@ -118,6 +126,7 @@ const SubMenuItem = ({ text, value }: { text: string, value: string }) => {
 export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
 	const [openEmployees, setEmployees] = useState(false);
+	const { setFrameRemainsSidebarVisibility } = useAdminPanelStore();
 
 	const { window } = props;
 
@@ -190,7 +199,7 @@ export default function Sidebar(props) {
 					<MenuItem icon={<CategoryIcon />} text="Товари" value="products" />
 					<MenuItem icon={<WarehouseIcon />} text="Склади" value="warehouses" open={openWarehouses} onClick={toggleWarehouses}>
 						<SubMenuItem text="Склади" value="warehousesList" />
-						<SubMenuItem text="Залишки" value="remains" />
+						<SubMenuItem text="Залишки" value="remains" onBlur={() => { setFrameRemainsSidebarVisibility(false); console.log("Set to false") }} />
 						<SubMenuItem text="Поставки" value="supplies" />
 						<SubMenuItem text="Переміщення" value="transfers" />
 						<SubMenuItem text="Списання" value="writeOffs" />

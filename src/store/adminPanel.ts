@@ -1,4 +1,5 @@
 // store.ts
+import { Ware } from '@/pages/api/WareApi';
 import { create } from 'zustand';
 
 interface AdminPanelState {
@@ -13,6 +14,10 @@ interface AdminPanelState {
 	setWareId: (id: number | null) => void;
 	shopId: number | null;
 	setShopId: (id: number | null) => void;
+	frameRemainsSidebarVisibility: boolean;
+	setFrameRemainsSidebarVisibility: (visibility: boolean) => void;
+	frameRemainsSelectedWare: Ware | null;
+	setFrameRemainsSelectedWare: (selectedWare: Ware | null) => void;
 }
 
 const useAdminPanelStore = create<AdminPanelState>((set) => ({
@@ -26,6 +31,11 @@ const useAdminPanelStore = create<AdminPanelState>((set) => ({
 	setWareId: (id) => set({ wareId: id }),
 	shopId: null, // Вибрана вкладка, за замовчуванням немає вибраної
 	setShopId: (id) => set({ shopId: id }),
+	frameRemainsSidebarVisibility: false,
+	setFrameRemainsSidebarVisibility: (visibility) => set({ frameRemainsSidebarVisibility: visibility }),
+	frameRemainsSelectedWare: null,
+	setFrameRemainsSelectedWare: (selectedWare) => set({ frameRemainsSelectedWare: selectedWare }),
+
 }));
 
 export default useAdminPanelStore;
