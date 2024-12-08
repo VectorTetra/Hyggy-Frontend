@@ -1,43 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, MenuItem, Select, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Autocomplete } from '@mui/material';
 import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares, Ware } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
-import SearchField from './SearchField';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, GridColDef } from '@mui/x-data-grid';
-import { useQueryState } from 'nuqs';
+import { Autocomplete, Box, Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import FrameExpandableBlock from './FrameExpandableBlock';
-import '../css/WarehouseFrame.css';
+import SearchField from './SearchField';
+//import FrameExpandableBlock from './FrameExpandableBlock';
 import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import { Sort } from '@mui/icons-material';
+import '../css/WarehouseFrame.css';
 
 export default function FrameRemaining() {
-    // const [store, setStore] = useState(''); //по складу
-    // const [product, setProduct] = useState(''); //по товару
-    const [availableQuantity, setAvailableQuantity] = useState(0);
-    const [totals, setTotals] = useState({});
     const [loading, setLoading] = useState(true);
-    const [quantity, setQuantity] = useState('');
-    const [totalQuantity, setTotalQuantity] = useState(0);
     const [selectedStorage, setSelectedStorage] = useState<Storage | null>(null); // ID складу
-    const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
-
-    const [productId, setProductId] = useState(null); // ID товару
     const [selectedCategory, setSelectedCategory] = useState<WareCategory3 | null>(null); //по категории
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
+    const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
     const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
     const [filteredData, setFilteredData] = useState<any | null>([]);
     const [aggregatedWareItems, setAggregatedWareItems] = useState<any | null>([]);
     const apiRef = useGridApiRef();
-    const storagesData = []; // Данные для storages
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
         discount: false,
     });
-    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const [isVisible, setIsVisible] = useState(false); // Состояние для отображения компонента
-    const [showExpandableBlock, setShowExpandableBlock] = useState(false);
+    //const [showExpandableBlock, setShowExpandableBlock] = useState(false);
 
     // Загружаємо список складів
     const { data: storages = [] } = useStorages({
@@ -75,29 +62,8 @@ export default function FrameRemaining() {
         true  // Запит активний лише якщо обрано склад і товар
     );
 
-    console.log("Data from useWareItems:", wareItems);
-
-    //Обработчик изменения значения для выбора склада (store)
-    // const handleStoreChange = (event, value) => {
-    //     const selectedStore = storages.find((s) => `${s.shopName ? s.shopName : "Загальний склад"} - ${s.city}, ${s.street} ${s.houseNumber}` === value);
-    //     setSelectedStorage(selectedStore ? selectedStore.id : null);
-    //     setAvailableQuantity(0);
-    // };
-
-    // // Обновляем выбранную категорию
-    // const handleCategoryChange = (event, value) => {
-    //     setSelectedCategory(value || '');
-    // };
-
     useEffect(() => {
-        // Оновлюємо доступну кількість
-        if (selectedStorage !== null && selectedCategory !== null) {
-            console.log("wareItems:", wareItems);
-            console.log("selectedCategory:", selectedCategory);
-            console.log("selectedStorage:", selectedStorage);
-        } else {
-            setAvailableQuantity(0);
-        }
+        refetchWares();
         refetch();
     }, [selectedCategory, selectedStorage]);
 
@@ -105,19 +71,9 @@ export default function FrameRemaining() {
     useEffect(() => {
         // Оновлюємо доступну кількість
         if (wareItems.length > 0) {
-            // // Берем количество с первого склада
-            // setAvailableQuantity(wareItems[0].quantity);
-
-            // // Считаем общее количество по всем складам
-            // const total = wareItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
-            // setTotalQuantity(total);
-
-            // console.log("Пришёл первый склад:", wareItems[11].quantity);
-            // console.log("Total Quantity:", total);
+            console.log("WareItems:", wareItems);
+            console.log("aggregateWareItems:", aggregateWareItems(wareItems));
             setAggregatedWareItems(aggregateWareItems(wareItems));
-        } else {
-            setAvailableQuantity(0);
-            setTotalQuantity(0); // Если товаров нет
         }
     }, [wareItems]);
 
@@ -127,11 +83,12 @@ export default function FrameRemaining() {
         refetchWares();
     }, [debouncedSearchTerm, selectedCategory]);
 
-    const handleClick = () => {
-        setShowExpandableBlock((prev) => !prev); // Переключаем состояние
-    };
+    // const handleClick = () => {
+    //     setShowExpandableBlock((prev) => !prev); // Переключаем состояние
+    // };
 
     const columns: GridColDef[] = [
+        { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 200 },
         { field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 200 },
         {
             field: 'description',
@@ -171,40 +128,42 @@ export default function FrameRemaining() {
             },
         },
         {
-            field: 'totalQuantity',
+            field: 'totalWareItemsQuantity',
             headerName: 'Кількість',
             flex: 0.3,
             maxWidth: 100,
             cellClassName: 'text-right',
             renderCell: (params) => {
-                //console.log("Row data:", params.row);
                 const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
-                //console.log('Total Quantity for row:', params.row.productId, totalQuantity);
                 return (
                     <Box >
+                        {/* {!selectedCategory && !selectedStorage && params.row.totalWareItemsQuantity}
+                        {(selectedCategory || selectedStorage) && Number(totalQuantity)} */}
                         {totalQuantity}
                     </Box>
                 );
             },
         },
         {
-            field: 'storedWaresSum',
+            field: 'totalWareItemsSum',
             headerName: 'Заг. сума товарів',
             flex: 0.3,
             maxWidth: 150,
             cellClassName: 'text-right',
             renderCell: (params) => {
+                // Форматуємо результат (наприклад, додаємо валюту)
                 // Отримуємо значення totalQuantity і price
                 const totalQuantity = aggregatedWareItems.find(item => item.wareId === params.row.id)?.totalQuantity || 0;
                 const price = params.row.finalPrice || 0;
 
                 // Обчислюємо загальну суму
                 const totalSum = totalQuantity * price;
-
-                // Форматуємо результат (наприклад, додаємо валюту)
                 return (
                     <Box>
+                        {/* {formatCurrency(params.row.totalWareItemsSum)} */}
                         {formatCurrency(totalSum)}
+
+
                     </Box>
                 );
             },
@@ -278,7 +237,7 @@ export default function FrameRemaining() {
         return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
     };
 
-    // Функція для підрахунку загальної кількості по wareId
+    //Функція для підрахунку загальної кількості по wareId
     const aggregateWareItems = (items) => {
         const aggregated = {};
         items.forEach((item) => {
@@ -290,6 +249,13 @@ export default function FrameRemaining() {
         // Повертаємо масив для гріда
         return Object.values(aggregated);
     };
+    // const aggregateWareItems = (items) => {
+    //     return items.reduce((acc, item) => {
+    //         acc[item.wareId] = acc[item.wareId] || { wareId: item.wareId, totalQuantity: 0 };
+    //         acc[item.wareId].totalQuantity += item.quantity;
+    //         return acc;
+    //     }, {});
+    // };
 
 
     useEffect(() => {
@@ -298,13 +264,6 @@ export default function FrameRemaining() {
             setLoading(false);
         }
     }, [wares, success]);
-
-    // useEffect(() => {
-    //     console.log('Loading wares:', dataLoading);
-    //     console.log('Success:', success);
-    //     console.log('storages:', storages);
-    //     console.log('totals:', totals);
-    // }, [dataLoading, success, wares, totals]);
 
     return (
         <Box sx={{ p: 2 }}>
@@ -461,6 +420,5 @@ export default function FrameRemaining() {
                 )}
             </Box>
         </Box>
-
     );
 }
