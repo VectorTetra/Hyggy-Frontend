@@ -98,13 +98,14 @@ export async function deleteBlogCategory2(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (blogCategories2)
-export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Paged", PageNumber: 1, PageSize: 50 }) {
+export function useBlogCategories2(params: BlogCategory2QueryParams = { SearchParameter: "Paged", PageNumber: 1, PageSize: 50 }, isEnabled: boolean = true) {
     return useQuery({
         queryKey: ['blogCategories2', params],
         queryFn: () => getBlogCategories2(params),
         staleTime: Infinity, // Дані завжди актуальні
         gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+        enabled: isEnabled, // Запит виконується тільки при включеному параметрі isEnabled
     });
 }
 

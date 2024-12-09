@@ -109,7 +109,7 @@ export async function deleteWareItem(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareItems)
-export function useWareItems(params: WareItemQueryParams = { SearchParameter: "Query" }, isEnabled: boolean) {
+export function useWareItems(params: WareItemQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
     return useQuery({
         queryKey: ['wareItems', params],
         queryFn: () => getWareItems(params),

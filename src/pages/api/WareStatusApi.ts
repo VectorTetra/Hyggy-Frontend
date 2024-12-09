@@ -91,7 +91,7 @@ export async function deleteWareStatus(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareStatuses)
-export function useWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }) {
+export function useWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 
 	return useQuery({
 		queryKey: ['wareStatuses', params],
@@ -99,6 +99,7 @@ export function useWareStatuses(params: WareStatusQueryParams = { SearchParamete
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

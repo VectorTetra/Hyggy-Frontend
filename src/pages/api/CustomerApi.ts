@@ -89,13 +89,14 @@ export async function deleteCustomer(id: string) {
 }
 
 // Використання useQuery для отримання списку складів (customers)
-export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }) {
+export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
     return useQuery({
         queryKey: ['customers', params],
         queryFn: () => getCustomers(params),
         staleTime: Infinity, // Дані завжди актуальні
         gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+        enabled: isEnabled, // Запит відбувається тільки при значенні true
     });
 }
 

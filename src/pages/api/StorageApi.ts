@@ -101,13 +101,14 @@ export async function deleteStorage(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wares)
-export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }) {
+export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['storages', params],
 		queryFn: () => getStorages(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

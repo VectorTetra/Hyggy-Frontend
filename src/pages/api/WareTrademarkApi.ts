@@ -95,13 +95,14 @@ export async function deleteWareTrademark(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareTrademarks)
-export function useWareTrademarks(params: WareTrademarkQueryParams = { SearchParameter: "Query" }) {
+export function useWareTrademarks(params: WareTrademarkQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['wareTrademarks', params],
 		queryFn: () => getWareTrademarks(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled
 	});
 }
 

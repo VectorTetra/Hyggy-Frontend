@@ -93,13 +93,14 @@ export async function deleteWareCategory3(id) {
 }
 
 // Використання useQuery для отримання даних
-export function useWareCategories3(params) {
+export function useWareCategories3(params: WareCategory3QueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['wareCategories3', params],
 		queryFn: () => getWareCategories3(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

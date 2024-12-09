@@ -90,13 +90,14 @@ export async function deleteWareCategory1(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareCategories1)
-export function useWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }) {
+export function useWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['wareCategories1', params],
 		queryFn: () => getWareCategories1(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 
