@@ -38,7 +38,7 @@
 	border-radius: 8px;
 	display: flex;
 	flex: 0.4 1;
-	width: fit-content;
+	/* width: fit-content; */
 }
 
 .wareInfo h3 {
@@ -51,6 +51,7 @@
 	margin: 0;
 	color: #555;
 	line-height: 20px;
+	max-width: 50vw;
 }
 
 .warePrice {

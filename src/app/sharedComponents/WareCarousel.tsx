@@ -135,22 +135,24 @@ export default function WareCarousel({ wares }) {
     };
 
     return (
-        <div className="carouselWrapper wareCarousel" >
-            <Slider ref={sliderRef} {...settings}>
-                {paddedWares.map((wareIter, index) =>
-                    wareIter ? (
-                        <WareCard
-                            key={index}
-                            ware={wareIter}
-                            isFavorite={isFavorite(wareIter.id)}
-                            toggleFavorite={() => toggleFavoriteWare(wareIter.id)}
-                            selectedShop={selectedShop}
-                        />
-                    ) : (
-                        <div key={index} className="wareCardPlaceholder" />
-                    )
-                )}
-            </Slider>
+        <div className="wareCarousel">
+            <div className="carouselWrapper" >
+                <Slider ref={sliderRef} {...settings}>
+                    {paddedWares.map((wareIter, index) =>
+                        wareIter ? (
+                            <WareCard
+                                key={index}
+                                ware={wareIter}
+                                isFavorite={isFavorite(wareIter.id)}
+                                toggleFavorite={() => toggleFavoriteWare(wareIter.id)}
+                                selectedShop={selectedShop}
+                            />
+                        ) : (
+                            <div key={index} className="wareCardPlaceholder" />
+                        )
+                    )}
+                </Slider>
+            </div>
         </div>
     );
 }

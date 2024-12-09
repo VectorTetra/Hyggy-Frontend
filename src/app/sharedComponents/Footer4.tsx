@@ -7,7 +7,7 @@ import MainPageBodySubscriptionForm from '@/app/MainPageFiles/jsx/jsx-Body/MainP
 import bodyData from "@/app/MainPageFiles/json/mainPageBody.json";
 const Footer4 = (props) => {
 	return (
-		<footer>
+		<footer className='footer4'>
 			<RecentWares />
 			<MainPageBodyAboutUs aboutus={bodyData.bodyData.aboutus} />
 			<MainPageBodySubscriptionForm caption={bodyData.bodyData.formmail.caption}

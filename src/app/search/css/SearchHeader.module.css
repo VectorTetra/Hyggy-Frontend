@@ -1,5 +1,5 @@
 #resultsFound {
-    font-size: 3rem;
+    font-size: clamp(5vmin, 3rem, 7vmin);
     font-weight: 400;
     margin: 0;
     padding: 0;
