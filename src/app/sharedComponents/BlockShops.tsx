@@ -128,7 +128,7 @@ const BlockShops: React.FC = () => {
                                 <span style={{ marginLeft: "50px" }}>
                                     {shop.street},
                                     <p style={{ marginBottom: 0 }}>{shop.city}</p>
-                                    <Link prefetch={true} className={styles.customlink} href="https://jysk.ua">Як знайти магазин</Link>
+                                    <Link prefetch={true} className={styles.customlink} href="/shops">Як знайти магазин</Link>
                                 </span>
                             </div>
                         </div>

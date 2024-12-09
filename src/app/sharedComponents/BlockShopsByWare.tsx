@@ -21,7 +21,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const { data: wareItems = [], isLoading: isWareItemsLoading, refetch } = useWareItems({
         SearchParameter: "Query",
         WareId: wareId,
-    }, false);
+    }, wareId > 0);
 
     const isNotAvailable = wareItems.length > 0 && wareItems.every((item) => item.quantity === 0);
 
@@ -61,11 +61,11 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     useEffect(() => {
         console.log("wareItems", wareItems);
     }, [wareItems]);
-    useEffect(() => {
-        if (wareId > 0) {
-            refetch();
-        }
-    }, [wareId]);
+    // useEffect(() => {
+    //     if (wareId > 0) {
+    //         refetch();
+    //     }
+    // }, [wareId]);
 
     const getQuantityForShop = (shopId: number) => {
         const wareItem = wareItems.find((item) => item.storageId === shopId && item.wareId === wareId);
