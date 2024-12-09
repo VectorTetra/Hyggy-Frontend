@@ -169,8 +169,10 @@ const BlockShops: React.FC = () => {
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
-                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>Х</button>
+                            <div className={styles.menuHeaderText}>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</div>
+                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>
+                                Х
+                            </button>
                         </div>
                     </div>
                     <hr className={styles.divider} />

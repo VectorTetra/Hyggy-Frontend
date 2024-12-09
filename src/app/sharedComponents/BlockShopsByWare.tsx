@@ -18,10 +18,10 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
         PageSize: 1000,
     });
 
-    const { data: wareItems = [], isLoading: isWareItemsLoading } = useWareItems({
-        SearchParameter: "WareId",
+    const { data: wareItems = [], isLoading: isWareItemsLoading, refetch } = useWareItems({
+        SearchParameter: "Query",
         WareId: wareId,
-    }, true);
+    }, false);
 
     const isNotAvailable = wareItems.length > 0 && wareItems.every((item) => item.quantity === 0);
 
@@ -57,6 +57,15 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        console.log("wareItems", wareItems);
+    }, [wareItems]);
+    useEffect(() => {
+        if (wareId > 0) {
+            refetch();
+        }
+    }, [wareId]);
 
     const getQuantityForShop = (shopId: number) => {
         const wareItem = wareItems.find((item) => item.storageId === shopId && item.wareId === wareId);
@@ -104,7 +113,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY для доставки"}</span>
+                            <div className={styles.menuHeaderText}>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY для доставки"}</div>
                             <button onClick={() => setIsWarePageMenuShopsOpened(false)} className={styles.closeButton}>
                                 Х
                             </button>
