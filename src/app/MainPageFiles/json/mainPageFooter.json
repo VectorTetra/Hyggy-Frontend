@@ -92,7 +92,12 @@
           {
             "name": "Робота в Hyggy",
             "urlcategory": "../work",
-            "alt": "shops"
+            "alt": "work"
+          },
+          {
+            "name": "Увійти в Екстранет",
+            "urlcategory": "../AdminPanel",
+            "alt": "admin panel"
           }
         ]
       }

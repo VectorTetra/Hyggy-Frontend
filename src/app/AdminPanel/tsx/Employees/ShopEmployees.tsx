@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { deleteShopEmployee, getShopEmployees } from '@/pages/api/EmployeesApi';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { getShopEmployees, deleteShopEmployee } from '@/pages/api/EmployeesApi';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 
 const ShopEmployees = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
@@ -85,7 +75,7 @@ const ShopEmployees = () => {
             cellClassName: 'text-center',
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+                    <Button sx={{ minWidth: "10px", padding: 0, }} color='secondary' title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
                         <DeleteIcon />
                     </Button>
                 </Box>
@@ -94,97 +84,94 @@ const ShopEmployees = () => {
     ];
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box sx={{ width: '100%' }}>
-                <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                    Співробітники магазинів
-                </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                    <TextField
-                        label="Швидкий пошук"
-                        variant="outlined"
-                        size="small"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
-                    />
-                    <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => { setActiveNewShopEmployee('0'); setActiveTab('addShopEmployee') }}>
-                        Додати
-                    </Button>
-                </Box>
-                <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
-                    <DataGrid
-                        rows={filteredData} // Використовуємо відфільтровані дані
-                        columns={columns}
-                        apiRef={apiRef}
-                        loading={loading}
-                        disableRowSelectionOnClick
-                        slots={{ toolbar: GridToolbar }}
-                        localeText={{
-                            filterOperatorContains: 'Містить',
-                            filterOperatorDoesNotContain: 'Не містить',
-                            filterOperatorEquals: 'Дорівнює',
-                            filterOperatorDoesNotEqual: 'Не дорівнює',
-                            filterOperatorStartsWith: 'Починається з',
-                            filterOperatorIsAnyOf: 'Є одним з',
-                            filterOperatorEndsWith: 'Закінчується на',
-                            filterOperatorIs: 'Дорівнює',
-                            filterOperatorNot: 'Не дорівнює',
-                            filterOperatorAfter: 'Після',
-                            filterOperatorOnOrAfter: 'Після або в цей день',
-                            filterOperatorBefore: 'До',
-                            filterOperatorOnOrBefore: 'До або в цей день',
-                            filterOperatorIsEmpty: 'Пусто',
-                            filterOperatorIsNotEmpty: 'Не пусто',
-                            columnMenuLabel: 'Меню стовпця',
-                            columnMenuShowColumns: 'Показати стовпці',
-                            columnMenuFilter: 'Фільтр',
-                            columnMenuHideColumn: 'Приховати стовпець',
-                            columnMenuUnsort: 'Скасувати сортування',
-                            columnMenuSortAsc: 'Сортувати за зростанням',
-                            columnMenuSortDesc: 'Сортувати за спаданням',
-                            toolbarDensity: 'Щільність',
-                            toolbarDensityLabel: 'Щільність',
-                            toolbarDensityCompact: 'Компактно',
-                            toolbarDensityStandard: 'Стандарт',
-                            toolbarDensityComfortable: 'Комфортно',
-                            toolbarColumns: 'Стовпці',
-                            toolbarColumnsLabel: 'Вибрати стовпці',
-                            toolbarFilters: 'Фільтри',
-                            toolbarFiltersLabel: 'Показати фільтри',
-                            toolbarFiltersTooltipHide: 'Сховати фільтри',
-                            toolbarFiltersTooltipShow: 'Показати фільтри',
-                            toolbarExport: 'Експорт',
-                            toolbarExportLabel: 'Експорт',
-                            toolbarExportCSV: 'Завантажити як CSV',
-                            toolbarExportPrint: 'Друк',
-                            noRowsLabel: 'Співробітників не знайдено',
-                            noResultsOverlayLabel: 'Результатів не знайдено',
-                            footerRowSelected: (count) => `Вибрано рядків: ${count}`,
-                            MuiTablePagination: {
-                                labelRowsPerPage: 'Рядків на сторінці',
-                            },
-                        }}
-                    />
-                </Box>
-                <ConfirmationDialog
-                    title="Видалити співробітника?"
-                    contentText={
-                        selectedRow
-                            ? `Ви справді хочете видалити цього співробітника? : 
+        <Box sx={{ width: '100%' }}>
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                Співробітники магазинів
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                <TextField
+                    label="Швидкий пошук"
+                    variant="outlined"
+                    size="small"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
+                />
+                <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => { setActiveNewShopEmployee('0'); setActiveTab('addShopEmployee') }}>
+                    Додати
+                </Button>
+            </Box>
+            <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                <DataGrid
+                    rows={filteredData} // Використовуємо відфільтровані дані
+                    columns={columns}
+                    apiRef={apiRef}
+                    loading={loading}
+                    disableRowSelectionOnClick
+                    slots={{ toolbar: GridToolbar }}
+                    localeText={{
+                        filterOperatorContains: 'Містить',
+                        filterOperatorDoesNotContain: 'Не містить',
+                        filterOperatorEquals: 'Дорівнює',
+                        filterOperatorDoesNotEqual: 'Не дорівнює',
+                        filterOperatorStartsWith: 'Починається з',
+                        filterOperatorIsAnyOf: 'Є одним з',
+                        filterOperatorEndsWith: 'Закінчується на',
+                        filterOperatorIs: 'Дорівнює',
+                        filterOperatorNot: 'Не дорівнює',
+                        filterOperatorAfter: 'Після',
+                        filterOperatorOnOrAfter: 'Після або в цей день',
+                        filterOperatorBefore: 'До',
+                        filterOperatorOnOrBefore: 'До або в цей день',
+                        filterOperatorIsEmpty: 'Пусто',
+                        filterOperatorIsNotEmpty: 'Не пусто',
+                        columnMenuLabel: 'Меню стовпця',
+                        columnMenuShowColumns: 'Показати стовпці',
+                        columnMenuFilter: 'Фільтр',
+                        columnMenuHideColumn: 'Приховати стовпець',
+                        columnMenuUnsort: 'Скасувати сортування',
+                        columnMenuSortAsc: 'Сортувати за зростанням',
+                        columnMenuSortDesc: 'Сортувати за спаданням',
+                        toolbarDensity: 'Щільність',
+                        toolbarDensityLabel: 'Щільність',
+                        toolbarDensityCompact: 'Компактно',
+                        toolbarDensityStandard: 'Стандарт',
+                        toolbarDensityComfortable: 'Комфортно',
+                        toolbarColumns: 'Стовпці',
+                        toolbarColumnsLabel: 'Вибрати стовпці',
+                        toolbarFilters: 'Фільтри',
+                        toolbarFiltersLabel: 'Показати фільтри',
+                        toolbarFiltersTooltipHide: 'Сховати фільтри',
+                        toolbarFiltersTooltipShow: 'Показати фільтри',
+                        toolbarExport: 'Експорт',
+                        toolbarExportLabel: 'Експорт',
+                        toolbarExportCSV: 'Завантажити як CSV',
+                        toolbarExportPrint: 'Друк',
+                        noRowsLabel: 'Співробітників не знайдено',
+                        noResultsOverlayLabel: 'Результатів не знайдено',
+                        footerRowSelected: (count) => `Вибрано рядків: ${count}`,
+                        MuiTablePagination: {
+                            labelRowsPerPage: 'Рядків на сторінці',
+                        },
+                    }}
+                />
+            </Box>
+            <ConfirmationDialog
+                title="Видалити співробітника?"
+                contentText={
+                    selectedRow
+                        ? `Ви справді хочете видалити цього співробітника? : 
             ${selectedRow.name && `${selectedRow.name} `} 
             ${selectedRow.surname && `${selectedRow.surname},`} 
                     ${selectedRow.email && `${selectedRow.email},`} `
-                            : ''
-                    }
-                    onConfirm={handleConfirmDelete}
-                    onCancel={() => setIsDialogOpen(false)}
-                    confirmButtonColor='#be0f0f'
-                    cancelButtonColor='#00AAAD'
-                    open={isDialogOpen}
-                />
-            </Box>
-        </ThemeProvider>
-
+                        : ''
+                }
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setIsDialogOpen(false)}
+                confirmButtonColor='#be0f0f'
+                cancelButtonColor='#00AAAD'
+                open={isDialogOpen}
+            />
+        </Box>
     )
 }
 

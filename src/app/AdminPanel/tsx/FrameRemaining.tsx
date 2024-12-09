@@ -1,22 +1,30 @@
 import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares, Ware } from '@/pages/api/WareApi';
-import { Autocomplete, Box, Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridRowsProp, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import { Autocomplete, Box, Button, TextField, Typography } from '@mui/material';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
 //import FrameExpandableBlock from './FrameExpandableBlock';
 import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import '../css/WarehouseFrame.css';
 import useAdminPanelStore from '@/store/adminPanel';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
 
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#00AAAD',
+            contrastText: 'white',
+        },
+    },
+});
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
     const [selectedStorage, setSelectedStorage] = useState<Storage | null>(null); // ID складу
     const [selectedCategory, setSelectedCategory] = useState<WareCategory3 | null>(null); //по категории
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedWare, setSelectedWare] = useState<Ware | null>(null); // ID складу
     const { frameRemainsSidebarVisibility, setFrameRemainsSidebarVisibility, setFrameRemainsSelectedWare } = useAdminPanelStore();
     const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
     const [filteredData, setFilteredData] = useState<any | null>([]);
@@ -24,8 +32,6 @@ export default function FrameRemaining() {
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
         discount: false,
     });
-    const [isVisible, setIsVisible] = useState(false); // Состояние для отображения компонента
-    //const [showExpandableBlock, setShowExpandableBlock] = useState(false);
 
     // Загружаємо список складів
     const { data: storages = [] } = useStorages({
@@ -150,14 +156,12 @@ export default function FrameRemaining() {
                         sx={{
                             minWidth: '100px',
                             padding: '5px',
-                            backgroundColor: 'blue',
-                            color: 'white',
                             '&:hover': {
                                 backgroundColor: '#1976d2',
                             },
                         }}
                         title="Залишки"
-                        variant="outlined"
+                        variant="contained"
                         onClick={() => { setFrameRemainsSelectedWare(params.row); setFrameRemainsSidebarVisibility(true) }}
                     >
                         Залишки
@@ -214,7 +218,7 @@ export default function FrameRemaining() {
     }, [wares, success, selectedStorage]);
 
     return (
-        <div>
+        <ThemeProvider theme={theme}>
             <Box sx={{ p: 2, display: frameRemainsSidebarVisibility ? "none" : "block" }}>
                 <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
                     Залишки
@@ -374,113 +378,6 @@ export default function FrameRemaining() {
                 </Box>
             </Box>
             {frameRemainsSidebarVisibility && <FrameExpandableBlock />}
-        </div>
+        </ThemeProvider>
     );
 }
-
-// import React, { useState } from 'react';
-// import { DataGrid } from '@mui/x-data-grid';
-// import { Box, Button, Typography } from '@mui/material';
-
-// const rows = [
-//     { id: 1, name: 'Товар 1', quantity: 100 },
-//     { id: 2, name: 'Товар 2', quantity: 200 },
-//     { id: 3, name: 'Товар 3', quantity: 300 },
-// ];
-
-// const warehouseData = {
-//     1: [
-//         { id: 'w1', name: 'Склад 1', stock: 50 },
-//         { id: 'w2', name: 'Склад 2', stock: 50 },
-//     ],
-//     2: [
-//         { id: 'w1', name: 'Склад 1', stock: 120 },
-//         { id: 'w2', name: 'Склад 2', stock: 80 },
-//     ],
-//     3: [
-//         { id: 'w1', name: 'Склад 1', stock: 200 },
-//         { id: 'w2', name: 'Склад 2', stock: 100 },
-//     ],
-// };
-
-// const columns = [
-//     { field: 'name', headerName: 'Назва товару', width: 200 },
-//     { field: 'quantity', headerName: 'Кількість', width: 150 },
-//     {
-//         field: 'action',
-//         headerName: 'Дія',
-//         renderCell: (params) => (
-//             <Button
-//                 variant="contained"
-//                 size="small"
-//                 onClick={() => params.row.toggleExpandRow(params.row.id)}
-//             >
-//                 {params.row.isExpanded ? 'Закрити' : 'Показати залишки'}
-//             </Button>
-//         ),
-//         width: 200,
-//     },
-// ];
-
-// export default function ExpandableDataGrid() {
-//     const [expandedRows, setExpandedRows] = useState({});
-
-//     const toggleExpandRow = (id) => {
-//         setExpandedRows((prev) => ({
-//             ...prev,
-//             [id]: !prev[id],
-//         }));
-//     };
-
-//     return (
-//         <Box sx={{ height: 500, width: '100%' }}>
-//             <DataGrid
-//                 rows={rows.map((row) => ({
-//                     ...row,
-//                     isExpanded: expandedRows[row.id] || false,
-//                     toggleExpandRow,
-//                 }))}
-//                 columns={columns}
-//                 //disableRowSelectionOnClick
-//                 rowHeight={expandedRows ? 120 : 52} // Збільшуємо висоту при розгортанні
-//                 rowModesModel={}
-//                 components={{
-//                     Row: ({ row }) => (
-//                         <>
-//                             <Box sx={{ display: 'flex', alignItems: 'center', padding: 1 }}>
-//                                 <Typography sx={{ flex: 1 }}>{row.name}</Typography>
-//                                 <Typography>{row.quantity}</Typography>
-//                                 <Button
-//                                     size="small"
-//                                     variant="contained"
-//                                     onClick={() => toggleExpandRow(row.id)}
-//                                 >
-//                                     {expandedRows[row.id] ? 'Закрити' : 'Показати залишки'}
-//                                 </Button>
-//                             </Box>
-//                             {expandedRows[row.id] && (
-//                                 <Box
-//                                     sx={{
-//                                         marginLeft: 3,
-//                                         marginTop: 1,
-//                                         padding: 1,
-//                                         border: '1px solid #ddd',
-//                                         borderRadius: '4px',
-//                                         backgroundColor: '#f9f9f9',
-//                                     }}
-//                                 >
-//                                     <Typography variant="subtitle1">Залишки на складах:</Typography>
-//                                     {warehouseData[row.id]?.map((warehouse) => (
-//                                         <Typography key={warehouse.id} sx={{ paddingLeft: 2 }}>
-//                                             {warehouse.name}: {warehouse.stock}
-//                                         </Typography>
-//                                     ))}
-//                                 </Box>
-//                             )}
-//                         </>
-//                     ),
-//                 }}
-//             />
-//         </Box>
-//     );
-// }

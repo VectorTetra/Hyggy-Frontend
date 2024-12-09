@@ -246,7 +246,7 @@ export default function FrameStorage() {
 					<Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
 						<EditIcon />
 					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+					<Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
 						<DeleteIcon />
 					</Button>
 				</Box>
@@ -345,7 +345,7 @@ export default function FrameStorage() {
 					position: 'sticky', // Фіксована позиція
 					top: 0, // Залишається зверху
 					left: 0,
-					backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
+					//backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
 					zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
 					width: "100%",
 					padding: '0' // Додаємо відступи для панелі
