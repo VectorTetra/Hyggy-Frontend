@@ -1,9 +1,10 @@
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { useDeleteStorage, useStorages } from '@/pages/api/StorageApi';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
@@ -11,12 +12,9 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
-//import { useQueryClient } from 'react-query';
-
 
 export default function FrameStorage() {
 	const { mutate: deleteStorage } = useDeleteStorage();
-	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
 		SearchParameter: "Query",
 		PageNumber: 1,
@@ -326,153 +324,155 @@ export default function FrameStorage() {
 
 	return (
 		<Box>
-			<Box sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				alignItems: 'normal',
-				marginBottom: '1rem',
-				position: 'sticky', // Фіксована позиція
-				top: 0, // Залишається зверху
-				left: 0,
-				//backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
-				zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
-				width: "100%",
-				padding: '0' // Додаємо відступи для панелі
-			}}>
-				<Typography variant="h5" sx={{ marginBottom: 2 }}>
-					Склади : {loading ? <CircularProgress size={24} /> : filteredData.length}
-				</Typography>
+			<ThemeProvider theme={themeFrame}>
 				<Box sx={{
 					display: 'flex',
+					flexDirection: 'column',
 					justifyContent: 'space-between',
+					alignItems: 'normal',
+					marginBottom: '1rem',
+					position: 'sticky', // Фіксована позиція
+					top: 0, // Залишається зверху
+					left: 0,
+					//backgroundColor: 'white', // Задаємо фон, щоб панель не зливалась із DataGrid
+					zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
+					width: "100%",
+					padding: '0' // Додаємо відступи для панелі
 				}}>
-					<SearchField
-						searchTerm={searchTerm}
-						onSearchChange={(event) => setSearchTerm(event.target.value)}
-					/>
-					<Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
-						setWarehouseId(0);
-						setActiveTab("addEditWarehouse");
-					}}>
-						Додати
-					</Button>
-				</Box>
-			</Box>
-			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
-				{filteredData.length === 0 && !loading && success ? (
-					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
-						Нічого не знайдено
+					<Typography variant="h5" sx={{ marginBottom: 2 }}>
+						Склади : {loading ? <CircularProgress size={24} /> : filteredData.length}
 					</Typography>
-				) : (
-					<DataGrid
-						className="dataGrid"
-						rows={filteredData}
-						columns={columns}
-						apiRef={apiRef}
-						loading={loading || dataLoading}
-						initialState={{
-							pagination: {
-								paginationModel: {
-									pageSize: 100,
-									page: 0,
-								},
-							},
-							sorting: {
-								sortModel: [
-									{
-										field: 'shopName',
-										sort: 'asc', // 'asc' для зростання або 'desc' для спадання
+					<Box sx={{
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}>
+						<SearchField
+							searchTerm={searchTerm}
+							onSearchChange={(event) => setSearchTerm(event.target.value)}
+						/>
+						<Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+							setWarehouseId(0);
+							setActiveTab("addEditWarehouse");
+						}}>
+							Додати
+						</Button>
+					</Box>
+				</Box>
+				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+					{filteredData.length === 0 && !loading && success ? (
+						<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
+							Нічого не знайдено
+						</Typography>
+					) : (
+						<DataGrid
+							className="dataGrid"
+							rows={filteredData}
+							columns={columns}
+							apiRef={apiRef}
+							loading={loading || dataLoading}
+							initialState={{
+								pagination: {
+									paginationModel: {
+										pageSize: 100,
+										page: 0,
 									},
-								],
-							},
-						}}
-						pageSizeOptions={[5, 10, 25, 50, 100]}
-						disableRowSelectionOnClick
-						slots={{
-							toolbar: GridToolbar
+								},
+								sorting: {
+									sortModel: [
+										{
+											field: 'shopName',
+											sort: 'asc', // 'asc' для зростання або 'desc' для спадання
+										},
+									],
+								},
+							}}
+							pageSizeOptions={[5, 10, 25, 50, 100]}
+							disableRowSelectionOnClick
+							slots={{
+								toolbar: GridToolbar
 
-						}}
-						slotProps={{
-							toolbar: {
-								csvOptions: {
-									fileName: 'Склади',
-									delimiter: ';',
-									utf8WithBom: true,
+							}}
+							slotProps={{
+								toolbar: {
+									csvOptions: {
+										fileName: 'Склади',
+										delimiter: ';',
+										utf8WithBom: true,
+									},
+									printOptions: {
+										hideFooter: true,
+										hideToolbar: true,
+									},
 								},
-								printOptions: {
-									hideFooter: true,
-									hideToolbar: true,
-								},
-							},
-						}}
-						columnVisibilityModel={columnVisibilityModel}
-						onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-						localeText={{
-							MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
-							columnsManagementReset: "Скинути",
-							columnsManagementSearchTitle: "Пошук",
-							toolbarExport: 'Експорт',
-							toolbarExportLabel: 'Експорт',
-							toolbarExportCSV: 'Завантажити як CSV',
-							toolbarExportPrint: 'Друк',
-							columnsManagementShowHideAllText: "Показати / Сховати всі",
-							filterPanelColumns: 'Стовпці', // Переклад для "Columns"
-							filterPanelOperator: 'Оператор', // Переклад для "Operator"
-							// filterPanelValue: 'Значення', 
-							// filterPanelFilterValue: 'Значення фільтра',
-							toolbarExportExcel: "Експорт",
-							filterPanelInputLabel: "Значення",
-							filterPanelInputPlaceholder: 'Значення фільтра',
-							filterOperatorContains: 'Містить',
-							filterOperatorDoesNotContain: 'Не містить',
-							filterOperatorEquals: 'Дорівнює',
-							filterOperatorDoesNotEqual: 'Не дорівнює',
-							filterOperatorStartsWith: 'Починається з',
-							filterOperatorIsAnyOf: 'Є одним з',
-							filterOperatorEndsWith: 'Закінчується на',
-							filterOperatorIs: 'Дорівнює',
-							filterOperatorNot: 'Не дорівнює',
-							filterOperatorAfter: 'Після',
-							filterOperatorOnOrAfter: 'Після або в цей день',
-							filterOperatorBefore: 'До',
-							filterOperatorOnOrBefore: 'До або в цей день',
-							filterOperatorIsEmpty: 'Пусто',
-							filterOperatorIsNotEmpty: 'Не пусто',
-							columnMenuLabel: 'Меню стовпця',
-							columnMenuShowColumns: 'Показати стовпці',
-							columnMenuFilter: 'Фільтр',
-							columnMenuHideColumn: 'Приховати стовпець',
-							columnMenuUnsort: 'Скасувати сортування',
-							columnMenuSortAsc: 'Сортувати за зростанням',
-							columnMenuSortDesc: 'Сортувати за спаданням',
-							toolbarDensity: 'Щільність',
-							toolbarDensityLabel: 'Щільність',
-							toolbarDensityCompact: 'Компактно',
-							toolbarDensityStandard: 'Стандарт',
-							toolbarDensityComfortable: 'Комфортно',
-							toolbarColumns: 'Стовпці',
-							toolbarColumnsLabel: 'Оберіть стовпці',
-							toolbarFilters: 'Фільтри',
-							toolbarFiltersLabel: 'Показати фільтри',
-							toolbarFiltersTooltipHide: 'Приховати фільтри',
-							toolbarFiltersTooltipShow: 'Показати фільтри',
-							toolbarQuickFilterPlaceholder: 'Пошук...',
-							toolbarQuickFilterLabel: 'Пошук',
-							toolbarQuickFilterDeleteIconLabel: 'Очистити',
-						}}
-						sx={{
-							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
-							flexGrow: 1, // Займає доступний простір у контейнері
-							minWidth: 800, // Мінімальна ширина DataGrid
-							"& .MuiDataGrid-scrollbar--horizontal": {
-								position: 'fixed',
-								bottom: "5px"
-							}
-						}}
-					/>
-				)}
-			</Box>
+							}}
+							columnVisibilityModel={columnVisibilityModel}
+							onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+							localeText={{
+								MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
+								columnsManagementReset: "Скинути",
+								columnsManagementSearchTitle: "Пошук",
+								toolbarExport: 'Експорт',
+								toolbarExportLabel: 'Експорт',
+								toolbarExportCSV: 'Завантажити як CSV',
+								toolbarExportPrint: 'Друк',
+								columnsManagementShowHideAllText: "Показати / Сховати всі",
+								filterPanelColumns: 'Стовпці', // Переклад для "Columns"
+								filterPanelOperator: 'Оператор', // Переклад для "Operator"
+								// filterPanelValue: 'Значення', 
+								// filterPanelFilterValue: 'Значення фільтра',
+								toolbarExportExcel: "Експорт",
+								filterPanelInputLabel: "Значення",
+								filterPanelInputPlaceholder: 'Значення фільтра',
+								filterOperatorContains: 'Містить',
+								filterOperatorDoesNotContain: 'Не містить',
+								filterOperatorEquals: 'Дорівнює',
+								filterOperatorDoesNotEqual: 'Не дорівнює',
+								filterOperatorStartsWith: 'Починається з',
+								filterOperatorIsAnyOf: 'Є одним з',
+								filterOperatorEndsWith: 'Закінчується на',
+								filterOperatorIs: 'Дорівнює',
+								filterOperatorNot: 'Не дорівнює',
+								filterOperatorAfter: 'Після',
+								filterOperatorOnOrAfter: 'Після або в цей день',
+								filterOperatorBefore: 'До',
+								filterOperatorOnOrBefore: 'До або в цей день',
+								filterOperatorIsEmpty: 'Пусто',
+								filterOperatorIsNotEmpty: 'Не пусто',
+								columnMenuLabel: 'Меню стовпця',
+								columnMenuShowColumns: 'Показати стовпці',
+								columnMenuFilter: 'Фільтр',
+								columnMenuHideColumn: 'Приховати стовпець',
+								columnMenuUnsort: 'Скасувати сортування',
+								columnMenuSortAsc: 'Сортувати за зростанням',
+								columnMenuSortDesc: 'Сортувати за спаданням',
+								toolbarDensity: 'Щільність',
+								toolbarDensityLabel: 'Щільність',
+								toolbarDensityCompact: 'Компактно',
+								toolbarDensityStandard: 'Стандарт',
+								toolbarDensityComfortable: 'Комфортно',
+								toolbarColumns: 'Стовпці',
+								toolbarColumnsLabel: 'Оберіть стовпці',
+								toolbarFilters: 'Фільтри',
+								toolbarFiltersLabel: 'Показати фільтри',
+								toolbarFiltersTooltipHide: 'Приховати фільтри',
+								toolbarFiltersTooltipShow: 'Показати фільтри',
+								toolbarQuickFilterPlaceholder: 'Пошук...',
+								toolbarQuickFilterLabel: 'Пошук',
+								toolbarQuickFilterDeleteIconLabel: 'Очистити',
+							}}
+							sx={{
+								opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+								flexGrow: 1, // Займає доступний простір у контейнері
+								minWidth: 800, // Мінімальна ширина DataGrid
+								"& .MuiDataGrid-scrollbar--horizontal": {
+									position: 'fixed',
+									bottom: "5px"
+								}
+							}}
+						/>
+					)}
+				</Box>
+			</ThemeProvider>
 			<ConfirmationDialog
 				title="Видалити склад?"
 				contentText={

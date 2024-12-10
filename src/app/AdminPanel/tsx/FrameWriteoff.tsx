@@ -6,7 +6,8 @@ import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares, Ware } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem } from '@/pages/api/WareItemApi';
-
+import { ThemeProvider } from '@mui/material';
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 const StorageSelector = ({ storages, selectedStore, onChange }) => (
     <Autocomplete
         sx={{ flex: 2 }}
@@ -130,62 +131,64 @@ export default function FrameWriteoff() {
     }, [selectedStore, selectedProduct, isLoading, availableQuantity]);
 
     return (
-        <Box sx={{ p: 2 }}>
-            <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
-                Списання товарів
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
-                <StorageSelector
-                    storages={storages}
-                    selectedStore={selectedStore}
-                    onChange={(event, value) => {
-                        const store = storages.find(
-                            (s) =>
-                                `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}` === value
-                        );
-                        setSelectedStore(store || null);
-                    }}
-                />
-                <ProductSelector
-                    wares={wares}
-                    selectedProduct={selectedProduct}
-                    onChange={(event, value) => {
-                        const product = wares.find((w) => w.description === value);
-                        setSelectedProduct(product || null);
-                    }}
-                />
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <TextField
-                        type="number"
-                        value={quantity}
-                        onChange={handleQuantityChange}
-                        placeholder={`Доступно: ${availableQuantity}`}
-                        disabled={!selectedProduct}
-                        fullWidth
-                        sx={{ flex: 1, maxWidth: 150 }}
-                        slotProps={{
-                            input: {
-                                inputProps: {
-                                    min: 0, // мінімальне значення
-                                    max: availableQuantity, // максимальне значення
-                                    step: 1, // крок введення (опціонально)
-                                }
-                            },
+        <ThemeProvider theme={themeFrame}>
+            <Box sx={{ p: 2 }}>
+                <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
+                    Списання товарів
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
+                    <StorageSelector
+                        storages={storages}
+                        selectedStore={selectedStore}
+                        onChange={(event, value) => {
+                            const store = storages.find(
+                                (s) =>
+                                    `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}` === value
+                            );
+                            setSelectedStore(store || null);
                         }}
                     />
-                    <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
-                        {statusMessage}
-                    </Typography>
+                    <ProductSelector
+                        wares={wares}
+                        selectedProduct={selectedProduct}
+                        onChange={(event, value) => {
+                            const product = wares.find((w) => w.description === value);
+                            setSelectedProduct(product || null);
+                        }}
+                    />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <TextField
+                            type="number"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            placeholder={`Доступно: ${availableQuantity}`}
+                            disabled={!selectedProduct}
+                            fullWidth
+                            sx={{ flex: 1, maxWidth: 150 }}
+                            slotProps={{
+                                input: {
+                                    inputProps: {
+                                        min: 0, // мінімальне значення
+                                        max: availableQuantity, // максимальне значення
+                                        step: 1, // крок введення (опціонально)
+                                    }
+                                },
+                            }}
+                        />
+                        <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                            {statusMessage}
+                        </Typography>
+                    </Box>
                 </Box>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                    disabled={!quantity || Number(quantity) <= 0 || Number(quantity) > availableQuantity}
+                >
+                    Зберегти
+                </Button>
             </Box>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSave}
-                disabled={!quantity || Number(quantity) <= 0 || Number(quantity) > availableQuantity}
-            >
-                Зберегти
-            </Button>
-        </Box>
+        </ThemeProvider>
     );
 }

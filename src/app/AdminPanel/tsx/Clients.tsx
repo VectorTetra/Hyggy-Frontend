@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, circularProgressClasses, TextField, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { useCustomers, useDeleteCustomer } from '@/pages/api/CustomerApi';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
+import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
-import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
-
-type Customer = {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    executedOrderSum: number;
-    executedOrdersAvg: number;
-}
 
 const Clients = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
-    const { data: data = [], isLoading: dataLoading, isSuccess: success } = useCustomers({
+    const { data: data = [], isLoading: dataLoading } = useCustomers({
         SearchParameter: "Query",
         PageNumber: 1,
         PageSize: 1000
     });
-    const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { mutate: deleteCustomer } = useDeleteCustomer();
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -98,73 +87,75 @@ const Clients = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                Користувачі
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <TextField
-                    label="Швидкий пошук"
-                    variant="outlined"
-                    size="small"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
-                />
-            </Box>
-            <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
-                <DataGrid
-                    rows={filteredData} // Використовуємо відфільтровані дані
-                    columns={columns}
-                    apiRef={apiRef}
-                    loading={dataLoading}
-                    disableRowSelectionOnClick
-                    slots={{ toolbar: GridToolbar }}
-                    localeText={{
-                        filterOperatorContains: 'Містить',
-                        filterOperatorDoesNotContain: 'Не містить',
-                        filterOperatorEquals: 'Дорівнює',
-                        filterOperatorDoesNotEqual: 'Не дорівнює',
-                        filterOperatorStartsWith: 'Починається з',
-                        filterOperatorIsAnyOf: 'Є одним з',
-                        filterOperatorEndsWith: 'Закінчується на',
-                        filterOperatorIs: 'Дорівнює',
-                        filterOperatorNot: 'Не дорівнює',
-                        filterOperatorAfter: 'Після',
-                        filterOperatorOnOrAfter: 'Після або в цей день',
-                        filterOperatorBefore: 'До',
-                        filterOperatorOnOrBefore: 'До або в цей день',
-                        filterOperatorIsEmpty: 'Пусто',
-                        filterOperatorIsNotEmpty: 'Не пусто',
-                        columnMenuLabel: 'Меню стовпця',
-                        columnMenuShowColumns: 'Показати стовпці',
-                        columnMenuFilter: 'Фільтр',
-                        columnMenuHideColumn: 'Приховати стовпець',
-                        columnMenuUnsort: 'Скасувати сортування',
-                        columnMenuSortAsc: 'Сортувати за зростанням',
-                        columnMenuSortDesc: 'Сортувати за спаданням',
-                        toolbarDensity: 'Щільність',
-                        toolbarDensityLabel: 'Щільність',
-                        toolbarDensityCompact: 'Компактно',
-                        toolbarDensityStandard: 'Стандарт',
-                        toolbarDensityComfortable: 'Комфортно',
-                        toolbarColumns: 'Стовпці',
-                        toolbarColumnsLabel: 'Вибрати стовпці',
-                        toolbarFilters: 'Фільтри',
-                        toolbarFiltersLabel: 'Показати фільтри',
-                        toolbarFiltersTooltipHide: 'Сховати фільтри',
-                        toolbarFiltersTooltipShow: 'Показати фільтри',
-                        toolbarExport: 'Експорт',
-                        toolbarExportLabel: 'Експорт',
-                        toolbarExportCSV: 'Завантажити як CSV',
-                        toolbarExportPrint: 'Друк',
-                        noRowsLabel: 'Користувачів не знайдено',
-                        noResultsOverlayLabel: 'Результатів не знайдено',
-                        footerRowSelected: (count) => `Вибрано рядків: ${count}`,
-                        MuiTablePagination: {
-                            labelRowsPerPage: 'Рядків на сторінці',
-                        },
-                    }}
-                />
-            </Box>
+            <ThemeProvider theme={themeFrame}>
+                <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                    Клієнти
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                    <TextField
+                        label="Швидкий пошук"
+                        variant="outlined"
+                        size="small"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
+                    />
+                </Box>
+                <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                    <DataGrid
+                        rows={filteredData} // Використовуємо відфільтровані дані
+                        columns={columns}
+                        apiRef={apiRef}
+                        loading={dataLoading}
+                        disableRowSelectionOnClick
+                        slots={{ toolbar: GridToolbar }}
+                        localeText={{
+                            filterOperatorContains: 'Містить',
+                            filterOperatorDoesNotContain: 'Не містить',
+                            filterOperatorEquals: 'Дорівнює',
+                            filterOperatorDoesNotEqual: 'Не дорівнює',
+                            filterOperatorStartsWith: 'Починається з',
+                            filterOperatorIsAnyOf: 'Є одним з',
+                            filterOperatorEndsWith: 'Закінчується на',
+                            filterOperatorIs: 'Дорівнює',
+                            filterOperatorNot: 'Не дорівнює',
+                            filterOperatorAfter: 'Після',
+                            filterOperatorOnOrAfter: 'Після або в цей день',
+                            filterOperatorBefore: 'До',
+                            filterOperatorOnOrBefore: 'До або в цей день',
+                            filterOperatorIsEmpty: 'Пусто',
+                            filterOperatorIsNotEmpty: 'Не пусто',
+                            columnMenuLabel: 'Меню стовпця',
+                            columnMenuShowColumns: 'Показати стовпці',
+                            columnMenuFilter: 'Фільтр',
+                            columnMenuHideColumn: 'Приховати стовпець',
+                            columnMenuUnsort: 'Скасувати сортування',
+                            columnMenuSortAsc: 'Сортувати за зростанням',
+                            columnMenuSortDesc: 'Сортувати за спаданням',
+                            toolbarDensity: 'Щільність',
+                            toolbarDensityLabel: 'Щільність',
+                            toolbarDensityCompact: 'Компактно',
+                            toolbarDensityStandard: 'Стандарт',
+                            toolbarDensityComfortable: 'Комфортно',
+                            toolbarColumns: 'Стовпці',
+                            toolbarColumnsLabel: 'Вибрати стовпці',
+                            toolbarFilters: 'Фільтри',
+                            toolbarFiltersLabel: 'Показати фільтри',
+                            toolbarFiltersTooltipHide: 'Сховати фільтри',
+                            toolbarFiltersTooltipShow: 'Показати фільтри',
+                            toolbarExport: 'Експорт',
+                            toolbarExportLabel: 'Експорт',
+                            toolbarExportCSV: 'Завантажити як CSV',
+                            toolbarExportPrint: 'Друк',
+                            noRowsLabel: 'Користувачів не знайдено',
+                            noResultsOverlayLabel: 'Результатів не знайдено',
+                            footerRowSelected: (count) => `Вибрано рядків: ${count}`,
+                            MuiTablePagination: {
+                                labelRowsPerPage: 'Рядків на сторінці',
+                            },
+                        }}
+                    />
+                </Box>
+            </ThemeProvider>
             <ConfirmationDialog
                 title="Видалити користувача?"
                 contentText={
