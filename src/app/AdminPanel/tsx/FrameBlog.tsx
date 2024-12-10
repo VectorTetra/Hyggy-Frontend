@@ -78,7 +78,9 @@ export default function FrameBlog() {
 								}}
 							/>
 						)}
-						<Typography variant="body2">{params.row.blogTitle}</Typography>
+						<Typography variant="body2" sx={{
+							textWrap: 'wrap',
+						}}>{params.row.blogTitle}</Typography>
 					</Box>
 				);
 			},
@@ -277,9 +279,25 @@ export default function FrameBlog() {
 					<DataGrid
 						className="dataGrid"
 						rows={filteredData}
+						getRowHeight={() => 'auto'} // Динамічна висота рядка
 						columns={columns}
 						apiRef={apiRef}
 						loading={loading || dataLoading}
+						sx={{
+							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+							flexGrow: 1, // Займає доступний простір у контейнері
+							minWidth: 800, // Мінімальна ширина DataGrid
+							"& .MuiDataGrid-scrollbar--horizontal": {
+								position: 'fixed',
+								bottom: "5px"
+							},
+							"&. MuiDataGrid-topContainer": {
+								backgroundColor: "#f3f3f3"
+							},
+							'&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
+							'&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
+							'&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
+						}}
 						initialState={{
 							pagination: {
 								paginationModel: {
@@ -368,18 +386,7 @@ export default function FrameBlog() {
 							toolbarQuickFilterLabel: 'Пошук',
 							toolbarQuickFilterDeleteIconLabel: 'Очистити',
 						}}
-						sx={{
-							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
-							flexGrow: 1, // Займає доступний простір у контейнері
-							minWidth: 800, // Мінімальна ширина DataGrid
-							"& .MuiDataGrid-scrollbar--horizontal": {
-								position: 'fixed',
-								bottom: "5px"
-							},
-							"&. MuiDataGrid-topContainer": {
-								backgroundColor: "#f3f3f3"
-							}
-						}}
+
 					/>
 				)}
 			</Box>
