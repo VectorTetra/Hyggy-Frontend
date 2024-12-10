@@ -160,7 +160,6 @@ export function isSaler() {
 
 export async function Authorize(params: UserForAuthenticationDto) {
 	try {
-		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/authenticate', params);
 		const response = await axios.post(`${API_ACCOUNT_URL!}/authenticate`, params);
 		if (response.data.isAuthSuccessfull) {
 			setToken(response.data.token);
@@ -182,7 +181,6 @@ export async function Authorize(params: UserForAuthenticationDto) {
 
 export async function RegisterAsShopEmployee(params: UserForRegistrationDto) {
 	try {
-		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
 		const response = await axios.post(`${API_SHOPEMPLOYEE_URL!}/register`, params);
 
 		if (response.data.message) {
@@ -200,7 +198,6 @@ export async function RegisterAsShopEmployee(params: UserForRegistrationDto) {
 
 export async function RegisterAsStorageEmployee(params: UserForRegistrationDto) {
 	try {
-		//const response = await axios.post('http://www.hyggy.somee.com/api/shopemployee/register', params);
 		const response = await axios.post(`${API_STORAGEEMPLOYEE_URL!}/register`, params);
 
 		if (response.data.message) {
@@ -218,7 +215,6 @@ export async function RegisterAsStorageEmployee(params: UserForRegistrationDto) 
 
 export async function RegisterAsClient(params: UserForRegistrationDto) {
 	try {
-		//const response = await axios.post('http://www.hyggy.somee.com/api/Customer/register', params);
 		const response = await axios.post(`${API_CUSTOMER_URL!}/register`, params);
 		if (response.data.message) {
 			toast.info(response.data.message, { autoClose: false, closeOnClick: true });
