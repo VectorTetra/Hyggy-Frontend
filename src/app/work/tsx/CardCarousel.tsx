@@ -9,7 +9,7 @@ export default function CardCarousel({ cards }) {
 	const sliderRef = useRef<Slider | null>(null);
 
 	const settings = {
-		infinite: false,
+		infinite: true,
 		//autoplay: true,
 		//autoplaySpeed: 3000,
 		slidesToShow: 3,
@@ -37,21 +37,23 @@ export default function CardCarousel({ cards }) {
 	};
 
 	return (
-		<div className="carouselWrapper">
-			<Slider ref={sliderRef} {...settings}>
-				{cards.map((card, index) => (
-					<div key={index} className="slide">
-						<Image
-							width={400}
-							height={300}
-							src={card.imageSrc}
-							alt={card.title}
-							className="cardImage"
-						/>
-						<div className="cardTitle">{card.title}</div>
-					</div>
-				))}
-			</Slider>
+		<div className="workpageCarousel">
+			<div className="carouselWrapper">
+				<Slider ref={sliderRef} {...settings}>
+					{cards.map((card, index) => (
+						<div key={index} className="slide">
+							<Image
+								width={400}
+								height={300}
+								src={card.imageSrc}
+								alt={card.title}
+								className="cardImage"
+							/>
+							<div className="cardTitle">{card.title}</div>
+						</div>
+					))}
+				</Slider>
+			</div>
 		</div>
 	);
 }
