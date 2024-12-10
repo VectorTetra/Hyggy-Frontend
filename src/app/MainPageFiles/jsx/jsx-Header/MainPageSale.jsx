@@ -1,11 +1,9 @@
 "use client";
 
-import React, {useState , useEffect} from 'react';
-import Link from 'next/link';
-import styles from '../../styles/MainPageHeader-styles.module.css';
+import { useBlogs } from '@/pages/api/BlogApi';
 import { useRouter } from "next/navigation";
-import { BlogQueryParams, useBlogs } from '@/pages/api/BlogApi';
-import { type } from 'os';
+import React, { useEffect } from 'react';
+import styles from '../../styles/MainPageHeader-styles.module.css';
 
 
 export default function MainPageSale(props) {
@@ -13,7 +11,7 @@ export default function MainPageSale(props) {
     const router = useRouter();
 
     // Используем useQuery для получения последних 3 акций
-    const { data: sales = [], isLoading, isSuccess } = useBlogs(
+    const { data: sales = [], isSuccess } = useBlogs(
         {
             SearchParameter: "Query",
             PageNumber: 1,

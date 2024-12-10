@@ -5,7 +5,7 @@ import bodyData from './AllCategory.json';
 export default function Home() {
 
   return (
-    <Layout headerType="header1" footerType="footer1">
+    <Layout headerType="header1" footerType="footer4">
       <div>
         <PageAllCategory bodyData={bodyData.bodyData} />
       </div>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 
 export class WareReviewQueryParams {
     SearchParameter: string = "Query";
@@ -55,10 +54,16 @@ export class WareReview {
     email: string;
     rating: number;
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_REVIEW;
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_REVIEW in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_REVIEW in your environment variables.");
+}
 // GET запит (вже реалізований)
 export async function getWareReviews(params: WareReviewQueryParams = { SearchParameter: "Query" }) {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/WareReview', {
+        const response = await axios.get(API_BASE_URL!, {
             params,
         });
 
@@ -72,7 +77,7 @@ export async function getWareReviews(params: WareReviewQueryParams = { SearchPar
 // POST запит для створення нового складу
 export async function postWareReview(WareReview: WareReviewPostDTO) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/WareReview', WareReview);
+        const response = await axios.post(API_BASE_URL!, WareReview);
         return response.data;
     } catch (error) {
         console.error('Error creating WareReview:', error);
@@ -87,7 +92,7 @@ export async function putWareReview(WareReview: WareReviewPutDTO) {
             throw new Error('Id is required for updating a WareReview');
         }
 
-        const response = await axios.put(`http://www.hyggy.somee.com/api/WareReview`, WareReview);
+        const response = await axios.put(API_BASE_URL!, WareReview);
         return response.data;
     } catch (error) {
         console.error('Error updating WareReview:', error);
@@ -98,7 +103,7 @@ export async function putWareReview(WareReview: WareReviewPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareReview(id: number) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/WareReview/${id}`);
+        const response = await axios.delete(`${API_BASE_URL!}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting WareReview:', error);
@@ -107,14 +112,14 @@ export async function deleteWareReview(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareReviews)
-export function useWareReviews(params: WareReviewQueryParams = { SearchParameter: "Query" }, p0: boolean) {
+export function useWareReviews(params: WareReviewQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
     return useQuery({
         queryKey: ['wareReviews', params],
         queryFn: () => getWareReviews(params),
         staleTime: Infinity, // Дані завжди актуальні
         gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
-        enabled: false, // Запит не відбувається автоматично
+        enabled: isEnabled,
     });
 }
 

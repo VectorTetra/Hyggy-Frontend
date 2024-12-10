@@ -246,7 +246,7 @@
 #subscForm {
     display: flex;
     flex-direction: column;
-    padding: 0 20vh;
+    padding: 0 clamp(50px, 10vmin, 240px);
     text-wrap-style: balance;
 }
 

@@ -144,7 +144,7 @@ export default function WareFrame() {
                     <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
                         <EditIcon />
                     </Button>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+                    <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
                         <DeleteIcon />
                     </Button>
                 </Box>

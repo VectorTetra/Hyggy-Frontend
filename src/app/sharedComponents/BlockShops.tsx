@@ -128,7 +128,7 @@ const BlockShops: React.FC = () => {
                                 <span style={{ marginLeft: "50px" }}>
                                     {shop.street},
                                     <p style={{ marginBottom: 0 }}>{shop.city}</p>
-                                    <Link prefetch={true} className={styles.customlink} href="https://jysk.ua">Як знайти магазин</Link>
+                                    <Link prefetch={true} className={styles.customlink} href="/shops">Як знайти магазин</Link>
                                 </span>
                             </div>
                         </div>
@@ -169,8 +169,10 @@ const BlockShops: React.FC = () => {
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <span>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</span>
-                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>Х</button>
+                            <div className={styles.menuHeaderText}>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</div>
+                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>
+                                Х
+                            </button>
                         </div>
                     </div>
                     <hr className={styles.divider} />

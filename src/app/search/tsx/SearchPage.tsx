@@ -116,7 +116,7 @@ export default function SearchPage() {
     console.log("SearchPage.tsx, foundWareStatuses: ", foundWareStatuses);
     return (
 
-        <Layout headerType="header1" footerType='footer1'>
+        <Layout headerType="header1" footerType='footer4'>
             <div className={styles.main}>
                 {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />}
                 <>

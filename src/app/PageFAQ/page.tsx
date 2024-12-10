@@ -10,7 +10,7 @@ export const metadata = {
 export default function Home() {
   return (
 
-    <Layout headerType="header1" footerType="footer1">
+    <Layout headerType="header1" footerType="footer3">
       <div>
         <FAQPage faqPage={faq.FAQ} /> {/* Клієнтський компонент сторінки з питаннями та відповідями */}
       </div>

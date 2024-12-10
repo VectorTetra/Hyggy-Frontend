@@ -31,10 +31,17 @@ export class WareCategory1 {
 	name: string;
 	waresCategories2: any[];
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_CATEGORY_1;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_CATEGORY_1 in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_CATEGORY_1 in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/WareCategory1', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -48,7 +55,7 @@ export async function getWareCategories1(params: WareCategory1QueryParams = { Se
 // POST запит для створення нового складу
 export async function postWareCategory1(WareCategory1: WareCategory1PostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/WareCategory1', WareCategory1);
+		const response = await axios.post(API_BASE_URL!, WareCategory1);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating WareCategory1:', error);
@@ -63,7 +70,7 @@ export async function putWareCategory1(WareCategory1: WareCategory1PutDTO) {
 			throw new Error('Id is required for updating a WareCategory1');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/WareCategory1`, WareCategory1);
+		const response = await axios.put(API_BASE_URL!, WareCategory1);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating WareCategory1:', error);
@@ -74,7 +81,7 @@ export async function putWareCategory1(WareCategory1: WareCategory1PutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareCategory1(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/WareCategory1/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting WareCategory1:', error);
@@ -83,13 +90,14 @@ export async function deleteWareCategory1(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareCategories1)
-export function useWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }) {
+export function useWareCategories1(params: WareCategory1QueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['wareCategories1', params],
 		queryFn: () => getWareCategories1(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

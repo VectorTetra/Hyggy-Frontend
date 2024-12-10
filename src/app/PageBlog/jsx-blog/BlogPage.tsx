@@ -1,9 +1,6 @@
-"use client"
-
-import React, { useState } from "react";
 import styles from "../css/blogstyle.module.css";
-import BlogMenu from "./BlogMenu";
 import BlogBody from "./BlogBody";
+import BlogMenu from "./BlogMenu";
 
 
 export default function BlogPage(props) {

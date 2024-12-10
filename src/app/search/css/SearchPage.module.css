@@ -1,4 +1,4 @@
 .main {
-    padding: 1rem 6rem;
+    padding: 1rem calc(4rem + 10px);
     min-width: 80vw;
 }

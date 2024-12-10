@@ -310,12 +310,12 @@ export default function WareAddEditFrame() {
                 />
                 <Autocomplete
                     options={categories}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.name!}
                     value={wareCategory3 || null}
                     onChange={(event, newValue) => setWareCategory3(newValue)}
                     filterOptions={(options, { inputValue }) =>
                         options.filter((option) =>
-                            option.name.toLowerCase().includes(inputValue.toLowerCase())
+                            option.name!.toLowerCase().includes(inputValue.toLowerCase())
                         )
                     }
                     renderOption={(props, option) => (

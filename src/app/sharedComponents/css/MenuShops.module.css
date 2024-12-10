@@ -31,8 +31,9 @@
 }
 
 .menuHeader {
-    display: flex;
-    justify-content: center;
+    /* display: flex; */
+    /* justify-content: center; */
+    width: 100%;
 }
 
 .divider {
@@ -44,24 +45,29 @@
 .menuContainerLogo {
     display: flex;
     align-items: center;
-    justify-items: center;
-    justify-content: center;
-    margin: 20px 0px 20px 0px;
+    /* justify-items: center; */
+    justify-content: space-between;
+    padding: 20px 1rem 20px 1rem;
+    gap: 10px;
+    /* width: 100%; */
 }
 
-.menuContainerLogo span {
+.menuHeaderText {
     font-weight: bold;
     font-size: 20px;
+    display: flex;
+    flex: 0.95;
 }
 
 .closeButton {
-    position: absolute;
-    right: 20px;
-    top: 20px;
+    /* position: absolute; */
+    /* right: 20px; */
+    /* top: 20px; */
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 26px;
     cursor: pointer;
+    display: flex;
 }
 
 .searchContainer {
@@ -135,6 +141,7 @@
     /* Граница карточки */
     margin: 5px 0;
     /* Отступы между карточками */
+    gap: 10px;
 }
 
 .shopInfo {

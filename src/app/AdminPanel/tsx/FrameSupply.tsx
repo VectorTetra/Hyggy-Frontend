@@ -137,7 +137,6 @@ export default function FrameSupply() {
                 position: 'sticky',
                 top: 0,
                 left: 0,
-                backgroundColor: 'white',
                 zIndex: 1,
                 width: "100%",
                 padding: '0'
@@ -153,7 +152,7 @@ export default function FrameSupply() {
                         searchTerm={searchTerm}
                         onSearchChange={(event) => setSearchTerm(event.target.value)}
                     />
-                    <Button variant="contained" sx={{ backgroundColor: "#248922" }} onClick={() => {
+                    <Button variant="contained" onClick={() => {
                         setWarehouseId(0);
                         // Открытие формы для добавления новой поставки
                     }}>

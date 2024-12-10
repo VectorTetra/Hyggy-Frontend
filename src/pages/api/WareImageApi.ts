@@ -1,7 +1,4 @@
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
 
 export class WareImageQueryParams {
     SearchParameter: string = "Query";
@@ -33,9 +30,15 @@ export class WareImage {
     stringIds: string;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_IMAGE;
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_IMAGE in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_IMAGE in your environment variables.");
+}
+
 export async function getWareImages(params: WareImageQueryParams = { SearchParameter: "Query" }) {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/WareImage', {
+        const response = await axios.get(API_BASE_URL!, {
             params,
         });
 
@@ -49,7 +52,7 @@ export async function getWareImages(params: WareImageQueryParams = { SearchParam
 // POST запит для створення нового складу
 export async function postWareImage(WareImage: WareImagePostDTO) {
     try {
-        const response = await axios.post('http://www.hyggy.somee.com/api/WareImage', WareImage);
+        const response = await axios.post(API_BASE_URL!, WareImage);
         return response.data;
     } catch (error) {
         console.error('Error creating WareImage:', error);
@@ -64,7 +67,7 @@ export async function putWareImage(WareImage: WareImagePutDTO) {
             throw new Error('Id is required for updating a WareImage');
         }
 
-        const response = await axios.put(`http://www.hyggy.somee.com/api/WareImage`, WareImage);
+        const response = await axios.put(API_BASE_URL!, WareImage);
         return response.data;
     } catch (error) {
         console.error('Error updating WareImage:', error);
@@ -75,7 +78,7 @@ export async function putWareImage(WareImage: WareImagePutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareImage(id: number) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/WareImage/${id}`);
+        const response = await axios.delete(`${API_BASE_URL!}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting Ware:', error);
