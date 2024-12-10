@@ -1,117 +1,133 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { toast } from 'react-toastify';
-import { useStorages } from '@/pages/api/StorageApi';
-import { useWares } from '@/pages/api/WareApi';
+import { Storage, useStorages } from '@/pages/api/StorageApi';
+import { useWares, Ware } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem } from '@/pages/api/WareItemApi';
 
-export default function FrameWriteoff() {
-    const [store, setStore] = useState(''); // Вибраний склад
-    const [product, setProduct] = useState(''); // Вибраний товар
-    const [availableQuantity, setAvailableQuantity] = useState(0); // Доступна кількість
-    const [quantity, setQuantity] = useState(''); // Кількість для списання
-    const [storeId, setStoreId] = useState(null); // ID складу
-    const [productId, setProductId] = useState(null); // ID товару
+const StorageSelector = ({ storages, selectedStore, onChange }) => (
+    <Autocomplete
+        sx={{ flex: 2 }}
+        value={
+            selectedStore
+                ? `${selectedStore.shopName || 'Загальний склад'} - ${selectedStore.city}, ${selectedStore.street} ${selectedStore.houseNumber}`
+                : ''
+        }
+        onChange={onChange}
+        options={storages.map(
+            (s) => `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}`
+        )}
+        renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
+    />
+);
 
-    // Загружаємо список складів
+const ProductSelector = ({ wares, selectedProduct, onChange }) => (
+    <Autocomplete
+        sx={{ flex: 2 }}
+        value={selectedProduct?.description || ''}
+        onChange={onChange}
+        options={wares.map((w) => w.description)}
+        renderInput={(params) => <TextField {...params} label="Виберіть товар" variant="outlined" fullWidth />}
+    />
+);
+
+export default function FrameWriteoff() {
+    const [selectedStore, setSelectedStore] = useState<Storage | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<Ware | null>(null);
+    const [availableQuantity, setAvailableQuantity] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+
+    // Завантаження складів і товарів
     const { data: storages = [] } = useStorages({
-        SearchParameter: "Query",
+        SearchParameter: 'Query',
         PageNumber: 1,
         PageSize: 1000,
     });
 
-    // Загружаємо список товарів
     const { data: wares = [] } = useWares({
-        SearchParameter: "Query",
+        SearchParameter: 'Query',
         PageNumber: 1,
         PageSize: 1000,
     });
 
     // Завантаження складів для обраного продукту
-    const { data: wareItems = [], isLoading, isPending, isFetched, refetch } = useWareItems(
-        { SearchParameter: "Query", StorageId: storeId, WareId: productId },
-        false  // Запит активний лише якщо обрано склад і товар
+    const { data: wareItems = [], refetch, isLoading } = useWareItems(
+        { SearchParameter: 'Query', StorageId: selectedStore?.id, WareId: selectedProduct?.id },
+        false // Запит активний лише якщо обрано склад і товар
     );
 
-    const handleStoreChange = (event, value) => {
-        const selectedStore = storages.find((s) => `${s.shopName ? s.shopName : "Загальний склад"} - ${s.city}, ${s.street} ${s.houseNumber}` === value);
-        setStore(value || '');
-        setStoreId(selectedStore ? selectedStore.id : null);
-        setAvailableQuantity(0);
-    };
-
-    const handleProductChange = (event, value) => {
-        const selectedProduct = wares.find((w) => w.description === value);
-        setProduct(value || '');
-        setProductId(selectedProduct ? selectedProduct.id : null);
-        setAvailableQuantity(0);
-    };
     useEffect(() => {
-        // Оновлюємо доступну кількість
-        if (store !== null && product !== null) {
+        if (selectedStore?.id && selectedProduct?.id) {
             refetch();
         } else {
             setAvailableQuantity(0);
         }
-    }, [product, store]);
+    }, [selectedStore, selectedProduct, refetch]);
+
     useEffect(() => {
-        // Оновлюємо доступну кількість
         if (wareItems.length > 0) {
             setAvailableQuantity(wareItems[0].quantity);
-            console.log("handleProductChange", wareItems[0].quantity);
-
         } else {
             setAvailableQuantity(0);
         }
     }, [wareItems]);
 
     const handleQuantityChange = (event) => {
-        const value = event.target.value;
-        if (Number(value) > availableQuantity) {
-            toast.error(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`);
-            setQuantity('0'); // Используем строку '0'
+        const value = Number(event.target.value);
+        const toastId = "quantityErrorToast"; // Унікальний ID для тосту
+
+        if (value > availableQuantity) {
+            if (!toast.isActive(toastId)) {
+                toast.error(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`, {
+                    toastId, // Встановлюємо унікальний ID для тосту
+                    autoClose: false,
+                });
+            }
+            setQuantity(0);
         } else {
+            toast.dismiss(toastId); // Закриваємо тост, якщо помилка виправлена
             setQuantity(value);
         }
+    };
+
+
+    const resetForm = () => {
+        setSelectedStore(null);
+        setSelectedProduct(null);
+        setAvailableQuantity(0);
+        setQuantity(0);
     };
 
     const handleSave = async () => {
         const numericQuantity = Number(quantity);
 
-        if (!store || !product || numericQuantity <= 0 || numericQuantity > availableQuantity) {
+        if (!selectedStore || !selectedProduct || numericQuantity <= 0 || numericQuantity > availableQuantity) {
             toast.error('Будь ласка, заповніть всі поля або перевірте кількість!');
             return;
         }
 
-        if (!storeId || !productId) {
-            toast.error('Будь ласка, оберіть склад та товар!');
-            return;
-        }
-
         try {
-            // Обновление количества товара
-            const updatedItem = await putWareItem({
+            await putWareItem({
                 Id: wareItems[0]?.id,
-                StorageId: storeId,
-                WareId: productId,
+                StorageId: selectedStore.id,
+                WareId: selectedProduct.id,
                 Quantity: availableQuantity - numericQuantity,
             });
 
             toast.success('Списання відбулось успішно!');
-            console.log('Updated WareItem:', updatedItem);
-
-            // Очистка полей после успешного обновления
-            setStore('');
-            setProduct('');
-            setAvailableQuantity(0);
-            setQuantity('');
+            resetForm();
         } catch (error) {
-            console.error(error.message);
             toast.error('Не вдалося оновити кількість. Спробуйте ще раз!');
         }
     };
+
+    const statusMessage = useMemo(() => {
+        if (!selectedStore || !selectedProduct) return 'Виберіть склад і товар';
+        if (isLoading) return 'Завантаження...';
+        return `Всього в наявності - ${availableQuantity}`;
+    }, [selectedStore, selectedProduct, isLoading, availableQuantity]);
 
     return (
         <Box sx={{ p: 2 }}>
@@ -119,19 +135,24 @@ export default function FrameWriteoff() {
                 Списання товарів
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
-                <Autocomplete
-                    value={store}
-                    onChange={handleStoreChange}
-                    options={storages.map((s) => `${s.shopName ? s.shopName : "Загальний склад"} - ${s.city}, ${s.street} ${s.houseNumber}`)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
-                    sx={{ flex: 2 }}
+                <StorageSelector
+                    storages={storages}
+                    selectedStore={selectedStore}
+                    onChange={(event, value) => {
+                        const store = storages.find(
+                            (s) =>
+                                `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}` === value
+                        );
+                        setSelectedStore(store || null);
+                    }}
                 />
-                <Autocomplete
-                    value={product}
-                    onChange={handleProductChange}
-                    options={wares.map((p) => p.description)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть товар" variant="outlined" fullWidth />}
-                    sx={{ flex: 2 }}
+                <ProductSelector
+                    wares={wares}
+                    selectedProduct={selectedProduct}
+                    onChange={(event, value) => {
+                        const product = wares.find((w) => w.description === value);
+                        setSelectedProduct(product || null);
+                    }}
                 />
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                     <TextField
@@ -139,19 +160,22 @@ export default function FrameWriteoff() {
                         value={quantity}
                         onChange={handleQuantityChange}
                         placeholder={`Доступно: ${availableQuantity}`}
-                        disabled={!product}
+                        disabled={!selectedProduct}
                         fullWidth
                         sx={{ flex: 1, maxWidth: 150 }}
+                        slotProps={{
+                            input: {
+                                inputProps: {
+                                    min: 0, // мінімальне значення
+                                    max: availableQuantity, // максимальне значення
+                                    step: 1, // крок введення (опціонально)
+                                }
+                            },
+                        }}
                     />
-                    {(!store || !product) && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
-                        Виберіть склад і товар
-                    </Typography>}
-                    {isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
-                        Завантаження...
-                    </Typography>}
-                    {store && product && !isLoading && <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
-                        Всього в наявності - {availableQuantity}
-                    </Typography>}
+                    <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                        {statusMessage}
+                    </Typography>
                 </Box>
             </Box>
             <Button
