@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "../css/blogstyle.module.css";
-
+import Link from 'next/link';
 const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
     if (!blogs.length) return null;
 
@@ -15,7 +15,7 @@ const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
                 {mainBlog && (
                     <div className={styles.largeimage}>
                         <div className={styles.imagewrapper}>
-                            <a href={mainBlog.filePath || "#"}>
+                            <Link href={"/PageBlogIndividual/" + mainBlog.id}>
                                 <img
                                     src={mainBlog.previewImagePath}
                                     alt={mainBlog.blogTitle || "Blog Image"}
@@ -23,7 +23,7 @@ const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
                                 {mainBlog.blogTitle && (
                                     <p className={styles.imagecaption}>{mainBlog.blogTitle}</p>
                                 )}
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 )}
@@ -31,7 +31,7 @@ const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
                 <div className={styles.smallimages}>
                     {additionalBlogs.map((blog, index) => (
                         <div key={index} className={styles.imagewrapper}>
-                            <a href={blog.filePath || "#"}>
+                            <Link href={"/PageBlogIndividual/" + blog.id}>
                                 <img
                                     src={blog.previewImagePath}
                                     alt={blog.blogTitle || "Blog Image"}
@@ -39,7 +39,7 @@ const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
                                 {blog.blogTitle && (
                                     <p className={styles.imagecaption}>{blog.blogTitle}</p>
                                 )}
-                            </a>
+                            </Link>
                         </div>
                     ))}
                 </div>
