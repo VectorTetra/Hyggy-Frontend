@@ -9,16 +9,6 @@ import FrameBlogInvoiceForm from './FrameBlogInvoiceForm';
 import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
 import { toast } from 'react-toastify';
 import { useQueryState } from 'nuqs';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 
 
 export default function FrameBlogAddEdit() {
@@ -166,69 +156,67 @@ export default function FrameBlogAddEdit() {
     // };
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-                <Typography variant="h5" color="textPrimary">
-                    {blogId === 0 ? 'Додати блог' : 'Редагування блогу'}
-                </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+            <Typography variant="h5" color="textPrimary">
+                {blogId === 0 ? 'Додати блог' : 'Редагування блогу'}
+            </Typography>
 
-                <Autocomplete
-                    options={categories}
-                    getOptionLabel={(option: BlogCategory2) => `${option.name} (${option.blogCategory1Name})`}
-                    value={blogCategory2 || null}
-                    onChange={(event, newValue) => setBlogCategory2(newValue)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" />}
-                    isOptionEqualToValue={(option, value) => option.id === value?.id}
-                />
+            <Autocomplete
+                options={categories}
+                getOptionLabel={(option: BlogCategory2) => `${option.name} (${option.blogCategory1Name})`}
+                value={blogCategory2 || null}
+                onChange={(event, newValue) => setBlogCategory2(newValue)}
+                renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" />}
+                isOptionEqualToValue={(option, value) => option.id === value?.id}
+            />
 
-                <TextField
-                    label="Заголовок блогу"
-                    value={blogTitle}
-                    onChange={(e) => setBlogTitle(e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                />
-                <h4>Обкладинка блогу</h4>
-                <PhotoUploader photos={previewImageArray}
-                    setPhotos={setPreviewImageArray}
-                    UploadPhoto={async (ev) => {
-                        const files = ev.target.files;
-                        if (files) {
-                            const data = await uploadPhotos(files);
-                            setPreviewImageArray(data);
-                        }
-                    }}
-                    removePhoto={async (filename) => {
-                        try {
-                            await getPhotoByUrlAndDelete(filename);
-                            setPreviewImageArray([]);
-                        }
-                        catch (error) {
-                            console.error('Error deleting photo:', error);
-                        }
-                        finally {
-                            setPreviewImageArray([]);
-                        }
-                    }}
-                    setIsPhotosDirty={null}
-                    maxPhotos={1}
-                />
-                <FrameBlogInvoiceForm></FrameBlogInvoiceForm>
-                {/* <PhotoUploader
+            <TextField
+                label="Заголовок блогу"
+                value={blogTitle}
+                onChange={(e) => setBlogTitle(e.target.value)}
+                fullWidth
+                variant="outlined"
+            />
+            <h4>Обкладинка блогу</h4>
+            <PhotoUploader photos={previewImageArray}
+                setPhotos={setPreviewImageArray}
+                UploadPhoto={async (ev) => {
+                    const files = ev.target.files;
+                    if (files) {
+                        const data = await uploadPhotos(files);
+                        setPreviewImageArray(data);
+                    }
+                }}
+                removePhoto={async (filename) => {
+                    try {
+                        await getPhotoByUrlAndDelete(filename);
+                        setPreviewImageArray([]);
+                    }
+                    catch (error) {
+                        console.error('Error deleting photo:', error);
+                    }
+                    finally {
+                        setPreviewImageArray([]);
+                    }
+                }}
+                setIsPhotosDirty={null}
+                maxPhotos={1}
+            />
+            <FrameBlogInvoiceForm></FrameBlogInvoiceForm>
+            {/* <PhotoUploader
                 photos={photos}
                 setPhotos={setPhotos}
                 onSelectPreviewImage={handleSelectPreviewImage}
                 previewImage={previewImage}
             /> */}
 
-                {loading ? (
-                    <CircularProgress size={24} />
-                ) : (
-                    <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={handleSave}>
-                        Зберегти
-                    </Button>
-                )}
-            </Box>
-        </ThemeProvider>
+            {loading ? (
+                <CircularProgress size={24} />
+            ) : (
+                <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={handleSave}>
+                    Зберегти
+                </Button>
+            )}
+        </Box>
     );
 }

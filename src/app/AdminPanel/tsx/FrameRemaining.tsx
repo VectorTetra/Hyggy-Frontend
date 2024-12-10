@@ -8,18 +8,9 @@ import SearchField from './SearchField';
 //import FrameExpandableBlock from './FrameExpandableBlock';
 import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
 import useAdminPanelStore from '@/store/adminPanel';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
     const [selectedStorage, setSelectedStorage] = useState<Storage | null>(null); // ID складу
@@ -218,7 +209,7 @@ export default function FrameRemaining() {
     }, [wares, success, selectedStorage]);
 
     return (
-        <ThemeProvider theme={theme}>
+        <Box>
             <Box sx={{ p: 2, display: frameRemainsSidebarVisibility ? "none" : "block" }}>
                 <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
                     Залишки
@@ -378,6 +369,6 @@ export default function FrameRemaining() {
                 </Box>
             </Box>
             {frameRemainsSidebarVisibility && <FrameExpandableBlock />}
-        </ThemeProvider>
+        </Box>
     );
 }

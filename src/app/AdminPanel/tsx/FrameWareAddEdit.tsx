@@ -1,27 +1,17 @@
-import { Box, Button, TextField, Typography, CircularProgress, FormControlLabel, Checkbox, Select, Autocomplete } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useCreateWare, useUpdateWare, getWares, postJsonConstructorFile, putJsonConstructorFile, getJsonConstructorFile } from '@/pages/api/WareApi';
-import { toast } from 'react-toastify';
-import { useQueryState } from 'nuqs';
+import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
+import { getJsonConstructorFile, getWares, postJsonConstructorFile, putJsonConstructorFile, useCreateWare, useUpdateWare } from '@/pages/api/WareApi';
 import { getWareCategories3, useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import InvoiceForm from './FrameWareInvoiceForm';
-import { useSearchParams } from 'next/navigation';
-import useInvoiceStore from '@/store/invoiceStore';
-import { uploadPhotos, getPhotoByUrlAndDelete } from '@/pages/api/ImageApi';
-import { set } from 'lodash';
 import { deleteWareImage, postWareImage } from '@/pages/api/WareImageApi';
-import PhotoUploader from './PhotoUploader';
 import useAdminPanelStore from '@/store/adminPanel';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import useInvoiceStore from '@/store/invoiceStore';
+import { Autocomplete, Box, Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+import { useQueryState } from 'nuqs';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import InvoiceForm from './FrameWareInvoiceForm';
+import PhotoUploader from './PhotoUploader';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 
 export default function WareAddEditFrame() {
     const { data: categories = [], isLoading: categoriesLoading, isSuccess: categoriesSuccess } = useWareCategories3({
@@ -294,124 +284,123 @@ export default function WareAddEditFrame() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-                <Typography variant="h5" color="textPrimary">
-                    {wareId === 0 ? 'Додати товар' : 'Редагування товару'}
-                </Typography>
 
-                <TextField
-                    label="Введіть артикул..."
-                    type="number"
-                    value={article}
-                    onChange={(e) => setArticle(parseInt(e.target.value))}
-                    fullWidth
-                    variant="outlined"
-                />
-                <Autocomplete
-                    options={categories}
-                    getOptionLabel={(option) => option.name!}
-                    value={wareCategory3 || null}
-                    onChange={(event, newValue) => setWareCategory3(newValue)}
-                    filterOptions={(options, { inputValue }) =>
-                        options.filter((option) =>
-                            option.name!.toLowerCase().includes(inputValue.toLowerCase())
-                        )
-                    }
-                    renderOption={(props, option) => (
-                        <li {...props} key={option.id}>
-                            {option.name}
-                        </li>
-                    )}
-                    renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" />}
-                    isOptionEqualToValue={(option, value) => option.id === value?.id} // порівняння опцій за ID
-                />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+            <Typography variant="h5" color="textPrimary">
+                {wareId === 0 ? 'Додати товар' : 'Редагування товару'}
+            </Typography>
 
-                <TextField
-                    label="Введіть назву товару..."
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                />
-                <TextField
-                    label="Введіть короткий опис товару..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                />
-                <TextField
-                    label="Введіть ціну"
-                    type="number"
-                    value={price !== null ? price : ''}
-                    onChange={(e) => setPrice(parseFloat(e.target.value))}
-                    fullWidth
-                    variant="outlined"
-                />
-
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={statusIds.includes(1)}
-                                onChange={() => handleStatusChange(1)}
-                                color="primary"
-                            />
-                        }
-                        label="Завжди низька ціна"
-                    />
-                    <TextField
-                        label="Введіть % знижки"
-                        type="number"
-                        value={discount !== null ? discount : ''}
-                        onChange={(e) => setDiscount(parseFloat(e.target.value))}
-                        fullWidth
-                        variant="outlined"
-                        disabled={statusIds.includes(1)}
-                    />
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={statusIds.includes(3)}
-                                onChange={() => handleStatusChange(3)}
-                                color="primary"
-                            />
-                        }
-                        label="Новинка"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={isDeliveryAvailable} onChange={() => setIsDeliveryAvailable(!isDeliveryAvailable)} />}
-                        label="Можлива доставка"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={statusIds.includes(2)}
-                                onChange={() => handleStatusChange(2)}
-                                color="primary"
-                            />
-                        }
-                        label="Чудова пропозиція"
-                    />
-                </Box>
-                <InvoiceForm></InvoiceForm>
-                <PhotoUploader photos={photos} setPhotos={setPhotos} UploadPhoto={UploadPhoto} removePhoto={removePhoto} setIsPhotosDirty={setIsPhotosDirty} />
-                {loading ? (
-                    <CircularProgress size={24} />
-                ) : (
-                    <Button sx={{ backgroundColor: "#00AAAD" }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSave}
-                        disabled={!name || !price || !wareCategory3}
-                    >
-                        Зберегти
-                    </Button>
+            <TextField
+                label="Введіть артикул..."
+                type="number"
+                value={article}
+                onChange={(e) => setArticle(parseInt(e.target.value))}
+                fullWidth
+                variant="outlined"
+            />
+            <Autocomplete
+                options={categories}
+                getOptionLabel={(option) => option.name!}
+                value={wareCategory3 || null}
+                onChange={(event, newValue) => setWareCategory3(newValue)}
+                filterOptions={(options, { inputValue }) =>
+                    options.filter((option) =>
+                        option.name!.toLowerCase().includes(inputValue.toLowerCase())
+                    )
+                }
+                renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                        {option.name}
+                    </li>
                 )}
+                renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" />}
+                isOptionEqualToValue={(option, value) => option.id === value?.id} // порівняння опцій за ID
+            />
+
+            <TextField
+                label="Введіть назву товару..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                fullWidth
+                variant="outlined"
+            />
+            <TextField
+                label="Введіть короткий опис товару..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                fullWidth
+                variant="outlined"
+            />
+            <TextField
+                label="Введіть ціну"
+                type="number"
+                value={price !== null ? price : ''}
+                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                fullWidth
+                variant="outlined"
+            />
+
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={statusIds.includes(1)}
+                            onChange={() => handleStatusChange(1)}
+                            color="primary"
+                        />
+                    }
+                    label="Завжди низька ціна"
+                />
+                <TextField
+                    label="Введіть % знижки"
+                    type="number"
+                    value={discount !== null ? discount : ''}
+                    onChange={(e) => setDiscount(parseFloat(e.target.value))}
+                    fullWidth
+                    variant="outlined"
+                    disabled={statusIds.includes(1)}
+                />
             </Box>
-        </ThemeProvider>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={statusIds.includes(3)}
+                            onChange={() => handleStatusChange(3)}
+                            color="primary"
+                        />
+                    }
+                    label="Новинка"
+                />
+                <FormControlLabel
+                    control={<Checkbox checked={isDeliveryAvailable} onChange={() => setIsDeliveryAvailable(!isDeliveryAvailable)} />}
+                    label="Можлива доставка"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={statusIds.includes(2)}
+                            onChange={() => handleStatusChange(2)}
+                            color="primary"
+                        />
+                    }
+                    label="Чудова пропозиція"
+                />
+            </Box>
+            <InvoiceForm></InvoiceForm>
+            <PhotoUploader photos={photos} setPhotos={setPhotos} UploadPhoto={UploadPhoto} removePhoto={removePhoto} setIsPhotosDirty={setIsPhotosDirty} />
+            {loading ? (
+                <CircularProgress size={24} />
+            ) : (
+                <Button sx={{ backgroundColor: "#00AAAD" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                    disabled={!name || !price || !wareCategory3}
+                >
+                    Зберегти
+                </Button>
+            )}
+        </Box>
     );
 }

@@ -28,7 +28,7 @@ type Storage = {
   street: string
 }
 
-export default function NewShop() {
+export default function FrameShopAddEdit() {
   // const searchParams = new URLSearchParams(window.location.search);
 
   // const [id, setId] = useState<string | null>(searchParams.get('new-edit'));
