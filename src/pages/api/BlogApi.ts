@@ -16,6 +16,8 @@ export class BlogQueryParams {
 	PageNumber?: number | null;
 	PageSize?: number | null;
 	StringIds?: string | null;
+	StringBlogCategory1Ids?: string | null;
+	StringBlogCategory2Ids?: string | null;
 	Sorting?: string | null;
 	QueryAny?: string | null;
 }
@@ -164,7 +166,7 @@ export async function putJsonConstructorFile(structureArray: any[] | null, oldCo
 }
 
 // Використання useQuery для отримання списку складів (blogs)
-export function useBlogs(params: BlogQueryParams = { SearchParameter: "Paged", PageNumber: 1, PageSize: 1000 }, isEnabled: boolean = true) {
+export function useBlogs(params: BlogQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['blogs', params],
 		queryFn: () => getBlogs(params),

@@ -12,7 +12,7 @@ export default function Home() {
   const categoryKey = caption.toLowerCase();
 
   return (
-    <Layout headerType="header1" footerType="footer1">
+    <Layout headerType="header1" footerType="footer4">
       <div>
         <PageBlogCategory caption={categoryKey} />
       </div>

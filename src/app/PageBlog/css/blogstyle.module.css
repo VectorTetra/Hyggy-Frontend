@@ -33,8 +33,15 @@
     transition: background-color 0.3s ease;
 }
 
-.menuitem:hover {
+.menuitem:hover,
+.selectedMenuItem:hover {
     background-color: #ddd;
+    color: #000;
+}
+
+.selectedMenuItem {
+    background-color: #00AAAD;
+    color: white;
 }
 
 .imagescontainer {
@@ -43,7 +50,7 @@
     margin: 25px 10px 0px 10px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 150px));
     justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
 .imageitem {
@@ -56,7 +63,7 @@
 }
 
 .imageitem a:hover {
-    color: blue;
+    color: #00AAAD;
 }
 
 .textmenu {

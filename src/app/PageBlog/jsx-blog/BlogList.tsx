@@ -1,57 +1,51 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react';
 import styles from "../css/blogstyle.module.css";
 
-const BlogList = ({ blogs }) => {
-    const [currBlogs, setCurrBlogs] = useState<any>([]);
+const BlogList = ({ blogs = [], title }: { blogs: any[]; title?: string }) => {
+    if (!blogs.length) return null;
 
-    useEffect(() => {
-        setCurrBlogs(blogs || []);
-    }, [blogs]);
+    const mainBlog = blogs[0];
+    const additionalBlogs = blogs.slice(1, 5);
 
     return (
         <div className={styles.categorycontainer}>
-            <h2 className={styles.h2}>{currBlogs[0] && currBlogs[0].blogCategory1Name
-            }</h2>
+            <h2 className={styles.h2}>{title || mainBlog.blogCategory1Name}</h2>
             <div className={styles.categorycontent}>
-                <div className={styles.largeimage}>
-                    {currBlogs.length > 0 && currBlogs[0] && (
+                {/* Головне зображення */}
+                {mainBlog && (
+                    <div className={styles.largeimage}>
                         <div className={styles.imagewrapper}>
-                            <a href={currBlogs[0].filePath || "#"}>
+                            <a href={mainBlog.filePath || "#"}>
                                 <img
-                                    src={currBlogs[0].previewImagePath}
-                                    alt={currBlogs[0].blogTitle}
+                                    src={mainBlog.previewImagePath}
+                                    alt={mainBlog.blogTitle || "Blog Image"}
                                 />
-                                {currBlogs[0].blogTitle && (
-                                    <p className={styles.imagecaption}>
-                                        {currBlogs[0].blogTitle}
-                                    </p>
+                                {mainBlog.blogTitle && (
+                                    <p className={styles.imagecaption}>{mainBlog.blogTitle}</p>
                                 )}
                             </a>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+                {/* Додаткові зображення */}
                 <div className={styles.smallimages}>
-                    {currBlogs && currBlogs.slice(1, 5).map((image, imgIndex) => (
-                        <div key={imgIndex}>
-                            <div className={styles.imagewrapper}>
-                                <a href={image.filePath || "#"}>
-                                    <img
-                                        src={image.previewImagePath}
-                                        alt={image.blogTitle}
-                                    />
-                                    {image.blogTitle && (
-                                        <p className={styles.imagecaption}>
-                                            {image.blogTitle}
-                                        </p>
-                                    )}
-                                </a>
-                            </div>
+                    {additionalBlogs.map((blog, index) => (
+                        <div key={index} className={styles.imagewrapper}>
+                            <a href={blog.filePath || "#"}>
+                                <img
+                                    src={blog.previewImagePath}
+                                    alt={blog.blogTitle || "Blog Image"}
+                                />
+                                {blog.blogTitle && (
+                                    <p className={styles.imagecaption}>{blog.blogTitle}</p>
+                                )}
+                            </a>
                         </div>
                     ))}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default BlogList
+export default BlogList;

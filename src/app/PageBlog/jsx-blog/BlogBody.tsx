@@ -1,49 +1,43 @@
 "use client";
-import React, { useState } from "react";
-import styles from "../css/blogstyle.module.css";
-import Link from "next/link";
+import { useBlogs } from "@/pages/api/BlogApi";
 import { useCurrentCategory } from "@/store/blogStore";
-import { Blog, useBlogs } from "@/pages/api/BlogApi";
+import styles from "../css/blogstyle.module.css";
 import BlogList from "./BlogList";
 
 export default function BlogBody() {
     const { currentCategory, currentCategory2 } = useCurrentCategory();
 
-    const { data: blogs = [] } = useBlogs();
-
-    const groupedBlogs: Record<string, Blog[]> = blogs.reduce((acc, blog) => {
-        const categoryId = blog.blogCategory1Id;
-        if (!acc[categoryId]) {
-            acc[categoryId] = [];
-        }
-        acc[categoryId].push(blog);
-        return acc;
-    }, {} as Record<string, Blog[]>);
-
-    const groupedBlogs2: Record<string, Blog[]> = blogs.reduce((acc, blog) => {
-        const categoryId = blog.blogCategory2Id;
-        if (!acc[categoryId]) {
-            acc[categoryId] = [];
-        }
-        acc[categoryId].push(blog);
-        return acc;
-    }, {} as Record<string, Blog[]>);
-
-    console.log(groupedBlogs2);
-
+    const { data: blogs = [] } = useBlogs({
+        SearchParameter: "Query",
+        StringBlogCategory1Ids: (!currentCategory && !currentCategory2) ? "1|2|3" : null,
+        BlogCategory1Id: currentCategory?.id || null,
+        BlogCategory2Id: currentCategory2?.id || null,
+    });
+    const { data: blogsForHome = [] } = useBlogs({
+        SearchParameter: "Query",
+        BlogCategory1Id: 1,
+    });
+    const { data: blogsForSleep = [] } = useBlogs({
+        SearchParameter: "Query",
+        BlogCategory1Id: 2,
+    });
+    const { data: blogsForGarden = [] } = useBlogs({
+        SearchParameter: "Query",
+        BlogCategory1Id: 3,
+    });
+    console.log("blogs in BlogBody", blogs);
+    if (!currentCategory && !currentCategory2) {
+        return (
+            <div className={styles.headcontainer}>
+                <BlogList blogs={blogsForHome} />
+                <BlogList blogs={blogsForSleep} />
+                <BlogList blogs={blogsForGarden} />
+            </div>
+        )
+    }
     return (
         <div className={styles.headcontainer}>
-            {currentCategory2 === "" ? (
-                Object.entries(groupedBlogs).map(([categoryId, blogs]) => (
-                    (currentCategory === blogs[0]?.blogCategory1Name || currentCategory === "") &&
-                    <BlogList key={categoryId} blogs={blogs} />
-                ))
-            ) : (
-                Object.entries(groupedBlogs2).map(([categoryId, blogs]) => (
-                    (currentCategory2 === blogs[0]?.blogCategory2Name) &&
-                    <BlogList key={categoryId} blogs={blogs} />
-                ))
-            )}
+            <BlogList blogs={blogs} title={currentCategory2 !== null ? currentCategory2.name : currentCategory?.name} />
         </div>
     );
 }
