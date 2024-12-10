@@ -25,11 +25,15 @@ const theme = createTheme({
 	palette: {
 		primary: {
 			main: '#00AAAD',
-			contrastText: 'white',
+			contrastText: '#fff',
 		},
 		secondary: {
 			main: '#be0f0f',
-			contrastText: 'black',
+			contrastText: '#000',
+		},
+		common: {
+			black: '#000',
+			white: '#fff',
 		},
 	},
 });

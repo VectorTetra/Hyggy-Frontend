@@ -6,6 +6,7 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import PhotoUploader from './PhotoUploader';
 import '../css/FrameBlogInvoiceForm.css';
+import FrameBlogInvoiceFormKeywordForm from './FrameBlogInvoiceFormKeywordForm';
 //import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
 //import Table from "quill-table"; // Основний модуль для роботи з таблицями
 // import { Resize, BaseModule } from 'quill-image-resize-module';
@@ -219,7 +220,7 @@ const FrameBlogInvoiceForm = () => {
 
             </div>
 
-            <div style={{ marginBottom: '2rem' }}>
+            {/* <div style={{ marginBottom: '2rem' }}>
                 <h4>Ключові слова</h4>
                 {keywords.map((keyword, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -243,7 +244,9 @@ const FrameBlogInvoiceForm = () => {
                         Прибрати всі ключові слова
                     </Button>
                 </Box>
-            </div>
+            </div> */}
+
+            <FrameBlogInvoiceFormKeywordForm />
         </div>
     );
 };
