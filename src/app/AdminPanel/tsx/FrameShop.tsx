@@ -1,37 +1,27 @@
 
-import React, { useEffect, useState } from 'react';
-import { Box, Button, circularProgressClasses, TextField, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { deleteShop, getShops } from '@/pages/api/ShopApi';
-import { toast } from 'react-toastify';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { useDeleteShop, useShops } from '@/pages/api/ShopApi';
 import useAdminPanelStore from '@/store/adminPanel';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
+import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
+import themeFrame from './ThemeFrame';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#00AAAD',
-      contrastText: 'white',
-    },
-  },
-});
-
-export default function AllShops() {
+export default function FrameShop() {
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
-  const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
-  const [data, setData] = useState<any | null>([]);
-  const [loading, setLoading] = useState(true);
-  const { shopId, setShopId } = useAdminPanelStore();
-
-  const [paginationModel, setPaginationModel] = React.useState({
-    page: 1,
-    pageSize: 100,
+  const { data: data = [], isLoading: loading } = useShops({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 150
   });
+
+  const { mutateAsync: deleteShop } = useDeleteShop();
+  const { setShopId } = useAdminPanelStore();
 
   const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
 
@@ -74,8 +64,6 @@ export default function AllShops() {
       console.log("selectedRow", selectedRow);
       await deleteShop(selectedRow.id);
       setIsDialogOpen(false);
-      // Оновлюємо список магазинів після видалення
-      setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
       toast.info('Склад успішно видалено!');
     }
   };
@@ -122,35 +110,9 @@ export default function AllShops() {
     setActiveTab("addNewShop"); // Змінюємо активну вкладку
   };
 
-  useEffect(() => {
-    const fetchStorages = async () => {
-      try {
-        const storages = await getShops({
-          SearchParameter: "Query",
-          PageNumber: 1,
-
-          PageSize: 150
-        });
-        setData(storages);
-        setActiveNewShop(null);
-
-      } catch (error) {
-        console.error('Error fetching storage data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    console.log(activeTab);
-    fetchStorages();
-  }, []);
-
-
-  useEffect(() => {
-    console.log(data)
-  }, [])
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%' }}>
+      <ThemeProvider theme={themeFrame}>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
           Магазини
         </Typography>
@@ -162,7 +124,9 @@ export default function AllShops() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
           />
-          <Button sx={{ backgroundColor: "#00AAAD" }} variant="contained" onClick={() => { setActiveNewShop('0'); setActiveTab('addNewShop') }}>
+          <Button sx={{ backgroundColor: "#00AAAD" }} variant="contained" onClick={() => {
+            setShopId(0); setActiveTab('addNewShop')
+          }}>
             Додати
           </Button>
         </Box>
@@ -223,29 +187,30 @@ export default function AllShops() {
             }}
           />
         </Box>
-
-        <ConfirmationDialog
-          title="Видалити магазин?"
-          contentText={
-            selectedRow
-              ? `Ви справді хочете видалити цей магазин? : 
+      </ThemeProvider>
+      <ConfirmationDialog
+        title="Видалити магазин?"
+        contentText={
+          selectedRow
+            ? `Ви справді хочете видалити цей магазин? : 
             ${selectedRow.name && `${selectedRow.name},`} 
             ${selectedRow.state && `${selectedRow.state},`} 
                     ${selectedRow.city && `${selectedRow.city},`} 
                     ${selectedRow.street && `${selectedRow.street},`}
                     ${selectedRow.houseNumber && `${selectedRow.houseNumber},`}
                     ${selectedRow.postalCode && `${selectedRow.postalCode}`}`
-              : ''
-          }
-          onConfirm={handleConfirmDelete}
-          onCancel={() => setIsDialogOpen(false)}
-          confirmButtonColor='#be0f0f'
-          cancelButtonColor='#00AAAD'
-          open={isDialogOpen}
-        />
-
-      </Box>
-    </ThemeProvider>
-
+            : ''
+        }
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDialogOpen(false)}
+        confirmButtonBackgroundColor='#be0f0f'
+        confirmButtonBorderColor='#be0f0f'
+        confirmButtonColor='#fff'
+        cancelButtonBackgroundColor='#fff'
+        cancelButtonBorderColor='#00AAAD'
+        cancelButtonColor='#00AAAD'
+        open={isDialogOpen}
+      />
+    </Box>
   )
 }

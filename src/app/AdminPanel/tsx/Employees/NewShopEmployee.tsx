@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { toast } from 'react-toastify';
-import { getShops } from '@/pages/api/ShopApi';
 import { postShopEmployee } from '@/pages/api/EmployeesApi';
-import { useSearchParams } from 'next/navigation';
-import { Password } from '@mui/icons-material';
-import { faInfoCircle, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { getShops } from '@/pages/api/ShopApi';
+import { faEye, faEyeSlash, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSearchParams } from 'next/navigation';
+import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const USER_REGEX = /^[А-ЯЇЄІҐ][а-яїєіґ]{1,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
@@ -18,7 +17,6 @@ const NewShopEmployee = () => {
     const id = searchParams?.get("shopemployee");
 
     const userRef = useRef<HTMLInputElement>(null);
-    const errorRef = useRef();
 
     const [name, setName] = useState("");
     const [validName, setValidName] = useState(false);
@@ -107,6 +105,12 @@ const NewShopEmployee = () => {
     }, [password, matchPwd]);
 
     useEffect(() => {
+        console.log("validName", validName);
+        console.log("validSurname", validSurname);
+        console.log("validEmail", validEmail);
+        console.log("validPhone", validPhone);
+        console.log("validPwd", validPwd);
+        console.log("validMatch", validMatch);
         if (validName && validPwd && validMatch && validEmail && validSurname && validPhone) {
             setIsDisabled(false);
         } else {

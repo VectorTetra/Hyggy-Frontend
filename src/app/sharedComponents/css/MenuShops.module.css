@@ -12,7 +12,7 @@
 .overlay {
     position: fixed;
     top: 0;
-    width: 500px;
+    max-width: 500px;
     height: 100%;
     background-color: white;
     transition: right 0.3s ease;

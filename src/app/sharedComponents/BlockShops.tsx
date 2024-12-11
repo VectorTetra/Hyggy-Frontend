@@ -163,8 +163,8 @@ const BlockShops: React.FC = () => {
     if (!isMainPageMenuShopsOpened) return null;
     return (
 
-        <div>
-            <div className={styles.overlayBackground}></div>
+        <div className={styles.overlayBackground}>
+            <div ></div>
             <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
