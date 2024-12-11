@@ -2,6 +2,7 @@ import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
 import { getJsonConstructorFile, getWares, postJsonConstructorFile, putJsonConstructorFile, useCreateWare, useUpdateWare } from '@/pages/api/WareApi';
 import { getWareCategories3, useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
 import { deleteWareImage, postWareImage } from '@/pages/api/WareImageApi';
+import { useCreateWareHistory, useWarePriceHistories } from '@/pages/api/WarePriceHistoryApi';
 import useAdminPanelStore from '@/store/adminPanel';
 import useInvoiceStore from '@/store/invoiceStore';
 import { Autocomplete, Box, Button, Checkbox, CircularProgress, FormControlLabel, TextField, Typography } from '@mui/material';
@@ -14,17 +15,27 @@ import { ThemeProvider } from '@mui/material';
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 
 export default function WareAddEditFrame() {
+    const wareId = useAdminPanelStore((state) => state.wareId);
+
     const { data: categories = [] } = useWareCategories3({
         SearchParameter: "Query",
         PageNumber: 1,
         PageSize: 1000,
         Sorting: "NameAsc"
     });
+    const { data: priceHistories = [] } = useWarePriceHistories({
+        SearchParameter: "Query",
+        WareId: wareId,
+        Sorting: "EffectiveDateDesc",
+        PageNumber: 1,
+        PageSize: 1
+    }, wareId !== null && wareId > 0);
+
     const { rows, clearRows, setRows, wareDetails, setWareDetails } = useInvoiceStore();
     const { mutateAsync: createWare } = useCreateWare();
+    const { mutateAsync: createPriceHistory } = useCreateWareHistory();
     const { mutateAsync: updateWare } = useUpdateWare();
 
-    const wareId = useAdminPanelStore((state) => state.wareId);
 
     const [article, setArticle] = useState<number>(0);
     const [wareCategory3, setWareCategory3] = useState<WareCategory3 | null>(null);
@@ -169,12 +180,16 @@ export default function WareAddEditFrame() {
                         TrademarkId: trademarkId,
                         StructureFilePath: contrFilePath
                     });
-
+                    const newWarePriceHistory = await createPriceHistory({
+                        WareId: newWare.id,
+                        EffectiveDate: new Date(),
+                        Price: price || 0
+                    });
                     if (isPhotosDirty) {
                         // Додаємо нові зображення
                         const newPhotoPromises = photos.map(async (photo) => {
                             const newPhotoDTO = await postWareImage({
-                                WareId: wareId,
+                                WareId: newWare.id,
                                 Path: photo
                             });
                             return newPhotoDTO.id;
@@ -222,7 +237,7 @@ export default function WareAddEditFrame() {
                             console.log("Ми вийшли з блока isPhotosDirty");
                         }
 
-                        await updateWare({
+                        const updatedWare = await updateWare({
                             Id: wareId,
                             Article: article,
                             Name: name,
@@ -241,6 +256,14 @@ export default function WareAddEditFrame() {
                             ImageIds: isPhotosDirty ? newWareImageIds : imageIds,
                             StatusIds: statusIds
                         });
+                        if (priceHistories.length > 0 && priceHistories[0].price !== price) {
+                            const newWarePriceHistory = await createPriceHistory({
+                                WareId: wareId,
+                                EffectiveDate: new Date(),
+                                Price: price || 0
+                            });
+                        }
+
                         toast.success('Товар успішно оновлено!');
                     }
                 }
@@ -252,6 +275,7 @@ export default function WareAddEditFrame() {
             setLoading(false);
             clearRows();
             setWareDetails("");
+            setActiveTab('products');
         }
     };
 

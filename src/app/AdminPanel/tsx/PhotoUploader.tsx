@@ -60,7 +60,7 @@ function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhoto
             )}
 
             {photos && photos.length > 0 && (
-                <div style={{ display: 'flex', justifyContent: justifyPhotos || "unset" }}>
+                <div style={{ display: 'flex', justifyContent: justifyPhotos || "unset", flexDirection: "column" }}>
                     <div>
                         <div style={{ marginBottom: "10px", fontStyle: "italic", userSelect: "none" }}>
                             Подвійне натискання на кнопку кошику для видалення. {isStarPhotoAssigned && "Фото з зірочкою буде на обкладинці"}
