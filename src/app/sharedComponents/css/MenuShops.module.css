@@ -130,17 +130,11 @@
 
 .shopcard {
     display: flex;
-    /* Используем flexbox для выравнивания */
+    flex-direction: row;
     justify-content: space-between;
-    /* Размещаем элементы с максимальным пространством между ними */
     align-items: center;
-    /* Вертикальное выравнивание элементов */
     padding: 10px;
-    /* Отступы вокруг карточки */
-    /* border: 1px solid #ccc; */
-    /* Граница карточки */
     margin: 5px 0;
-    /* Отступы между карточками */
     gap: 10px;
 }
 
@@ -188,37 +182,9 @@
     margin-left: 10px;
 }
 
-.customlink {
-    color: darkblue;
-    text-decoration: none;
-    padding: 0;
-    margin: 0;
-}
+@media screen and (max-width: 400px) {
+    .shopcard {
+        flex-direction: column;
+    }
 
-.customlink:hover {
-    color: #ff4500;
-    /* Замените на нужный цвет при наведении */
-    text-decoration: underline;
-}
-
-.worktimelist {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
-
-.worktimeitem {
-    display: flex;
-    /* justify-content: space-between; */
-}
-
-.worktimeday {
-    width: 150px;
-    font-size: 14px;
-}
-
-.customlink2 {
-    color: darkblue;
-    text-decoration: none;
-    margin: 20px 0 5px 0;
 }
