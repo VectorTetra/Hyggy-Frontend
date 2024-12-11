@@ -168,8 +168,12 @@ const Clients = () => {
                 }
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDialogOpen(false)}
-                confirmButtonColor='#00AAAD'
-                cancelButtonColor='#248922'
+                confirmButtonBackgroundColor='#be0f0f'
+                confirmButtonBorderColor='#be0f0f'
+                confirmButtonColor='#fff'
+                cancelButtonBackgroundColor='#fff'
+                cancelButtonBorderColor='#00AAAD'
+                cancelButtonColor='#00AAAD'
                 open={isDialogOpen}
             />
         </Box>

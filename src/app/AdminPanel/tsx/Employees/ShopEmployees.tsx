@@ -171,7 +171,11 @@ const ShopEmployees = () => {
                 }
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDialogOpen(false)}
-                confirmButtonColor='#be0f0f'
+                confirmButtonBackgroundColor='#be0f0f'
+                confirmButtonBorderColor='#be0f0f'
+                confirmButtonColor='#fff'
+                cancelButtonBackgroundColor='#fff'
+                cancelButtonBorderColor='#00AAAD'
                 cancelButtonColor='#00AAAD'
                 open={isDialogOpen}
             />

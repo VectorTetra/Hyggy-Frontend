@@ -105,6 +105,12 @@ const NewShopEmployee = () => {
     }, [password, matchPwd]);
 
     useEffect(() => {
+        console.log("validName", validName);
+        console.log("validSurname", validSurname);
+        console.log("validEmail", validEmail);
+        console.log("validPhone", validPhone);
+        console.log("validPwd", validPwd);
+        console.log("validMatch", validMatch);
         if (validName && validPwd && validMatch && validEmail && validSurname && validPhone) {
             setIsDisabled(false);
         } else {
