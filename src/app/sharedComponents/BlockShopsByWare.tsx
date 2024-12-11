@@ -5,6 +5,8 @@ import useWarePageMenuShops from "@/store/warePageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import { useWareItems } from "@/pages/api/WareItemApi";
 import useLocalStorageStore from "@/store/localStorage";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -128,7 +130,9 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                             className={styles.searchInput}
                             placeholder="Введіть місто або адресу..."
                         />
-                        <button className={styles.searchButton}>🔍</button>
+                        <button onClick={() => { }} className={styles.searchButton}>
+                            <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
+                        </button>
                     </div>
                     <div className={styles.shopListContainer}>
                         {isShopsLoading || isWareItemsLoading ? (
