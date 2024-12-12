@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { toast } from 'react-toastify';
 import { Storage, useStorages } from '@/pages/api/StorageApi';
-import { useWares, Ware } from '@/pages/api/WareApi';
+import { useWares, WareGetDTO } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem, postWareItem, getWareItems } from '@/pages/api/WareItemApi';
 import { ThemeProvider } from '@mui/material';
@@ -38,7 +38,7 @@ const ProductSelector = ({ wares, selectedProduct, onChange }) => (
 export default function FrameTransfer() {
     const [fromStore, setFromStore] = useState<Storage | null>(null);
     const [toStore, setToStore] = useState<Storage | null>(null);
-    const [selectedProduct, setSelectedProduct] = useState<Ware | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
