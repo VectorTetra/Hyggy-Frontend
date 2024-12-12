@@ -1,7 +1,7 @@
 // File: FilterSidebar.tsx
 import React from "react";
 import { useEffect } from "react";
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import styles from "../css/FilterSidebar.module.css";
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
 import PriceRange from "./PriceRange";
@@ -15,7 +15,7 @@ import { WareTrademark } from "@/pages/api/WareTrademarkApi";
 import { WareStatus } from "@/pages/api/WareStatusApi";
 
 const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }: {
-	wares: Ware[], foundWares: Ware[],
+	wares: WareGetDTO[], foundWares: WareGetDTO[],
 	categories: WareCategory3[], trademarks: WareTrademark[], statuses: WareStatus[]
 }) => {
 	const { isSidebarOpen, setIsSidebarOpen, setCategoriesMap, setTrademarksMap, setStatusesMap } = useSearchStore();

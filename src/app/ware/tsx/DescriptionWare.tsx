@@ -1,8 +1,8 @@
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import styles from "../css/DescriptionWare.module.css";
 import Image from "next/image";
 
-export default function DescriptionWare({ article, description, product }: { article: number, description: string | null, product: Ware }) {
+export default function DescriptionWare({ article, description, product }: { article: number, description: string | null, product: WareGetDTO }) {
   return (
     <div className={styles.descriptionContainer}>
       {/* <h2 className={styles.title}>Опис</h2> */}

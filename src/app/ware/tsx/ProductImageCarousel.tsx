@@ -1,4 +1,4 @@
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import styles from "@/app/ware/css/ProductImageCarousel.module.css";
 import { Customer } from "@/pages/api/CustomerApi";
 import FavoriteButton from "../../sharedComponents/FavoriteButton";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useFavoriteWare } from "@/app/sharedComponents/methods/useFavoriteWare";
 
 interface ProductImageCarouselProps {
-    product: Ware;
+    product: WareGetDTO;
 }
 
 const ProductImageCarousel: React.FC<ProductImageCarouselProps> = ({ product }) => {

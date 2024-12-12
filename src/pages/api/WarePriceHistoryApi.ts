@@ -27,7 +27,7 @@ export class WareHistoryPutDTO {
 	EffectiveDate: Date;
 	Price: number;
 }
-export class WarePriceHistory {
+export class WarePriceHistoryGetDTO {
 	id: number;
 	wareId: number;
 	effectiveDate: Date;

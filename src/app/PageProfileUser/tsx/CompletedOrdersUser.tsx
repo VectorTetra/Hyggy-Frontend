@@ -3,12 +3,12 @@ import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Divider
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import data from '../PageProfileUser.json';
 import ReviewDialog from "@/app/sharedComponents/ReviewDialog";
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 
 export default function CompletedOrdersUser() {
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<Ware | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
 
     const handleToggle = (orderId: string) => {
         setExpandedOrderId(prevId => prevId === orderId ? null : orderId);

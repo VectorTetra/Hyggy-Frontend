@@ -43,7 +43,7 @@ const DeliveryPage = () => {
     if (!addressInfo) {
       router.push('/cart/address');
     } else {
-      setSearchQuery(`${addressInfo.city}, ${addressInfo.street}`);
+      setSearchQuery(`${addressInfo.City}, ${addressInfo.Street}`);
     }
   }, [selectedDeliveryType, router, addressInfo]);
 

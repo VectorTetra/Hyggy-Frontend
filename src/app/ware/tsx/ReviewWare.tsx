@@ -1,5 +1,5 @@
 
-import { Ware } from '@/pages/api/WareApi';
+import { WareGetDTO } from '@/pages/api/WareApi';
 import { useWareReviews } from '@/pages/api/WareReviewApi';
 import useReviewDialogStore from '@/store/reviewDialogStore';
 import { useEffect } from 'react';
@@ -7,7 +7,7 @@ import StarRating from '../../sharedComponents/StarRating';
 import styles from "../css/ReviewWare.module.css";
 import ReviewDialog from '../../sharedComponents/ReviewDialog';
 
-export default function ReviewWare({ product }: { product: Ware }) {
+export default function ReviewWare({ product }: { product: WareGetDTO }) {
   const { isModalOpen, setIsModalOpen } = useReviewDialogStore();
 
   const { data: reviews = [], refetch } = useWareReviews(
