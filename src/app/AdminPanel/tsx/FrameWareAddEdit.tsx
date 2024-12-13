@@ -183,7 +183,7 @@ export default function WareAddEditFrame() {
                     const newWarePriceHistory = await createPriceHistory({
                         WareId: newWare.id,
                         EffectiveDate: new Date(),
-                        Price: price || 0
+                        Price: (price - (price * (discount / 100))) || 0
                     });
                     if (isPhotosDirty) {
                         // Додаємо нові зображення
@@ -260,7 +260,7 @@ export default function WareAddEditFrame() {
                             const newWarePriceHistory = await createPriceHistory({
                                 WareId: wareId,
                                 EffectiveDate: new Date(),
-                                Price: price || 0
+                                Price: (price - (price * (discount / 100))) || 0
                             });
                         }
 

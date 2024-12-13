@@ -5,6 +5,7 @@ import { ShopGetDTO } from './ShopApi';
 import { Customer } from './CustomerApi';
 import { OrderItemGetDTO } from './OrderItemApi';
 import { OrderStatusGetDTO } from './OrderStatusApi';
+import { OrderDeliveryTypeGetDTO } from './OrderDeliveryTypeApi';
 
 export class OrderQueryParams {
 
@@ -30,6 +31,13 @@ export class OrderQueryParams {
 	StatusId?: number;
 	StatusName?: string;
 	StatusDescription?: string;
+	DeliveryTypeId?: number | null;
+	DeliveryTypeName?: string | null;
+	DeliveryTypeDescription?: string | null;
+	MinDeliveryTypePrice?: number | null;
+	MaxDeliveryTypePrice?: number | null;
+	MinDeliveryTimeInDays?: number | null;
+	MaxDeliveryTimeInDays?: number | null;
 	OrderItemId?: number;
 	WareId?: number;
 	WarePriceHistoryId?: number;
@@ -40,7 +48,6 @@ export class OrderQueryParams {
 	QueryAny?: string;
 
 }
-
 export class OrderPostDTO {
 	StatusId: number;
 	ShopId: number;
@@ -49,6 +56,7 @@ export class OrderPostDTO {
 	OrderDate: Date;
 	Phone: string;
 	DeliveryAddressId: number;
+	DeliveryTypeId: number;
 }
 export class OrderPutDTO {
 	Id: number;
@@ -59,6 +67,7 @@ export class OrderPutDTO {
 	OrderDate: Date;
 	Phone: string;
 	DeliveryAddressId: number;
+	DeliveryTypeId: number;
 	OrderItemIds: number[];
 }
 export class OrderGetDTO {
@@ -76,6 +85,9 @@ export class OrderGetDTO {
 	orderItemIds: number[];
 	customer: Customer;
 	orderItems: OrderItemGetDTO[];
+	deliveryType: OrderDeliveryTypeGetDTO;
+	deliveryTypeId: number;
+	totalPrice: number;
 }
 
 
