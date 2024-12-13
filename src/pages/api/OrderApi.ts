@@ -150,7 +150,7 @@ export async function deleteOrder(id: number) {
 
 
 // Використання useQuery для отримання списку складів (orders)
-export function useOrders(params: OrderQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
+export function useOrders<T>(params: OrderQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true): { data: T | undefined } {
 	return useQuery({
 		queryKey: ['orders', params],
 		queryFn: () => getOrders(params),
