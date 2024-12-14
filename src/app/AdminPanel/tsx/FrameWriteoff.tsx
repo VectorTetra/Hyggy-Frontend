@@ -74,24 +74,20 @@ export default function FrameWriteoff() {
         }
     }, [wareItems]);
 
+    const [quantityError, setQuantityError] = useState('');
+
+    // Логика валидации количества
     const handleQuantityChange = (event) => {
         const value = Number(event.target.value);
-        const toastId = "quantityErrorToast"; // Унікальний ID для тосту
 
         if (value > availableQuantity) {
-            if (!toast.isActive(toastId)) {
-                toast.error(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`, {
-                    toastId, // Встановлюємо унікальний ID для тосту
-                    autoClose: false,
-                });
-            }
+            setQuantityError(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`);
             setQuantity(0);
         } else {
-            toast.dismiss(toastId); // Закриваємо тост, якщо помилка виправлена
+            setQuantityError(''); // Очищаем ошибку, если значение корректное
             setQuantity(value);
         }
     };
-
 
     const resetForm = () => {
         setSelectedStore(null);
@@ -131,8 +127,8 @@ export default function FrameWriteoff() {
 
     return (
         <Box sx={{ p: 2 }}>
-            <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
-                Списання товарів
+            <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
+                Списання
             </Typography>
             <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
                 <StorageSelector
@@ -166,13 +162,26 @@ export default function FrameWriteoff() {
                         slotProps={{
                             input: {
                                 inputProps: {
-                                    min: 0, // мінімальне значення
-                                    max: availableQuantity, // максимальне значення
-                                    step: 1, // крок введення (опціонально)
+                                    min: 0,
+                                    max: availableQuantity,
+                                    step: 1,
                                 }
                             },
                         }}
                     />
+                    {/* Ошибка количества */}
+                    {quantityError && (
+                        <Typography sx={{
+                            mt: 1,
+                            maxWidth: 150,
+                            wordWrap: 'break-word',
+                            whiteSpace: 'normal',
+                            fontSize: '0.775rem',
+                        }} variant="body2" color="error">
+                            {quantityError}
+                        </Typography>
+                    )}
+                    {/* Общее сообщение о статусе */}
                     <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
                         {statusMessage}
                     </Typography>

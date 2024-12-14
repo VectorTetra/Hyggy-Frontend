@@ -254,7 +254,6 @@ export default function FrameStorage() {
 		},
 	];
 
-
 	const formatCurrency = (value) => {
 		if (value === null || value === undefined) return '';
 		const roundedValue = Math.round(value * 100) / 100;
@@ -301,7 +300,6 @@ export default function FrameStorage() {
 		}
 	}, [data]);
 
-
 	useEffect(() => {
 		const fetchFilteredData = () => {
 			setLoading(true);
@@ -328,7 +326,6 @@ export default function FrameStorage() {
 				setLoading(false);
 			}
 		};
-
 		fetchFilteredData();
 	}, [debouncedSearchTerm]);
 
@@ -401,7 +398,6 @@ export default function FrameStorage() {
 							disableRowSelectionOnClick
 							slots={{
 								toolbar: GridToolbar
-
 							}}
 							slotProps={{
 								toolbar: {
@@ -429,8 +425,6 @@ export default function FrameStorage() {
 								columnsManagementShowHideAllText: "Показати / Сховати всі",
 								filterPanelColumns: 'Стовпці', // Переклад для "Columns"
 								filterPanelOperator: 'Оператор', // Переклад для "Operator"
-								// filterPanelValue: 'Значення', 
-								// filterPanelFilterValue: 'Значення фільтра',
 								toolbarExportExcel: "Експорт",
 								filterPanelInputLabel: "Значення",
 								filterPanelInputPlaceholder: 'Значення фільтра',
