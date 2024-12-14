@@ -1,5 +1,6 @@
-import { useAddresses, useCreateAddress, useUpdateAddress, getAddresses } from '@/pages/api/AddressApi';
-import { useCreateStorage, useUpdateStorage, useStorages, getStorages } from '@/pages/api/StorageApi';
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import { getAddresses, useCreateAddress, useUpdateAddress } from '@/pages/api/AddressApi';
+import { getStorages, useCreateStorage, useUpdateStorage } from '@/pages/api/StorageApi';
 import useAdminPanelStore from '@/store/adminPanel';
 import {
 	Box,
@@ -12,6 +13,7 @@ import {
 	Radio,
 	RadioGroup,
 	TextField,
+	ThemeProvider,
 	Typography,
 } from '@mui/material';
 import axios from 'axios';
@@ -21,16 +23,6 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { toast } from 'react-toastify';
 import { customIcon } from '../../shops/components/Map';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#00AAAD',
-			contrastText: 'white',
-		},
-	},
-});
 
 const FrameStorageAddEdit = () => {
 	const [address, setAddress] = useState('');
@@ -290,7 +282,7 @@ const FrameStorageAddEdit = () => {
 
 
 	return (
-		<ThemeProvider theme={theme}>
+		<ThemeProvider theme={themeFrame}>
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
 				{warehouseId !== null && warehouseId > 0 ? (
 					<Typography variant="h5" color="textPrimary">

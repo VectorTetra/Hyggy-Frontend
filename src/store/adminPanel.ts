@@ -1,5 +1,5 @@
 // store.ts
-import { Ware } from '@/pages/api/WareApi';
+import { WareGetDTO } from '@/pages/api/WareApi';
 import { create } from 'zustand';
 
 interface AdminPanelState {
@@ -16,8 +16,8 @@ interface AdminPanelState {
 	setShopId: (id: number | null) => void;
 	frameRemainsSidebarVisibility: boolean;
 	setFrameRemainsSidebarVisibility: (visibility: boolean) => void;
-	frameRemainsSelectedWare: Ware | null;
-	setFrameRemainsSelectedWare: (selectedWare: Ware | null) => void;
+	frameRemainsSelectedWare: WareGetDTO | null;
+	setFrameRemainsSelectedWare: (selectedWare: WareGetDTO | null) => void;
 }
 
 const useAdminPanelStore = create<AdminPanelState>((set) => ({

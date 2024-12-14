@@ -1,0 +1,19 @@
+.keywordStickerPanel {
+	display: flex;
+	gap: 10px;
+	/* margin: 16px 0; */
+	flex-wrap: wrap;
+}
+
+.text {
+	margin-right: 10px;
+}
+
+.keywordStickerItem {
+	display: flex;
+	background-color: #d9d9d9;
+	border-radius: 5px;
+	padding: 5px 10px;
+	align-items: center;
+	cursor: pointer;
+}

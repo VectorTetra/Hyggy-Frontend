@@ -47,23 +47,23 @@ const CartPage = () => {
     const deliveryPrice =
       cart.length > 0 && cart[0].selectedOption === "delivery" ? 100 : 0;
     return cart.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, deliveryPrice);
   };
 
   const calculatePDV = () => {
     const PDVRate = 0.2;
     const totalProductPrice = cart.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, 0);
     return totalProductPrice * PDVRate;
   };
 
   const calculateTotalSavings = () => {
     return cart.reduce((totalSavings, item) => {
-      if (item.oldPrice) {
-        const oldPrice = parseFloat(item.oldPrice);
-        const price = item.price;
+      if (item.product.price) {
+        const oldPrice = item.product.price;
+        const price = item.product.finalPrice;
         const savings = (oldPrice - price) * item.quantity;
         return totalSavings + savings;
       }
@@ -110,15 +110,15 @@ const CartPage = () => {
                   ×
                 </p>
                 <Image
-                  src={item.productImage}
-                  alt={item.productDescription}
+                  src={item.product.previewImagePath}
+                  alt={item.product.description}
                   width={84}
                   height={90}
                   className={styles.cartItemImage}
                 />
                 <div className={styles.productDescription}>
-                  <p>{item.productDescription}</p>
-                  <p className={styles.product}>{item.productName}</p>
+                  <p>{item.product.description}</p>
+                  <p className={styles.product}>{item.product.name}</p>
                 </div>
                 <div className={styles.quantityContainer}>
                   <button
@@ -143,8 +143,8 @@ const CartPage = () => {
                   </button>
                 </div>
                 <div className={styles.price}>
-                  <p>{Math.ceil(item.price)} грн </p>
-                  <p>{Math.ceil(item.price) * item.quantity} грн</p>
+                  <p>{Math.ceil(item.product.finalPrice)} грн </p>
+                  <p>{Math.ceil(item.product.finalPrice) * item.quantity} грн</p>
                 </div>
               </div>
             ))}

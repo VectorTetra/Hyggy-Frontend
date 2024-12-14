@@ -75,7 +75,7 @@ export class WarePutDTO {
 	CustomerFavoriteIds: string[] = [];
 	ImageIds: number[] = [];
 }
-export class Ware {
+export class WareGetDTO {
 	id: number;
 	article: number;
 	name: string;

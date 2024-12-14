@@ -1,31 +1,23 @@
 "use client";
+import { AddressDTO } from "@/pages/api/AddressApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import { create } from "zustand";
 
-interface CartItem {
-    productDescription: string;
-    productName: string;
-    productImage: string;
+//export type DeliveryOption = "delivery" | "store";
+//export type DeliveryType = "courier" | "novaPoshta" | "ukrPoshta" | "store";
+export interface CartItem {
+    product: WareGetDTO
     quantity: number;
-    price: number;
-    oldPrice: string;
-    selectedOption: string;
+    selectedOption: string; //"delivery" | "store";
 }
-
-interface AddressInfo {
-    city: string;
-    street: string;
-    houseNumber: string;
-}
-
-interface DeliveryInfo {
-    selectedDeliveryType: string;
+export interface DeliveryInfo {
+    selectedDeliveryType: string; //"courier" | "novaPoshta" | "ukrPoshta" | "store";
     selectedStore: any;
     deliveryCost: number;
     deliveryDays: number;
 }
-
-interface FormData {
+export interface FormData {
     firstName: string;
     lastName: string;
     city: string;
@@ -35,6 +27,21 @@ interface FormData {
     phone: string;
     termsAccepted: boolean;
 }
+// export interface Cart {
+//     items: CartItem[];
+//     deliveryInfo: DeliveryInfo;
+//     addressInfo: AddressDTO;
+//     paymentStatus: string;
+//     formData: FormData;
+// }
+
+// interface AddressInfo {
+//     city: string;
+//     street: string;
+//     houseNumber: string;
+// }
+
+
 
 // Інтерфейс для стану
 interface LocalStorageStore {
@@ -45,7 +52,7 @@ interface LocalStorageStore {
     recentWareIds: number[];
     addRecentWareId: (wareId: number) => void; // Додавання ідентифікатора товару
     cart: CartItem[];
-    addressInfo: AddressInfo | null;
+    addressInfo: AddressDTO | null;
     deliveryInfo: DeliveryInfo | null;
     formData: FormData | null;
     selectedDeliveryType: string;
@@ -61,7 +68,7 @@ interface LocalStorageStore {
     getCartFromLocalStorage: () => CartItem[];
     saveCartToLocalStorage: (cartItems: CartItem[]) => void;
     getSelectedShopFromLocalStorage: () => any | null;
-    setAddressInfo: (addressInfo: AddressInfo | null) => void;
+    setAddressInfo: (addressInfo: AddressDTO | null) => void;
     setDeliveryInfo: (deliveryInfo: DeliveryInfo | null) => void;
     setFormData: (formData: FormData) => void;
     setSelectedDeliveryType: (selectedDeliveryType: string) => void;
@@ -149,7 +156,8 @@ const getCartFromLocalStorage = (): CartItem[] => {
 const getCartQuantityFromLocalStorage = (): number => {
     if (!isClient) return 0;
     const savedCart = localStorage.getItem("cart");
-    const cart = savedCart ? JSON.parse(savedCart) : [];
+    const cart = savedCart ? JSON.parse(savedCart) : null;
+    if (!cart) return 0;
     return cart.reduce((sum, item) => sum + item.quantity, 0);
 };
 
@@ -159,13 +167,13 @@ const saveCartToLocalStorage = (cartItems: CartItem[]): void => {
     window.dispatchEvent(new Event("storage"));
 };
 
-const getAddressInfoFromLocalStorage = (): AddressInfo | null => {
+const getAddressInfoFromLocalStorage = (): AddressDTO | null => {
     if (!isClient) return null;
     const savedAddressInfo = localStorage.getItem("addressInfo");
     return savedAddressInfo ? JSON.parse(savedAddressInfo) : null;
 };
 
-const saveAddressInfoToLocalStorage = (addressInfo: AddressInfo | null): void => {
+const saveAddressInfoToLocalStorage = (addressInfo: AddressDTO | null): void => {
     if (!isClient) return;
     localStorage.setItem("addressInfo", JSON.stringify(addressInfo));
 };
@@ -261,7 +269,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
     addToCart: (newItem) => {
         set((state) => {
             const existingItemIndex = state.cart.findIndex(
-                (item) => item.productName === newItem.productName
+                (item) => item.product.id === newItem.product.id
             );
 
             let updatedCart;
@@ -277,7 +285,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
                 updatedCart = [...state.cart, newItem];
             }
 
-            // Оновлення типу доставки для всіх товарів в кошику
+            //Оновлення типу доставки для всіх товарів в кошику
             const lastSelectedDeliveryType = newItem.selectedOption; // Тип доставки нового товару
             updatedCart = updatedCart.map((item) => ({
                 ...item,

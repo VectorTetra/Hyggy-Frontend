@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "../css/WareGrid.module.css";
 import StarRating from "../../sharedComponents/StarRating";
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
 import FavoriteButton from "@/app/sharedComponents/FavoriteButton";
 
 type WareCardProps = {
-    ware: Ware;
+    ware: WareGetDTO;
     isFavorite: boolean;
     toggleFavorite: (wareId: number) => void;
     selectedShop: ShopGetDTO | null;

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import useAdminPanelStore from '@/store/adminPanel';
-import { faL } from '@fortawesome/free-solid-svg-icons';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography } from '@mui/material';
 
 function FrameExpandableBlock() {
     const { frameRemainsSelectedWare, setFrameRemainsSidebarVisibility } = useAdminPanelStore();
@@ -13,6 +12,7 @@ function FrameExpandableBlock() {
     };
 
     return (
+       <ThemeProvider theme={themeFrame}>
         <Box sx={{ zIndex: 1000, display: "flex", flexDirection: "column" }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography sx={{ textWrap: "wrap" }} variant="h6" gutterBottom>
@@ -55,6 +55,7 @@ function FrameExpandableBlock() {
                 </Table>
             </TableContainer>
         </Box>
+       </ThemeProvider>
     );
 }
 export default FrameExpandableBlock;

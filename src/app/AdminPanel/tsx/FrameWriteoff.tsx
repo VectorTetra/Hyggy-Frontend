@@ -3,10 +3,11 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { toast } from 'react-toastify';
 import { Storage, useStorages } from '@/pages/api/StorageApi';
-import { useWares, Ware } from '@/pages/api/WareApi';
+import { useWares, WareGetDTO } from '@/pages/api/WareApi';
 import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem } from '@/pages/api/WareItemApi';
-
+import { ThemeProvider } from '@mui/material';
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 const StorageSelector = ({ storages, selectedStore, onChange }) => (
     <Autocomplete
         sx={{ flex: 2 }}
@@ -35,7 +36,7 @@ const ProductSelector = ({ wares, selectedProduct, onChange }) => (
 
 export default function FrameWriteoff() {
     const [selectedStore, setSelectedStore] = useState<Storage | null>(null);
-    const [selectedProduct, setSelectedProduct] = useState<Ware | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
@@ -126,6 +127,7 @@ export default function FrameWriteoff() {
     }, [selectedStore, selectedProduct, isLoading, availableQuantity]);
 
     return (
+      <ThemeProvider theme={themeFrame}>
         <Box sx={{ p: 2 }}>
             <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                 Списання
@@ -186,15 +188,15 @@ export default function FrameWriteoff() {
                         {statusMessage}
                     </Typography>
                 </Box>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                    disabled={!quantity || Number(quantity) <= 0 || Number(quantity) > availableQuantity}
+                >
+                    Зберегти
+                </Button>
             </Box>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSave}
-                disabled={!quantity || Number(quantity) <= 0 || Number(quantity) > availableQuantity}
-            >
-                Зберегти
-            </Button>
-        </Box>
+        </ThemeProvider>
     );
 }

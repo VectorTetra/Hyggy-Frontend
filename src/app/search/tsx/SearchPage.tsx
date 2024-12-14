@@ -1,6 +1,6 @@
 "use client"; // Завжди на стороні клієнта
 import styles from "../css/SearchPage.module.css";
-import { useWares, Ware } from "@/pages/api/WareApi";
+import { useWares, WareGetDTO } from "@/pages/api/WareApi";
 import { useBlogs, Blog } from "@/pages/api/BlogApi";
 import { useState, useEffect } from "react";
 import Layout from "../../sharedComponents/Layout";

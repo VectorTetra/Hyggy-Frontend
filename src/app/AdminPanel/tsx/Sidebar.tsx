@@ -144,7 +144,6 @@ export default function Sidebar(props) {
 					position: 'fixed',
 					top: 0,
 					width: drawerWidth,
-					zIndex: 1201, // Вище, ніж контент списку
 					backgroundColor: '#00AAAD',
 					boxSizing: 'border-box',
 				}}

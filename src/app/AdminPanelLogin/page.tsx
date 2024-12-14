@@ -13,26 +13,15 @@ export default function Login() {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Стан для видимості пароля
     const router = useRouter();
-    /*
-    showPassword: Цей стан контролює видимість пароля. Якщо showPassword дорівнює true, 
-    поле TextField відображає пароль у вигляді звичайного тексту (type="text"), інакше як прихований (type="password").
 
-    IconButton: Додається до TextField у властивості InputProps з InputAdornment, дозволяючи додати іконку ока
-    для зміни видимості.
-
-    handleClickShowPassword: Використовується для перемикання значення showPassword.
-    */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         Authorize({ Email: email, Password: password }).then((response) => {
+            console.log(response);
             if (response.isAuthSuccessfull) {
                 router.push('/AdminPanel');
                 toast.success('Ви успішно увійшли в систему!');
-                // const decodedToken = getDecodedToken();
-                // if (decodedToken) {
-                // 	toast.info(`Токен діє до: ${new Date(decodedToken.exp * 1000).toLocaleString()}`);
-                // }
             }
         });
     };

@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { deleteStorageEmployee, getStorageEmployees } from '@/pages/api/EmployeesApi';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { getStorageEmployees, deleteStorageEmployee } from '@/pages/api/EmployeesApi';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 
 const StorageEmployees = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
@@ -94,8 +85,9 @@ const StorageEmployees = () => {
     ];
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box sx={{ width: '100%' }}>
+
+        <Box sx={{ width: '100%' }}>
+            <ThemeProvider theme={themeFrame}>
                 <Typography variant="h5" sx={{ marginBottom: 2 }}>
                     Співробітники складів
                 </Typography>
@@ -166,25 +158,28 @@ const StorageEmployees = () => {
                         }}
                     />
                 </Box>
-                <ConfirmationDialog
-                    title="Видалити співробітника?"
-                    contentText={
-                        selectedRow
-                            ? `Ви справді хочете видалити цього співробітника? : 
+            </ThemeProvider>
+            <ConfirmationDialog
+                title="Видалити співробітника?"
+                contentText={
+                    selectedRow
+                        ? `Ви справді хочете видалити цього співробітника? : 
             ${selectedRow.name && `${selectedRow.name} `} 
             ${selectedRow.surname && `${selectedRow.surname},`} 
                     ${selectedRow.email && `${selectedRow.email},`} `
-                            : ''
-                    }
-                    onConfirm={handleConfirmDelete}
-                    onCancel={() => setIsDialogOpen(false)}
-                    confirmButtonColor='#be0f0f'
-                    cancelButtonColor='#248922'
-                    open={isDialogOpen}
-                />
-            </Box>
-
-        </ThemeProvider>
+                        : ''
+                }
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setIsDialogOpen(false)}
+                confirmButtonBackgroundColor='#be0f0f'
+                confirmButtonBorderColor='#be0f0f'
+                confirmButtonColor='#fff'
+                cancelButtonBackgroundColor='#fff'
+                cancelButtonBorderColor='#00AAAD'
+                cancelButtonColor='#00AAAD'
+                open={isDialogOpen}
+            />
+        </Box>
     )
 }
 

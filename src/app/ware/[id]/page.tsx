@@ -1,7 +1,7 @@
 "use client";
 import { Customer, useCustomers, useUpdateCustomer } from '@/pages/api/CustomerApi';
 import { getDecodedToken } from '@/pages/api/TokenApi';
-import { getJsonConstructorFile, useWares, Ware } from '@/pages/api/WareApi';
+import { getJsonConstructorFile, useWares, WareGetDTO } from '@/pages/api/WareApi';
 import useQueryStore from '@/store/query';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from "react";
@@ -23,21 +23,21 @@ import BlockShopsByWare from '@/app/sharedComponents/BlockShopsByWare';
 import WareCarousel from '@/app/sharedComponents/WareCarousel';
 import { useBlogs } from '@/pages/api/BlogApi';
 import { useWareReviews } from '@/pages/api/WareReviewApi';
-import useLocalStorageStore from '@/store/localStorage';
+import useLocalStorageStore, { CartItem } from '@/store/localStorage';
 import useWarePageMenuShops from '@/store/warePageMenuShops';
 import Head from 'next/head';  // Імпортуємо компонент Head
 import RecentWares from '@/app/sharedComponents/RecentWares';
 
 
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
+// interface CartItem {
+//   productDescription: string;
+//   productName: string;
+//   productImage: string;
+//   quantity: number;
+//   price: number;
+//   oldPrice: string;
+//   selectedOption: string;
+// }
 
 export default function WarePage() {
   const params = useParams<{ id: string }>();
@@ -49,8 +49,8 @@ export default function WarePage() {
     Id: getDecodedToken()?.nameid
   });
   const { mutateAsync: updateCustomer } = useUpdateCustomer();
-  const [product, setProduct] = useState<Ware | null>(null);
-  const [filteredWares, setFilteredWares] = useState<Ware[]>([]);
+  const [product, setProduct] = useState<WareGetDTO | null>(null);
+  const [filteredWares, setFilteredWares] = useState<WareGetDTO[]>([]);
   const { data: products = [], isSuccess: isProductsSuccess } = useWares({
     SearchParameter: "Query",
     Id: id
@@ -180,12 +180,8 @@ export default function WarePage() {
   const handleAddToCart = () => {
     if (!product) return;
     const newItem = {
-      productDescription: product.description,
-      productName: product.name,
-      productImage: product.previewImagePath,
+      product: product,
       quantity: quantity,
-      price: product.finalPrice,
-      oldPrice: product.price.toString(),
       selectedOption: selectedOption,
     };
 

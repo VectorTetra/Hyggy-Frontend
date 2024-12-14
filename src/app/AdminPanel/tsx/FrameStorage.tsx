@@ -1,9 +1,10 @@
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { useDeleteStorage, useStorages } from '@/pages/api/StorageApi';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
@@ -11,21 +12,9 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
-//import { useQueryClient } from 'react-query';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-	palette: {
-		primary: {
-			main: '#00AAAD',
-			contrastText: 'white',
-		},
-	},
-});
 
 export default function FrameStorage() {
 	const { mutate: deleteStorage } = useDeleteStorage();
-	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
 		SearchParameter: "Query",
 		PageNumber: 1,
@@ -331,8 +320,8 @@ export default function FrameStorage() {
 
 
 	return (
-		<ThemeProvider theme={theme}>
-			<Box>
+		<Box>
+			<ThemeProvider theme={themeFrame}>
 				<Box sx={{
 					display: 'flex',
 					flexDirection: 'column',
@@ -477,25 +466,29 @@ export default function FrameStorage() {
 						/>
 					)}
 				</Box>
-				<ConfirmationDialog
-					title="Видалити склад?"
-					contentText={
-						selectedRow
-							? `Ви справді хочете видалити цей склад? : ${selectedRow.state && `${selectedRow.state},`} 
+			</ThemeProvider>
+			<ConfirmationDialog
+				title="Видалити склад?"
+				contentText={
+					selectedRow
+						? `Ви справді хочете видалити цей склад? : ${selectedRow.state && `${selectedRow.state},`} 
                     ${selectedRow.city && `${selectedRow.city},`} 
                     ${selectedRow.street && `${selectedRow.street},`}
                     ${selectedRow.houseNumber && `${selectedRow.houseNumber},`}
                     ${selectedRow.postalCode && `${selectedRow.postalCode}`}`
-							: ''
-					}
-					onConfirm={handleConfirmDelete}
-					onCancel={() => setIsDialogOpen(false)}
-					confirmButtonColor='#be0f0f'
-					cancelButtonColor='#00AAAD'
-					open={isDialogOpen}
-				/>
-			</Box>
-		</ThemeProvider>
+						: ''
+				}
+				onConfirm={handleConfirmDelete}
+				onCancel={() => setIsDialogOpen(false)}
+				confirmButtonBackgroundColor='#be0f0f'
+				confirmButtonBorderColor='#be0f0f'
+				confirmButtonColor='#fff'
+				cancelButtonBackgroundColor='#fff'
+				cancelButtonBorderColor='#00AAAD'
+				cancelButtonColor='#00AAAD'
+				open={isDialogOpen}
+			/>
+		</Box>
 	);
 
 }

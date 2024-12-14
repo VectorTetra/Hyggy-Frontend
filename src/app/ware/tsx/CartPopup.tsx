@@ -25,7 +25,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
   // Обчислення загальної ціни
   const calculateTotalPrice = () => {
     return cart.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, 0);
   };
 
@@ -57,15 +57,15 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
         ) : (
           <div className={styles.productInfo}>
             <Image
-              src={lastItem.productImage}
-              alt={lastItem.productDescription}
+              src={lastItem.product.previewImagePath}
+              alt={lastItem.product.description}
               width={197}
               height={191}
             />
             <div>
-              <p>{lastItem.productDescription}</p>
-              <p className={styles.price}>{Math.round(Number(lastItem.price))} грн</p>
-              <p className={styles.oldprice}>{lastItem.oldPrice} грн</p>
+              <p>{lastItem.product.description}</p>
+              <p className={styles.price}>{Math.round(Number(lastItem.product.finalPrice))} грн</p>
+              <p className={styles.oldprice}>{lastItem.product.price} грн</p>
               <p
                 className={styles.delete}
                 onClick={() => {

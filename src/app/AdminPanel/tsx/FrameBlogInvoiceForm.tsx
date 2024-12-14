@@ -1,39 +1,22 @@
 import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
 import useBlogInvoiceStore from '@/store/BlogInvoiceStore';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, IconButton, TextField } from '@mui/material';
-import ReactQuill, { Quill } from 'react-quill';
+import { Box, Button, IconButton } from '@mui/material';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import PhotoUploader from './PhotoUploader';
 import '../css/FrameBlogInvoiceForm.css';
-//import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
-//import Table from "quill-table"; // Основний модуль для роботи з таблицями
-// import { Resize, BaseModule } from 'quill-image-resize-module';
-// import Editor from './Editor';
+import FrameBlogInvoiceFormKeywordForm from './FrameBlogInvoiceFormKeywordForm';
+import PhotoUploader from './PhotoUploader';
 
-//Quill.register('modules/imageResize', ImageResize);
-// Отримуємо вбудований атрибут 'Size' з Parchment
-// const Size = Quill.import('attributors/style/size');
-
-// // Задаємо дозволені розміри
-// Size.whitelist = ['10px', '12px', '14px', '18px', '24px', '36px'];
-
-// // Реєструємо модифіковану атрибуцію
-// Quill.register(Size, true);
 const FrameBlogInvoiceForm = () => {
     const {
         rows,
-        keywords,
         addTextRow,
         addImageRow,
         addMixedRow,
         removeRow,
         updateRowContent,
         clearRows,
-        addKeyword,
-        removeKeyword,
-        updateKeyword,
-        clearKeywords,
         setIsPhotosDirty,
     } = useBlogInvoiceStore();
 
@@ -219,7 +202,7 @@ const FrameBlogInvoiceForm = () => {
 
             </div>
 
-            <div style={{ marginBottom: '2rem' }}>
+            {/* <div style={{ marginBottom: '2rem' }}>
                 <h4>Ключові слова</h4>
                 {keywords.map((keyword, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -243,7 +226,9 @@ const FrameBlogInvoiceForm = () => {
                         Прибрати всі ключові слова
                     </Button>
                 </Box>
-            </div>
+            </div> */}
+
+            <FrameBlogInvoiceFormKeywordForm />
         </div>
     );
 };

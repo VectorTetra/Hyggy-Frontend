@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel, GridColDef } from '@mui/x-data-grid';
 import { useDeleteWare, useWares } from '@/pages/api/WareApi';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,41 +11,11 @@ import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 import useAdminPanelStore from '@/store/adminPanel';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
+import themeFrame from './ThemeFrame';
 
 export default function WareFrame() {
-    // function calculateLocalStorageSize() {
-    //     let totalBytes = 0;
-
-    //     for (let i = 0; i < localStorage.length; i++) {
-    //         const key = localStorage.key(i);
-    //         if (key !== null) {
-    //             const value = localStorage.getItem(key);
-    //             if (value !== null) {
-    //                 // Додаємо довжину ключа та значення у байтах
-    //                 totalBytes += key.length + value.length;
-    //             }
-    //         }
-
-    //         // Перетворюємо байти у мегабайти
-    //         const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
-    //         return totalMB + ' MB';
-    //     }
-    // }
-
-    // console.log('LocalStorage usage:', calculateLocalStorageSize());
     const { mutate: deleteWare } = useDeleteWare();
-    //const queryClient = useQueryClient();
-    const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
+    //const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { data: data = [], isLoading: dataLoading, isSuccess: success } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
@@ -186,7 +156,7 @@ export default function WareFrame() {
         if (success) {
             setFilteredData(data);
             setLoading(false);
-            setActiveNewWare(null);
+            setWareId(null);
         }
         else {
             setLoading(true);
@@ -225,8 +195,8 @@ export default function WareFrame() {
     }, [debouncedSearchTerm]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box>
+        <Box>
+            <ThemeProvider theme={themeFrame}>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -252,7 +222,7 @@ export default function WareFrame() {
                             onSearchChange={(event) => setSearchTerm(event.target.value)}
                         />
                         <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
-                            setActiveNewWare('0');
+                            setWareId(0);
                             setActiveTab("addEditWare");
                         }}>
                             Додати
@@ -373,27 +343,31 @@ export default function WareFrame() {
                         />
                     )}
                 </Box>
-                <ConfirmationDialog
-                    title="Видалити товар?"
-                    contentText={
-                        selectedRow
-                            ? (
-                                <>
-                                    {`Назва товару: ${selectedRow.description && `${selectedRow.description}`}`}
-                                    <br />
-                                    {`Кінцева ціна: ${selectedRow.finalPrice && `${selectedRow.finalPrice}`}`}
-                                </>
-                            )
-                            : ''
-                    }
-                    onConfirm={handleConfirmDelete}
-                    onCancel={() => setIsDialogOpen(false)}
-                    confirmButtonColor='#be0f0f'
-                    cancelButtonColor='#00AAAD'
-                    open={isDialogOpen}
-                />
-            </Box>
-        </ThemeProvider>
+            </ThemeProvider>
+            <ConfirmationDialog
+                title="Видалити товар?"
+                contentText={
+                    selectedRow
+                        ? (
+                            <>
+                                {`Назва товару: ${selectedRow.description && `${selectedRow.description}`}`}
+                                <br />
+                                {`Кінцева ціна: ${selectedRow.finalPrice && `${selectedRow.finalPrice}`}`}
+                            </>
+                        )
+                        : ''
+                }
+                onConfirm={handleConfirmDelete}
+                onCancel={() => setIsDialogOpen(false)}
+                confirmButtonBackgroundColor='#be0f0f'
+                confirmButtonBorderColor='#be0f0f'
+                confirmButtonColor='#fff'
+                cancelButtonBackgroundColor='#fff'
+                cancelButtonBorderColor='#00AAAD'
+                cancelButtonColor='#00AAAD'
+                open={isDialogOpen}
+            />
+        </Box>
     );
 
 }

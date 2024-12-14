@@ -1,6 +1,6 @@
 // components/WareGrid.tsx
 import { useFavoriteWare } from '@/app/sharedComponents/methods/useFavoriteWare';
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import useLocalStorageStore from "@/store/localStorage";
 import { useEffect, useState } from "react";
 import Pagination from "../../sharedComponents/Pagination";
@@ -32,7 +32,7 @@ export default function WareGrid(props: any) {
   return (
     <div>
       <div id={styles.wareGrid}>
-        {displayedWares?.map((ware: Ware) => (
+        {displayedWares?.map((ware: WareGetDTO) => (
           <WareCard
             key={ware.id}
             ware={ware}

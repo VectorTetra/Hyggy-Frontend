@@ -2,19 +2,19 @@
 import { useState, useEffect } from "react";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import useLocalStorageStore from "@/store/localStorage";
+import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
+// interface CartItem {
+//   productDescription: string;
+//   productName: string;
+//   productImage: string;
+//   quantity: number;
+//   price: number;
+//   oldPrice: string;
+//   selectedOption: string;
+// }
 
 const SuccessPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -46,7 +46,7 @@ const SuccessPage = () => {
       } else if (selectedDeliveryType === 'novaPoshta') {
         setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
       } else if (selectedDeliveryType === 'courier') {
-        setAddress(`${addressInfo.city}, ${addressInfo.street}, ${addressInfo.houseNumber}`);
+        setAddress(`${addressInfo.City}, ${addressInfo.Street}, ${addressInfo.HouseNumber}`);
       } else if (selectedDeliveryType === 'ukrPoshta') {
         setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
       }
@@ -65,7 +65,7 @@ const SuccessPage = () => {
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, 0);
   };
 
@@ -87,21 +87,21 @@ const SuccessPage = () => {
                 <div key={index} className={styles.cartItem}>
                   <div className={styles.cartItemImageContainer}>
                     <img
-                      src={item.productImage}
-                      alt={item.productDescription}
+                      src={item.product.previewImagePath}
+                      alt={item.product.description}
                       className={styles.cartItemImage}
                     />
                   </div>
                   <div className={styles.cartItemDetails}>
-                    <p>{item.productDescription}</p>
+                    <p>{item.product.description}</p>
                     <div className={styles.info}>
-                      <p>{item.productName}</p>
+                      <p>{item.product.name}</p>
                       <p>Кількість: {item.quantity} шт</p>
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{Math.ceil(item.price)} грн</p>
-                    <p>{(Math.ceil(item.price) * item.quantity)} грн</p>
+                    <p>{Math.ceil(item.product.finalPrice)} грн</p>
+                    <p>{(Math.ceil(item.product.finalPrice) * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
