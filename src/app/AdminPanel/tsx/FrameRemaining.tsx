@@ -7,6 +7,10 @@ import { Autocomplete, Box, Button, TextField, ThemeProvider, Typography } from 
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+import SearchField from './SearchField';
+import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
+import useAdminPanelStore from '@/store/adminPanel';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
 import SearchField from './SearchField';
@@ -31,6 +35,7 @@ export default function FrameRemaining() {
         PageSize: 1000,
     });
 
+    // Загружаємо список товарів
     const { data: wares = [], isLoading: dataLoading, isSuccess: success, refetch: refetchWares } = useWares({
         SearchParameter: "Query",
         PageNumber: 1,
@@ -52,12 +57,19 @@ export default function FrameRemaining() {
     }, [debouncedSearchTerm, selectedCategory, refetchWares]);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 200 },
+        { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 80 },
         {
-            field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 200, renderCell: (params) => {
+            field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 120, renderCell: (params) => {
                 return (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: "5px", height: "100%" }}>
-                        <Typography variant="body2" sx={{ textWrap: "stable" }}>{params.value}</Typography>
+                        <Typography variant="body2"
+                            sx={{
+                                wordWrap: 'break-word', // Перенос длинных слов
+                                whiteSpace: 'normal',
+                                overflow: 'visible',
+                            }}>
+                            {params.value}
+                        </Typography>
                     </Box>
                 );
             }
@@ -81,7 +93,14 @@ export default function FrameRemaining() {
                                 }}
                             />
                         )}
-                        <Typography variant="body2" sx={{ textWrap: "stable" }}>{params.row.description}</Typography>
+                        <Typography variant="body2"
+                            sx={{
+                                wordWrap: 'break-word',
+                                whiteSpace: 'normal',
+                                overflow: 'visible',
+                            }}>
+                            {params.row.description}
+                        </Typography>
                     </Box>
                 );
             },
@@ -91,10 +110,9 @@ export default function FrameRemaining() {
             headerName: 'Ціна',
             flex: 0.3,
             maxWidth: 100,
-            cellClassName: 'text-right',
             renderCell: (params) => {
                 const price = params.value;
-                return <Box>
+                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                     {formatCurrency(price)}
                 </Box>
             },
@@ -104,14 +122,13 @@ export default function FrameRemaining() {
             headerName: 'Кількість',
             flex: 0.3,
             maxWidth: 100,
-            cellClassName: 'text-right',
             renderCell: (params) => {
                 const totalQuantity = selectedStorage ?
                     (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.quantity || 0)
                     :
                     (params.value || 0);
                 return (
-                    <Box >
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                         {totalQuantity}
                     </Box>
                 );
@@ -122,14 +139,13 @@ export default function FrameRemaining() {
             headerName: 'Заг. сума товарів',
             flex: 0.3,
             maxWidth: 150,
-            cellClassName: 'text-right',
             renderCell: (params) => {
                 const totalSum = selectedStorage ?
                     (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.totalSum || 0)
                     :
                     (params.value || 0);
                 return (
-                    <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                         {formatCurrency(totalSum)}
                     </Box>
                 );
@@ -140,15 +156,14 @@ export default function FrameRemaining() {
             headerName: '',
             flex: 0.3,
             renderCell: (params) => (
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-
+                <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                     <Button
                         key={params.row.id}
                         sx={{
                             minWidth: '100px',
-                            padding: '5px',
+                            padding: '3px',
                             '&:hover': {
-                                backgroundColor: '#1976d2',
+                                backgroundColor: '#005F60',
                             },
                         }}
                         title="Залишки"
@@ -210,46 +225,57 @@ export default function FrameRemaining() {
 
     return (
         <ThemeProvider theme={themeFrame}>
-            <Box>
-                <Box sx={{ p: 2, display: frameRemainsSidebarVisibility ? "none" : "block" }}>
-                    <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
-                        Залишки
-                    </Typography>
-                    <Box>
-                        <Box sx={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(3, 1fr)',
-                            alignItems: 'center',
-                            gap: 3,
-                        }}>
-                            {/* Строка поиска*/}
-                            <SearchField
-                                searchTerm={searchTerm}
-                                onSearchChange={(event) => setSearchTerm(event.target.value)}
-                            />
-                            <Autocomplete
-                                options={storages}
-                                getOptionLabel={(option: Storage) =>
-                                    `${option.shopName}, 
+            <Box sx={{ display: frameRemainsSidebarVisibility ? "none" : "block" }}>
+                <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
+                    Залишки
+                </Typography>
+                <Box>
+                    <Box sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        alignItems: 'center',
+                        gap: 3,
+                        mb: 3,
+                    }}>
+                        {/* Строка поиска*/}
+                        <SearchField
+                            searchTerm={searchTerm}
+                            onSearchChange={(event) => setSearchTerm(event.target.value)}
+                        />
+                        <Autocomplete
+                            options={storages}
+                            getOptionLabel={(option: Storage) =>
+                                `${option.shopName}, 
                                 ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, 
                                 ${option.city || 'Невідоме місто'}, 
                                 ${option.postalCode || ''}`
-                                }
-                                value={selectedStorage || null}
-                                onChange={(event, newValue) => setSelectedStorage(newValue)}
-                                renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth />}
-                                isOptionEqualToValue={(option, value) => option.id === value?.id}
-                            />
-                            <Autocomplete
-                                options={wareCategories}
-                                getOptionLabel={(option: WareCategory3) => `${option.wareCategory2Name} - ${option.name}`}
-                                value={selectedCategory || null}
-                                onChange={(event, newValue) => setSelectedCategory(newValue)}
-                                renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth />}
-                                isOptionEqualToValue={(option, value) => option.id === value?.id}
-                            />
+                            }
+                            value={selectedStorage || null}
+                            onChange={(event, newValue) => setSelectedStorage(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Виберіть склад" variant="outlined" fullWidth
+                                sx={{
+                                    '& .MuiInputBase-root': {
+                                        height: '42px',
+                                    }
+                                }}
+                            />}
+                            isOptionEqualToValue={(option, value) => option.id === value?.id}
+                        />
+                        <Autocomplete
+                            options={wareCategories}
+                            getOptionLabel={(option: WareCategory3) => `${option.wareCategory2Name} - ${option.name}`}
+                            value={selectedCategory || null}
+                            onChange={(event, newValue) => setSelectedCategory(newValue)}
+                            renderInput={(params) => <TextField {...params} label="Виберіть категорію" variant="outlined" fullWidth
+                                sx={{
+                                    '& .MuiInputBase-root': {
+                                        height: '42px', // Уменьшаем высоту самого поля
+                                    }
+                                }}
+                            />}
+                            isOptionEqualToValue={(option, value) => option.id === value?.id}
+                        />
 
-                        </Box>
                     </Box>
                     <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
                         {filteredData.length === 0 && !loading && success ? (

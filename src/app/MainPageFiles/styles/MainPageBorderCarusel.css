@@ -1,5 +1,9 @@
 .carouselWrapper1 {
 	width: 100%;
+	/* height: 100%; */
+	object-fit: contain;
+	/* Изображение полностью помещается, сохраняя пропорции */
+	object-position: center;
 	margin: 20px 0;
 }
 
@@ -9,7 +13,7 @@
 }
 
 .carouselWrapper1 .slick-slide {
-	height: 240px;
+	height: 250px;
 	display: flex !important;
 	justify-content: center;
 	align-items: center;
@@ -20,7 +24,7 @@
 .carouselWrapper1 .cardImage1 {
 	border-radius: 16px;
 	width: 80vw;
-	height: 250px;
+	height: 200px;
 	object-fit: cover;
 }
 
@@ -63,6 +67,10 @@
 
 .carouselWrapper1 .slick-prev {
 	left: 40px;
+	z-index: 1000;
+	/* Убедитесь, что стрелки поверх всех других элементов */
+	opacity: 1;
+	/* Сделать стрелки видимыми */
 }
 
 .carouselWrapper1 .slick-next {
