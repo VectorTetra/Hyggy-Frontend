@@ -127,66 +127,67 @@ export default function FrameWriteoff() {
     }, [selectedStore, selectedProduct, isLoading, availableQuantity]);
 
     return (
-      <ThemeProvider theme={themeFrame}>
-        <Box sx={{ p: 2 }}>
-            <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
-                Списання
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
-                <StorageSelector
-                    storages={storages}
-                    selectedStore={selectedStore}
-                    onChange={(event, value) => {
-                        const store = storages.find(
-                            (s) =>
-                                `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}` === value
-                        );
-                        setSelectedStore(store || null);
-                    }}
-                />
-                <ProductSelector
-                    wares={wares}
-                    selectedProduct={selectedProduct}
-                    onChange={(event, value) => {
-                        const product = wares.find((w) => w.description === value);
-                        setSelectedProduct(product || null);
-                    }}
-                />
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <TextField
-                        type="number"
-                        value={quantity}
-                        onChange={handleQuantityChange}
-                        placeholder={`Доступно: ${availableQuantity}`}
-                        disabled={!selectedProduct}
-                        fullWidth
-                        sx={{ flex: 1, maxWidth: 150 }}
-                        slotProps={{
-                            input: {
-                                inputProps: {
-                                    min: 0,
-                                    max: availableQuantity,
-                                    step: 1,
-                                }
-                            },
+        <ThemeProvider theme={themeFrame}>
+            <Box sx={{ p: 2 }}>
+                <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
+                    Списання
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
+                    <StorageSelector
+                        storages={storages}
+                        selectedStore={selectedStore}
+                        onChange={(event, value) => {
+                            const store = storages.find(
+                                (s) =>
+                                    `${s.shopName || 'Загальний склад'} - ${s.city}, ${s.street} ${s.houseNumber}` === value
+                            );
+                            setSelectedStore(store || null);
                         }}
                     />
-                    {/* Ошибка количества */}
-                    {quantityError && (
-                        <Typography sx={{
-                            mt: 1,
-                            maxWidth: 150,
-                            wordWrap: 'break-word',
-                            whiteSpace: 'normal',
-                            fontSize: '0.775rem',
-                        }} variant="body2" color="error">
-                            {quantityError}
+                    <ProductSelector
+                        wares={wares}
+                        selectedProduct={selectedProduct}
+                        onChange={(event, value) => {
+                            const product = wares.find((w) => w.description === value);
+                            setSelectedProduct(product || null);
+                        }}
+                    />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <TextField
+                            type="number"
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            placeholder={`Доступно: ${availableQuantity}`}
+                            disabled={!selectedProduct}
+                            fullWidth
+                            sx={{ flex: 1, maxWidth: 150 }}
+                            slotProps={{
+                                input: {
+                                    inputProps: {
+                                        min: 0,
+                                        max: availableQuantity,
+                                        step: 1,
+                                    }
+                                },
+                            }}
+                        />
+                        {/* Ошибка количества */}
+                        {quantityError && (
+                            <Typography sx={{
+                                mt: 1,
+                                maxWidth: 150,
+                                wordWrap: 'break-word',
+                                whiteSpace: 'normal',
+                                fontSize: '0.775rem',
+                            }} variant="body2" color="error">
+                                {quantityError}
+                            </Typography>
+                        )}
+                        {/* Общее сообщение о статусе */}
+                        <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
+                            {statusMessage}
                         </Typography>
-                    )}
-                    {/* Общее сообщение о статусе */}
-                    <Typography sx={{ mt: 1 }} variant="body2" color="textSecondary">
-                        {statusMessage}
-                    </Typography>
+                    </Box>
                 </Box>
                 <Button
                     variant="contained"
