@@ -15,7 +15,7 @@ const SkeletonPost = () => {
 
             <div id={styles.wareGrid}>
                 {Array.from({ length: 12 }).map((_, index) => (
-                    <div className={styles.wareCard}>
+                    <div key={index} className={styles.wareCard}>
                         <div className={styles.wareCardLinkContainer}>
                             <Skeleton classes="image width-100" />
                         </div>
@@ -23,7 +23,6 @@ const SkeletonPost = () => {
                         <Skeleton classes="text width-100" />
                         <Skeleton classes="text width-100" />
                         <Skeleton classes="text width-100" />
-
                     </div>
                 ))}
             </div>
