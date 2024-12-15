@@ -7,17 +7,6 @@ import styles from "./page.module.css";
 import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
-//import { i } from "nuqs/dist/serializer-BZD8Ur_m";
-
-// interface CartItem {
-//   productDescription: string;
-//   productName: string;
-//   productImage: string;
-//   quantity: number;
-//   price: number;
-//   oldPrice: string;
-//   selectedOption: string;
-// }
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
