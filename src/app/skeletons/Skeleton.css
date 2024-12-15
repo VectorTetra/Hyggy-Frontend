@@ -1,10 +1,10 @@
 .skeleton {
-  background-color: rgb(199, 199, 199);
+  background-color: lightgray;
   margin: 0.75rem 0;
   border-radius: 0.25rem;
 }
 
-.skeleton.title { 
+.skeleton.title {
   height: 1.25rem;
   margin-bottom: 1rem;
 }
@@ -13,9 +13,9 @@
   height: 0.75rem;
 }
 
-.skeleton.image{
+.skeleton.image {
   height: 100%;
-} 
+}
 
 .skeleton.width-100 {
   width: 100%;
@@ -24,7 +24,16 @@
 .skeleton.width-50 {
   width: 50%;
 }
-
+.skeleton.width-20 {
+  width: 20%;
+}
+.skeleton.width-10 {
+  width: 10%;
+}
+.skeleton.filter {
+  height: 50px;
+  width: 120px;
+}
 .skeleton.profile-circle {
   width: 150px;
   height: 150px;
@@ -34,7 +43,7 @@
 /* animation */
 @keyframes pulse {
   50% {
-      opacity: .5;
+    opacity: 0.5;
   }
 }
 

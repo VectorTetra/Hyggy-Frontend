@@ -1,62 +1,61 @@
 .footer {
-    background-color: #00AAAD;
+  background-color: #00aaad;
 }
 
 .footer-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .flexContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    justify-items: stretch;
-    color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  justify-items: stretch;
+  color: white;
 }
 
 .flexItem {
-    flex-direction: column;
-    display: flex;
-    gap: 10px;
-    padding: 0 25px;
+  flex-direction: column;
+  display: flex;
+  gap: 10px;
+  padding: 0 25px;
 }
 
 .footer-messenger {
-    display: flex;
-    margin: 20px 10px 10px 0;
-    justify-content: end;
+  display: flex;
+  margin: 20px 10px 10px 0;
+  justify-content: end;
 }
 
 .footer-messenger img {
-    width: 70px;
-    padding: 15px;
+  width: 70px;
+  padding: 15px;
 }
 
 .footer-item {
-    color: white;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 22px;
-    font-weight: bold;
-    display: flex;
-
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
 }
 
 .footer-itemA {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: white;
 }
 
 .footer-itemB {
-    font-size: 22px;
-    color: white;
+  font-size: 22px;
+  color: white;
 }
 
 .footer-address {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right: auto;
-    font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: auto;
+  font-weight: bold;
 }
