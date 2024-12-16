@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { AddressDTO } from './AddressApi';
 import { ShopGetDTO } from './ShopApi';
-import { Customer } from './CustomerApi';
-import { OrderItemGetDTO } from './OrderItemApi';
+import { Customer, GuestCustomerPostDTO } from './CustomerApi';
+import { OrderItemGetDTO, OrderItemPostDTO } from './OrderItemApi';
 import { OrderStatusGetDTO } from './OrderStatusApi';
 import { OrderDeliveryTypeGetDTO } from './OrderDeliveryTypeApi';
 
@@ -49,14 +49,21 @@ export class OrderQueryParams {
 
 }
 export class OrderPostDTO {
-	StatusId: number;
-	ShopId: number;
-	CustomerId: string;
-	Comment: string | null;
-	OrderDate: Date;
-	Phone: string;
-	DeliveryAddressId: number;
-	DeliveryTypeId: number;
+	StatusId?: number;
+	ShopId?: number;
+	CustomerId?: string;
+	Comment?: string | null;
+	OrderDate?: Date;
+	Phone?: string;
+	DeliveryAddressId?: number;
+	DeliveryTypeId?: number;
+}
+export class OrderCreateByTransactionDTO {
+	RegisteredCustomerId: string | null;
+	GuestCustomer: GuestCustomerPostDTO | null;
+	Address: AddressDTO | null;
+	OrderData: OrderPostDTO | null;
+	OrderItems: OrderItemPostDTO[];
 }
 export class OrderPutDTO {
 	Id: number;
@@ -122,6 +129,17 @@ export async function postOrder(Order: OrderPostDTO) {
 	}
 }
 
+export async function postOrderViaTransaction(Order: OrderCreateByTransactionDTO) {
+	try {
+		const response = await axios.post(`${API_BASE_URL!}/createByProcess`, Order);
+		return response.data;
+	} catch (error) {
+		console.error('Error creating Order:', error);
+		throw new Error('Failed to create Order');
+	}
+}
+
+
 // PUT запит для оновлення існуючого складу
 export async function putOrder(Order: OrderPutDTO) {
 	try {
@@ -150,7 +168,7 @@ export async function deleteOrder(id: number) {
 
 
 // Використання useQuery для отримання списку складів (orders)
-export function useOrders(params: OrderQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
+export function useOrders<T>(params: OrderQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true): { data: T | undefined } {
 	return useQuery({
 		queryKey: ['orders', params],
 		queryFn: () => getOrders(params),
@@ -169,6 +187,20 @@ export function useCreateOrder() {
 			mutationFn: (newOrder: OrderPostDTO) => postOrder(newOrder),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['orders'] }); // Оновлює кеш даних після створення складу
+			},
+		});
+}
+
+export function useCreateOrderByTransaction() {
+	const queryClient = useQueryClient();
+	return useMutation(
+		{
+			mutationFn: (newOrder: OrderCreateByTransactionDTO) => postOrderViaTransaction(newOrder),
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['addresses'] });
+				queryClient.invalidateQueries({ queryKey: ['customers'] });
+				queryClient.invalidateQueries({ queryKey: ['orders'] });
+				queryClient.invalidateQueries({ queryKey: ['orderItems'] });
 			},
 		});
 }

@@ -21,8 +21,8 @@ export interface AddressQueryParams {
 	QueryAny?: string | null;
 }
 
-export interface AddressDTO {
-	AddressId?: number;
+export class AddressDTO {
+	//AddressId?: number;
 	Id?: number | null;
 	ShopId?: number | null;
 	StorageId?: number | null;
@@ -89,13 +89,14 @@ export async function deleteAddress(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wares)
-export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }) {
+export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['addresses', params],
 		queryFn: () => getAddresses(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

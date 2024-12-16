@@ -9,25 +9,32 @@ import { useRouter } from "next/navigation";
 
 const checkShopStatus = (workHours: string) => {
 	const currentDate = new Date();
-	const currentDay = currentDate.toLocaleString("uk-UA", { weekday: "long" });
+	const currentDay = currentDate
+		.toLocaleString("uk-UA", { weekday: "long" })
+		.replace("ʼ", "'"); // Уніфікація апострофів
 	const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
 
 	const workHoursArray = workHours.split("|").map((day) => {
 		const [dayweek, hours] = day.split(",");
 		const [open, close] = hours.split(" - ");
-		return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
+		return {
+			dayweek: dayweek.trim().replace("ʼ", "'"), // Уніфікація апострофів
+			open: open.trim(),
+			close: close.trim()
+		};
 	});
 
-	const todayWorktime = workHoursArray.find((time) => time.dayweek.toLocaleLowerCase() === currentDay.toLocaleLowerCase());
+	const todayWorktime = workHoursArray.find((time) =>
+		time.dayweek.toLowerCase() === currentDay.toLowerCase()
+	);
 	if (todayWorktime) {
 		const [openHour, openMinute] = todayWorktime.open.split(":").map(Number);
 		const [closeHour, closeMinute] = todayWorktime.close.split(":").map(Number);
 		const openMinutes = openHour * 60 + openMinute;
 		const closeMinutes = closeHour * 60 + closeMinute;
-
 		if (currentTime >= openMinutes && currentTime < closeMinutes) {
 			return (
-				<span>
+				<span style={{ marginLeft: "10px" }}>
 					<span style={{ color: "green", fontWeight: "bold", fontSize: "0.9em" }}>Відчинено:</span>
 					<span style={{ fontSize: "0.9em", marginLeft: "5px" }}> Зачиняється о {todayWorktime.close}</span>
 				</span>

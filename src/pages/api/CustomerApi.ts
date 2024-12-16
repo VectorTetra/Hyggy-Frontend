@@ -40,6 +40,12 @@ export class Customer {
     executedOrdersSum: number;
     executedOrdersAvg: number;
 }
+export class GuestCustomerPostDTO {
+    Name: string
+    Surname: string;
+    Email: string;
+    PhoneNumber: string;
+}
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER;
 
@@ -59,6 +65,17 @@ export async function getCustomers(params: CustomerQueryParams = { SearchParamet
     } catch (error) {
         console.error('Error fetching Customers:', error);
         throw new Error('Failed to fetch Customers');
+    }
+}
+
+// POST запит для створення або отримання гостьового користувача
+export async function postOrFindGuestCustomer(Customer: GuestCustomerPostDTO) {
+    try {
+        const response = await axios.post(`${API_BASE_URL!}/createOrFindGuest`, Customer);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating Customer:', error);
+        throw new Error('Failed to update Customer');
     }
 }
 
@@ -98,6 +115,18 @@ export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Q
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
         enabled: isEnabled, // Запит відбувається тільки при значенні true
     });
+}
+
+// Використання useMutation для створення нового складу (customer)
+export function useCreateOrFindGuestCustomer() {
+    const queryClient = useQueryClient();
+    return useMutation(
+        {
+            mutationFn: (newCustomer: GuestCustomerPostDTO) => postOrFindGuestCustomer(newCustomer),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['customers'] }); // Оновлює кеш даних після створення складу
+            },
+        });
 }
 
 // Використання useMutation для оновлення існуючого складу (customer)
