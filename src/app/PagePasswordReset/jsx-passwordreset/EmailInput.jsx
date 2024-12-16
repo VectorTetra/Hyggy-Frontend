@@ -4,12 +4,13 @@ import React from "react";
 import styles from '../css/passwordResetStyle.module.css';
 import { Button } from "@mui/material";
 import { toast } from 'react-toastify';
-
+import { useRouter } from "next/navigation";
 
 export default function EmailInput({ passwordResetData, onSwitchComponent }) {
     console.log("EmailInput props:", { passwordResetData, onSwitchComponent });
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
+    const navigate = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,6 +36,10 @@ export default function EmailInput({ passwordResetData, onSwitchComponent }) {
         }
     };
 
+    const backToLogin = () => {
+        navigate.push('/PageAuthentication')
+    };
+
     return (
         <div className={styles.formcontainer}>
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -50,7 +55,7 @@ export default function EmailInput({ passwordResetData, onSwitchComponent }) {
                 <div>
                     <button type="submit" className={styles.submitbutton}>Надіслати</button>
                 </div>
-                <button type="button" className={styles.submitbutton2} onClick={() => setEmail('')}>Скасувати</button>
+                <button type="button" className={styles.submitbutton2} onClick={backToLogin}>Скасувати</button>
             </form>
         </div>
     );

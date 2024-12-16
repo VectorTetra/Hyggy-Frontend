@@ -1,5 +1,6 @@
 "use client";
 import { AddressDTO } from "@/pages/api/AddressApi";
+import { OrderDeliveryTypeGetDTO } from "@/pages/api/OrderDeliveryTypeApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
 import { WareGetDTO } from "@/pages/api/WareApi";
 import { create } from "zustand";
@@ -12,10 +13,10 @@ export interface CartItem {
     selectedOption: string; //"delivery" | "store";
 }
 export interface DeliveryInfo {
-    selectedDeliveryType: string; //"courier" | "novaPoshta" | "ukrPoshta" | "store";
+    selectedDeliveryType: OrderDeliveryTypeGetDTO | null; //"courier" | "novaPoshta" | "ukrPoshta" | "store";
     selectedStore: any;
-    deliveryCost: number;
-    deliveryDays: number;
+    // deliveryCost: number;
+    // deliveryDays: number;
 }
 export interface FormData {
     firstName: string;
@@ -55,7 +56,7 @@ interface LocalStorageStore {
     addressInfo: AddressDTO | null;
     deliveryInfo: DeliveryInfo | null;
     formData: FormData | null;
-    selectedDeliveryType: string;
+    selectedDeliveryType: OrderDeliveryTypeGetDTO | null;
     paymentStatus: string | null;
     addToCart: (newItem: CartItem) => void;
     removeFromCart: (index: number) => void;
@@ -71,7 +72,7 @@ interface LocalStorageStore {
     setAddressInfo: (addressInfo: AddressDTO | null) => void;
     setDeliveryInfo: (deliveryInfo: DeliveryInfo | null) => void;
     setFormData: (formData: FormData) => void;
-    setSelectedDeliveryType: (selectedDeliveryType: string) => void;
+    setSelectedDeliveryType: (selectedDeliveryType: OrderDeliveryTypeGetDTO | null) => void;
     setPaymentStatus: (paymentStatus: string | null) => void;
 }
 
@@ -209,16 +210,73 @@ const saveFormDataToLocalStorage = (formData: FormData): void => {
     localStorage.setItem("formData", JSON.stringify(formData));
 };
 
-const getSelectedDeliveryTypeFromLocalStorage = (): string => {
-    if (!isClient) return "store";
+const getSelectedDeliveryTypeFromLocalStorage = (): OrderDeliveryTypeGetDTO | null => {
+    // if (!isClient) return {
+    //     id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //     name: "Забрати в магазині HYGGY",
+    //     description: "Доставка 12-18 робочих днів",
+    //     price: 0,
+    //     minDeliveryTimeInDays: 12,
+    //     maxDeliveryTimeInDays: 18,
+    // };;
+
+    // const savedDeliveryType = localStorage.getItem("selectedDeliveryType");
+    // if (savedDeliveryType) {
+    //     try {
+    //         return JSON.parse(savedDeliveryType) as OrderDeliveryTypeGetDTO;
+    //     } catch (error) {
+    //         console.error("Invalid delivery type data in localStorage", error);
+    //         // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    //         return {
+    //             id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //             name: "Забрати в магазині HYGGY",
+    //             description: "Доставка 12-18 робочих днів",
+    //             price: 0,
+    //             minDeliveryTimeInDays: 12,
+    //             maxDeliveryTimeInDays: 18,
+    //         };
+    //     }
+    // }
+
+    // // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    // return {
+    //     id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //     name: "Забрати в магазині HYGGY",
+    //     description: "Доставка 12-18 робочих днів",
+    //     price: 0,
+    //     minDeliveryTimeInDays: 12,
+    //     maxDeliveryTimeInDays: 18,
+    // };
+
+
+    if (!isClient) return null;
+
     const savedDeliveryType = localStorage.getItem("selectedDeliveryType");
-    return savedDeliveryType ? savedDeliveryType : "store";
+    if (savedDeliveryType) {
+        try {
+            return JSON.parse(savedDeliveryType) as OrderDeliveryTypeGetDTO;
+        } catch (error) {
+            console.error("Invalid delivery type data in localStorage", error);
+            // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+            return null;
+        }
+    }
+
+    // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    return null;
 };
 
-const saveSelectedDeliveryTypeToLocalStorage = (selectedDeliveryType: string): void => {
+const saveSelectedDeliveryTypeToLocalStorage = (selectedDeliveryType: OrderDeliveryTypeGetDTO | null): void => {
     if (!isClient) return;
-    localStorage.setItem("selectedDeliveryType", selectedDeliveryType);
+
+    try {
+        const deliveryTypeString = JSON.stringify(selectedDeliveryType);
+        localStorage.setItem("selectedDeliveryType", deliveryTypeString);
+    } catch (error) {
+        console.error("Failed to save selected delivery type to localStorage", error);
+    }
 };
+
 
 const getPaymentStatusFromLocalStorage = (): string | null => {
     if (!isClient) return null;

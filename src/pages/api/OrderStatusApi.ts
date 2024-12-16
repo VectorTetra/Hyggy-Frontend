@@ -94,7 +94,7 @@ export async function deleteOrderStatus(id: number) {
 
 
 // Використання useQuery для отримання списку складів (orders)
-export function useOrderStatuss(params: OrderStatusQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
+export function useOrderStatuses(params: OrderStatusQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['orderStatuses', params],
 		queryFn: () => getOrderStatuss(params),
