@@ -1,11 +1,12 @@
 "use client";
 import { resetPassword } from "@/pages/api/resetpassword";
 import { useSearchParams } from "next/navigation";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from '../css/passwordResetStyle.module.css';
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { toast } from 'react-toastify';
 
 export default function PasswordChange({ passwordResetData }) {
     const [newPassword, setNewPassword] = React.useState('');
@@ -36,21 +37,21 @@ export default function PasswordChange({ passwordResetData }) {
         // Проверка на заполненность обоих полей
         if (!newPassword || !confirmPassword) {
             setMessage('');
-            alert("Всі поля повинні бути заповнені");;
+            toast.error("Всі поля повинні бути заповнені");;
             return;
         }
 
         // Проверка совпадения паролей
         if (newPassword !== confirmPassword) {
             setMessage('');
-            alert("Паролі не збігаються");
+            toast.error("Паролі не збігаються");
             return;
         }
 
         // Проверка валидности нового пароля
         if (!isPasswordValid(newPassword)) {
             setMessage('');
-            alert("Пароль повинен містити мінімум 8 символів, включати хоча б одну заглавну букву і одну цифру.");
+            toast.error("Пароль повинен містити мінімум 8 символів, включати хоча б одну заглавну букву і одну цифру.");
             return;
         }
 
@@ -64,10 +65,10 @@ export default function PasswordChange({ passwordResetData }) {
         //     alert("Неправильне посилання для скидання паролю.");
         // }
         const response = await resetPassword(newPassword, confirmPassword, email, token);
-        if(response){
-            alert(response);
+        if (response) {
+            toast.success(response);
             navigate.push('/PageAuthentication')
-        }else{
+        } else {
             console.log("Щось пішло не так")
         }
     };
@@ -85,32 +86,32 @@ export default function PasswordChange({ passwordResetData }) {
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.caption}>Введіть новий пароль</div>
                     <div className="relative">
-                    <input className={styles.formInput}
-                        type={showPwd ? "text" : "password"}
-                        placeholder="Введіть новий пароль"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button className={styles.showPassword}
+                        <input className={styles.formInput}
+                            type={showPwd ? "text" : "password"}
+                            placeholder="Введіть новий пароль"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <button className={styles.showPassword}
                             type="button"
                             onClick={() => setShowPwd(!showPwd)}>
-                        <FontAwesomeIcon icon={showPwd ?faEyeSlash : faEye } />
-                    </button>
+                            <FontAwesomeIcon icon={showPwd ? faEyeSlash : faEye} />
+                        </button>
                     </div>
-                    
+
 
                     <div className="relative">
-                    <input className={styles.formInput}
-                        type={showMatch ? "text" : "password"}
-                        placeholder="Повторіть новий пароль"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    <button className={styles.showPassword}
+                        <input className={styles.formInput}
+                            type={showMatch ? "text" : "password"}
+                            placeholder="Повторіть новий пароль"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                        <button className={styles.showPassword}
                             type="button"
                             onClick={() => setShowMatch(!showMatch)}>
-                        <FontAwesomeIcon icon={showMatch ?faEyeSlash : faEye } />
-                    </button>
+                            <FontAwesomeIcon icon={showMatch ? faEyeSlash : faEye} />
+                        </button>
                     </div>
                     <div>
                         <button type="submit" className={styles.submitbutton}>Підтвердити</button>
