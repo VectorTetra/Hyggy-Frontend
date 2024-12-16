@@ -19,7 +19,7 @@ function MainPageHeader(props) {
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />
 			<div id={styles.mainPageHeaderLogoContainer}>
-				<div style={{ display: "flex" }}>
+				<div className={styles.mainPageHeaderMenuLogoWrapper} >
 					<MainPageHeaderLogo logoHeight={props.headerData.hyggyLogo.height}
 						logoWidth={props.headerData.hyggyLogo.width}
 						logoUrl={props.headerData.hyggyLogo.url} />
@@ -28,7 +28,7 @@ function MainPageHeader(props) {
 						photoUrl={props.headerData.menuPhoto.url} />
 				</div>
 				<MainPageHeaderSearch searchText={props.headerData.menuSearch.text} />
-				<div style={{ display: "flex" }}>
+				<div className={styles.mainPageHeaderButtonsWrapper} >
 					{isAuthorized && <MainPageHeaderFavoriteButton
 						favoritePhotoHeight={props.headerData.favoritePhoto.height}
 						favoritePhotoWidth={props.headerData.favoritePhoto.width}
