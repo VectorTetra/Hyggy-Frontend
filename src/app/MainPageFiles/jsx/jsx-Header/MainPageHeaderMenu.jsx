@@ -14,7 +14,7 @@ export default function MainPageHeaderMenu({ photoUrl, photoWidth, photoHeight }
   };
 
   return (
-    <div onClick={handleMenuClick} className={styles.mainPageHeaderItem}>
+    <div onClick={handleMenuClick} className={styles.mainPageHeaderMenuItem}>
       <Image
         id={styles.mainPageHeaderMenu}
         src={photoUrl}
