@@ -283,6 +283,7 @@
 		font-size: 16px;
 		text-decoration: none;
 		margin: 0;
+		hyphens: auto;
 	}
 
 	.mainPageHeaderMenuLogoWrapper {
@@ -424,6 +425,7 @@
 		font-size: 16px;
 		text-decoration: none;
 		margin: 0;
+		hyphens: auto;
 	}
 
 	.mainPageHeaderMenuLogoWrapper {
@@ -562,6 +564,11 @@
 		font-size: 16px;
 		text-decoration: none;
 		margin: 0;
+		display: contents;
+		word-break: break-word;
+		overflow-wrap: break-word;
+		white-space: normal;
+		hyphens: auto;
 	}
 
 	.mainPageHeaderMenuLogoWrapper {
@@ -714,6 +721,7 @@
 		font-size: 16px;
 		text-decoration: none;
 		margin: 0;
+		hyphens: auto;
 	}
 
 	.mainPageHeaderMenuLogoWrapper {
@@ -744,10 +752,310 @@
 }
 
 /* Full HD */
-@media (min-width: 1920px) and (max-width: 2559px) {}
+@media (min-width: 1920px) and (max-width: 2559px) {
+	#mainPageSale {
+		display: flex;
+		background-color: #00AAAD;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: auto;
+		padding: 0 16px;
+	}
+
+	.bannerLink {
+		font-size: clamp(10px, 4vw, 20px);
+		white-space: nowrap;
+		/* Забороняє перенесення тексту на новий рядок */
+		overflow: hidden;
+		/* Обрізає текст, який виходить за межі контейнера */
+		text-overflow: ellipsis;
+		/* Додає трикрапку (...) в кінці тексту */
+	}
+
+	#mainPageHeaderLogoContainer {
+		display: flex;
+		text-align: center;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: nowrap;
+		/* padding: 8px calc(16px + clamp(1vw, (100vw - 1281px) / 637 * 4 + 1vw, 5vw)); */
+		padding: 8px 4%;
+		gap: 10%;
+	}
+
+	#mainPageHeaderLogoContainer a {
+		color: black;
+		font-size: 14px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderItem {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		gap: 10px;
+		color: black;
+		font-size: 16px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderMenuItem {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		gap: 10px;
+		color: black;
+		font-size: 16px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderSearchContainer {
+		order: 0;
+		width: auto;
+		justify-content: center;
+		display: flex;
+		margin: 0;
+		position: relative;
+		flex: 1;
+	}
+
+	.inputSearch {
+		background-color: rgb(232, 230, 230);
+		border: 2px solid black;
+		width: 100%;
+		height: 30px;
+		font-size: 14px;
+		padding: 5px;
+		margin: 0;
+		order: 4;
+		display: flex;
+		flex: 1 0;
+	}
+
+	.navbarcontainer {
+		/* display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px;
+		flex-direction: column;
+		gap: 10px; */
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 4%;
+		flex-direction: row-reverse;
+		gap: 10px;
+		flex-wrap: nowrap;
+	}
+
+	#mainPageHeaderLogo {
+		width: 90px;
+		height: 55px;
+	}
+
+	#mainPageHeaderUserPhoto {
+		width: clamp(15px, 10vw, 35px);
+		height: clamp(15px, 10vw, 35px);
+	}
+
+	.geoblock {
+		display: flex;
+		align-items: center;
+		order: 1;
+		gap: 10px;
+	}
+
+	.geoText {
+		color: rgb(11, 3, 33);
+		font-size: 16px;
+		text-decoration: none;
+		margin: 0;
+		hyphens: auto;
+	}
+
+	.mainPageHeaderMenuLogoWrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+		/* margin: 0 0 16px 0; */
+	}
+
+	.mainPageHeaderButtonsWrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+		/* margin: 0 0 16px 0; */
+	}
+
+	.menuText {
+		font-size: 16px;
+		padding: 10px;
+		text-decoration: none;
+		color: #231F20;
+		font-weight: 400;
+		white-space: nowrap;
+		background-color: #E0E0E0;
+	}
+}
 
 /* 2K */
-@media (min-width: 2560px) and (max-width: 3839px) {}
+@media (min-width: 2560px) and (max-width: 3839px) {
+	#mainPageSale {
+		display: flex;
+		background-color: #00AAAD;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: auto;
+		padding: 0 16px;
+	}
+
+	.bannerLink {
+		font-size: clamp(10px, 4vw, 20px);
+		white-space: nowrap;
+		/* Забороняє перенесення тексту на новий рядок */
+		overflow: hidden;
+		/* Обрізає текст, який виходить за межі контейнера */
+		text-overflow: ellipsis;
+		/* Додає трикрапку (...) в кінці тексту */
+	}
+
+	#mainPageHeaderLogoContainer {
+		display: flex;
+		text-align: center;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: nowrap;
+		/* padding: 8px calc(16px + clamp(1vw, (100vw - 1281px) / 637 * 4 + 1vw, 5vw)); */
+		padding: 8px 4%;
+		gap: 10%;
+	}
+
+	#mainPageHeaderLogoContainer a {
+		color: black;
+		font-size: 14px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderItem {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		gap: 10px;
+		color: black;
+		font-size: 16px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderMenuItem {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		gap: 10px;
+		color: black;
+		font-size: 16px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+
+	.mainPageHeaderSearchContainer {
+		order: 0;
+		width: auto;
+		justify-content: center;
+		display: flex;
+		margin: 0;
+		position: relative;
+		flex: 1;
+	}
+
+	.inputSearch {
+		background-color: rgb(232, 230, 230);
+		border: 2px solid black;
+		width: 100%;
+		height: 30px;
+		font-size: 14px;
+		padding: 5px;
+		margin: 0;
+		order: 4;
+		display: flex;
+		flex: 1 0;
+	}
+
+	.navbarcontainer {
+		/* display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px;
+		flex-direction: column;
+		gap: 10px; */
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 4%;
+		flex-direction: row-reverse;
+		gap: 10px;
+		flex-wrap: nowrap;
+	}
+
+	#mainPageHeaderLogo {
+		width: 90px;
+		height: 55px;
+	}
+
+	#mainPageHeaderUserPhoto {
+		width: clamp(15px, 10vw, 35px);
+		height: clamp(15px, 10vw, 35px);
+	}
+
+	.geoblock {
+		display: flex;
+		align-items: center;
+		order: 1;
+		gap: 10px;
+	}
+
+	.geoText {
+		color: rgb(11, 3, 33);
+		font-size: 16px;
+		text-decoration: none;
+		margin: 0;
+		hyphens: auto;
+	}
+
+	.mainPageHeaderMenuLogoWrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+		/* margin: 0 0 16px 0; */
+	}
+
+	.mainPageHeaderButtonsWrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+		/* margin: 0 0 16px 0; */
+	}
+
+	.menuText {
+		font-size: 16px;
+		padding: 10px;
+		text-decoration: none;
+		color: #231F20;
+		font-weight: 400;
+		white-space: nowrap;
+		background-color: #E0E0E0;
+	}
+}
 
 /* 4K */
 @media (min-width: 3840px) {}
