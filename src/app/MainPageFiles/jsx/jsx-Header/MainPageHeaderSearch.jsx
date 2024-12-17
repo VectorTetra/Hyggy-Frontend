@@ -19,18 +19,6 @@ function MainPageHeaderSearch(props) {
     };
 
     return (
-        <div className={styles.mainPageHeaderSearchContainer}>
-            <input
-                className={styles.inputSearch}
-                type="text"
-                placeholder={props.searchText}
-                value={searchQuery} // Прив’язуємо значення input до стану
-                onChange={(e) => setSearchQuery(e.target.value)} // Оновлюємо стан при зміні тексту
-                onKeyDown={handleKeyDown} // Викликаємо handleKeyDown при натисканні клавіші
-            />
-        </div>
-
-
         // <div className={styles.mainPageHeaderSearchContainer}>
         //     <input
         //         className={styles.inputSearch}
@@ -39,13 +27,25 @@ function MainPageHeaderSearch(props) {
         //         value={searchQuery} // Прив’язуємо значення input до стану
         //         onChange={(e) => setSearchQuery(e.target.value)} // Оновлюємо стан при зміні тексту
         //         onKeyDown={handleKeyDown} // Викликаємо handleKeyDown при натисканні клавіші
-        //     >
-
-        //     </input>
-        //         <button onClick={() => { }} className={styles.searchButton}>
-        //             <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
-        //         </button>
+        //     />
         // </div>
+
+
+        <div className={styles.mainPageHeaderSearchContainer}>
+            <input
+                className={styles.inputSearch}
+                type="text"
+                placeholder={props.searchText}
+                value={searchQuery} // Прив’язуємо значення input до стану
+                onChange={(e) => setSearchQuery(e.target.value)} // Оновлюємо стан при зміні тексту
+                onKeyDown={handleKeyDown} // Викликаємо handleKeyDown при натисканні клавіші
+            >
+
+            </input>
+            <button onClick={() => { }} className={styles.searchButton}>
+                <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
+            </button>
+        </div>
 
         // <TextField
         //     sx={{
