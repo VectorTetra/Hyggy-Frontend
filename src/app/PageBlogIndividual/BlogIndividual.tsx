@@ -173,7 +173,7 @@ export default function BlogIndividual(props) {
                                     </div>
                                 )}
                                 {item.contentType === "mixed" && (
-                                    <div className={styles.flexContainer}>
+                                    <div className={`${styles.flexContainer} ${styles.mixedTextPhotoContainer}`}>
                                         <div className={`${styles.contenttext} ${styles.captiontext} ${styles["ql-editor"]}`}
                                             style={{ display: "flex", flex: 1, flexDirection: "column" }}>
                                             {htmlReactParser(replaceClassesWithModuleStyles(item.content.text))}
