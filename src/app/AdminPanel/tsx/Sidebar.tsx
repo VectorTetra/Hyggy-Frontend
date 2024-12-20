@@ -126,7 +126,7 @@ const SubMenuItem = ({
 export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
 	const [openEmployees, setEmployees] = useState(false);
-	const { setFrameRemainsSidebarVisibility } = useAdminPanelStore();
+	const { setFrameRemainsSidebarVisibility} = useAdminPanelStore();
 
 	const { window } = props;
 
@@ -210,7 +210,7 @@ export default function Sidebar(props) {
 					</MenuItem>
 
 					<MenuItem icon={<PersonIcon />} text="Клієнти" value="clients" />
-					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />
+					<MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders"/>
 					<MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />
 					<MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />
 					<Link prefetch={true} href="../AdminPanelLogin" onClick={() => {
