@@ -19,6 +19,7 @@ const FrameBlog = lazy(() => import('./FrameBlog'));
 const FrameBlogAddEdit = lazy(() => import('./FrameBlogAddEdit'));
 const FrameSupply = lazy(() => import('./FrameSupply'));
 const FrameTransfer = lazy(() => import('./FrameTransfer'));
+const FrameOrder = lazy(() => import('./FrameOrder'));
 
 export default function Content() {
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
@@ -113,7 +114,7 @@ export default function Content() {
 				{activeTab === 'storageEmployees' && <StorageEmployees />}
 				{activeTab === 'addStorageEmployee' && <NewStorageEmployee />}
 				{activeTab === 'clients' && <Clients />}
-				{activeTab === 'orders' && <div>Замовлення</div>}
+				{activeTab === 'orders' && <FrameOrder />}
 				{activeTab === 'blog' && <FrameBlog />}
 				{activeTab === 'addEditBlog' && <FrameBlogAddEdit />}
 				{activeTab === 'reviews' && <div>Відгуки</div>}
