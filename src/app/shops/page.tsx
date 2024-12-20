@@ -289,16 +289,17 @@ export default function Shops() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] grow h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none"
+            className="bg-[#E0E0E0] pl-2 mb-3 text-2xl text-[#00000080] grow h-10 border border-[#00000080] rounded-md  focus:shadow-[#00AAAD] focus:outline-none focus:border-none"
+            placeholder="Місто, вулиця"
           />
           <button
-            className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md xs:w-full lg:w-auto"
+            className="bg-[#00AAAD] text-white text-2xl whitespace-nowrap  px-8 h-10 border rounded-md xs:w-full lg:w-auto"
             onClick={SearchShop}
           >
             Шукати магазини
           </button>
           <button
-            className={!isCheckOpen ? "font-light whitespace-nowrap bg-[#E0E0E0] h-10 px-8" : "flex gap-2 items-center justify-center font-bold whitespace-nowrap bg-[#E0E0E0] h-10 px-8 text-[#00AAAD]"}
+            className={!isCheckOpen ? "font-light whitespace-nowrap bg-[#E0E0E0] h-10 px-8" : "flex gap-2 items-center justify-center font-bold whitespace-nowrap bg-[#00AAAD] h-10 px-8 text-white"}
             onClick={() => setIsCheckOpen(!isCheckOpen)}
           >
             {isCheckOpen && <span><FontAwesomeIcon icon={faCheck} /></span>}
