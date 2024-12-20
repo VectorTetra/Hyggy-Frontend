@@ -186,5 +186,10 @@
     .shopcard {
         flex-direction: column;
     }
-
+    .h2 {
+        text-align: center;
+    }
+    .shopInfo {
+        align-items: center;
+    }
 }

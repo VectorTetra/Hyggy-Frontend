@@ -131,7 +131,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                             placeholder="Введіть місто або адресу..."
                         />
                         <button onClick={() => { }} className={styles.searchButton}>
-                            <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
+                            <FontAwesomeIcon icon={faSearch} />
                         </button>
                     </div>
                     <div className={styles.shopListContainer}>

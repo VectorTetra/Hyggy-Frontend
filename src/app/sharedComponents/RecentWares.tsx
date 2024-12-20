@@ -24,6 +24,7 @@ export default function RecentWares() {
         <div id={styles.recentWaresWrapper}>
             <h2 style={{
                 fontSize: "1.75rem",
+                marginTop: "20px",
                 marginBottom: "20px",
                 textAlign: "center"
             }}>Нещодавно переглянуті товари</h2>

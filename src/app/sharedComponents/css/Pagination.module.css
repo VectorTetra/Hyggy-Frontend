@@ -23,7 +23,7 @@
 	font-size: 27px;
 	/* font-family: "Open Sans", sans-serif; */
 	border-radius: 5px;
-	font-weight: 700;
+	font-weight: 400;
 }
 
 .paginationArrow {
@@ -40,7 +40,8 @@
 }
 
 .paginationButton:hover {
-	background-color: #eaeaea;
+	background-color: #f9f9f9;
+	color: #00AAAD;
 }
 
 .paginationButton:disabled,
@@ -53,7 +54,8 @@
 	font-weight: bold;
 	/* color: blue; */
 	/* border-bottom: 3px solid #ccc; */
-	color: #00AAAD;
+	color: #f9f9f9;
+	background-color: #00AAAD;
 }
 
 .paginationDots {
