@@ -143,11 +143,11 @@ export default function FrameOrderDetails() {
                                     <TableCell>{item.id}</TableCell>
                                     <TableCell>{item.ware.description}</TableCell>
                                     <TableCell>{item.count}</TableCell>
-                                    <TableCell>{formatCurrency(item.priceHistory.price)}</TableCell>
+                                    <TableCell sx={{ textAlign: "right", textWrap: "nowrap" }}>{formatCurrency(item.priceHistory.price)}</TableCell>
                                     <TableCell>
                                         <img src={item.ware.previewImagePath} alt="preview" style={{ maxHeight: 40, width: 40, objectFit: 'contain' }} />
                                     </TableCell>
-                                    <TableCell>{formatCurrency(item.count * item.priceHistory.price)}</TableCell>
+                                    <TableCell sx={{ textAlign: "right", textWrap: "nowrap" }}>{formatCurrency(item.count * item.priceHistory.price)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

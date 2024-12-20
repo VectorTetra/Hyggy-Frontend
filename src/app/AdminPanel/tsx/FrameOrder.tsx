@@ -24,7 +24,7 @@ export default function FrameOrder() {
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({});
     const apiRef = useGridApiRef();
     const { setOrderDetailsSidebarVisibility, setSelectedOrder, orderDetailsSidebarVisibility } = useAdminPanelStore();
-	const [activeTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
+    const [activeTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 
     const statusColors = {
         "В обробці": { background: "#F5F5F5", text: "#616161" }, // Очень светлый серый фон, темно-серый текст
@@ -115,7 +115,10 @@ export default function FrameOrder() {
         const fetchFilteredData = () => {
             setLoading(true);
             try {
-                const searchInObject = (obj, searchTerm) => {
+                const searchInObject = (obj, searchTerm, visited = new Set()) => {
+                    if (visited.has(obj)) return false; // Уникаємо циклу
+                    visited.add(obj);
+
                     for (const key in obj) {
                         const value = obj[key];
                         if (typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -123,13 +126,14 @@ export default function FrameOrder() {
                         } else if (typeof value === 'number' && value.toString().includes(searchTerm)) {
                             return true;
                         } else if (value && typeof value === 'object') {
-                            if (searchInObject(value, searchTerm)) {
+                            if (searchInObject(value, searchTerm, visited)) {
                                 return true;
                             }
                         }
                     }
                     return false;
                 };
+
 
                 if (debouncedSearchTerm) {
                     const filteredOrders = data.filter(item => searchInObject(item, debouncedSearchTerm));
