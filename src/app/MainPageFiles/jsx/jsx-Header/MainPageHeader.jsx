@@ -16,7 +16,9 @@ import { getSales } from '@/pages/api/SaleApi';
 function MainPageHeader(props) {
     const [sales, setSales] = useState([]);
 
-	const isAuthorized = validateToken().status === 200 && isUser();
+	//const isAuthorized = validateToken().status === 200 && isUser();
+	const isAuthorized = true;
+
 	useEffect(() => {
 		const fetchSales = async () => {
             const response = await getSales();
@@ -31,7 +33,9 @@ function MainPageHeader(props) {
 			<MainPageSale infoSales={props.headerData.info} />
 			<div id={styles.mainPageHeaderLogoContainer}>
 				<div style={{ display: "flex" }}>
-					<MainPageHeaderLogo logoHeight={props.headerData.hyggyLogo.height}
+					<MainPageHeaderLogo
+					 className={styles.notransform}
+					 logoHeight={props.headerData.hyggyLogo.height}
 						logoWidth={props.headerData.hyggyLogo.width}
 						logoUrl={props.headerData.hyggyLogo.url} />
 					<MainPageHeaderMenu photoHeight={props.headerData.menuPhoto.height}

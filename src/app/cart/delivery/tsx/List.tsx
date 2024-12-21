@@ -11,7 +11,7 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
         if (selectedStore) {
             const index = stores.findIndex(store => store.name === selectedStore.name);
             if (index !== -1 && refs.current[index]) {
-                refs.current[index].scrollIntoView({
+                refs.current[index]?.scrollIntoView({
                     behavior: "smooth",
                     block: "center",
                 });

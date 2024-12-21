@@ -28,13 +28,16 @@
 .leaveReviewButton {
   width: 15rem;
   padding: 10px 20px;
-  background-color: #00AAAD;
+  background-color: #00aaad;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-
+.leaveReviewButton:hover {
+  background-color: #016264;
+}
 .reviewHr {
   width: 100%;
 }

@@ -7,13 +7,9 @@
   gap: 40px;
 }
 
-
-
 /* .carouselInner {
   background-color: #f6f6f6;
 } */
-
-
 
 .imageGallery {
   flex: 1;
@@ -179,20 +175,23 @@
 
 .addToCartButton {
   padding: 10px 20px;
-  background-color: #00AAAD;
+  background-color: #00aaad;
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   width: 230px;
   height: 70px;
+  transition: background-color 0.3s ease;
 }
-
+.addToCartButton:hover {
+  background-color: #016264;
+}
 .tabsHeader {
   /* justify-content: center; */
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
-  background-color: #00AAAD;
+  background-color: #00aaad;
   margin-top: 40px;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
@@ -217,15 +216,11 @@
   text-align: center;
 }
 
-
-
-
 .favoriteButton2 {
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
-
 
 .discountSticker {
   border-radius: 4px;
@@ -273,7 +268,6 @@
     width: 150px;
   }
 }
-
 
 @media screen and (max-width: 768px) {
   .main {
