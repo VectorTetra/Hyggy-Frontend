@@ -310,11 +310,39 @@ const DeliveryPage = () => {
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input
-                className="bg-[#E0E0E0] mb-3 text-2xl text-[#00000080] w-full h-10 border border-[#00000080] rounded-md shadow focus:shadow-[#00AAAD] focus:outline-none focus:border-none md:w-[1300px]"
+                className="
+                bg-[#E0E0E0] 
+                mb-3
+                text-2xl 
+                text-[#00000080] 
+                w-full 
+                h-10 
+                border 
+                border-[#00000080] 
+                rounded-md 
+                shadow 
+                focus:shadow-[#00AAAD] 
+                focus:outline-none 
+                focus:border-none 
+                md:w-[1300px]"
                 value={searchQuery}
                 onChange={handleSearch}
               />
-              <button onClick={handleButtonSearch} className="bg-[#00AAAD] text-white text-[18px] whitespace-nowrap font-bold px-8 h-10 border rounded-md w-full lg:w-auto">
+              <button onClick={handleButtonSearch}
+                className="
+                bg-[#00AAAD] 
+                text-white 
+                text-[18px] 
+                whitespace-nowrap 
+                font-bold 
+                px-8 
+                h-10 
+                border 
+                rounded-md 
+                w-full 
+                lg:w-auto 
+                hover:bg-[#016264]
+                transition-colors">
                 Пошук
               </button>
             </div>

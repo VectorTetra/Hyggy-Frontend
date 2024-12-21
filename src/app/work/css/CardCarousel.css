@@ -1,85 +1,84 @@
 /* CardCarousel.css */
 .workpageCarousel {
-	width: 100%;
-	/* margin: auto; */
-	margin: 20px 0;
+  width: 100%;
+  /* margin: auto; */
+  margin: 20px 0;
 }
 
 .workpageCarousel .slick-list {
-	overflow: hidden;
-	/* Сховати все, що виходить за межі */
-	max-height: 250px;
+  overflow: hidden;
+  /* Сховати все, що виходить за межі */
+  max-height: 250px;
 }
 
 .workpageCarousel .slick-slide {
-	height: 240px;
-	display: flex !important;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
-	/* Сховати все, що виходить за межі */
-	border-radius: 16px;
-	/* Застосуйте той же радіус закруглення */
+  height: 240px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Сховати все, що виходить за межі */
+  border-radius: 16px;
+  /* Застосуйте той же радіус закруглення */
 }
 
 .workpageCarousel .slick-track {
-	display: flex;
-	gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .workpageCarousel .cardImage {
-	border-radius: 16px;
-	width: auto;
-	max-width: 300px;
-	height: 240px;
-	object-fit: cover;
+  border-radius: 16px;
+  width: auto;
+  max-width: 300px;
+  height: 240px;
+  object-fit: cover;
 }
 
 .workpageCarousel .cardTitle {
-	text-align: center;
-	margin-top: 8px;
-	font-size: 16px;
-	position: absolute;
-	bottom: 50px;
-	max-width: 300px;
-	color: #fff;
-	text-shadow: 1px 1px #454545;
-	font-size: 20px;
-	font-weight: 700;
-	text-transform: uppercase;
-	width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 16px;
+  position: absolute;
+  bottom: 50px;
+  max-width: 300px;
+  color: #fff;
+  text-shadow: 1px 1px #454545;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: 100%;
 }
 
-
 .workpageCarousel .slick-arrow {
-	background: rgba(255, 255, 255, 0.5);
-	/* Зробіть стрілки напівпрозорими */
-	color: rgb(0, 0, 0);
-	/* Змінити колір на білий */
-	border-radius: 50%;
-	/* Закругліть стрілки */
-	width: 30px;
-	/* Встановіть ширину */
-	height: 30px;
-	/* Встановіть висоту */
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  /* Зробіть стрілки напівпрозорими */
+  color: rgb(0, 0, 0);
+  /* Змінити колір на білий */
+  border-radius: 50%;
+  /* Закругліть стрілки */
+  width: 30px;
+  /* Встановіть ширину */
+  height: 30px;
+  /* Встановіть висоту */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .workpageCarousel .slick-arrow:before {
-	color: black;
-	/* Змінити колір стрілки на білий */
-	font-size: 20px;
-	/* Змінити розмір шрифта */
+  color: black;
+  /* Змінити колір стрілки на білий */
+  font-size: 20px;
+  /* Змінити розмір шрифта */
 }
 
 .workpageCarousel .slick-prev {
-	left: -20px;
-	/* Відступ від лівого краю */
+  left: -20px;
+  /* Відступ від лівого краю */
 }
 
 .workpageCarousel .slick-next {
-	right: -20px;
-	/* Відступ від правого краю */
+  right: -20px;
+  /* Відступ від правого краю */
 }

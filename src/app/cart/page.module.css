@@ -44,12 +44,16 @@
 }
 
 .checkoutButton {
-  background-color: #00AAAD;
+  background-color: #00aaad;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.checkoutButton:hover {
+  background-color: #016264;
 }
 
 .continueButton {
@@ -145,7 +149,6 @@
     height: 25px;
   }
 }
-
 
 @media (max-width: 768px) {
   .cartItem {

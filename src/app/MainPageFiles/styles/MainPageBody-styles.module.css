@@ -275,11 +275,12 @@
 
 .inputSubmit {
     padding: 12px;
-    background-color: #00AAAD;
+    background-color: #00aaad;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .inputSubmit:hover {
@@ -406,7 +407,6 @@
         font-size: 12px;
         margin-top: 10px;
     }
-
 }
 
 @media screen and (max-width: 700px) {

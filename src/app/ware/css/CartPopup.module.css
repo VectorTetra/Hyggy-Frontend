@@ -32,7 +32,7 @@
 }
 
 .oldprice {
-  color: #BCBCBC;
+  color: #bcbcbc;
   font-size: 0.875rem;
   text-decoration: line-through;
 }
@@ -48,7 +48,7 @@
 
 .delete {
   font-weight: bold;
-  color: #00AAAD;
+  color: #00aaad;
   text-decoration: underline;
   text-decoration-skip-ink: none;
   font-style: normal;
@@ -56,17 +56,20 @@
 }
 
 .resumeButton {
-  background-color: #00AAAD;
+  background-color: #00aaad;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 11px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease;
 }
-
+.resumeButton:hover {
+  background-color: #016264;
+}
 .closeButton {
-  color: #00AAAD;
+  color: #00aaad;
   font-weight: bold;
   padding: 10px 20px;
   border: none;

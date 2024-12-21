@@ -56,7 +56,7 @@
 }
 
 .submitButton {
-  background-color: #00AAAD;
+  background-color: #00aaad;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -64,6 +64,10 @@
   cursor: pointer;
   width: 100%;
   font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.submitButton:hover {
+  background-color: #016264;
 }
 
 .cancelButton {
@@ -73,7 +77,7 @@
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
-  color: #00AAAD;
+  color: #00aaad;
   text-decoration: underline;
   text-decoration-skip-ink: none;
 }
@@ -144,7 +148,7 @@
 }
 
 .formInput {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 .formInput::placeholder {

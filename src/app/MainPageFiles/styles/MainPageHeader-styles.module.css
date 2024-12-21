@@ -39,7 +39,26 @@
 	padding: 0;
 }
 
+.mainPageHeaderItem {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	transition: transform 0.3s ease;
+}
 
+
+.mainPageHeaderItem:hover {
+	transform: scale(1.05);
+}
+
+.mainPageHeaderItem:hover .notransform {
+	transform: none !important;
+}
+
+.mainPageHeaderItem:hover .disappearOnAdapt {
+	text-decoration: underline;
+	color: black;
+}
 
 .inputSearch {
 	border-radius: 6px;
@@ -131,7 +150,6 @@
 	gap: 5px;
 }
 
-
 .geoblock {
 	display: flex;
 	align-items: center;
@@ -143,19 +161,20 @@
 	font-size: 16px;
 	padding: 10px;
 	text-decoration: none;
-	color: #231F20;
+	color: #231f20;
 	font-weight: 400;
 	white-space: nowrap;
-	background-color: #E0E0E0;
+	background-color: #e0e0e0;
+	transition: background-color 0.3s ease;
 }
 
 .menuText:hover {
 	background-color: #868686;
-	color: #231F20;
+	color: #231f20;
 }
 
 .menuText:active {
-	background-color: #00AAAD;
+	background-color: #00aaad;
 	color: white;
 }
 
@@ -163,7 +182,7 @@
 	position: absolute;
 	top: -5px;
 	right: -8px;
-	background-color: #00AAAD;
+	background-color: #00aaad;
 	color: white;
 	border-radius: 50%;
 	width: 20px;
@@ -178,7 +197,7 @@
 	position: absolute;
 	top: -5px;
 	right: -8px;
-	background-color: #00AAAD;
+	background-color: #00aaad;
 	color: white;
 	border-radius: 50%;
 	width: 20px;

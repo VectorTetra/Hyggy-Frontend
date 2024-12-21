@@ -1,43 +1,47 @@
 .filterButton {
-	display: flex;
-	align-items: center;
-	background-color: transparent;
-	border-radius: 5px;
-	border: 1px solid #a3a3a3;
-	padding: 0.625rem 1.125rem 0.625rem 1.25rem;
-	justify-content: space-evenly;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid #a3a3a3;
+  padding: 0.625rem 1.125rem 0.625rem 1.25rem;
+  justify-content: space-evenly;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-
+.filterButton:hover {
+  background-color: #868686;
+  color: #231f20;
+}
 @media screen and (max-width: 1000px) and (min-width: 768px) {
-	.dissappearOnAdapt {
-		display: none;
-	}
+  .dissappearOnAdapt {
+    display: none;
+  }
 
-	.filterButton {
-		justify-content: center;
-		flex: 1;
-	}
+  .filterButton {
+    justify-content: center;
+    flex: 1;
+  }
 }
 
 @media screen and (max-width: 768px) and (min-width: 550px) {
-	.dissappearOnAdapt {
-		display: none;
-	}
+  .dissappearOnAdapt {
+    display: none;
+  }
 
-	.filterButton {
-		justify-content: center;
-		flex: 1;
-	}
+  .filterButton {
+    justify-content: center;
+    flex: 1;
+  }
 }
 
 @media screen and (max-width: 550px) {
-	.dissappearOnAdapt {
-		display: none;
-	}
+  .dissappearOnAdapt {
+    display: none;
+  }
 
-	.filterButton {
-		justify-content: center;
-		flex: 1;
-	}
+  .filterButton {
+    justify-content: center;
+    flex: 1;
+  }
 }
