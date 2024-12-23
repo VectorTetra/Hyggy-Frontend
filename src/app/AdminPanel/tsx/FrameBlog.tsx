@@ -13,7 +13,7 @@ import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
 import themeFrame from './ThemeFrame';
 
-export default function FrameBlog() {
+export default function FrameBlog({ rolePermissions }) {
 	const { mutate: deleteBlog } = useDeleteBlog();
 	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useBlogs({
@@ -37,7 +37,7 @@ export default function FrameBlog() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
-	const columns = [
+	let columns = [
 		{
 			field: 'id',
 			headerName: 'ID',
@@ -153,18 +153,21 @@ export default function FrameBlog() {
 			disableExport: true,
 			renderCell: (params) => (
 				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-					<Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
+					{rolePermissions.IsFrameBlog_Button_EditBlog_Available && <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
 						<EditIcon />
-					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0 }} color='secondary' title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+					</Button>}
+					{rolePermissions.IsFrameBlog_Button_DeleteBlog_Available && <Button sx={{ minWidth: "10px", padding: 0 }} color='secondary' title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
 						<DeleteIcon />
-					</Button>
+					</Button>}
 				</Box>
 			),
 		},
 
 	];
 
+	if (!rolePermissions.IsFrameBlog_Cell_Actions_Available) {
+		columns = columns.filter(column => column.field !== 'actions');
+	}
 	const handleEdit = (row) => {
 		// Встановлюємо warehouseId для редагування обраного складу
 		setBlogId(row.id); // Встановлюємо Id складу для редагування
@@ -265,12 +268,12 @@ export default function FrameBlog() {
 							searchTerm={searchTerm}
 							onSearchChange={(event) => setSearchTerm(event.target.value)}
 						/>
-						<Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+						{rolePermissions.IsFrameBlog_Button_AddBlog_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
 							setBlogId(0);
 							setActiveTab("addEditBlog");
 						}}>
 							Додати
-						</Button>
+						</Button>}
 					</Box>
 				</Box>
 				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">

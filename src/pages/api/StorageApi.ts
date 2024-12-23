@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 export interface StorageQueryParams {
 	SearchParameter?: string;
 	AddressId?: number;
-	Id?: number;
+	Id?: number | null;
 	ShopId?: number;
 	WareItemId?: number;
 	StorageEmployeeId?: string;

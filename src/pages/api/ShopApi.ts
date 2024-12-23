@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface ShopQueryParams {
 	SearchParameter?: string;
-	Id?: number;
+	Id?: number | null;
 	AddressId?: number;
 	Street?: string;
 	HouseNumber?: string;
@@ -34,7 +34,7 @@ export interface ShopDTO {
 	ShopEmployeeIds?: string[] | null;
 }
 export interface ShopGetDTO {
-	id?: number;
+	id: number;
 	photoUrl?: string;
 	workHours?: string;
 	name?: string;
@@ -46,7 +46,7 @@ export interface ShopGetDTO {
 	latitude?: number;
 	longitude?: number;
 	addressId?: number;
-	storageId?: number;
+	storageId: number;
 	executedOrdersSum?: number;
 	orderIds?: number[] | null;
 }
@@ -126,6 +126,7 @@ export function useCreateShop() {
 			mutationFn: (newShop: ShopDTO) => postShop(newShop),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після створення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			},
 		});
 }
@@ -138,6 +139,7 @@ export function useUpdateShop() {
 			mutationFn: (newShop: ShopDTO) => putShop(newShop),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після оновлення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			},
 		});
 }
@@ -150,6 +152,7 @@ export function useDeleteShop() {
 			mutationFn: (id: number) => deleteShop(id),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після видалення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			}
 		});
 }

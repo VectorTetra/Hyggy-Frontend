@@ -19,11 +19,6 @@ const FilterSidebar = (({ wares, foundWares, categories, trademarks, statuses }:
 	categories: WareCategory3[], trademarks: WareTrademark[], statuses: WareStatus[]
 }) => {
 	const { isSidebarOpen, setIsSidebarOpen, setCategoriesMap, setTrademarksMap, setStatusesMap } = useSearchStore();
-	console.log("FilterSidebar.tsx, wares: ", wares);
-	console.log("FilterSidebar.tsx, foundWares: ", foundWares);
-	console.log("FilterSidebar.tsx, categories: ", categories);
-	console.log("FilterSidebar.tsx, trademarks: ", trademarks);
-	console.log("FilterSidebar.tsx, statuses: ", statuses);
 	// Групуємо wares по категоріям та рахуємо кількість товарів у кожній категорії
 	let filterSidebarCategories = categories?.map(category => {
 		const count = wares.filter(ware => ware.wareCategory3Id === category.id).length;

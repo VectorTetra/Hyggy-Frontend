@@ -128,7 +128,7 @@ export default function FrameWriteoff() {
 
     return (
         <ThemeProvider theme={themeFrame}>
-            <Box sx={{ p: 2 }}>
+            <Box>
                 <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Списання
                 </Typography>

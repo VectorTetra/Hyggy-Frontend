@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+import { c } from 'nuqs/dist/serializer-DjSGvhZt';
+import { get } from 'lodash';
 
 class JwtPayload {
 	nameid: string;
@@ -12,6 +14,8 @@ class JwtPayload {
 	iat: number;
 	iss: string;
 	aud: string;
+	shopId?: string | null; // ID магазину (додатковий клейм)
+	storageId?: string | null; // ID складу (додатковий клейм)
 }
 
 class UserForAuthenticationDto {
@@ -25,6 +29,8 @@ class UserForRegistrationDto {
 	Email: string;
 	Role: string;
 	Password: string;
+	ShopId?: string | null;
+	StorageId?: string | null;
 	ConfirmPassword: string;
 }
 
@@ -89,6 +95,10 @@ export function validateToken() {
 	}
 }
 
+export function isTokenValid(): boolean {
+	return validateToken().status === 200;
+}
+
 export function removeToken() {
 	if (isBrowser()) {
 		localStorage.removeItem('token');
@@ -127,7 +137,7 @@ export function getDecodedToken(): JwtPayload | null {
 
 export function checkRole(role: string): boolean {
 	const token = getDecodedToken();
-	return token?.role === role;
+	return token?.role === role && validateToken().status === 200;
 }
 
 export function isAdmin() {
@@ -136,6 +146,9 @@ export function isAdmin() {
 
 export function isUser() {
 	return checkRole('User');
+}
+export function isGuest() {
+	return getDecodedToken() === null;
 }
 
 export function isStorekeeper() {
@@ -228,3 +241,169 @@ export async function RegisterAsClient(params: UserForRegistrationDto) {
 		}
 	}
 }
+
+export const getRolePermissions = () => {
+	// Кешування результатів перевірки ролей
+	const roleCheckCache = {
+		IsOwner: isOwner(),
+		IsAdmin: isAdmin(),
+		IsAccountant: isAccountant(),
+		IsGeneralAccountant: isGeneralAccountant(),
+		IsSaler: isSaler(),
+		IsStorekeeper: isStorekeeper(),
+	};
+	// Спрощений доступ до кешу
+	const { IsOwner, IsAdmin, IsAccountant, IsGeneralAccountant, IsSaler, IsStorekeeper } = roleCheckCache;
+
+	// Ролі в ієрархії магазину від найвищого до найнижчого
+	const roleHierarchy = [
+		"Owner",
+		"General Accountant",
+		"Admin",
+		"Accountant",
+		"Saler",
+	];
+
+
+
+	return {
+		// Ролі
+		...roleCheckCache,
+		selfEmployeeId: getDecodedToken()?.nameid,
+
+		canEditSelf(currentUserId) {
+			return currentUserId === this.selfEmployeeId;
+		},
+
+		canEditEmployeeAsAdmin(targetUserStorageId, targetUserRole) {
+			if (!IsAdmin) return false;
+			const isShopRelatedRole = ["Saler", "Storekeeper", "General Accountant", "Saler", "Accountant"].includes(targetUserRole);
+			return isShopRelatedRole && getDecodedToken()?.storageId == targetUserStorageId.toString();
+		},
+		canEditShopAsAdmin(targetShopStorageId) {
+			if (!IsAdmin) return false;
+			return getDecodedToken()?.storageId == targetShopStorageId.toString();
+		},
+
+		canDeleteEmployeeAsAdmin(targetUserStorageId, targetUserRole) {
+			if (!IsAdmin) return false;
+			const isShopRelatedRole = ["Saler", "Storekeeper", "General Accountant", "Saler", "Accountant"].includes(targetUserRole);
+			return isShopRelatedRole && getDecodedToken()?.storageId == targetUserStorageId.toString();
+		},
+
+		canEditAnyEmployee: () => IsOwner,
+		canDeleteAnyEmployee: () => IsOwner,
+		canReadStorageStoresSum(targetStorageId) {
+			if (IsOwner || IsGeneralAccountant) return true;
+			if (IsAdmin || IsAccountant) return getDecodedToken()?.storageId == targetStorageId.toString();
+			else return false;
+		},
+		canReadShopExecutedOrdersSum(targetStorageId) {
+			if (IsOwner || IsGeneralAccountant) return true;
+			if (IsAdmin || IsAccountant) return getDecodedToken()?.storageId == targetStorageId.toString();
+			return false;
+		},
+
+		getAvailableRolesForShopFrame(targetUserId) {
+			// Якщо редагує сам себе
+			if (this.selfEmployeeId === targetUserId) {
+				if (IsOwner) {
+					return roleHierarchy.join("|"); // Власник може вибирати собі будь-яку роль
+				}
+				if (IsAdmin) {
+					return "Admin"	 // Адмін може вибирати тільки Admin
+				}
+				// Всі інші не можуть редагувати ролі
+				return getDecodedToken()?.role;
+			}
+			// Якщо редагує іншого
+			if (IsOwner) {
+				return roleHierarchy.join("|");; // Власник може вибирати будь-яку роль
+			}
+
+			if (IsAdmin) {
+				return roleHierarchy.slice(3).join("|"); // Адмін може вибирати ролі нижчі за Admin
+			}
+			// Всі інші не можуть редагувати ролі
+			return null;
+		},
+
+		getAvailableRolesForStorageFrame() {
+			return "Storekeeper";
+		},
+		// Чи доступні фрейми взагалі
+		IsAdminPanelContent_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+
+		// Фрейм "Товари"
+		IsFrameWare_Available: IsOwner || IsAdmin || IsSaler || IsStorekeeper,
+		IsFrameWareAddEdit_Available: IsOwner,
+		IsFrameWare_Button_AddWare_Available: IsOwner,
+		IsFrameWare_Button_EditWare_Available: IsOwner,
+		IsFrameWare_Button_DeleteWare_Available: IsOwner,
+
+		// Фрейм "Склади"
+		IsTabStorage_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsStorekeeper || IsSaler,
+		IsFrameStorage_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsStorekeeper || IsSaler,
+		IsFrameStorageAddEdit_Available: IsOwner,
+		IsFrameStorage_Cell_StoresSum_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant,
+		IsFrameStorage_Cell_Actions_Available: IsOwner,
+		IsFrameStorage_Button_AddStorage_Available: IsOwner,
+		IsFrameStorage_Button_EditStorage_Available: IsOwner,
+		IsFrameStorage_Button_DeleteStorage_Available: IsOwner,
+
+		// Фрейм "Залишки"
+		IsFrameRemaining_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+
+		// Фрейм "Поставки"
+		IsFrameSupply_Available: IsOwner || IsAdmin || IsStorekeeper,
+
+		// Фрейм "Переміщення"
+		IsFrameTransfer_Available: IsOwner || IsAdmin || IsStorekeeper,
+
+		// Фрейм "Списання"
+		IsFrameWriteoff_Available: IsOwner || IsAdmin || IsStorekeeper,
+
+		// Фрейм "Блог"
+		IsFrameBlog_Available: IsOwner || IsAdmin,
+		IsFrameBlog_Cell_Actions_Available: IsOwner || IsAdmin,
+		IsFrameBlog_Button_AddBlog_Available: IsOwner || IsAdmin,
+		IsFrameBlog_Button_EditBlog_Available: IsOwner || IsAdmin,
+		IsFrameBlog_Button_DeleteBlog_Available: IsOwner || IsAdmin,
+
+		// Фрейм "Клієнти"
+		IsFrameClients_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler,
+		IsFrameClients_Cell_ExecutedOrdersSum_Available: IsOwner,
+		IsFrameClients_Cell_ExecutedOrdersAvg_Available: IsOwner,
+		IsFrameClients_Cell_Actions_Available: IsOwner,
+		IsFrameClients_Button_DeleteClient_Available: IsOwner,
+
+		// Фрейм "Замовлення"
+		IsFrameOrders_Available: IsOwner || IsAdmin || IsSaler,
+
+		// Фрейм "Магазини"
+		IsFrameShops_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+		IsFrameShopAddEdit_Available: IsOwner || IsAdmin,
+		IsFrameShops_Button_AddShop_Available: IsOwner,
+		IsFrameShops_Cell_ExecutedOrdersSum_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant,
+		IsFrameShops_Cell_Actions_Available: IsOwner || IsAdmin,
+		IsFrameShops_Button_EditShop_Available: IsOwner || IsAdmin, // Admin - canEditShopAsAdmin()
+		IsFrameShops_Button_DeleteShop_Available: IsOwner,
+
+		IsTabEmployees_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+
+		// Фрейм "Співробітники магазину"
+		IsFrameShopEmployees_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+		IsFrameShopEmployees_Button_AddShopEmployee_Available: IsOwner || IsAdmin,
+		IsFrameShopEmployees_Button_EditShopEmployee_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler,
+		IsFrameShopEmployees_Button_DeleteShopEmployee_Available: IsOwner || IsAdmin,
+
+		// Фрейм "Співробітники складу"
+		IsFrameStorageEmployees_Available: IsOwner || IsAdmin || IsStorekeeper,
+		IsFrameStorageEmployees_Button_AddStorageEmployee_Available: IsOwner || IsAdmin,
+		IsFrameStorageEmployees_Button_EditStorageEmployee_Available: IsOwner || IsAdmin || IsStorekeeper,
+		IsFrameStorageEmployees_Button_DeleteStorageEmployee_Available: IsOwner || IsAdmin,
+
+		// Фрейм "Відгуки"
+		//IsFrameReviews_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
+	};
+};

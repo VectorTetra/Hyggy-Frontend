@@ -1094,7 +1094,7 @@
 @media screen and (max-width: 700px) and (min-width: 500px) {
 	/* .disappearOnAdapt {
 		display: none;
-	} */
+	}
 
 	/* #mainPageHeaderLogoContainer {
 		justify-content: space-between;
@@ -1107,13 +1107,18 @@
 		display: none;
 	}
 
-
+	/* 
 	#mainPageHeaderLogoMyContainer {
 		order: 1;
 	}
 
 	.navbarmenu {
 		justify-content: space-around;
+	}
+
+	.menuText {
+		font-size: 10px;
+		white-space: nowrap;
 	}
 
 
@@ -1132,5 +1137,4 @@
 	.mainPageHeaderItem {
 		gap: 5px
 	}
-
 }

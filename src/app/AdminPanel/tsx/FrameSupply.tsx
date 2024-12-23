@@ -136,7 +136,7 @@ export default function FrameSupply() {
 
     return (
         <ThemeProvider theme={themeFrame}>
-            <Box sx={{ p: 2 }}>
+            <Box>
                 <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
                     Поставка товарів
                 </Typography>

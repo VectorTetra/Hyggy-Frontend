@@ -5,6 +5,7 @@ import WareGrid from "@/app/search/tsx/WareGrid";
 import { useWares } from "@/pages/api/WareApi";
 import { getDecodedToken } from '@/pages/api/TokenApi';
 import { toast } from "react-toastify";
+import { Padding } from "@mui/icons-material";
 
 export default function FavoriteWaresUser(props) {
 
@@ -22,7 +23,7 @@ export default function FavoriteWaresUser(props) {
     }, [isSuccess, refetch]); // Додаємо isSuccess, щоб запит відбувався після того, як дані успішно отримано
 
     return (
-        <div>
+        <div style={{ padding: "0 clamp(0px,4rem,10vw)" }}>
             <h2 className={styles.h2}>Обране</h2>
             {isLoading && <div>Завантаження...</div>}
             {isSuccess && favoriteWares.length === 0 && "У Вас ще немає обраних товарів"}

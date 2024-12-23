@@ -99,6 +99,12 @@
     aspect-ratio: 1 / 1;
 }
 
+.imageMixed {
+    width: clamp(150px, 40vmin, 400px);
+    object-fit: contain;
+    aspect-ratio: 1 / 1;
+}
+
 
 
 .image:hover {
@@ -176,7 +182,7 @@
     }
 
     .captiontext {
-        margin-top: 20px;
+        /* margin-top: 20px; */
     }
 
     .imagerow {
@@ -321,7 +327,7 @@
 
 .ql-editor ol li.ql-direction-rtl,
 .ql-editor ul li.ql-direction-rtl {
-    padding-right: 1.5em;
+    padding-right: 0;
 }
 
 .ql-editor ol li {

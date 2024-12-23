@@ -13,7 +13,7 @@ import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
 
-export default function FrameStorage() {
+export default function FrameStorage({ rolePermissions }) {
 	const { mutate: deleteStorage } = useDeleteStorage();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
 		SearchParameter: "Query",
@@ -37,7 +37,7 @@ export default function FrameStorage() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
-	const columns = [
+	let columns = [
 		{
 			field: 'id',
 			headerName: 'ID',
@@ -73,7 +73,7 @@ export default function FrameStorage() {
 							title={params.value}
 							sx={{
 								fontStyle: 'italic',
-								color: 'blue',
+								color: '#00AAAD',
 								display: "flex",
 								alignItems: "center",
 								height: "100%",
@@ -222,7 +222,14 @@ export default function FrameStorage() {
 			headerName: 'Заг. сума товарів',
 			flex: 1.5,
 			cellClassName: 'text-right',
-			renderCell: (params) => formatCurrency(params.value),
+			renderCell: (params) => {
+				if (rolePermissions.canReadStorageStoresSum(params.row.id)) {
+					return formatCurrency(params.value)
+				}
+				else {
+					return null;
+				}
+			},
 		},
 		{
 			field: 'actions',
@@ -230,18 +237,30 @@ export default function FrameStorage() {
 			flex: 0,
 			width: 75,
 			disableExport: true,
-			renderCell: (params) => (
-				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-					<Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
-						<EditIcon />
-					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
-						<DeleteIcon />
-					</Button>
-				</Box>
-			),
+			renderCell: (params) => {
+				if (rolePermissions.IsFrameStorage_Button_EditStorage_Available || rolePermissions.IsFrameStorage_Button_DeleteStorage_Available) {
+					return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
+						{rolePermissions.IsFrameStorage_Button_EditStorage_Available && <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
+							<EditIcon />
+						</Button>}
+						{rolePermissions.IsFrameStorage_Button_DeleteStorage_Available && <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+							<DeleteIcon />
+						</Button>}
+					</Box>
+				}
+				else {
+					return null;
+				}
+			},
 		},
 	];
+
+	if (!rolePermissions.IsFrameStorage_Cell_StoresSum_Available) {
+		columns = columns.filter((column) => column.field !== 'storedWaresSum');
+	}
+	if (!rolePermissions.IsFrameStorage_Cell_Actions_Available) {
+		columns = columns.filter((column) => column.field !== 'actions');
+	}
 
 	const formatCurrency = (value) => {
 		if (value === null || value === undefined) return '';
@@ -341,18 +360,18 @@ export default function FrameStorage() {
 					</Typography>
 					<Box sx={{
 						display: 'flex',
-						justifyContent: 'space-between',
+						justifyContent: rolePermissions.IsFrameStorage_Button_AddStorage_Available ? 'space-between' : 'flex-start',
 					}}>
 						<SearchField
 							searchTerm={searchTerm}
 							onSearchChange={(event) => setSearchTerm(event.target.value)}
 						/>
-						<Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+						{rolePermissions.IsFrameStorage_Button_AddStorage_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
 							setWarehouseId(0);
 							setActiveTab("addEditWarehouse");
 						}}>
 							Додати
-						</Button>
+						</Button>}
 					</Box>
 				</Box>
 				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">

@@ -1,19 +1,17 @@
+import PhotoUploader from '@/app/AdminPanel/tsx/PhotoUploader';
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
-import { getShops, postShop, putShop, useCreateShop, useShops, useUpdateShop } from '@/pages/api/ShopApi';
-import { getStorages, useStorages } from '@/pages/api/StorageApi';
+import { useCreateShop, useShops, useUpdateShop } from '@/pages/api/ShopApi';
+import { useStorages } from '@/pages/api/StorageApi';
 import useAdminPanelStore from '@/store/adminPanel';
-import { Photo } from '@mui/icons-material';
-import PhotoUploader from '@/app/AdminPanel/tsx/PhotoUploader';
-import { Autocomplete, Button, TextField, ThemeProvider } from '@mui/material';
-import { Box } from '@mui/system';
+import { Autocomplete, Button, TextField, ThemeProvider, Box } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import dayjs, { Dayjs } from 'dayjs';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 type Storage = {
   addressId: number;
@@ -146,6 +144,9 @@ export default function FrameShopAddEdit() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("selectedStorage", selectedStorage);
+    console.log("storageId", storageId);
+    console.log("addressId", addressId);
     try {
       if (name.length === 0) {
         toast.error("Ім'я магазину не може бути пустим!");
@@ -171,7 +172,7 @@ export default function FrameShopAddEdit() {
         //Зміна магазину
         await updateShop({
           Id: Number(shopId), Name: name, PhotoUrl: photos[0], WorkHours: dataWorkHours, AddressId: addressId,
-          StorageId: storageId
+          StorageId: storageId, OrderIds: shopsIfEdit[0].orderIds
         });
         toast.success('Магазин успішно змінено!');
       }
@@ -220,6 +221,7 @@ export default function FrameShopAddEdit() {
                 setStorageId(newValue.id);
                 setAddressId(newValue.addressId);
                 setSelectedStorage(newValue);
+                console.log("selectedStorage", selectedStorage);
               }
             }}
             renderInput={(params) => <TextField {...params} label={shopId! > 0 ? "Нова адреса магазину" : "Адреса магазину"} />}
@@ -230,17 +232,16 @@ export default function FrameShopAddEdit() {
           <label className="form-label" htmlFor="storage">Робочі години:</label>
           <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Box sx={{
+              <div style={{
                 display: 'flex',
                 flexDirection: 'column',
-
               }}>
                 {workHours.map((day, index) => (
-                  <DemoContainer components={['TimePicker']} key={index}>
-                    <Box sx={{ display: "flex", flex: "0.1 1 1rem", justifyContent: "center", alignItems: "center" }}>
+                  <DemoContainer components={['TimePicker']} key={index} sx={{ display: 'flex', flexDirection: "row !important", alignItems: "baseline", gap: "5px" }}>
+                    <div style={{ display: "flex", flex: "0.1 1 1rem", justifyContent: "center", alignItems: "center" }}>
                       <label>{day.day}</label>
-                    </Box>
-                    <Box sx={{ display: "flex", flex: 1 }}>
+                    </div>
+                    <div style={{ display: "flex", flex: 1 }}>
                       <TimeField
                         sx={{ display: "flex", flex: 1 }}
                         label="Початок"
@@ -249,8 +250,8 @@ export default function FrameShopAddEdit() {
                         onChange={(newTime: Dayjs) =>
                           updateTime(index, 'start', newTime)}
                       />
-                    </Box>
-                    <Box sx={{ display: "flex", flex: 1 }}>
+                    </div>
+                    <div style={{ display: "flex", flex: 1 }}>
                       <TimeField
                         sx={{ display: "flex", flex: 1 }}
                         label="Кінець"
@@ -259,10 +260,10 @@ export default function FrameShopAddEdit() {
                         onChange={(newTime: Dayjs) =>
                           updateTime(index, 'end', newTime)}
                       />
-                    </Box>
+                    </div>
                   </DemoContainer>
                 ))}
-              </Box>
+              </div>
             </LocalizationProvider>
           </div>
         </div>
