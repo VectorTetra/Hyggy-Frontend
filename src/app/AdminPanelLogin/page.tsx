@@ -102,7 +102,15 @@ export default function Login() {
                     type="submit"
                     color="primary"
                     fullWidth
-                    sx={{ padding: '0.75rem', fontSize: '1rem' }}
+                    sx={{
+                        backgroundColor: '#00AAAD',
+                        color: 'white',
+                        padding: '0.75rem',
+                        fontSize: '1rem',
+                        '&:hover': {
+                            backgroundColor: '#005F60',
+                        },
+                    }}
                 >
                     Увійти
                 </Button>
@@ -112,7 +120,16 @@ export default function Login() {
                     variant="contained"
                     color="primary"
                     fullWidth
-                    sx={{ padding: '10px 90px', fontSize: '1rem', marginTop: "30px" }}
+                    sx={{
+                        backgroundColor: '#00AAAD',
+                        color: 'white',
+                        padding: '10px 90px',
+                        fontSize: '1rem',
+                        marginTop: "30px",
+                        '&:hover': {
+                            backgroundColor: '#005F60',
+                        },
+                    }}
                 >
                     Перейти на сайт HYGGY
                 </Button>

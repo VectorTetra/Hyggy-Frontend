@@ -237,6 +237,11 @@ const DeliveryPage = () => {
     setSearchQuery(e.target.value);
   };
 
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined) return '0';
+    const roundedValue = Math.round(value * 100) / 100;
+    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+  };
 
   return (
     <Layout headerType="header1" footerType="footer1">
@@ -268,63 +273,6 @@ const DeliveryPage = () => {
             ))
           }
         </div>
-        {/* <div className="mt-6">
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="store"
-                checked={selectedDeliveryType?.id === 1}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Забрати в магазині HYGGY</b> (0,00 грн Доставка 12-18 робочих днів)
-            </label>
-          </div>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="courier"
-                checked={selectedDeliveryType?.id === 2}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка на адресу кур’єром Нової пошти</b> (110,00 грн Доставка 10-12 робочих днів)
-            </label>
-          </div>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="novaPoshta"
-                checked={selectedDeliveryType?.id === 3}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка до відділення Нової пошти</b> (75,00 грн Доставка 10-12 робочих днів)
-            </label>
-          </div>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="ukrPoshta"
-                checked={selectedDeliveryType?.id === 4}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка до відділення Укрпошти</b> (50,00 грн Доставка протягом 10-12 робочих днів)
-            </label>
-          </div>
-        </div> */}
 
         {selectedDeliveryType?.id === 1 && (
           <div className="mt-6">

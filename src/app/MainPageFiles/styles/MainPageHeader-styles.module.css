@@ -195,6 +195,8 @@
 	#mainPageSale {
 		font-size: 16px;
 		height: 4vw;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
 	}
 
 	.navbarcontainer {
@@ -275,6 +277,8 @@
 	#mainPageSale {
 		font-size: 12px;
 		height: 4vw;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
 	}
 
 	.geoblock {

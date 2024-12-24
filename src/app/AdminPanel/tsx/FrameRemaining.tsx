@@ -408,7 +408,6 @@ export default function FrameRemaining() {
                 </Box>
             </Box>
             {frameRemainsSidebarVisibility && <FrameExpandableBlock />}
-            {/* <FrameExpandableBlock /> */}
         </ThemeProvider>
     );
 }

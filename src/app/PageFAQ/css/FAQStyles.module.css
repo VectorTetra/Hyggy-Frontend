@@ -57,9 +57,9 @@
   justify-content: space-between;
   padding: 20px 20px;
   margin: 5px 0;
-  background-color: #00aaad;
+  background-color: #E0E0E0;
   border: 2px solid #acabab;
-  color: white;
+  /* color: white; */
   font-size: 1.2vw;
   border-radius: 7px;
   text-decoration: none;
@@ -71,7 +71,7 @@
 }
 
 .faqcaptionquestion:hover {
-  background-color: #acdadb;
+  background-color: #acabab;
   color: #000;
 }
 
@@ -139,7 +139,7 @@
 .commonquestions {
   display: flex;
   flex-direction: column;
-  margin: 0 0px 40px 80px;
+  margin: 0 0 40px 80px;
   width: 90%;
 }
 
@@ -148,15 +148,6 @@
   font-weight: bold;
 }
 
-/* .questionscontainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 35px;
-    background-color: white;
-    border: 1px solid #eaeaea;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-} */
 .questionscontainer {
   display: flex;
   justify-content: space-around;
@@ -168,13 +159,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 15px;
 }
-/* .questionscolumnl {
-  margin-left: 70px;
-}
-
-.questionscolumnr {
-  margin-left: 60px;
-} */
 
 .questiontitle {
   padding: 10px;
@@ -382,7 +366,12 @@
   }
 
   .commonquestions {
-    margin: 10px 10px 30px 40px;
+    margin: 0 0 0 20px;
+  }
+
+  .commonquestions h3 {
+    margin: 20px 0 20px 0;
+    text-align: center;
   }
 
   .faqcontainer h2 {
@@ -469,9 +458,5 @@
 
   .adaptivurl {
     font-size: 14px;
-  }
-
-  .commonquestions {
-    margin: 10px 10px 30px 40px;
   }
 }

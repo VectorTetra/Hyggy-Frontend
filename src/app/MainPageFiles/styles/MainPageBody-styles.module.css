@@ -21,8 +21,6 @@
     padding: 0.6vw 15vw 0.6vw 15vw;
 }
 
-
-
 .category-item {
     position: relative;
     width: calc(33.333% - 20px);
@@ -95,7 +93,8 @@
     color: brown;
 }
 
-.brand-container {
+.brand-container,
+.brand-container2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -109,7 +108,8 @@
 }
 
 .brand-item {
-    flex: 1 1 calc(16.66% - 20px);
+    flex: 1;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -146,7 +146,6 @@
 
 .blog-item2 {
     width: 48%;
-
 }
 
 .blog-image {
@@ -166,7 +165,6 @@
 
 .aboutus-text {
     margin: 10px 0;
-    text-align: left;
     color: black;
 }
 
@@ -175,7 +173,6 @@
     text-align: centre;
     color: black;
     font-size: 22px;
-
 }
 
 .aboutus-textcaption:hover,
@@ -184,8 +181,9 @@
 }
 
 .blog-button {
+    width: 350px;
     display: inline-block;
-    padding: 10px 15px;
+    padding: 5px 0 5px 0;
     background-color: #00AAAD;
     text-align: center;
     text-decoration: none;
@@ -196,7 +194,7 @@
 }
 
 .blog-button:hover {
-    background-color: #3ac7cc;
+    background-color: #005F60;
     color: azure;
 }
 
@@ -204,27 +202,21 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    /* justify-content: space-between; */
+    align-items: center;
     text-align: center;
     width: 100%;
     margin-bottom: 20px;
 }
 
-.blog-button-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10px;
-}
-
 .form-container {
     display: flex;
-    background-color: rgb(224, 219, 219);
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 .form-containerin {
-    /* margin-left: 300px;
-    margin-right: 300px; */
     padding-top: 10px;
     padding-bottom: 20px;
     margin-top: 10px;
@@ -247,7 +239,7 @@
     display: flex;
     flex-direction: column;
     padding: 0 clamp(50px, 10vmin, 240px);
-    text-wrap-style: balance;
+    text-align: center;
 }
 
 #termsCheckbox {
@@ -269,12 +261,16 @@
     flex: 1;
     padding: 10px;
     border-radius: 10px;
+    background-color: #D9D9D9;
+    color: #231F20;
 }
 
 .form-containerInput input[type="email"] {
     flex: 2;
     padding: 10px;
     border-radius: 10px;
+    background-color: #D9D9D9;
+    color: #231F20;
 }
 
 .inputSubmit {
@@ -296,12 +292,13 @@
     object-fit: contain;
 }
 
-@media screen and (max-width: 1000px) and (min-width: 500px) {
+@media screen and (max-width: 1000px) and (min-width: 700px) {
 
     .form-containerInput input[type="text"],
     .form-containerInput input[type="email"] {
         flex: 2;
         padding: 10px;
+        width: 100%;
         border-radius: 10px;
     }
 
@@ -337,12 +334,11 @@
         font-weight: bold;
     }
 
-    .brand-container {
-        gap: 10px;
+    .brand-container,
+    .brand-container2 {
+        gap: 15px;
         text-align: center;
-        margin-left: 15px;
-        margin-right: 15px;
-        margin: 10px 0 10px 0;
+        margin: 10px 15px 10px 15px;
         background-color: white;
     }
 
@@ -363,22 +359,23 @@
     }
 
     .blog-button {
+        width: 250px;
         padding: 5px 5px;
         font-size: 14px;
     }
 
     .aboutus-text {
-        margin: 10px 0;
+        margin: 0;
         text-align: centre;
         color: black;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .aboutus-textcaption {
         margin: 10px 0;
         text-align: centre;
         color: black;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .form-containerin {
@@ -397,6 +394,10 @@
         margin-bottom: 30px;
     }
 
+    .inputSubmit {
+        width: 100%;
+    }
+
     .h3 {
         font-size: 16px;
     }
@@ -408,13 +409,18 @@
 
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 700px) {
 
     .form-containerInput input[type="text"],
     .form-containerInput input[type="email"] {
         flex: 2;
+        width: 100%;
         padding: 10px;
         border-radius: 10px;
+    }
+
+    .inputSubmit {
+        width: 100%;
     }
 
     .bodysale {
@@ -462,8 +468,18 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .brand-container2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+        gap: 0;
+        margin-left: 0px;
+        margin-right: 0px;
+        padding: 10px;
     }
 
     .blog-container {
@@ -487,45 +503,39 @@
     .blog-button {
         padding: 5px 5px;
         gap: 5px;
-        font-size: 10px;
+        font-size: 8px;
+        width: 150px;
     }
 
     .aboutus-text {
-        margin: 5px 0;
+        margin: 0 10px 20px 10px;
+        font-size: 12px;
         text-align: centre;
-        color: black;
     }
 
     .aboutus-textcaption {
-        margin: 5px 0;
+        font-size: 14px;
         font-weight: bold;
-        text-align: centre;
-        color: black;
-        font-size: 16px;
+
     }
 
     .form-containerin {
-        margin-left: 20px;
-        margin-right: 20px;
+        margin: 10px 10px 10px 10px;
         padding-top: 5px;
         padding-bottom: 5px;
-        margin-top: 10px;
-        margin-bottom: 10px;
     }
 
     .form-containerInput {
         flex-direction: column;
         align-items: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
     }
 
     .h3 {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .label {
-        font-size: 12px;
-        margin-top: 10px;
+        font-size: 10px;
+        /* margin-top: 5px; */
     }
 }
