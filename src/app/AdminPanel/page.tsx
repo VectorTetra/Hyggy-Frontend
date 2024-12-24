@@ -1,6 +1,6 @@
 // Page: AdminPanel
 "use client";
-import { validateToken } from '@/pages/api/TokenApi';
+import { getRolePermissions, isGuest, isTokenValid, isUser } from '@/pages/api/TokenApi';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -10,9 +10,9 @@ import Content from './tsx/Content';
 import Sidebar from './tsx/Sidebar';
 
 export default function Admin() {
-	const [authenticated, setAuthenticated] = useState(validateToken().status === 200);
+	const [authenticated, setAuthenticated] = useState(isTokenValid() && !isUser() && !isGuest());
 	const router = useRouter();
-
+	const rolePermissions = getRolePermissions();
 	// useEffect для перевірки автентифікації в режимі реального часу
 	useEffect(() => {
 		if (!authenticated) {
@@ -23,8 +23,7 @@ export default function Admin() {
 	// Перевірка валідності токена у фоновому режимі
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			const tokenStatus = validateToken();
-			if (tokenStatus.status !== 200) {
+			if (!isTokenValid()) {
 				setAuthenticated(false);
 				clearInterval(intervalId); // Зупиняємо перевірку, якщо токен недійсний
 				toast.warn('Сесія закінчилася, будь ласка, увійдіть знову.', { autoClose: false, closeOnClick: true });
@@ -39,8 +38,8 @@ export default function Admin() {
 		authenticated ? (
 			<div>
 				<div style={{ display: "flex" }}>
-					<Sidebar />
-					<Content />
+					<Sidebar rolePermissions={rolePermissions} />
+					<Content rolePermissions={rolePermissions} />
 				</div>
 			</div>
 		) : null

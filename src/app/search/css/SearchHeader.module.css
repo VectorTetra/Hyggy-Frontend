@@ -1,7 +1,17 @@
 #resultsFound {
     font-size: clamp(5vmin, 3rem, 7vmin);
     font-weight: 400;
-    margin: 0;
+    margin: 0 0 1rem 0;
     padding: 0;
     color: #333;
+}
+
+@media screen and (max-width: 800px) {
+    #resultsFound {
+        font-size: clamp(5vmin, 1.5rem, 5vmin);
+        font-weight: 400;
+        margin: 0 0 1rem 0;
+        padding: 0;
+        color: #333;
+    }
 }

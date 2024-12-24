@@ -165,8 +165,8 @@ export default function FrameTransfer() {
 
     return (
         <ThemeProvider theme={themeFrame}>
-            <Box sx={{ p: 2 }}>
-                <Typography sx={{ mb: 4 }} variant="h6" gutterBottom>
+            <Box>
+                <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Переміщення товарів між складами
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>

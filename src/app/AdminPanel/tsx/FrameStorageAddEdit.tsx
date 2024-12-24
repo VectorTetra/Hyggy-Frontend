@@ -41,7 +41,7 @@ const FrameStorageAddEdit = () => {
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const { mutateAsync: createStorage } = useCreateStorage();
 	const { mutateAsync: updateStorage } = useUpdateStorage();
-	const { mutateAsync: createAddress } = useCreateAddress();
+	const { mutateAsync: createOrFindAddress } = useCreateAddress();
 	const { mutateAsync: updateAddress } = useUpdateAddress();
 	const warehouseId = useAdminPanelStore((state) => state.warehouseId);
 	useEffect(() => {
@@ -197,22 +197,21 @@ const FrameStorageAddEdit = () => {
 			let newStorageDTOCollection = null;
 
 			// Отримання існуючої адреси
-			let checkExistedAddressDTO = await getAddresses({
-				SearchParameter: "Query",
-				HouseNumber: AddressHouseNumber,
-				City: AddressCity,
-				State: AddressState,
-				Street: AddressStreet,
-				PostalCode: AddressPostalCode,
-				Latitude: AddressLatitude,
-				Longitude: AddressLongitude,
+			let newUpdatedAddressDTO = await createOrFindAddress({
+				HouseNumber: AddressHouseNumber ?? null,
+				City: AddressCity ?? null,
+				State: AddressState ?? null,
+				Street: AddressStreet ?? null,
+				PostalCode: AddressPostalCode ?? null,
+				Latitude: AddressLatitude ?? null,
+				Longitude: AddressLongitude ?? null,
 			});
 
 			// Створення нового складу
 			if (warehouseId === 0) {
-				newStorageDTOCollection = await handleCreateNewWarehouse(checkExistedAddressDTO);
+				newStorageDTOCollection = await handleCreateNewWarehouse(newUpdatedAddressDTO);
 			} else {
-				newStorageDTOCollection = await handleUpdateExistingWarehouse(checkExistedAddressDTO);
+				newStorageDTOCollection = await handleUpdateExistingWarehouse(newUpdatedAddressDTO);
 			}
 
 			// Перевірка, чи склад успішно створений або оновлений
@@ -226,58 +225,17 @@ const FrameStorageAddEdit = () => {
 		}
 	};
 
-	const handleCreateNewWarehouse = async (checkExistedAddressDTO) => {
-		if (checkExistedAddressDTO.length > 0) {
-			if (!checkExistedAddressDTO[0].storageId) {
-				return await createStorage({ AddressId: checkExistedAddressDTO[0].id });
-			} else {
-				toast.error("Склад з такою адресою вже існує!");
-				return null; // Виходимо, якщо склад вже існує
-			}
-		} else {
-			let newAddressDTO = await createAddress({
-				HouseNumber: AddressHouseNumber,
-				City: AddressCity,
-				State: AddressState,
-				Street: AddressStreet,
-				PostalCode: AddressPostalCode,
-				Latitude: AddressLatitude,
-				Longitude: AddressLongitude,
-			});
-			return await createStorage({ AddressId: newAddressDTO.id });
-		}
+	const handleCreateNewWarehouse = async (newUpdatedAddressDTO) => {
+		return await createStorage({ AddressId: newUpdatedAddressDTO.id });
 	};
 
-	const handleUpdateExistingWarehouse = async (checkExistedAddressDTO) => {
-		let oldAddress = await getAddresses({ SearchParameter: "Query", StorageId: warehouseId });
-
-		if (checkExistedAddressDTO.length > 0) {
-			if (!checkExistedAddressDTO[0].storageId) {
-				return await createStorage({ AddressId: checkExistedAddressDTO[0].id });
-			} else {
-				toast.error("Склад з такою адресою вже існує!");
-				return null; // Виходимо, якщо склад вже існує
-			}
+	const handleUpdateExistingWarehouse = async (newUpdatedAddressDTO) => {
+		if (!newUpdatedAddressDTO.storageId || newUpdatedAddressDTO.storageId === warehouseId) {
+			return await updateStorage({ Id: warehouseId, AddressId: newUpdatedAddressDTO.id });
+		} else {
+			toast.error("Склад з такою адресою вже існує!");
+			return null; // Виходимо, якщо склад вже існує
 		}
-
-		let newAddressDTO = await updateAddress({
-			Id: oldAddress[0].id,
-			StorageId: warehouseId,
-			ShopId: oldAddress[0].shopId,
-			HouseNumber: AddressHouseNumber,
-			City: AddressCity,
-			State: AddressState,
-			Street: AddressStreet,
-			PostalCode: AddressPostalCode,
-			Latitude: AddressLatitude,
-			Longitude: AddressLongitude,
-		});
-		return await updateStorage({
-			Id: warehouseId,
-			AddressId: newAddressDTO.id,
-			ShopId: oldAddress[0].shopId,
-			// Додайте інші поля, які потрібно оновити
-		});
 	};
 
 

@@ -5,13 +5,13 @@ import styles from "./css/WareGrid.module.css";
 const SkeletonPost = () => {
     return (
         <>
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3 flex-wrap">
                 {Array.from({ length: 5 }).map((_, index) => (
-                    <div key={index}>
+                    <div key={index} style={{ display: "flex", flexWrap: "wrap" }}>
                         <Skeleton classes="filter" />
                     </div>
                 ))}
-            </div>
+            </div> */}
 
             <div id={styles.wareGrid}>
                 {Array.from({ length: 12 }).map((_, index) => (

@@ -13,7 +13,7 @@ import StarRating from '@/app/sharedComponents/StarRating';
 import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
 
-export default function WareFrame() {
+export default function WareFrame({ rolePermissions }) {
     const { mutate: deleteWare } = useDeleteWare();
     //const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { data: data = [], isLoading: dataLoading, isSuccess: success } = useWares({
@@ -37,7 +37,11 @@ export default function WareFrame() {
     const { wareId, setWareId } = useAdminPanelStore();
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.1, minWidth: 50 },
+        {
+            field: 'id', headerName: 'ID', minWidth: 110,
+            width: 110,
+            maxWidth: 110,
+        },
         { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
         {
             field: 'description',
@@ -108,10 +112,9 @@ export default function WareFrame() {
         {
             field: 'averageRating',
             headerName: 'Рейтинг',
-            flex: 0.3,
-            minWidth: 50,
-            headerAlign: 'center',
-            align: 'center',
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
             renderCell: (params) => {
                 const rating = params.value;
                 return <Box
@@ -127,24 +130,45 @@ export default function WareFrame() {
                 </Box>;
             },
         },
-        { field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка', flex: 0.3, width: 50 },
         {
+            field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка',
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
+        }
+    ];
+    if (rolePermissions.IsFrameWare_Button_EditWare_Available || rolePermissions.IsFrameWare_Button_DeleteWare_Available) {
+        columns.push({
             field: 'actions',
             headerName: 'Дії',
             flex: 0,
             width: 75,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
-                        <EditIcon />
-                    </Button>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
-                        <DeleteIcon />
-                    </Button>
+                    {rolePermissions.IsFrameWare_Button_EditWare_Available && (
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }}
+                            title='Редагувати'
+                            variant="outlined"
+                            onClick={() => handleEdit(params.row)}
+                        >
+                            <EditIcon />
+                        </Button>
+                    )}
+                    {rolePermissions.IsFrameWare_Button_DeleteWare_Available && (
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }}
+                            title='Видалити'
+                            variant="outlined"
+                            onClick={() => handleDelete(params.row)}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    )}
                 </Box>
             ),
-        },
-    ];
+        });
+    }
 
     const formatCurrency = (value) => {
         if (value === null || value === undefined) return '0';
@@ -245,21 +269,21 @@ export default function WareFrame() {
                     </Typography>
                     <Box sx={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        justifyContent: rolePermissions.IsFrameWare_Button_AddWare_Available ? 'space-between' : 'flex-start',
                     }}>
                         <SearchField
                             searchTerm={searchTerm}
                             onSearchChange={(event) => setSearchTerm(event.target.value)}
                         />
-                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+                        {rolePermissions.IsFrameWare_Button_AddWare_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
                             setWareId(0);
                             setActiveTab("addEditWare");
                         }}>
                             Додати
-                        </Button>
+                        </Button>}
                     </Box>
                 </Box>
-                <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
                     {filteredData.length === 0 && !loading && success ? (
                         <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
                             Нічого не знайдено
@@ -365,10 +389,7 @@ export default function WareFrame() {
                                 opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
                                 flexGrow: 1, // Займає доступний простір у контейнері
                                 minWidth: 800, // Мінімальна ширина DataGrid
-                                "& .MuiDataGrid-scrollbar--horizontal": {
-                                    position: 'fixed',
-                                    bottom: "5px"
-                                }
+
                             }}
                         />
                     )}

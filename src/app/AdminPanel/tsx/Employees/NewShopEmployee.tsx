@@ -1,296 +1,413 @@
-import { postShopEmployee } from '@/pages/api/EmployeesApi';
-import { getShops } from '@/pages/api/ShopApi';
-import { faEye, faEyeSlash, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSearchParams } from 'next/navigation';
+import { postShopEmployee, putShopEmployee, useShopEmployeePost, useShopEmployeePut, useShopEmployees } from '@/pages/api/EmployeesApi';
+import { Role, useRoleByName, useRolesByNames, useRolesExceptByRoleNames } from '@/pages/api/RoleApi';
+import { ShopGetDTO, useShops } from '@/pages/api/ShopApi';
+import { getDecodedToken } from '@/pages/api/TokenApi';
+import useAdminPanelStore from '@/store/adminPanel';
+import { ThemeProvider } from '@emotion/react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Autocomplete, Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import InputMask from 'react-input-mask';
 import { toast } from 'react-toastify';
+import themeFrame from '../ThemeFrame';
 
-const USER_REGEX = /^[А-ЯЇЄІҐ][а-яїєіґ]{1,23}$/;
+const USER_REGEX = /^[А-ЯЇЄІҐ][а-яїєіґ'"-]{1,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PHONE_REGEX = /^(\+?38)?0\d{9}$/;
+//const PHONE_REGEX = /^(\+?38)?0\d{9}$/;
+//const PHONE_REGEX = /^\+38 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+const PHONE_REGEX = /^(\+?38)?(0\d{9}|\(\d{3}\) \d{3}-\d{2}-\d{2})$/;
 
-const NewShopEmployee = () => {
-    const searchParams = useSearchParams();
-    const id = searchParams?.get("shopemployee");
+const NewShopEmployee = ({ rolePermissions }) => {
+    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "shopEmployees", scroll: false, history: "push", shallow: true });
+    const { shopEmployeeId, setShopEmployeeId } = useAdminPanelStore();
 
-    const userRef = useRef<HTMLInputElement>(null);
+    const availableRoleNames = rolePermissions.getAvailableRolesForShopFrame(shopEmployeeId);
+
+    const { data: roles = [], isLoading: rolesLoading } = useRolesByNames(
+        availableRoleNames,
+        availableRoleNames.length > 0
+    );
+    const { data: existingShopEmployee = [], refetch } = useShopEmployees({
+        Id: shopEmployeeId! || null,
+        PageNumber: 1,
+        PageSize: 1000,
+        Sorting: "NameAsc",
+    }, shopEmployeeId !== "0" && shopEmployeeId !== null);
+
+    const { data: shops = [] } = useShops({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000,
+        Id: rolePermissions.IsOwner ? null : Number(getDecodedToken()?.shopId)
+    });
+
+    const { mutateAsync: postShopEmployee } = useShopEmployeePost();
+    const { mutateAsync: putShopEmployee } = useShopEmployeePut();
+    const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
+    const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 
     const [name, setName] = useState("");
+    const [nameError, setNameError] = useState("");
     const [validName, setValidName] = useState(false);
-    const [nameFocus, setNameFocus] = useState(false);
 
     const [surname, setSurname] = useState("");
+    const [surnameError, setSurnameError] = useState("");
     const [validSurname, setValidSurname] = useState(false);
-    const [surnameFocus, setSurnameFocus] = useState(false);
 
     const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
     const [validEmail, setValidEmail] = useState(false);
-    const [emailFocus, setEmailFocus] = useState(false);
 
     const [phone, setPhone] = useState("");
+    const [phoneError, setPhoneError] = useState("");
     const [validPhone, setValidPhone] = useState(false);
-    const [phoneFocus, setPhoneFocus] = useState(false);
 
     const [password, setPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [validPwd, setValidPwd] = useState(false);
-    const [pwdFocus, setPwdFocus] = useState(false);
 
     const [matchPwd, setMatchPwd] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
 
-    const [shops, setShops] = useState<any | null>([]);
-    const [shopId, setShopId] = useState(0);
+    const [oldPassword, setOldPassword] = useState("");
+    const [oldPasswordError, setOldPasswordError] = useState("");
+    const [validOldPassword, setValidOldPassword] = useState(false);
 
-    const [errMsg, setErrMsg] = useState('');
+    const [newPassword, setNewPassword] = useState("");
+    const [newPasswordError, setNewPasswordError] = useState("");
+    const [validNewPassword, setValidNewPassword] = useState(false);
+
+    useEffect(() => {
+        if (shopEmployeeId === null) setActiveTab("shopEmployees");
+        console.log("shopEmployeeId", shopEmployeeId);
+    }, [shopEmployeeId, setActiveTab]);
+
+    useEffect(() => {
+        if (existingShopEmployee.length === 1 && shops.length > 0 && roles.length > 0) {
+            console.log("existingShopEmployee", existingShopEmployee);
+            console.log("Setting name to:", existingShopEmployee[0].name);
+            setName(existingShopEmployee[0].name);
+            setSurname(existingShopEmployee[0].surname);
+            setEmail(existingShopEmployee[0].email);
+            setPhone(existingShopEmployee[0].phoneNumber);
+            let shop = shops.find(shop => shop.id === existingShopEmployee[0].shopId);
+            setSelectedShop(shop);
+            let role = (roles.find(role => role.name === existingShopEmployee[0].roleName));
+            setSelectedRole(role);
+        }
+        else {
+            if (shopEmployeeId !== "0") refetch();
+        }
+    }, [existingShopEmployee, shops, roles, shopEmployeeId, refetch]);
+
 
     const [isDisabled, setIsDisabled] = useState(true);
-    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "shopEmployees", scroll: false, history: "push", shallow: true });
 
     const [showPwd, setShowPwd] = useState(false);
     const [showMatch, setShowMatch] = useState(false);
-
-    useEffect(() => {
-        userRef.current?.focus();
-        const fetchStorages = async () => {
-            try {
-                const data = await getShops({
-                    SearchParameter: "Query",
-                    PageNumber: 1,
-                    PageSize: 150
-                });
-                setShops(data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchStorages();
-        //shops.length === 0 ?  fetchStorages() : ;
-    }, [])
+    const [showOldPwd, setShowOldPwd] = useState(false);
+    const [showNewPwd, setShowNewPwd] = useState(false);
 
     useEffect(() => {
         if (shops && shops.length > 0) {
-            setShopId(shops[0].id)
+            setSelectedShop(shops[0])
         }
     }, [shops])
 
     useEffect(() => {
         const result = USER_REGEX.test(name);
+        setNameError(result ? "" : "Ім'я має починатися з великої літери та містити лише літери або апостроф.");
         setValidName(result);
     }, [name])
 
     useEffect(() => {
         const result = USER_REGEX.test(surname);
+        setSurnameError(result ? "" : "Прізвище має починатися з великої літери та містити лише літери або апостроф.");
         setValidSurname(result);
     }, [surname])
 
     useEffect(() => {
         const result = EMAIL_REGEX.test(email);
+        setEmailError(result ? "" : "Невірний формат email.");
         setValidEmail(result);
     }, [email])
 
     useEffect(() => {
-        const result = PHONE_REGEX.test(phone);
+        const result = phone === "" || PHONE_REGEX.test(phone?.replace(/[^\d+]/g, ''));
+        setPhoneError(result ? "" : "Невірний формат номеру телефону.");
         setValidPhone(result);
     }, [phone])
 
+
     useEffect(() => {
         const result = PWD_REGEX.test(password);
+        setPasswordError(result ? "" : "Довжина паролю від 8 до 24 символів. Пароль має містити велику літеру, малу літеру та цифру.");
         setValidPwd(result);
         const match = password == matchPwd;
+        setConfirmPasswordError(match ? "" : "Паролі не співпадають.");
         setValidMatch(match);
     }, [password, matchPwd]);
 
     useEffect(() => {
-        console.log("validName", validName);
-        console.log("validSurname", validSurname);
-        console.log("validEmail", validEmail);
-        console.log("validPhone", validPhone);
-        console.log("validPwd", validPwd);
-        console.log("validMatch", validMatch);
-        if (validName && validPwd && validMatch && validEmail && validSurname && validPhone) {
-            setIsDisabled(false);
-        } else {
-            setIsDisabled(true);
-        }
+        // Перевірка для старого пароля
+        const resultOldPassword = oldPassword === "" || PWD_REGEX.test(oldPassword);
+        setOldPasswordError(resultOldPassword ? "" : "(Залиште поле порожнім, якщо не хочете змінювати пароль)");
+        setValidOldPassword(resultOldPassword);
+    }, [oldPassword]);
 
-    }, [validEmail, validSurname, validMatch, validName, validPwd, validPhone])
+    useEffect(() => {
+        // Перевірка для нового пароля
+        const resultNewPassword = newPassword === "" || PWD_REGEX.test(newPassword);
+        setNewPasswordError(resultNewPassword ? "" : "Довжина паролю від 8 до 24 символів. Пароль має містити велику літеру, малу літеру та цифру. (Залиште поле порожнім, якщо не хочете змінювати пароль)");
+        setValidNewPassword(resultNewPassword);
+    }, [newPassword]);
+
+    useEffect(() => {
+        // Оновлення валідності кнопки збереження
+        if (shopEmployeeId === "0" && validName && validPwd && validMatch && validEmail && validSurname && validPhone && selectedShop && selectedRole) {
+            setIsDisabled(false);
+        }
+        else if (shopEmployeeId !== "0" && validName && validEmail && validSurname && validPhone && (validOldPassword || oldPassword === "") && (validNewPassword || newPassword === "") && selectedShop && selectedRole) {
+            setIsDisabled(false);
+        }
+        else {
+            setIsDisabled(true);
+            console.log("isDisabled", isDisabled);
+            console.log("validName", validName);
+            console.log("validSurname", validSurname);
+            console.log("validPwd", validPwd);
+            console.log("validMatch", validMatch);
+            console.log("validEmail", validEmail);
+            console.log("validPhone", validPhone);
+            console.log("selectedShop", selectedShop);
+            console.log("selectedRole", selectedRole);
+            console.log("validOldPassword", validOldPassword);
+            console.log("validNewPassword", validNewPassword);
+        }
+    }, [validEmail, validSurname, validMatch, validName, validPwd, validPhone, validOldPassword, validNewPassword, oldPassword, newPassword, selectedShop, selectedRole, shopEmployeeId]);
+
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if (!selectedShop) return;
         try {
-            if (id === "0") {
+            if (shopEmployeeId === "0") {
                 //Додавання співробітника
                 const response = await postShopEmployee({
-                    Name: name, Surname: surname, Email: email, Phone: phone, Password: password, ConfirmPassword: matchPwd,
-                    ShopId: shopId
+                    Name: name, Surname: surname, Email: email, PhoneNumber: phone?.replace(/[^\d+]/g, '') ?? null, Password: password, ConfirmPassword: matchPwd,
+                    ShopId: selectedShop!.id, RoleName: selectedRole!.name
                 });
-                toast.success(response);
+                toast.success("Співробітник успішно доданий!");
+            }
+            else {
+                //Редагування співробітника
+                const response = await putShopEmployee({
+                    Id: shopEmployeeId!, Name: name, Surname: surname, Email: email, PhoneNumber: phone?.replace(/[^\d+]/g, '') ?? null, NewPassword: newPassword, OldPassword: oldPassword,
+                    ShopId: selectedShop!.id, RoleName: selectedRole!.name
+                });
+                toast.success("Співробітник успішно відредагований!");
             }
         } catch (error) {
             console.error(error.text);
+            toast.dismiss();
             toast.error(error.response);
         } finally {
             setActiveTab('shopEmployees');
         }
     }
 
-
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-sm mx-auto  gap-4">
-            <div>
-                <label className="form-label" htmlFor="name">Ім&apos;я:</label>
-                <input
-                    id="name"
-                    className="w-full border p-2 rounded"
-                    type="text"
-                    placeholder="Укажіть ім'я"
-                    ref={userRef}
-                    autoComplete="off"
-                    onChange={e => setName(e.target.value)}
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setNameFocus(true)}
-                    onBlur={() => setNameFocus(false)}
+        <ThemeProvider theme={themeFrame}>
+            <Box component="form" onSubmit={handleSubmit}>
+                <Typography variant="h5" gutterBottom>
+                    {shopEmployeeId === "0" ? "Додати нового співробітника магазину" : "Редагувати співробітника магазину"}
+                </Typography>
+                <TextField
+                    label="Ім&apos;я"
+                    name="firstName"
+                    value={name}
+                    error={name.length > 0 && !validName}
+                    helperText={<span>{nameError}</span>}
+                    onChange={(e) => setName(e.target.value)}
+                    fullWidth
+                    margin="normal"
                 />
-                <p id="uidnote" className={nameFocus && name && !validName ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Від 2 до 24 символів(тільки літери). Повинно починатися з великої літери.</span>
-                </p>
-
-                <label className="form-label" htmlFor="surname">Прізвище:</label>
-                <input
-                    id="surname"
-                    className="w-full border p-2 rounded"
-                    type="text"
-                    autoComplete="off"
-                    placeholder="Укажіть прізвище"
+                <TextField
+                    label="Прізвище"
+                    name="lastName"
                     value={surname}
-                    onChange={e => setSurname(e.target.value)}
-                    aria-invalid={validSurname ? "false" : "true"}
-                    aria-describedby="surnote"
-                    onFocus={() => setSurnameFocus(true)}
-                    onBlur={() => setSurnameFocus(false)}
+                    helperText={<span>{surnameError}</span>}
+                    onChange={(e) => setSurname(e.target.value)}
+                    error={surname.length > 0 && !validSurname}
+                    fullWidth
+                    margin="normal"
                 />
-                <p id="surnote" className={surnameFocus && surname && !validSurname ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Від 2 до 24 символів(тільки літери). Повинно починатися з великої літери.</span>
-                </p>
-                <label className="form-label" htmlFor="email">Пошта:</label>
-                <input
-                    id="email"
-                    className="w-full border p-2 rounded"
-                    type="email"
-                    placeholder="Укажіть пошту"
+
+                <TextField
+                    label="Email"
+                    name="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    aria-invalid={validSurname ? "false" : "true"}
-                    aria-describedby="emnote"
-                    onFocus={() => setEmailFocus(true)}
-                    onBlur={() => setEmailFocus(false)}
+                    helperText={
+                        <span>{emailError}</span>
+                    }
+                    error={email.length > 0 && !validEmail}
+                    onChange={(e) => setEmail(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    disabled={existingShopEmployee.length > 0}
                 />
-                <p id="emnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Пошта не співпадає з шаблоном(yourname@email.com)</span>
-                </p>
-                <label className="form-label" htmlFor="phone">Телефон:</label>
-                <input
-                    id="phone"
-                    className="w-full border p-2 rounded"
-                    type="phone"
-                    placeholder="Укажіть телефон"
+                <InputMask
+                    mask="+38 (099) 999-99-99"
                     value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                    aria-invalid={validPhone ? "false" : "true"}
-                    aria-describedby="phnote"
-                    onFocus={() => setPhoneFocus(true)}
-                    onBlur={() => setPhoneFocus(false)}
-                />
-                <p id="phnote" className={phoneFocus && phone && !validPhone ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Приклад: +380123456789, 380123456789, 0123456789</span>
-                </p>
-                <label className="form-label" htmlFor="pwd">Пароль:</label>
-                <div className="relative w-full">
-                    <input
-                        id="pwd"
-                        className="w-full border p-2 rounded"
-                        type={showPwd ? "text" : "password"}
-                        autoComplete="off"
-                        placeholder="Укажіть пароль"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        aria-invalid={validPwd ? "false" : "true"}
-                        aria-describedby="pwdnote"
-                        onFocus={() => setPwdFocus(true)}
-                        onBlur={() => setPwdFocus(false)}
-                    />
-                    <button
-                        className="absolute right-2 top-2 text-gray-600"
-                        type="button"
-                        onClick={() => setShowPwd(!showPwd)}
-                        onFocus={() => setPwdFocus(true)}
-                        onBlur={() => setPwdFocus(false)}
-                    >
-                        <FontAwesomeIcon icon={showPwd ? faEyeSlash : faEye} />
-                    </button>
-                </div>
-                <p id="pwdnote" className={pwdFocus && password && !validPwd ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Від 8 символів(тільки літери та цифри).Має містити, як найменш одну велику літеру та цифру.</span>
-                </p>
-                <label className="form-label" htmlFor="match">Підтвердження паролю:</label>
-                <div className="relative w-full">
-                    <input
-                        id="match"
-                        className="w-full border p-2 rounded"
-                        type={showMatch ? "text" : "password"}
-                        autoComplete="off"
-                        placeholder="Підтвердіть пароль"
-                        value={matchPwd}
-                        onChange={e => setMatchPwd(e.target.value)}
-                        aria-invalid={validMatch ? "false" : "true"}
-                        aria-describedby="matchnote"
-                        onFocus={() => setMatchFocus(true)}
-                        onBlur={() => setMatchFocus(false)}
-                    />
-                    <button
-                        className="absolute right-2 top-2 text-gray-600"
-                        type="button"
-                        onClick={() => setShowMatch(!showMatch)}
-                        onFocus={() => setMatchFocus(true)}
-                        onBlur={() => setMatchFocus(false)}
-                    >
-                        <FontAwesomeIcon icon={showMatch ? faEyeSlash : faEye} />
-                    </button>
-                </div>
-                <p id="matchnote" className={matchFocus && matchPwd && !validMatch ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} className="text-[#FF385C] opacity-60/" />
-                    <span className="text-[#FF385C] opacity-60">Пароль не співпадає.</span>
-                </p>
-                <label className="form-label" htmlFor="address">Адреса магазину:</label>
-                <select
-                    name="address"
-                    id="address"
-                    className="w-full border p-2 rounded"
-                    value={shopId}
-                    onChange={e => setShopId(Number(e.target.value))}
+                    helperText={
+                        <span>{phoneError}</span>
+                    }
+                    errorMessage="Невірний формат номеру телефону"
+                    onChange={(e) => setPhone(e.target.value)}
                 >
-                    {shops && shops.map((shop) => (
-                        <option key={shop.id} value={shop.id}>{shop.street + ' ' + shop.houseNumber + ' , ' + shop.city}</option>
-                    ))}
-                </select>
-            </div>
-            {isDisabled ? (
-                <button disabled={true} className="bg-[#00AAAD] opacity-50 cursor-not-allowed text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>)
-                : (
-                    <button className="bg-[#00AAAD]  text-white text-xl font-bold rounded-xl shadow-xl py-4 w-full">Додати співробітника</button>
-                )
-            }
-        </form>
+                    {() => (
+                        <TextField
+                            label="Номер телефону"
+                            name="phoneNumber"
+                            fullWidth
+                            margin="normal"
+                            value={phone}
+                        />
+                    )}
+                </InputMask>
+                {shopEmployeeId === "0" && <div>
+                    <TextField
+                        label="Пароль"
+                        name="password"
+                        helperText={
+                            <span>{passwordError}</span>
+                        }
+                        type={showPwd ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        error={password.length > 0 && !validPwd}
+                        fullWidth
+                        margin="normal"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPwd(!showPwd)}
+                                    >
+                                        {showPwd ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        label="Повторіть пароль"
+                        name="confirmPassword"
+                        type={showMatch ? "text" : "password"}
+                        value={matchPwd}
+                        helperText={
+                            <span>{confirmPasswordError}</span>
+                        }
+                        onChange={(e) => setMatchPwd(e.target.value)}
+                        error={matchPwd.length > 0 && !validMatch}
+                        fullWidth
+                        margin="normal"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowMatch(!showMatch)}
+                                    >
+                                        {showMatch ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </div>}
+
+                {shopEmployeeId !== "0" && getDecodedToken()?.nameid === shopEmployeeId && <div >
+                    <TextField
+                        label="Cтарий пароль"
+                        name="oldPassword"
+                        type={showOldPwd ? "text" : "password"}
+                        value={oldPassword}
+                        helperText={
+                            <span>{oldPasswordError}</span>
+                        }
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        error={oldPassword.length > 0 && !validOldPassword}
+                        fullWidth
+                        margin="normal"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowOldPwd(!showOldPwd)}
+                                    >
+                                        {showOldPwd ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        label="Новий пароль"
+                        name="confirmPassword"
+                        type={showNewPwd ? "text" : "password"}
+                        value={newPassword}
+                        helperText={
+                            <span>{newPasswordError}</span>
+                        }
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        error={newPassword.length > 0 && !validNewPassword}
+                        fullWidth
+                        margin="normal"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowNewPwd(!showNewPwd)}
+                                    >
+                                        {showNewPwd ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <Link href="../PagePasswordReset" prefetch><span style={{ color: '#00AAAD', textDecoration: "none" }}>Забули пароль?</span> </Link>
+                </div>}
+                <Autocomplete
+                    options={shops}
+                    getOptionLabel={(option: ShopGetDTO) => `${option?.name} (${option?.city}, ${option?.street}, ${option?.houseNumber})`}
+                    value={selectedShop}
+                    onChange={(event, newValue) => setSelectedShop(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть магазин" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />
+                {roles.length > 0 && <Autocomplete
+                    options={roles}
+                    getOptionLabel={(option: Role) => `${option?.name}`}
+                    value={selectedRole}
+                    onChange={(event, newValue) => setSelectedRole(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />}
+                <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}
+                    disabled={isDisabled}>
+                    {shopEmployeeId === "0" ? "Додати співробітника" : "Зберегти зміни"}
+                </Button>
+            </Box>
+        </ThemeProvider>
     )
 }
 
