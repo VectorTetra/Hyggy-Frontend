@@ -38,9 +38,6 @@ const FrameBlogInvoiceForm = () => {
             // toggle to add extra line breaks when pasting HTML:
             matchVisual: false
         },
-        // imageResize: {
-        //     modules: ['Resize', 'DisplaySize', 'Toolbar'],
-        // },
 
     };
 
@@ -69,9 +66,6 @@ const FrameBlogInvoiceForm = () => {
                                         borderRadius: '8px',
                                     }}
                                 />
-                                // <Editor value={typeof row.content === 'string' ? row.content : ''}
-                                //     handlechange={(content) => updateRowContent(row.id, content)}
-                                //     placeholder="Введіть текст абзацу блогу" />
                             )}
                             {row.contentType === 'image' && (
                                 <div style={{
@@ -201,33 +195,6 @@ const FrameBlogInvoiceForm = () => {
                 </div>
 
             </div>
-
-            {/* <div style={{ marginBottom: '2rem' }}>
-                <h4>Ключові слова</h4>
-                {keywords.map((keyword, index) => (
-                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
-                        <TextField
-                            variant="outlined"
-                            placeholder="Введіть ключове слово"
-                            value={keyword}
-                            onChange={(e) => updateKeyword(index, e.target.value)}
-                            style={{ flex: 1, marginRight: '10px' }}
-                        />
-                        <IconButton onClick={() => removeKeyword(index)} color="error">
-                            <DeleteIcon />
-                        </IconButton>
-                    </div>
-                ))}
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                    <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addKeyword}>
-                        Додати ключове слово
-                    </Button>
-                    <Button variant="contained" sx={{ backgroundColor: "#be0f0f" }} onClick={clearKeywords}>
-                        Прибрати всі ключові слова
-                    </Button>
-                </Box>
-            </div> */}
-
             <FrameBlogInvoiceFormKeywordForm />
         </div>
     );

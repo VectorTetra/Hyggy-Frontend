@@ -27,6 +27,12 @@ const SuccessPage = () => {
 
   let AddressDTOtoPost = new AddressDTO();
 
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined) return '0';
+    const roundedValue = Math.round(value * 100) / 100;
+    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+  };
+
   useEffect(() => {
 
   }, [router]);
@@ -167,7 +173,7 @@ const SuccessPage = () => {
       <center><h3><b>Замовлення № {successfullOrder.id}:</b></h3></center>
       <center>
         <h6>Вибраний тип доставки : {successfullOrder.deliveryType.description}</h6>
-        <h6>Вартість доставки : {successfullOrder.deliveryType.price} грн</h6>
+        <h6>Вартість доставки : {formatCurrency(successfullOrder.deliveryType.price)} грн</h6>
       </center>
       <center>
         <center>
@@ -204,13 +210,13 @@ const SuccessPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{Math.ceil(item.ware.finalPrice)} грн</p>
-                    <p>{(Math.ceil(item.ware.finalPrice) * item.count)} грн</p>
+                    <p>{formatCurrency(item.ware.finalPrice)} грн</p>
+                    <p>{formatCurrency(item.ware.finalPrice * item.count)} грн</p>
                   </div>
                 </div>
               ))}
               <p className={styles.totalPrice}>
-                Усього {successfullOrder.totalPrice} грн
+                Всього {formatCurrency(successfullOrder.totalPrice)} грн
               </p>
             </div>
           )}

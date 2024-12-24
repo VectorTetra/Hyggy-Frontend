@@ -70,8 +70,8 @@ export default function FrameShop() {
 
   // Створюємо масив колонок з перекладеними назвами
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
-    { field: 'name', headerName: 'Назва магазину', flex: 1, minWidth: 200 },
+    { field: 'id', headerName: 'ID', flex: 0.1, minWidth: 50 },
+    { field: 'name', headerName: 'Назва магазину', flex: 1.5, minWidth: 200 },
     { field: 'state', headerName: 'Область', flex: 1, minWidth: 150 },
     { field: 'city', headerName: 'Місто', flex: 0.8, minWidth: 150 },
     { field: 'street', headerName: 'Вулиця', flex: 1, minWidth: 150 },
@@ -203,12 +203,10 @@ export default function FrameShop() {
         }
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDialogOpen(false)}
-        confirmButtonBackgroundColor='#be0f0f'
-        confirmButtonBorderColor='#be0f0f'
-        confirmButtonColor='#fff'
+        confirmButtonBackgroundColor='#00AAAD'
         cancelButtonBackgroundColor='#fff'
-        cancelButtonBorderColor='#00AAAD'
-        cancelButtonColor='#00AAAD'
+        cancelButtonBorderColor='#be0f0f'
+        cancelButtonColor='#be0f0f'
         open={isDialogOpen}
       />
     </Box>

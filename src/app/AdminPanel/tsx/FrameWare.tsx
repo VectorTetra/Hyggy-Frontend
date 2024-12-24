@@ -37,7 +37,7 @@ export default function WareFrame() {
     const { wareId, setWareId } = useAdminPanelStore();
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
+        { field: 'id', headerName: 'ID', flex: 0.1, minWidth: 50 },
         { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
         {
             field: 'description',
@@ -58,7 +58,13 @@ export default function WareFrame() {
                                 }}
                             />
                         )}
-                        <Typography variant="body2">{params.row.description}</Typography>
+                        <Typography variant="body2"
+                            sx={{
+                                wordWrap: 'break-word', // Перенос длинных слов
+                                whiteSpace: 'normal',
+                                overflow: 'visible',
+                            }}>
+                            {params.row.description}</Typography>
                     </Box>
                 );
             },
@@ -70,7 +76,9 @@ export default function WareFrame() {
             minWidth: 150,
             renderCell: (params) => {
                 const price = params.value;
-                return `${price}₴`;
+                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    {formatCurrency(price)}
+                </Box>;
             },
         },
         {
@@ -88,9 +96,13 @@ export default function WareFrame() {
             headerName: 'Кінцева Ціна',
             flex: 0.3,
             minWidth: 150,
+            headerAlign: 'right',
+            align: 'center',
             renderCell: (params) => {
                 const finalPrice = params.value;
-                return `${finalPrice}₴`;
+                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    {formatCurrency(finalPrice)}
+                </Box>;
             },
         },
         {
@@ -98,9 +110,21 @@ export default function WareFrame() {
             headerName: 'Рейтинг',
             flex: 0.3,
             minWidth: 50,
+            headerAlign: 'center',
+            align: 'center',
             renderCell: (params) => {
                 const rating = params.value;
-                return <StarRating rating={Number(rating)} />;
+                return <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                    <StarRating rating={Number(rating)} />
+                </Box>;
             },
         },
         { field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка', flex: 0.3, width: 50 },
@@ -121,6 +145,12 @@ export default function WareFrame() {
             ),
         },
     ];
+
+    const formatCurrency = (value) => {
+        if (value === null || value === undefined) return '0';
+        const roundedValue = Math.round(value * 100) / 100;
+        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
+    };
 
     const handleEdit = (row) => {
         setWareId(row.id);
@@ -359,12 +389,10 @@ export default function WareFrame() {
                 }
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDialogOpen(false)}
-                confirmButtonBackgroundColor='#be0f0f'
-                confirmButtonBorderColor='#be0f0f'
-                confirmButtonColor='#fff'
+                confirmButtonBackgroundColor='#00AAAD'
                 cancelButtonBackgroundColor='#fff'
-                cancelButtonBorderColor='#00AAAD'
-                cancelButtonColor='#00AAAD'
+                cancelButtonBorderColor='#be0f0f'
+                cancelButtonColor='#be0f0f'
                 open={isDialogOpen}
             />
         </Box>

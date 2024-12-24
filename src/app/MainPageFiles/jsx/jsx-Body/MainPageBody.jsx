@@ -25,18 +25,21 @@ export default function MainPageBody(props) {
 				<MainPageBodyCaption caption={props.bodyData.bodycaption.caption} />
 				<MainPageBodyCategory CategoryName={props.bodyData.category} />
 			</div>
-			<hr id="horizontalBar3" />
+			{/* <hr id="horizontalBar3" /> */}
+			<br></br>
 			<div>
 				<MainPageBodyBrandCaption caption={props.bodyData.brandcaption.caption} />
 				<MainPageBodyBrand brand={props.bodyData.brand} />
 			</div>
-			<hr id="horizontalBar3" />
+			{/* <hr id="horizontalBar3" /> */}
+			<br></br>
 			<div>
 				<MainPageBodyBlogCaption caption={props.bodyData.blogcaption.caption} />
 				<MainPageBodyBlog blog={props.bodyData.blog} />
 				<MainPageBodyBlogButton button={props.bodyData.blog} />
 			</div>
-			<hr id="horizontalBar3" />
+			{/* <hr id="horizontalBar3" /> */}
+			<br></br>
 			<div>
 				<MainPageBodyAboutUs aboutus={props.bodyData.aboutus} />
 			</div>

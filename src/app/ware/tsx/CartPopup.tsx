@@ -19,6 +19,12 @@ interface CartPopupProps {
   selectedOption: string;
 }
 
+const formatCurrency = (value) => {
+  if (value === null || value === undefined) return '0';
+  const roundedValue = Math.round(value * 100) / 100;
+  return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+};
+
 const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
   const { cart, removeFromCart } = useLocalStorageStore(); // Отримуємо стан з store
 
@@ -64,8 +70,8 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
             />
             <div>
               <p>{lastItem.product.description}</p>
-              <p className={styles.price}>{Math.round(Number(lastItem.product.finalPrice))} грн</p>
-              <p className={styles.oldprice}>{lastItem.product.price} грн</p>
+              <p className={styles.price}>{formatCurrency(lastItem.product.finalPrice)} грн</p>
+              <p className={styles.oldprice}>{formatCurrency(lastItem.product.price)} грн</p>
               <p
                 className={styles.delete}
                 onClick={() => {
@@ -81,11 +87,11 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
         <div className={styles.deliveryInfo}>
           <p>
             <span className={styles.info}>Доставка: </span>
-            <span className={styles.priceAmount}>{deliveryPrice} грн</span>
+            <span className={styles.priceAmount}>{formatCurrency(deliveryPrice)} грн</span>
           </p>
           <p>
             <span className={styles.info}>Сума ({calculateQuantity()} товарів): </span>
-            <span className={styles.priceAmount}>{totalPrice} грн</span>
+            <span className={styles.priceAmount}>{formatCurrency(totalPrice)} грн</span>
           </p>
           <Link prefetch={true} href="/cart" passHref>
             <button className={styles.resumeButton}>Продовжити</button>

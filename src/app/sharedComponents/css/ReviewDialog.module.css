@@ -12,6 +12,7 @@
 }
 
 .modalContent {
+    position: relative;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -26,8 +27,11 @@
 
 .close {
     cursor: pointer;
+    position: absolute;
     float: right;
     font-size: xx-large;
+    top: 10px;
+    right: 30px;
 }
 
 .formRating {
@@ -96,5 +100,10 @@
     .modalContent {
         width: 75%;
         padding: 50px;
+    }
+
+    .close {
+        top: 5px;
+        right: 20px;
     }
 }
