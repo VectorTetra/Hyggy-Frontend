@@ -69,6 +69,7 @@ export default function FrameShop({ rolePermissions }) {
   };
 
   // Створюємо масив колонок з перекладеними назвами
+
   let columns = [
     { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
     { field: 'name', headerName: 'Назва магазину', flex: 1, minWidth: 200 },
@@ -220,12 +221,10 @@ export default function FrameShop({ rolePermissions }) {
         }
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDialogOpen(false)}
-        confirmButtonBackgroundColor='#be0f0f'
-        confirmButtonBorderColor='#be0f0f'
-        confirmButtonColor='#fff'
+        confirmButtonBackgroundColor='#00AAAD'
         cancelButtonBackgroundColor='#fff'
-        cancelButtonBorderColor='#00AAAD'
-        cancelButtonColor='#00AAAD'
+        cancelButtonBorderColor='#be0f0f'
+        cancelButtonColor='#be0f0f'
         open={isDialogOpen}
       />
     </Box>

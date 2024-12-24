@@ -1,7 +1,6 @@
 .keywordStickerPanel {
 	display: flex;
 	gap: 10px;
-	/* margin: 16px 0; */
 	flex-wrap: wrap;
 }
 

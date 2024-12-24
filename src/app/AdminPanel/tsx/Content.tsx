@@ -1,23 +1,6 @@
 import { Box, CircularProgress } from '@mui/material';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { lazy, Suspense } from 'react';
-// const Clients = lazy(() => import('./Clients'));
-// const NewShopEmployee = lazy(() => import('./Employees/NewShopEmployee'));
-// const NewStorageEmployee = lazy(() => import('./Employees/NewStorageEmployee'));
-// const ShopEmployees = lazy(() => import('./Employees/ShopEmployees'));
-// const StorageEmployees = lazy(() => import('./Employees/StorageEmployees'));
-// const FrameRemaining = lazy(() => import('./FrameRemaining'));
-// const FrameWriteoff = lazy(() => import('./FrameWriteoff'));
-// const FrameStorage = lazy(() => import('./FrameStorage'));
-// const FrameShop = lazy(() => import('./FrameShop'));
-// const NewShop = lazy(() => import('./FrameShopAddEdit'));
-// const FrameStorageAddEdit = lazy(() => import('./FrameStorageAddEdit'));
-// const FrameWare = lazy(() => import('./FrameWare'));
-// const WareAddEditFrame = lazy(() => import('./FrameWareAddEdit'));
-// const FrameBlog = lazy(() => import('./FrameBlog'));
-// const FrameBlogAddEdit = lazy(() => import('./FrameBlogAddEdit'));
-// const FrameSupply = lazy(() => import('./FrameSupply'));
-// const FrameTransfer = lazy(() => import('./FrameTransfer'));
 import Clients from './Clients';
 import NewShopEmployee from './Employees/NewShopEmployee';
 import NewStorageEmployee from './Employees/NewStorageEmployee';
@@ -25,17 +8,19 @@ import ShopEmployees from './Employees/ShopEmployees';
 import StorageEmployees from './Employees/StorageEmployees';
 import FrameRemaining from './FrameRemaining';
 import FrameWriteoff from './FrameWriteoff';
-import FrameStorage from './FrameStorage';
-import FrameShop from './FrameShop';
-import NewShop from './FrameShopAddEdit';
-import FrameStorageAddEdit from './FrameStorageAddEdit';
-import FrameWare from './FrameWare';
-import WareAddEditFrame from './FrameWareAddEdit';
-import FrameBlog from './FrameBlog';
-import FrameBlogAddEdit from './FrameBlogAddEdit';
-import FrameSupply from './FrameSupply';
-import FrameTransfer from './FrameTransfer';
 import useAdminPanelStore from '@/store/adminPanel';
+
+const FrameStorage = lazy(() => import('./FrameStorage'));
+const FrameShop = lazy(() => import('./FrameShop'));
+const NewShop = lazy(() => import('./FrameShopAddEdit'));
+const FrameStorageAddEdit = lazy(() => import('./FrameStorageAddEdit'));
+const FrameWare = lazy(() => import('./FrameWare'));
+const WareAddEditFrame = lazy(() => import('./FrameWareAddEdit'));
+const FrameBlog = lazy(() => import('./FrameBlog'));
+const FrameBlogAddEdit = lazy(() => import('./FrameBlogAddEdit'));
+const FrameSupply = lazy(() => import('./FrameSupply'));
+const FrameTransfer = lazy(() => import('./FrameTransfer'));
+const FrameOrder = lazy(() => import('./FrameOrder'));
 
 export default function Content({ rolePermissions }) {
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
@@ -65,7 +50,7 @@ export default function Content({ rolePermissions }) {
 					{rolePermissions.IsFrameStorageEmployees_Available && activeTab === 'storageEmployees' && <StorageEmployees rolePermissions={rolePermissions} />}
 					{(rolePermissions.IsFrameStorageEmployees_Button_AddStorageEmployee_Available || rolePermissions.canEditSelf(storageEmployeeId)) && activeTab === 'addStorageEmployee' && <NewStorageEmployee rolePermissions={rolePermissions} />}
 					{rolePermissions.IsFrameClients_Available && activeTab === 'clients' && <Clients rolePermissions={rolePermissions} />}
-					{rolePermissions.IsFrameOrders_Available && activeTab === 'orders' && <div>Замовлення</div>}
+					{rolePermissions.IsFrameOrders_Available && activeTab === 'orders' && <FrameOrder />}
 					{rolePermissions.IsFrameBlog_Available && activeTab === 'blog' && <FrameBlog rolePermissions={rolePermissions} />}
 					{(rolePermissions.IsFrameBlog_Button_AddBlog_Available || rolePermissions.IsFrameBlog_Button_EditBlog_Available) && activeTab === 'addEditBlog' && <FrameBlogAddEdit />}
 					{/* {rolePermissions.IsFrameReviews_Available && activeTab === 'reviews' && <div>Відгуки</div>} */}

@@ -9,13 +9,11 @@ import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
-//import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
 import themeFrame from './ThemeFrame';
 
 export default function FrameBlog({ rolePermissions }) {
 	const { mutate: deleteBlog } = useDeleteBlog();
-	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useBlogs({
 		SearchParameter: "Query",
 		PageNumber: 1,
@@ -30,7 +28,6 @@ export default function FrameBlog({ rolePermissions }) {
 	const { blogId, setBlogId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
-		//id: false,
 		blogCategory1Name: false,
 	});
 	const apiRef = useGridApiRef();
@@ -189,16 +186,12 @@ export default function FrameBlog({ rolePermissions }) {
 				onSuccess: () => {
 					setIsDialogOpen(false);
 					toast.info('Блог успішно видалено!');
-					// Якщо потрібно оновити локальний стан:
-					// setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
 				}
 			});
 		}
 	};
 
 	useEffect(() => {
-		// if (data.length === 0)
-		// 	queryClient.invalidateQueries('storages');
 		console.log("data", data);
 		if (success) {
 			setFilteredData(data);
@@ -214,7 +207,6 @@ export default function FrameBlog({ rolePermissions }) {
 		const fetchFilteredData = () => {
 			setLoading(true);
 			try {
-				//if (data.length === 0) { toast.error('data не ініціалізована!'); return; }
 				if (debouncedSearchTerm) {
 					// Фільтруємо дані локально по будь-якому полю
 					const filteredBlogs = data.filter(item =>
@@ -224,11 +216,9 @@ export default function FrameBlog({ rolePermissions }) {
 						)
 					);
 					setFilteredData(filteredBlogs); // Оновлюємо відфільтровані дані
-					//toast.info('Встановлено filteredStorages!');
 				} else {
 					setFilteredData(data); // Якщо немає терміна пошуку, використовуємо всі дані
 					console.log(data);
-					//toast.info('Встановлено data!');
 				}
 			} catch (error) {
 				console.error('Error filtering data:', error);
@@ -250,12 +240,12 @@ export default function FrameBlog({ rolePermissions }) {
 					justifyContent: 'space-between',
 					alignItems: 'normal',
 					marginBottom: '1rem',
-					position: 'sticky', // Фіксована позиція
-					top: 0, // Залишається зверху
+					position: 'sticky',
+					top: 0,
 					left: 0,
 					zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
 					width: "100%",
-					padding: '0' // Додаємо відступи для панелі
+					padding: '0'
 				}}>
 					<Typography variant="h5" sx={{ marginBottom: 2 }}>
 						Блоги : {loading ? <CircularProgress size={24} /> : filteredData.length}
@@ -300,7 +290,6 @@ export default function FrameBlog({ rolePermissions }) {
 								"&. MuiDataGrid-topContainer": {
 									backgroundColor: "#f3f3f3"
 								},
-								//'&.MuiDataGrid-cell': { display: 'flex !important', alignItems: 'center !important' },
 								'&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
 								'&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
 								'&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
@@ -407,12 +396,10 @@ export default function FrameBlog({ rolePermissions }) {
 				}
 				onConfirm={handleConfirmDelete}
 				onCancel={() => setIsDialogOpen(false)}
-				confirmButtonBackgroundColor='#be0f0f'
-				confirmButtonBorderColor='#be0f0f'
-				confirmButtonColor='#fff'
+				confirmButtonBackgroundColor='#00AAAD'
 				cancelButtonBackgroundColor='#fff'
-				cancelButtonBorderColor='#00AAAD'
-				cancelButtonColor='#00AAAD'
+				cancelButtonBorderColor='#be0f0f'
+				cancelButtonColor='#be0f0f'
 				open={isDialogOpen}
 			/>
 		</Box>

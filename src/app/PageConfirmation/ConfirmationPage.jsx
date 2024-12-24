@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./css/ConfirmationStyles.module.css";
+import { toast } from 'react-toastify';
 
 export default function ConfirmationPage(props) {
     const [code, setCode] = React.useState('');
@@ -19,12 +20,12 @@ export default function ConfirmationPage(props) {
 
 
         if (user && user.confirmationCode === code && typeof window !== "undefined") {
-            alert('Обліковий запис успішно створено!');
+            toast.success('Обліковий запис успішно створено!');
             user.confirmationStatus = true;
             window.location.href = '../MainPage'; // Перехід поки що на головну, але згодом у особистий кабінет
         } else {
             setErrorMessage('');
-            alert('Ви ввели невірний код');
+            toast.error('Ви ввели невірний код');
         }
     };
 

@@ -80,7 +80,6 @@ export default function FrameShopAddEdit() {
   const [dataWorkHours, setDataWorkHours] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "stores", scroll: false, history: "push", shallow: true });
-  //const [activeNewShop, setActiveNewShop] = useQueryState("new-edit", { scroll: false, history: "push", shallow: true });
   if (shopId === null) {
     setActiveTab('stores');
   }

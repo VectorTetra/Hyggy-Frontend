@@ -38,8 +38,6 @@ const Clients = ({ rolePermissions }) => {
             console.log("selectedRow", selectedRow);
             await deleteCustomer(selectedRow.id);
             setIsDialogOpen(false);
-
-            //setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
             toast.info('Користувача успішно видалено!');
         }
     };
@@ -179,12 +177,10 @@ const Clients = ({ rolePermissions }) => {
                 }
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDialogOpen(false)}
-                confirmButtonBackgroundColor='#be0f0f'
-                confirmButtonBorderColor='#be0f0f'
-                confirmButtonColor='#fff'
+                confirmButtonBackgroundColor='#00AAAD'
                 cancelButtonBackgroundColor='#fff'
-                cancelButtonBorderColor='#00AAAD'
-                cancelButtonColor='#00AAAD'
+                cancelButtonBorderColor='#be0f0f'
+                cancelButtonColor='#be0f0f'
                 open={isDialogOpen}
             />
         </Box>

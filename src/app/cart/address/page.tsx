@@ -193,6 +193,12 @@ const AddressPage = () => {
     }, 0);
   };
 
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined) return '0';
+    const roundedValue = Math.round(value * 100) / 100;
+    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+  };
+
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.Page}>
@@ -344,12 +350,12 @@ const AddressPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{Math.ceil(item.product.finalPrice)} грн</p>
-                    <p>{Math.ceil(item.product.finalPrice * item.quantity)} грн</p>
+                    <p>{formatCurrency(item.product.finalPrice)} грн</p>
+                    <p>{formatCurrency(item.product.finalPrice * item.quantity)} грн</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {Math.ceil(calculateTotalPrice())} грн</p>
+              <p className={styles.totalPrice}>Всього: {formatCurrency(calculateTotalPrice())} грн</p>
             </div>
           )}
         </div>

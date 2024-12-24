@@ -125,7 +125,7 @@ const SubMenuItem = ({
 export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
 	const [openEmployees, setEmployees] = useState(false);
-	const { setFrameRemainsSidebarVisibility } = useAdminPanelStore();
+	const { setFrameRemainsSidebarVisibility} = useAdminPanelStore();
 
 	const { window, rolePermissions } = props;
 

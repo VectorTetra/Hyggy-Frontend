@@ -84,7 +84,7 @@ const BlockShops: React.FC = () => {
                             placeholder="Введіть місто або адресу... "
                         />
                         <button onClick={() => { }} className={styles.searchButton}>
-                            <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
+                            <FontAwesomeIcon icon={faSearch} />
                         </button>
                     </div>
 

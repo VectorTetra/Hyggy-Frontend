@@ -27,7 +27,7 @@ function MainPageHeaderSearch(props) {
 
             </input>
             <button onClick={() => { }} className={styles.searchButton}>
-                <FontAwesomeIcon icon={faSearch} className="text-[#00AAAD] opacity-60/" />
+                <FontAwesomeIcon icon={faSearch}/>
             </button>
         </div>
 

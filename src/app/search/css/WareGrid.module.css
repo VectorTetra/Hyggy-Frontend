@@ -64,13 +64,9 @@
 	max-width: 300px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	/* Додайте трьохкрапки в кінці тексту */
 	display: -webkit-box;
-	/* Потрібно для -webkit-line-clamp */
 	-webkit-box-orient: vertical;
-	/* Важливо для орієнтації */
 	-webkit-line-clamp: 2;
-	/* Встановіть кількість рядків для відображення */
 }
 
 .warePrice {

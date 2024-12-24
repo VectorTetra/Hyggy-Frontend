@@ -3,7 +3,6 @@
     margin-right: 15px;
     margin-bottom: 15px;
     max-width: 50%;
-    /* або задайте потрібну ширину */
 }
 
 .image-right {
@@ -11,14 +10,12 @@
     margin-left: 15px;
     margin-bottom: 15px;
     max-width: 50%;
-    /* або задайте потрібну ширину */
 }
 
 .ql-picker.ql-size .ql-picker-label::before,
 .ql-picker.ql-size .ql-picker-item::before {
     content: attr(data-value);
     font-size: 12px;
-    /* Це впливає на текст тулбару */
 }
 
 .ql-size-10px {

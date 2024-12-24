@@ -45,7 +45,7 @@ function FrameExpandableBlock() {
                                     </TableRow>
                                 ))}
                             <TableRow key={frameRemainsSelectedWare?.id} sx={{ fontWeight: 700 }}>
-                                <TableCell><Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>Усього : </Typography></TableCell>
+                                <TableCell><Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>Всього : </Typography></TableCell>
                                 <TableCell align="right"><Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>{frameRemainsSelectedWare?.totalWareItemsQuantity}</Typography></TableCell>
                                 <TableCell align="right">
                                     <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>{formatCurrency(frameRemainsSelectedWare?.totalWareItemsSum)}</Typography>

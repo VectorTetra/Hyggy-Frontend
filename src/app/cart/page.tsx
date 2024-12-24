@@ -43,6 +43,12 @@ const CartPage = () => {
     removeFromCart(index);
   };
 
+  const formatCurrency = (value) => {
+    if (value === null || value === undefined) return '0';
+    const roundedValue = Math.round(value * 100) / 100;
+    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+  };
+
   const calculateTotalPrice = () => {
     const deliveryPrice =
       cart.length > 0 && cart[0].selectedOption === "delivery" ? 100 : 0;
@@ -143,8 +149,8 @@ const CartPage = () => {
                   </button>
                 </div>
                 <div className={styles.price}>
-                  <p>{Math.ceil(item.product.finalPrice)} грн </p>
-                  <p>{Math.ceil(item.product.finalPrice) * item.quantity} грн</p>
+                  <p>{formatCurrency(item.product.finalPrice)} грн </p>
+                  <p>{formatCurrency(item.product.finalPrice * item.quantity)} грн</p>
                 </div>
               </div>
             ))}
@@ -155,19 +161,19 @@ const CartPage = () => {
             <div className={styles.cartInfo}>
               {calculateTotalSavings() > 0 && (
                 <p>
-                  Загальна економія {Math.ceil(calculateTotalSavings())} грн
+                  Загальна економія {formatCurrency(calculateTotalSavings())} грн
                 </p>
               )}
               <p>
                 Доставка{" "}
-                {Math.ceil(
+                {formatCurrency(
                   cart.length > 0 && cart[0].selectedOption === "delivery"
                     ? 100
                     : 0
                 )}{" "}
                 грн
               </p>
-              <p>Сума ПДВ {Math.ceil(calculatePDV())} грн</p>
+              <p>Сума ПДВ {formatCurrency(calculatePDV())} грн</p>
               {cart.length > 0 &&
                 cart[0].selectedOption === "delivery" && (
                   <p>Доставка протягом 10-12 робочих днів</p>
@@ -175,7 +181,7 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>
-              Усього {Math.ceil(calculateTotalPrice())} грн
+              Всього {formatCurrency(calculateTotalPrice())} грн
             </p>
             <div className={styles.buttonContainer}>
               <Link href="/cart/address">

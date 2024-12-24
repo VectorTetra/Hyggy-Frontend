@@ -10,15 +10,8 @@ import useAdminPanelStore from '@/store/adminPanel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
+import themeFrame from './ThemeFrame';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00AAAD',
-            contrastText: 'white',
-        },
-    },
-});
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
     const [selectedStorage, setSelectedStorage] = useState<Storage | null>(null); // ID складу
@@ -237,7 +230,7 @@ export default function FrameRemaining() {
     }, [wares, success, selectedStorage]);
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={themeFrame}>
             <Box sx={{ display: frameRemainsSidebarVisibility ? "none" : "block" }}>
                 <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Залишки
@@ -414,7 +407,6 @@ export default function FrameRemaining() {
                 </Box>
             </Box>
             {frameRemainsSidebarVisibility && <FrameExpandableBlock />}
-            {/* <FrameExpandableBlock /> */}
         </ThemeProvider>
     );
 }

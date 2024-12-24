@@ -22,6 +22,10 @@ interface AdminPanelState {
 	setFrameRemainsSidebarVisibility: (visibility: boolean) => void;
 	frameRemainsSelectedWare: WareGetDTO | null;
 	setFrameRemainsSelectedWare: (selectedWare: WareGetDTO | null) => void;
+	orderDetailsSidebarVisibility: boolean;
+	setOrderDetailsSidebarVisibility: (visibility: boolean) => void;
+	selectedOrder: any | null;
+	setSelectedOrder: (order: any | null) => void;
 }
 
 const useAdminPanelStore = create<AdminPanelState>((set) => ({
@@ -43,6 +47,10 @@ const useAdminPanelStore = create<AdminPanelState>((set) => ({
 	setFrameRemainsSidebarVisibility: (visibility) => set({ frameRemainsSidebarVisibility: visibility }),
 	frameRemainsSelectedWare: null,
 	setFrameRemainsSelectedWare: (selectedWare) => set({ frameRemainsSelectedWare: selectedWare }),
+	orderDetailsSidebarVisibility: false,
+	setOrderDetailsSidebarVisibility: (visibility) => set({ orderDetailsSidebarVisibility: visibility }),
+	selectedOrder: null,
+	setSelectedOrder: (order) => set({ selectedOrder: order }),
 
 }));
 

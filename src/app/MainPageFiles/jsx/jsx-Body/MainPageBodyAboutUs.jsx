@@ -4,7 +4,7 @@ import styles from "@/app/MainPageFiles/styles/MainPageBody-styles.module.css";
 
 function MainPageBodyAboutUs(props) {
     return (
-        <div className={styles["brand-container"]}>
+        <div className={styles["brand-container2"]}>
             {props.aboutus.map((item, index) => (
                 <div key={index} className={styles["brand-item"]}>
                     <Link prefetch={true} style={{ textDecoration: "none" }} href={item.urlpage}>

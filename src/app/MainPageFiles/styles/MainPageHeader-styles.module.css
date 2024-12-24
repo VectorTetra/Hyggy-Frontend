@@ -990,12 +990,6 @@
 	}
 
 	.navbarcontainer {
-		/* display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 16px;
-		flex-direction: column;
-		gap: 10px; */
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -1060,75 +1054,13 @@
 /* 4K */
 @media (min-width: 3840px) {}
 
-/* @media screen and (max-width: 1000px) and (min-width: 500px) {
 
-	#mainPageSale {
-		font-size: 16px;
-		height: 4vw;
-	}
-
-
-
-	.mainPageHeaderSearchContainer {
-		order: 1;
-		width: 90vw;
-		justify-content: center;
-		display: flex;
-	}
-
-	.inputSearch {
-		width: 80vw;
-		margin: 0 0 20px 0;
-	}
-
-	#mainPageHeaderLogoContainer {
-		justify-content: space-between;
-		padding: 0;
-	}
-
-	.geoblock {
-		order: 1;
-	}
-} */
-
-@media screen and (max-width: 700px) and (min-width: 500px) {
-	/* .disappearOnAdapt {
-		display: none;
-	}
-
-	/* #mainPageHeaderLogoContainer {
-		justify-content: space-between;
-		padding: 0 20px;
-	} */
-}
+@media screen and (max-width: 700px) and (min-width: 500px) {}
 
 @media screen and (max-width: 500px) {
 	.disappearOnAdapt {
 		display: none;
 	}
-
-	/* 
-	#mainPageHeaderLogoMyContainer {
-		order: 1;
-	}
-
-	.navbarmenu {
-		justify-content: space-around;
-	}
-
-	.menuText {
-		font-size: 10px;
-		white-space: nowrap;
-	}
-
-
-
-
-	/* .mainPageHeaderGeoPhoto {
-		margin-left: 2vw;
-	} */
-
-
 
 	#mainPageHeaderBasketPhoto {
 		width: clamp(15px, 10vw, 25px);

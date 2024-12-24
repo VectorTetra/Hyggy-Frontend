@@ -503,12 +503,10 @@ export default function FrameStorage({ rolePermissions }) {
 				}
 				onConfirm={handleConfirmDelete}
 				onCancel={() => setIsDialogOpen(false)}
-				confirmButtonBackgroundColor='#be0f0f'
-				confirmButtonBorderColor='#be0f0f'
-				confirmButtonColor='#fff'
+				confirmButtonBackgroundColor='#00AAAD'
 				cancelButtonBackgroundColor='#fff'
-				cancelButtonBorderColor='#00AAAD'
-				cancelButtonColor='#00AAAD'
+				cancelButtonBorderColor='#be0f0f'
+				cancelButtonColor='#be0f0f'
 				open={isDialogOpen}
 			/>
 		</Box>
