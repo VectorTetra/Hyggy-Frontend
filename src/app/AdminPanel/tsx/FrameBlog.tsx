@@ -276,7 +276,7 @@ export default function FrameBlog({ rolePermissions }) {
 						</Button>}
 					</Box>
 				</Box>
-				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+				<Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
 					{filteredData.length === 0 && !loading && success ? (
 						<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 							Нічого не знайдено
@@ -293,10 +293,10 @@ export default function FrameBlog({ rolePermissions }) {
 								opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
 								flexGrow: 1, // Займає доступний простір у контейнері
 								minWidth: 800, // Мінімальна ширина DataGrid
-								"& .MuiDataGrid-scrollbar--horizontal": {
-									position: 'fixed',
-									bottom: "5px"
-								},
+								// "& .MuiDataGrid-scrollbar--horizontal": {
+								// 	position: 'fixed',
+								// 	bottom: "5px"
+								// },
 								"&. MuiDataGrid-topContainer": {
 									backgroundColor: "#f3f3f3"
 								},

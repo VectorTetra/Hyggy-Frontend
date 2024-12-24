@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
+import { MissingRowIdError } from '@mui/x-data-grid/hooks/features/rows/useGridParamsApi';
 
 export default function FrameStorage({ rolePermissions }) {
 	const { mutate: deleteStorage } = useDeleteStorage();
@@ -174,8 +175,10 @@ export default function FrameStorage({ rolePermissions }) {
 		{
 			field: 'houseNumber',
 			headerName: '№ буд.',
-			flex: 0.3,
-			minWidth: 100,
+			//flex: 0.3,
+			minWidth: 150,
+			width: 150,
+			maxWidth: 150,
 			renderCell: (params) => (
 				<Typography
 					variant="body2"
@@ -221,6 +224,7 @@ export default function FrameStorage({ rolePermissions }) {
 			field: 'storedWaresSum',
 			headerName: 'Заг. сума товарів',
 			flex: 1.5,
+			minWidth: 200,
 			cellClassName: 'text-right',
 			renderCell: (params) => {
 				if (rolePermissions.canReadStorageStoresSum(params.row.id)) {
@@ -374,7 +378,7 @@ export default function FrameStorage({ rolePermissions }) {
 						</Button>}
 					</Box>
 				</Box>
-				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+				<Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
 					{filteredData.length === 0 && !loading && success ? (
 						<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 							Нічого не знайдено
@@ -477,10 +481,10 @@ export default function FrameStorage({ rolePermissions }) {
 								opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
 								flexGrow: 1, // Займає доступний простір у контейнері
 								minWidth: 800, // Мінімальна ширина DataGrid
-								"& .MuiDataGrid-scrollbar--horizontal": {
-									position: 'fixed',
-									bottom: "5px"
-								}
+								// "& .MuiDataGrid-scrollbar--horizontal": {
+								// 	position: 'fixed',
+								// 	bottom: "5px"
+								// }
 							}}
 						/>
 					)}

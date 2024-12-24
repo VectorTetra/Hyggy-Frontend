@@ -123,7 +123,7 @@ const StorageEmployees = ({ rolePermissions }) => {
                         Додати
                     </Button>}
                 </Box>
-                <Box sx={{ overflowX: 'auto', maxWidth: "80vw" }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
                     <DataGrid
                         rows={storageEmployees} // Використовуємо відфільтровані дані
                         columns={columns}

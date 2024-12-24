@@ -335,7 +335,7 @@ export const getRolePermissions = () => {
 		IsAdminPanelContent_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
 
 		// Фрейм "Товари"
-		IsFrameWare_Available: IsOwner || IsAdmin || IsSaler || IsStorekeeper,
+		IsFrameWare_Available: IsOwner || IsAdmin || IsSaler || IsStorekeeper || IsAccountant || IsGeneralAccountant,
 		IsFrameWareAddEdit_Available: IsOwner,
 		IsFrameWare_Button_AddWare_Available: IsOwner,
 		IsFrameWare_Button_EditWare_Available: IsOwner,
@@ -371,7 +371,7 @@ export const getRolePermissions = () => {
 		IsFrameBlog_Button_DeleteBlog_Available: IsOwner || IsAdmin,
 
 		// Фрейм "Клієнти"
-		IsFrameClients_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler,
+		IsFrameClients_Available: IsOwner || IsAdmin || IsSaler,
 		IsFrameClients_Cell_ExecutedOrdersSum_Available: IsOwner,
 		IsFrameClients_Cell_ExecutedOrdersAvg_Available: IsOwner,
 		IsFrameClients_Cell_Actions_Available: IsOwner,

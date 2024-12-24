@@ -36,6 +36,14 @@ const NewShopEmployee = ({ rolePermissions }) => {
         PageSize: 1000,
         Sorting: "NameAsc",
     }, shopEmployeeId !== "0" && shopEmployeeId !== null);
+
+    const { data: shops = [] } = useShops({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000,
+        Id: rolePermissions.IsOwner ? null : Number(getDecodedToken()?.shopId)
+    });
+
     const { mutateAsync: postShopEmployee } = useShopEmployeePost();
     const { mutateAsync: putShopEmployee } = useShopEmployeePut();
     const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
@@ -72,20 +80,6 @@ const NewShopEmployee = ({ rolePermissions }) => {
     const [newPassword, setNewPassword] = useState("");
     const [newPasswordError, setNewPasswordError] = useState("");
     const [validNewPassword, setValidNewPassword] = useState(false);
-
-    //const [shops, setShops] = useState<any | null>([]);
-    const { data: shops = [] } = useShops({
-        SearchParameter: "Query",
-        PageNumber: 1,
-        PageSize: 1000,
-        Id: rolePermissions.IsAdmin ? Number(getDecodedToken()?.shopId) : null
-    });
-
-    // useEffect(() => {
-    //     if (currentRole && roles.length > 0) {
-    //         setSelectedRole(currentRole);
-    //     }
-    // }, [currentRole, roles]);
 
     useEffect(() => {
         if (shopEmployeeId === null) setActiveTab("shopEmployees");
@@ -143,7 +137,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
     }, [email])
 
     useEffect(() => {
-        const result = phone === "" || PHONE_REGEX.test(phone.replace(/[^\d+]/g, ''));
+        const result = phone === "" || PHONE_REGEX.test(phone?.replace(/[^\d+]/g, ''));
         setPhoneError(result ? "" : "Невірний формат номеру телефону.");
         setValidPhone(result);
     }, [phone])
@@ -204,7 +198,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
             if (shopEmployeeId === "0") {
                 //Додавання співробітника
                 const response = await postShopEmployee({
-                    Name: name, Surname: surname, Email: email, PhoneNumber: phone.replace(/[^\d+]/g, '') ?? null, Password: password, ConfirmPassword: matchPwd,
+                    Name: name, Surname: surname, Email: email, PhoneNumber: phone?.replace(/[^\d+]/g, '') ?? null, Password: password, ConfirmPassword: matchPwd,
                     ShopId: selectedShop!.id, RoleName: selectedRole!.name
                 });
                 toast.success("Співробітник успішно доданий!");
@@ -212,7 +206,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
             else {
                 //Редагування співробітника
                 const response = await putShopEmployee({
-                    Id: shopEmployeeId!, Name: name, Surname: surname, Email: email, PhoneNumber: phone.replace(/[^\d+]/g, '') ?? null, NewPassword: newPassword, OldPassword: oldPassword,
+                    Id: shopEmployeeId!, Name: name, Surname: surname, Email: email, PhoneNumber: phone?.replace(/[^\d+]/g, '') ?? null, NewPassword: newPassword, OldPassword: oldPassword,
                     ShopId: selectedShop!.id, RoleName: selectedRole!.name
                 });
                 toast.success("Співробітник успішно відредагований!");

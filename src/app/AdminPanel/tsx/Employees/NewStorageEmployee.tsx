@@ -37,6 +37,14 @@ const NewStorageEmployee = ({ rolePermissions }) => {
         PageSize: 1000,
         Sorting: "NameAsc",
     }, storageEmployeeId !== "0" && storageEmployeeId !== null);
+
+    const { data: storages = [] } = useStorages({
+        SearchParameter: "Query",
+        PageNumber: 1,
+        PageSize: 1000,
+        Id: rolePermissions.IsOwner ? null : Number(getDecodedToken()?.shopId)
+    });
+
     const { mutateAsync: postStorageEmployee } = useStorageEmployeePost();
     const { mutateAsync: putStorageEmployee } = useStorageEmployeePut();
 
@@ -75,12 +83,6 @@ const NewStorageEmployee = ({ rolePermissions }) => {
     const [newPasswordError, setNewPasswordError] = useState("");
     const [validNewPassword, setValidNewPassword] = useState(false);
 
-    const { data: storages = [] } = useStorages({
-        SearchParameter: "Query",
-        PageNumber: 1,
-        PageSize: 1000,
-        Id: rolePermissions.IsAdmin ? Number(getDecodedToken()?.storageId) : null
-    });
 
     useEffect(() => {
         if (storageEmployeeId === null) setActiveTab("storageEmployees");

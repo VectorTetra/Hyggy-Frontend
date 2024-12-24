@@ -37,7 +37,11 @@ export default function WareFrame({ rolePermissions }) {
     const { wareId, setWareId } = useAdminPanelStore();
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
+        {
+            field: 'id', headerName: 'ID', minWidth: 110,
+            width: 110,
+            maxWidth: 110,
+        },
         { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
         {
             field: 'description',
@@ -96,14 +100,20 @@ export default function WareFrame({ rolePermissions }) {
         {
             field: 'averageRating',
             headerName: 'Рейтинг',
-            flex: 0.3,
-            minWidth: 50,
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
             renderCell: (params) => {
                 const rating = params.value;
                 return <StarRating rating={Number(rating)} />;
             },
         },
-        { field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка', flex: 0.3, width: 50 }
+        {
+            field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка',
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
+        }
     ];
     if (rolePermissions.IsFrameWare_Button_EditWare_Available || rolePermissions.IsFrameWare_Button_DeleteWare_Available) {
         columns.push({
@@ -245,7 +255,7 @@ export default function WareFrame({ rolePermissions }) {
                         </Button>}
                     </Box>
                 </Box>
-                <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" maxWidth={process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH} width="100%" overflow="auto">
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
                     {filteredData.length === 0 && !loading && success ? (
                         <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
                             Нічого не знайдено

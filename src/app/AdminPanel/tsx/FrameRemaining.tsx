@@ -61,9 +61,16 @@ export default function FrameRemaining() {
     }, [debouncedSearchTerm, selectedCategory]);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.3, maxWidth: 80 },
         {
-            field: 'wareCategory2Name', headerName: 'Категорія', flex: 1, maxWidth: 120, renderCell: (params) => {
+            field: 'id', headerName: 'ID',
+            minWidth: 110,
+            width: 110,
+            maxWidth: 110,
+        },
+        {
+            field: 'wareCategory2Name', headerName: 'Категорія', minWidth: 150,
+            width: 150,
+            maxWidth: 200, renderCell: (params) => {
                 return (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: "5px", height: "100%" }}>
                         <Typography variant="body2"
@@ -113,7 +120,7 @@ export default function FrameRemaining() {
             field: 'finalPrice',
             headerName: 'Ціна',
             flex: 0.3,
-            maxWidth: 100,
+            maxWidth: 150,
             renderCell: (params) => {
                 const price = params.value;
                 return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
@@ -125,7 +132,7 @@ export default function FrameRemaining() {
             field: 'totalWareItemsQuantity',
             headerName: 'Кількість',
             flex: 0.3,
-            maxWidth: 100,
+            maxWidth: 150,
             renderCell: (params) => {
                 const totalQuantity = selectedStorage ?
                     (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.quantity || 0)
@@ -142,7 +149,7 @@ export default function FrameRemaining() {
             field: 'totalWareItemsSum',
             headerName: 'Заг. сума товарів',
             flex: 0.3,
-            maxWidth: 150,
+            maxWidth: 200,
             renderCell: (params) => {
                 const totalSum = selectedStorage ?
                     (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.totalSum || 0)
@@ -158,7 +165,9 @@ export default function FrameRemaining() {
         {
             field: 'actions',
             headerName: '',
-            flex: 0.3,
+            width: 110,
+            maxWidth: 110,
+            minWidth: 110,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                     <Button
@@ -249,10 +258,7 @@ export default function FrameRemaining() {
                         <Autocomplete
                             options={storages}
                             getOptionLabel={(option: Storage) =>
-                                `${option.shopName}, 
-                                ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, 
-                                ${option.city || 'Невідоме місто'}, 
-                                ${option.postalCode || ''}`
+                                `${option.shopName}, ${option.street || 'Невідома вулиця'} ${option.houseNumber || ''}, ${option.city || 'Невідоме місто'}, ${option.postalCode || ''}`
                             }
                             value={selectedStorage || null}
                             onChange={(event, newValue) => setSelectedStorage(newValue)}
@@ -289,7 +295,7 @@ export default function FrameRemaining() {
                         />
                     </Box>
                 </Box>
-                <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
                     {filteredData.length === 0 && !loading && success ? (
                         <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
                             Нічого не знайдено
@@ -395,10 +401,10 @@ export default function FrameRemaining() {
                                 opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
                                 flexGrow: 1, // Займає доступний простір у контейнері
                                 minWidth: 800, // Мінімальна ширина DataGrid
-                                "& .MuiDataGrid-scrollbar--horizontal": {
-                                    position: 'fixed',
-                                    bottom: "5px"
-                                },
+                                // "& .MuiDataGrid-scrollbar--horizontal": {
+                                //     position: 'fixed',
+                                //     bottom: "5px"
+                                // },
                                 "& .MuiDataGrid-cell": {
                                     display: 'flex',
                                 }
