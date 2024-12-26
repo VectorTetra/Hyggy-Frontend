@@ -51,6 +51,11 @@ const DeliveryPage = () => {
     } else {
       setSearchQuery(`${addressInfo.City}, ${addressInfo.Street}`);
     }
+
+    // Якщо тип доставки не обраний, встановлюємо "Самовивіз" за замовчуванням
+    if (!selectedDeliveryType) {
+      setSelectedDeliveryType(orderDeliveryTypes.find(deliveryType => deliveryType.id === 1));
+    }
   }, [selectedDeliveryType, router, addressInfo]);
 
   useEffect(() => {

@@ -20,6 +20,12 @@ export default function SortingSidebar(props: any) {
 			document.body.style.overflow = "";
 		};
 	}, [isSortingSidebarOpen]);
+	// Встановлюємо "Найкращий відгук" за замовчуванням, якщо значення не задано
+    useEffect(() => {
+        if (!sort) {
+            setSort("Rating", { history: "replace", scroll: false });
+        }
+    }, [sort, setSort]);
 	return (
 		<>
 			<div

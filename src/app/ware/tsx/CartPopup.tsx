@@ -42,7 +42,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
   };
 
   const deliveryPrice = selectedOption === 'delivery' ? 100 : 0;
-  const totalPrice = Math.ceil(calculateTotalPrice() + deliveryPrice);
+  const totalPrice = calculateTotalPrice() + deliveryPrice;
 
   // Викликаємо onClose, якщо корзина пуста
   useEffect(() => {
