@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import { getDecodedToken } from "@/pages/api/TokenApi";
+import { useWareReviews } from "@/pages/api/WareReviewApi";
+import { Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { useState } from "react";
 import StarRating from '../../sharedComponents/StarRating';
-import styles from "../../ware/css/ReviewWare.module.css";
-import { Box, Typography, Table, TableBody, TableContainer, TableRow, TableCell, Avatar, Button } from '@mui/material';
-import data from '../PageProfileUser.json';
 
 export default function ReviewsUser() {
+
+    const {
+        data: reviews = [],
+    } = useWareReviews({
+        SearchParameter: 'Query',
+        Sorting: 'DateDesc',
+        PageNumber: 1,
+        PageSize: 1000,
+        AuthorizedCustomerId: getDecodedToken()?.nameid ?? null,
+    });
     // Проверка на наличие отзывов
-    const hasReviews = data.lastReviews && data.lastReviews.length > 0;
+    const hasReviews = reviews && reviews.length > 0;
 
 
     // Состояния раскрытия для каждого отзыва
@@ -53,10 +63,13 @@ export default function ReviewsUser() {
                         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
                     }}
                     component={Box}>
-                    <Table sx={{ display: { xs: 'block', md: 'table' } }}>
+                    <Table sx={{ display: { xs: 'flex', md: 'table' } }}>
                         <TableBody
+                            sx={{
+                                display: { xs: 'flex', flexDirection: 'column', md: 'table-row', flex: 1 },
+                            }}
                         >
-                            {data.lastReviews.map((review, index) => (
+                            {reviews.map((review, index) => (
                                 <TableRow key={index}
                                     sx={{
                                         display: { xs: 'flex', md: 'table-row' },
@@ -76,7 +89,7 @@ export default function ReviewsUser() {
                                         padding: { xs: '10px 0', md: '16px' },
                                     }}>
                                         <Typography variant="body1" >
-                                            {review.Username}
+                                            {review.customerName}
                                         </Typography>
                                         <Box display="flex" alignItems="center" mt={0.5}>
                                             <StarRating rating={Number(review.rating)} />
@@ -91,7 +104,7 @@ export default function ReviewsUser() {
                                             marginBottom: { xs: '10px', md: '0' },
                                         }}
                                     >
-                                        <Avatar variant="square" src={review.imageSrc} alt={review.shortName} sx={{ width: 60, height: 60 }} />
+                                        <Avatar variant="square" src={review.warePreviewImagePath} alt={review.wareName} sx={{ width: 60, height: 60 }} />
                                     </TableCell>
 
                                     {/* Описание товара */}
@@ -106,10 +119,10 @@ export default function ReviewsUser() {
                                         }}
                                     >
                                         <Typography variant="body2" fontWeight="bold">
-                                            {review.shortName}
+                                            {review.wareName}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            {review.longName}
+                                            {review.wareDescription}
                                         </Typography>
                                     </TableCell>
 
