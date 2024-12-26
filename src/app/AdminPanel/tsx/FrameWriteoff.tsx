@@ -8,6 +8,7 @@ import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem } from '@/pages/api/WareItemApi';
 import { ThemeProvider } from '@mui/material';
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import { useQueryState } from 'nuqs';
 const StorageSelector = ({ storages, selectedStore, onChange }) => (
     <Autocomplete
         sx={{ flex: 2 }}
@@ -39,7 +40,7 @@ export default function FrameWriteoff() {
     const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const [quantity, setQuantity] = useState(0);
-
+    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
     // Завантаження складів і товарів
     const { data: storages = [] } = useStorages({
         SearchParameter: 'Query',
@@ -115,6 +116,7 @@ export default function FrameWriteoff() {
 
             toast.success('Списання відбулось успішно!');
             resetForm();
+            setActiveTab('remains');
         } catch (error) {
             toast.error('Не вдалося оновити кількість. Спробуйте ще раз!');
         }
@@ -132,7 +134,7 @@ export default function FrameWriteoff() {
                 <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Списання
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: "column", alignItems: 'stretch' }}>
                     <StorageSelector
                         storages={storages}
                         selectedStore={selectedStore}
@@ -160,7 +162,7 @@ export default function FrameWriteoff() {
                             placeholder={`Доступно: ${availableQuantity}`}
                             disabled={!selectedProduct}
                             fullWidth
-                            sx={{ flex: 1, maxWidth: 150 }}
+                            sx={{ flex: 1 }}
                             slotProps={{
                                 input: {
                                     inputProps: {
@@ -175,7 +177,6 @@ export default function FrameWriteoff() {
                         {quantityError && (
                             <Typography sx={{
                                 mt: 1,
-                                maxWidth: 150,
                                 wordWrap: 'break-word',
                                 whiteSpace: 'normal',
                                 fontSize: '0.775rem',
@@ -193,6 +194,7 @@ export default function FrameWriteoff() {
                     variant="contained"
                     color="primary"
                     onClick={handleSave}
+                    fullWidth
                     disabled={!quantity || Number(quantity) <= 0 || Number(quantity) > availableQuantity}
                 >
                     Зберегти

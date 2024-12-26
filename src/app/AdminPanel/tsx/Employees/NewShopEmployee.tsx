@@ -23,7 +23,6 @@ const PHONE_REGEX = /^(\+?38)?(0\d{9}|\(\d{3}\) \d{3}-\d{2}-\d{2})$/;
 const NewShopEmployee = ({ rolePermissions }) => {
     const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "shopEmployees", scroll: false, history: "push", shallow: true });
     const { shopEmployeeId, setShopEmployeeId } = useAdminPanelStore();
-
     const availableRoleNames = rolePermissions.getAvailableRolesForShopFrame(shopEmployeeId);
 
     const { data: roles = [], isLoading: rolesLoading } = useRolesByNames(
@@ -217,6 +216,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
             toast.error(error.response);
         } finally {
             setActiveTab('shopEmployees');
+            setShopEmployeeId(null);
         }
     }
 
@@ -258,7 +258,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
-                    disabled={existingShopEmployee.length > 0}
+                    disabled={shopEmployeeId !== "0"}
                 />
                 <InputMask
                     mask="+38 (099) 999-99-99"
@@ -279,6 +279,24 @@ const NewShopEmployee = ({ rolePermissions }) => {
                         />
                     )}
                 </InputMask>
+
+                <Autocomplete
+                    options={shops}
+                    getOptionLabel={(option: ShopGetDTO) => `${option?.name} (${option?.city}, ${option?.street}, ${option?.houseNumber})`}
+                    value={selectedShop}
+                    onChange={(event, newValue) => setSelectedShop(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть магазин" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />
+                {roles.length > 0 && <Autocomplete
+                    options={roles}
+                    getOptionLabel={(option: Role) => `${option?.name}`}
+                    value={selectedRole}
+                    onChange={(event, newValue) => setSelectedRole(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />}
+
                 {shopEmployeeId === "0" && <div>
                     <TextField
                         label="Пароль"
@@ -358,6 +376,9 @@ const NewShopEmployee = ({ rolePermissions }) => {
                             ),
                         }}
                     />
+
+                    <Link href="../PagePasswordReset" prefetch style={{ textDecoration: "none" }}><span style={{ color: '#00AAAD' }}>Забули пароль?</span> </Link>
+
                     <TextField
                         label="Новий пароль"
                         name="confirmPassword"
@@ -384,24 +405,8 @@ const NewShopEmployee = ({ rolePermissions }) => {
                         }}
                     />
 
-                    <Link href="../PagePasswordReset" prefetch><span style={{ color: '#00AAAD', textDecoration: "none" }}>Забули пароль?</span> </Link>
                 </div>}
-                <Autocomplete
-                    options={shops}
-                    getOptionLabel={(option: ShopGetDTO) => `${option?.name} (${option?.city}, ${option?.street}, ${option?.houseNumber})`}
-                    value={selectedShop}
-                    onChange={(event, newValue) => setSelectedShop(newValue)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть магазин" variant="outlined" fullWidth margin="normal" />}
-                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                />
-                {roles.length > 0 && <Autocomplete
-                    options={roles}
-                    getOptionLabel={(option: Role) => `${option?.name}`}
-                    value={selectedRole}
-                    onChange={(event, newValue) => setSelectedRole(newValue)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}
-                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                />}
+
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}
                     disabled={isDisabled}>
                     {shopEmployeeId === "0" ? "Додати співробітника" : "Зберегти зміни"}

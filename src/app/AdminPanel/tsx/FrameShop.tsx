@@ -5,12 +5,13 @@ import useAdminPanelStore from '@/store/adminPanel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
-import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
 import themeFrame from './ThemeFrame';
+import { head, min } from 'lodash';
 
 export default function FrameShop({ rolePermissions }) {
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
@@ -70,18 +71,30 @@ export default function FrameShop({ rolePermissions }) {
 
   // Створюємо масив колонок з перекладеними назвами
 
-  let columns = [
+  let columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
     { field: 'name', headerName: 'Назва магазину', flex: 1, minWidth: 200 },
     { field: 'state', headerName: 'Область', flex: 1, minWidth: 150 },
     { field: 'city', headerName: 'Місто', flex: 0.8, minWidth: 150 },
     { field: 'street', headerName: 'Вулиця', flex: 1, minWidth: 150 },
-    { field: 'houseNumber', headerName: '№ буд.', flex: 0.3, minWidth: 100 },
+    { field: 'houseNumber', headerName: '№ буд.', minWidth: 100, maxWidth: 100 },
     { field: 'postalCode', headerName: 'Поштовий індекс', flex: 1, minWidth: 150 },
     {
       field: 'executedOrdersSum',
-      headerName: 'Заг. сума виконаних замовлень',
+      headerName: '',
       flex: 0.5,
+      headerAlign: 'right',
+      hideSortIcons: true,
+      width: 150,
+      minWidth: 150,
+      maxWidth: 150,
+      renderHeader(params) {
+        return (
+          <div style={{ textAlign: "right", textWrap: "balance" }}>
+            <span style={{ wordBreak: "break-word" }} >Загальний виторг</span>
+          </div>
+        );
+      },
       cellClassName: 'text-right',
       renderCell: (params) => {
         if (rolePermissions.canReadShopExecutedOrdersSum(params.row.id)) {
@@ -94,9 +107,12 @@ export default function FrameShop({ rolePermissions }) {
     },
     {
       field: 'actions',
-      headerName: 'Дії',
+      headerName: '',
       flex: 0,
       width: 75,
+      minWidth: 75,
+      maxWidth: 75,
+
       renderCell: (params) => {
         if (rolePermissions.IsFrameShops_Button_EditShop_Available || rolePermissions.IsFrameShops_Button_DeleteShop_Available) {
           return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>

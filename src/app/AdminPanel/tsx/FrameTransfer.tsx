@@ -8,6 +8,7 @@ import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem, postWareItem, getWareItems } from '@/pages/api/WareItemApi';
 import { ThemeProvider } from '@mui/material';
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import { useQueryState } from 'nuqs';
 
 const StorageSelector = ({ storages, selectedStore, onChange, label }) => (
     <Autocomplete
@@ -41,6 +42,7 @@ export default function FrameTransfer() {
     const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
     const [availableQuantity, setAvailableQuantity] = useState(0);
     const [quantity, setQuantity] = useState(0);
+    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 
     // Завантаження складів і товарів
     const { data: storages = [] } = useStorages({
@@ -83,7 +85,7 @@ export default function FrameTransfer() {
 
         if (value > availableQuantity) {
             if (!toast.isActive(toastId)) {
-                toast.error(`В наявності тільки - ${availableQuantity}. Введіть інше значення.`, {
+                toast.error(`В наявності на складі відправки тільки - ${availableQuantity}. Введіть інше значення.`, {
                     toastId, // Встановлюємо унікальний ID для тосту
                     autoClose: false,
                 });
@@ -151,6 +153,7 @@ export default function FrameTransfer() {
 
             toast.success('Переміщення товару відбулось успішно!');
             resetForm();
+            setActiveTab('remains');
         } catch (error) {
             console.error('Повна інформація про помилку:', error);
             toast.error(`Не вдалося перемістити товар: ${error.message || 'Невідома помилка'}`);
@@ -160,7 +163,7 @@ export default function FrameTransfer() {
     const statusMessage = useMemo(() => {
         if (!fromStore || !selectedProduct) return 'Виберіть склад і товар';
         if (isLoading) return 'Завантаження...';
-        return `Всього в наявності - ${availableQuantity}`;
+        return `Всього в наявності на складі відправлення - ${availableQuantity}`;
     }, [fromStore, selectedProduct, isLoading, availableQuantity]);
 
     return (
@@ -169,7 +172,7 @@ export default function FrameTransfer() {
                 <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Переміщення товарів між складами
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', gap: 2, mb: 4, flexDirection: "column", alignItems: 'stretch' }}>
                     <StorageSelector
                         storages={storages}
                         selectedStore={fromStore}
@@ -181,14 +184,6 @@ export default function FrameTransfer() {
                             setFromStore(store || null);
                         }}
                         label="Склад відправлення"
-                    />
-                    <ProductSelector
-                        wares={wares}
-                        selectedProduct={selectedProduct}
-                        onChange={(event, value) => {
-                            const product = wares.find((w) => w.description === value);
-                            setSelectedProduct(product || null);
-                        }}
                     />
                     <StorageSelector
                         storages={storages}
@@ -202,6 +197,14 @@ export default function FrameTransfer() {
                         }}
                         label="Склад призначення"
                     />
+                    <ProductSelector
+                        wares={wares}
+                        selectedProduct={selectedProduct}
+                        onChange={(event, value) => {
+                            const product = wares.find((w) => w.description === value);
+                            setSelectedProduct(product || null);
+                        }}
+                    />
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <TextField
                             type="number"
@@ -210,7 +213,7 @@ export default function FrameTransfer() {
                             placeholder={`Доступно: ${availableQuantity}`}
                             disabled={!selectedProduct}
                             fullWidth
-                            sx={{ flex: 1, maxWidth: 150 }}
+                            sx={{ flex: 1 }}
                             slotProps={{
                                 input: {
                                     inputProps: {
@@ -230,6 +233,7 @@ export default function FrameTransfer() {
                     variant="contained"
                     color="primary"
                     onClick={handleTransfer}
+                    fullWidth
                     disabled={!quantity || Number(quantity) <= 0 ||
                         Number(quantity) > availableQuantity ||
                         !fromStore ||

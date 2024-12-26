@@ -23,7 +23,7 @@ const PHONE_REGEX = /^(\+?38)?(0\d{9}|\(\d{3}\) \d{3}-\d{2}-\d{2})$/;
 
 const NewStorageEmployee = ({ rolePermissions }) => {
     const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "storageEmployees", scroll: false, history: "push", shallow: true });
-    const { storageEmployeeId } = useAdminPanelStore();
+    const { storageEmployeeId, setStorageEmployeeId } = useAdminPanelStore();
     console.log(storageEmployeeId);
     const availableRoleNames = rolePermissions.getAvailableRolesForStorageFrame(storageEmployeeId);
 
@@ -89,7 +89,7 @@ const NewStorageEmployee = ({ rolePermissions }) => {
     }, [storageEmployeeId, setActiveTab]);
 
     useEffect(() => {
-        if (existingStorageEmployee.length === 1 && storages.length > 0 && roles.length > 0) {
+        if (storageEmployeeId !== "0" && existingStorageEmployee.length === 1 && storages.length > 0 && roles.length > 0) {
             setName(existingStorageEmployee[0].name);
             setSurname(existingStorageEmployee[0].surname);
             setEmail(existingStorageEmployee[0].email);
@@ -101,6 +101,15 @@ const NewStorageEmployee = ({ rolePermissions }) => {
         }
         else {
             if (storageEmployeeId !== "0") refetch();
+            else if (storageEmployeeId === "0") {
+                // Очищення форми для створення нового співробітника
+                setName("");
+                setSurname("");
+                setEmail("");
+                setPhone("");
+                setSelectedStorage(storages.length > 0 ? storages[0] : null);
+                setSelectedRole(roles.length > 0 ? roles[0] : null);
+            }
         }
     }, [existingStorageEmployee, storages, roles, storageEmployeeId, refetch]);
 
@@ -199,6 +208,7 @@ const NewStorageEmployee = ({ rolePermissions }) => {
             toast.error(error.response);
         } finally {
             setActiveTab('storageEmployees');
+            setStorageEmployeeId(null);
         }
     }
 
@@ -246,7 +256,7 @@ const NewStorageEmployee = ({ rolePermissions }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
-                    disabled={existingStorageEmployee.length > 0}
+                    disabled={storageEmployeeId !== "0"}
                 />
                 <InputMask
                     mask="+38 (099) 999-99-99"
@@ -268,6 +278,24 @@ const NewStorageEmployee = ({ rolePermissions }) => {
                         />
                     )}
                 </InputMask>
+
+                <Autocomplete
+                    options={storages}
+                    getOptionLabel={(option: Storage) => `${option?.shopName} (${option?.city}, ${option?.street}, ${option?.houseNumber})`}
+                    value={selectedStorage}
+                    onChange={(event, newValue) => setSelectedStorage(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть магазин" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />
+                {roles.length > 0 && <Autocomplete
+                    options={roles}
+                    getOptionLabel={(option: Role) => `${option?.name}`}
+                    value={selectedRole}
+                    onChange={(event, newValue) => setSelectedRole(newValue)}
+                    renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}
+                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
+                />}
+
                 {storageEmployeeId === "0" && <div>
                     <TextField
                         label="Пароль"
@@ -383,22 +411,8 @@ const NewStorageEmployee = ({ rolePermissions }) => {
 
                     <Link href="../PagePasswordReset" prefetch><span style={{ color: '#00AAAD', textDecoration: "none" }}>Забули пароль?</span> </Link>
                 </div>}
-                <Autocomplete
-                    options={storages}
-                    getOptionLabel={(option: Storage) => `${option?.shopName} (${option?.city}, ${option?.street}, ${option?.houseNumber})`}
-                    value={selectedStorage}
-                    onChange={(event, newValue) => setSelectedStorage(newValue)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть магазин" variant="outlined" fullWidth margin="normal" />}
-                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                />
-                {roles.length > 0 && <Autocomplete
-                    options={roles}
-                    getOptionLabel={(option: Role) => `${option?.name}`}
-                    value={selectedRole}
-                    onChange={(event, newValue) => setSelectedRole(newValue)}
-                    renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}
-                    isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                />}
+
+
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}
                     disabled={isDisabled}>
                     {storageEmployeeId === "0" ? "Додати співробітника" : "Зберегти зміни"}

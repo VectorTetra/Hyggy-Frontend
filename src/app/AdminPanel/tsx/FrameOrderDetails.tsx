@@ -54,7 +54,7 @@ export default function FrameOrderDetails() {
     return (
         <ThemeProvider theme={themeFrame}>
             <Box sx={{ zIndex: 1000, display: "flex", flexDirection: "column" }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: "baseline" }}>
                     <Typography sx={{ textWrap: "wrap" }} variant="h6" gutterBottom>
                         Деталі замовлення
                     </Typography>
@@ -69,29 +69,29 @@ export default function FrameOrderDetails() {
                     <Table>
                         <TableHead>
                             <TableRow sx={{ fontWeight: 1000 }}>
-                                <TableCell><Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>№ замовлення: {selectedOrder?.id}</Typography></TableCell>
+                                <TableCell colSpan={2} sx={{ textAlign: "left" }}><Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>№ замовлення: {selectedOrder?.id}</Typography></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell>Замовник</TableCell>
-                                <TableCell align="right">{selectedOrder?.customer?.name} {selectedOrder?.customer?.surname}</TableCell>
+                                <TableCell sx={{ fontWeight: 700, width: "30%" }}>Замовник</TableCell>
+                                <TableCell align="left">{selectedOrder?.customer?.name} {selectedOrder?.customer?.surname}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Дата замовлення</TableCell>
-                                <TableCell align="right">{new Date(selectedOrder?.orderDate.toString()).toLocaleString('uk-UA')}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Дата замовлення</TableCell>
+                                <TableCell align="left">{new Date(selectedOrder?.orderDate.toString()).toLocaleString('uk-UA')}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Номер телефону</TableCell>
-                                <TableCell align="right">{selectedOrder?.phone}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Номер телефону</TableCell>
+                                <TableCell align="left">{selectedOrder?.phone}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Пошта</TableCell>
-                                <TableCell align="right">{selectedOrder?.customer?.email}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Пошта</TableCell>
+                                <TableCell align="left">{selectedOrder?.customer?.email}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Статус замовлення</TableCell>
-                                <TableCell align="right">
+                                <TableCell sx={{ fontWeight: 700 }}>Статус замовлення</TableCell>
+                                <TableCell align="left">
                                     <Autocomplete
                                         options={statuses}
                                         getOptionLabel={(option: { id: number, name: string }) => option ? option.name : ''}
@@ -104,20 +104,24 @@ export default function FrameOrderDetails() {
                                 </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Адреса доставки</TableCell>
-                                <TableCell align="right">{selectedOrder?.deliveryAddress?.street} {selectedOrder?.deliveryAddress?.houseNumber}, {selectedOrder?.deliveryAddress?.city}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Адреса доставки</TableCell>
+                                <TableCell align="left" >{selectedOrder?.deliveryAddress?.street} {selectedOrder?.deliveryAddress?.houseNumber}, {selectedOrder?.deliveryAddress?.city}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Коментар</TableCell>
-                                <TableCell align="right">{selectedOrder?.comment || 'Немає коментарів'}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Спосіб доставки</TableCell>
+                                <TableCell align="left" >{selectedOrder?.deliveryType?.name}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Назва магазину</TableCell>
-                                <TableCell align="right">{selectedOrder?.shop?.name}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Коментар</TableCell>
+                                <TableCell align="left">{selectedOrder?.comment || 'Немає коментарів'}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell>Загальна сума</TableCell>
-                                <TableCell align="right">{formatCurrency(selectedOrder?.totalPrice)}</TableCell>
+                                <TableCell sx={{ fontWeight: 700 }}>Назва магазину</TableCell>
+                                <TableCell align="left">{selectedOrder?.shop?.name}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: 700 }}>Загальна сума</TableCell>
+                                <TableCell align="left">{formatCurrency(selectedOrder?.totalPrice)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -129,23 +133,23 @@ export default function FrameOrderDetails() {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Товар</TableCell>
-                                <TableCell>Кількість</TableCell>
-                                <TableCell>Ціна</TableCell>
-                                <TableCell>Зображення</TableCell>
-                                <TableCell>Загальна сума</TableCell>
+                                <TableCell sx={{ textAlign: "left", textWrap: "nowrap" }}>ID</TableCell>
+                                <TableCell sx={{ textAlign: "left", textWrap: "nowrap" }}>Товар</TableCell>
+                                <TableCell sx={{ textAlign: "center", textWrap: "nowrap" }}>Кількість</TableCell>
+                                <TableCell sx={{ textAlign: "right", width: "10ch" }}>Ціна</TableCell>
+                                <TableCell sx={{ textAlign: "center", textWrap: "nowrap" }}>Зображення</TableCell>
+                                <TableCell sx={{ textAlign: "right", textWrap: "nowrap" }}>Загальна сума</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {selectedOrder?.orderItems?.map((item) => (
                                 <TableRow key={item.id}>
-                                    <TableCell>{item.id}</TableCell>
-                                    <TableCell>{item.ware.description}</TableCell>
-                                    <TableCell>{item.count}</TableCell>
+                                    <TableCell sx={{ textAlign: "left", textWrap: "nowrap" }}>{item.id}</TableCell>
+                                    <TableCell sx={{ textAlign: "left", textWrap: "nowrap" }}>{item.ware.description}</TableCell>
+                                    <TableCell sx={{ textAlign: "center", textWrap: "nowrap" }}>{item.count}</TableCell>
                                     <TableCell sx={{ textAlign: "right", textWrap: "nowrap" }}>{formatCurrency(item.priceHistory.price)}</TableCell>
-                                    <TableCell>
-                                        <img src={item.ware.previewImagePath} alt="preview" style={{ maxHeight: 40, width: 40, objectFit: 'contain' }} />
+                                    <TableCell sx={{ display: "flex", justifyContent: "center" }}>
+                                        <img src={item.ware.previewImagePath} alt="preview" style={{ height: 40, width: 40, objectFit: 'contain' }} />
                                     </TableCell>
                                     <TableCell sx={{ textAlign: "right", textWrap: "nowrap" }}>{formatCurrency(item.count * item.priceHistory.price)}</TableCell>
                                 </TableRow>

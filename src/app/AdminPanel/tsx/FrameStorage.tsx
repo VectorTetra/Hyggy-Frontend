@@ -173,12 +173,7 @@ export default function FrameStorage({ rolePermissions }) {
 			),
 		},
 		{
-			field: 'houseNumber',
-			headerName: '№ буд.',
-			//flex: 0.3,
-			minWidth: 150,
-			width: 150,
-			maxWidth: 150,
+			field: 'houseNumber', headerName: '№ буд.', minWidth: 100, maxWidth: 100,
 			renderCell: (params) => (
 				<Typography
 					variant="body2"
@@ -222,7 +217,7 @@ export default function FrameStorage({ rolePermissions }) {
 		},
 		{
 			field: 'storedWaresSum',
-			headerName: 'Заг. сума товарів',
+			headerName: 'Загальна вартість товарів',
 			flex: 1.5,
 			minWidth: 200,
 			cellClassName: 'text-right',
@@ -237,9 +232,11 @@ export default function FrameStorage({ rolePermissions }) {
 		},
 		{
 			field: 'actions',
-			headerName: 'Дії',
+			headerName: '',
 			flex: 0,
+			minWidth: 75,
 			width: 75,
+			maxWidth: 75,
 			disableExport: true,
 			renderCell: (params) => {
 				if (rolePermissions.IsFrameStorage_Button_EditStorage_Available || rolePermissions.IsFrameStorage_Button_DeleteStorage_Available) {

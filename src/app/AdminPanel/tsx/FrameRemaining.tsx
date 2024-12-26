@@ -112,11 +112,12 @@ export default function FrameRemaining() {
         {
             field: 'finalPrice',
             headerName: 'Ціна',
+            headerAlign: 'right',
             flex: 0.3,
             maxWidth: 150,
             renderCell: (params) => {
                 const price = params.value;
-                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', textWrap: "nowrap" }}>
                     {formatCurrency(price)}
                 </Box>
             },
@@ -124,15 +125,17 @@ export default function FrameRemaining() {
         {
             field: 'totalWareItemsQuantity',
             headerName: 'Кількість',
+            headerAlign: 'center',
+            hideSortIcons: true,
             flex: 0.3,
-            maxWidth: 150,
+            //maxWidth: 150,
             renderCell: (params) => {
                 const totalQuantity = selectedStorage ?
                     (params.row.wareItems.find(item => item.storageId === selectedStorage?.id)?.quantity || 0)
                     :
                     (params.value || 0);
                 return (
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                         {totalQuantity}
                     </Box>
                 );
@@ -140,7 +143,9 @@ export default function FrameRemaining() {
         },
         {
             field: 'totalWareItemsSum',
-            headerName: 'Заг. сума товарів',
+            headerName: 'Загальна вартість товарів',
+            hideSortIcons: true,
+            headerAlign: 'right',
             flex: 0.3,
             maxWidth: 200,
             renderCell: (params) => {
@@ -149,7 +154,7 @@ export default function FrameRemaining() {
                     :
                     (params.value || 0);
                 return (
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', textWrap: "nowrap" }}>
                         {formatCurrency(totalSum)}
                     </Box>
                 );
@@ -297,7 +302,7 @@ export default function FrameRemaining() {
                         <DataGrid
                             className="dataGrid"
                             rows={filteredData}
-                            rowHeight={75}
+                            getRowHeight={() => 'auto'} // Динамічна висота рядка
                             columns={columns}
                             apiRef={apiRef}
                             loading={loading || dataLoading}
@@ -400,7 +405,14 @@ export default function FrameRemaining() {
                                 // },
                                 "& .MuiDataGrid-cell": {
                                     display: 'flex',
-                                }
+                                    alignItems: 'center',
+                                },
+                                "&. MuiDataGrid-topContainer": {
+                                    backgroundColor: "#f3f3f3"
+                                },
+                                '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
+                                '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
+                                '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
                             }}
                         />
                     )}

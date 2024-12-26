@@ -66,9 +66,11 @@ const StorageEmployees = ({ rolePermissions }) => {
         { field: 'phoneNumber', headerName: 'Телефон', flex: 0.6, },
         {
             field: 'actions',
-            headerName: 'Дії',
+            headerName: '',
             flex: 0,
+            minWidth: 75,
             width: 75,
+            maxWidth: 75,
             cellClassName: 'text-center',
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: "5px", height: "100%" }}>
