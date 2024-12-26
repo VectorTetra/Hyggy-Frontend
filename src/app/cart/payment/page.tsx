@@ -119,7 +119,7 @@ const PaymentPage = () => {
 
     if (!cardNumberError && !expiryDateError && !cvvError) {
       setPaymentStatus('success');
-      window.location.href = "/cart/success";
+      window.location.href = "/cart/transactionOrderCreation";
     }
   };
 
