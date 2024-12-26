@@ -7,6 +7,7 @@ import SearchField from './SearchField';
 import themeFrame from './ThemeFrame';
 import useAdminPanelStore from '@/store/adminPanel';
 import { useQueryState } from 'nuqs';
+import FrameOrderDetails from './FrameOrderDetails';
 
 export default function FrameOrder() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -42,15 +43,13 @@ export default function FrameOrder() {
         'Видано клієнту': { background: '#F5F5DC', text: '#3E2723' },
     };
 
-    // useEffect(() => {
-    //     if (activeTab === 'orders') {
-    //         setOrderDetailsSidebarVisibility(false);
-    //         setSelectedOrder(null);
-    //     }
-    // }, [activeTab]);
     useEffect(() => {
-        // if (data.length === 0)
-        // 	queryClient.invalidateQueries('storages');
+        if (activeTab === 'orders') {
+            setOrderDetailsSidebarVisibility(false);
+            setSelectedOrder(null);
+        }
+    }, [activeTab]);
+    useEffect(() => {
         console.log(orders);
         if (success) {
             setFilteredData(orders);
@@ -210,6 +209,7 @@ export default function FrameOrder() {
                     </Box>
                 </Box>
             </ThemeProvider>
+            {orderDetailsSidebarVisibility && <FrameOrderDetails />}
         </Box>
     );
 }

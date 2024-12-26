@@ -6,7 +6,7 @@ import themeFrame from './ThemeFrame';
 import { useUpdateOrder } from '@/pages/api/OrderApi';
 
 export default function FrameOrderDetails() {
-    const { selectedOrder, setOrderDetailsSidebarVisibility } = useAdminPanelStore();
+    const { selectedOrder, setOrderDetailsSidebarVisibility, orderDetailsSidebarVisibility } = useAdminPanelStore();
     const { data: statuses = [] } = useOrderStatuses({
         SearchParameter: "Query",
         QueryAny: selectedOrder.deliveryTypeId === 1 ? "Самовивіз" : "Доставка",
@@ -53,7 +53,7 @@ export default function FrameOrderDetails() {
 
     return (
         <ThemeProvider theme={themeFrame}>
-            <Box sx={{ zIndex: 1000, display: "flex", flexDirection: "column" }}>
+            <Box sx={{ zIndex: 1000, display: orderDetailsSidebarVisibility ? "flex" : "none", flexDirection: "column", }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: "baseline" }}>
                     <Typography sx={{ textWrap: "wrap" }} variant="h6" gutterBottom>
                         Деталі замовлення
