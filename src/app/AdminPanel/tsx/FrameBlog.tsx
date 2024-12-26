@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import SearchField from './SearchField';
 import themeFrame from './ThemeFrame';
+import { max } from 'lodash';
 
 export default function FrameBlog({ rolePermissions }) {
 	const { mutate: deleteBlog } = useDeleteBlog();
@@ -144,9 +145,11 @@ export default function FrameBlog({ rolePermissions }) {
 		},
 		{
 			field: 'actions',
-			headerName: 'Дії',
+			headerName: '',
 			flex: 0,
+			minWidth: 75,
 			width: 75,
+			maxWidth: 75,
 			disableExport: true,
 			renderCell: (params) => (
 				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>

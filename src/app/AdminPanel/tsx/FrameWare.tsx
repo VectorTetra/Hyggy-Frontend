@@ -12,6 +12,7 @@ import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
+import { wrap } from 'module';
 
 export default function WareFrame({ rolePermissions }) {
     const { mutate: deleteWare } = useDeleteWare();
@@ -38,11 +39,39 @@ export default function WareFrame({ rolePermissions }) {
 
     const columns: GridColDef[] = [
         {
-            field: 'id', headerName: 'ID', minWidth: 110,
-            width: 110,
-            maxWidth: 110,
+            field: 'id', headerName: 'ID', minWidth: 70,
+            width: 70,
+            maxWidth: 70,
+            renderCell: (params) => {
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {params.value}
+                </Box>;
+            }
         },
-        { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
+        {
+            field: 'name',
+            headerName: 'Виробник',
+            headerAlign: 'left',
+            flex: 0.5,
+            minWidth: 100,
+            renderCell: (params) => {
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {params.value}
+                </Box>;
+            }
+        },
         {
             field: 'description',
             headerName: 'Товар',
@@ -66,6 +95,7 @@ export default function WareFrame({ rolePermissions }) {
                             sx={{
                                 wordWrap: 'break-word', // Перенос длинных слов
                                 whiteSpace: 'normal',
+                                textWrap: 'wrap',
                                 overflow: 'visible',
                             }}>
                             {params.row.description}</Typography>
@@ -76,11 +106,18 @@ export default function WareFrame({ rolePermissions }) {
         {
             field: 'price',
             headerName: 'Початкова ціна',
+            headerAlign: 'right',
             flex: 0.3,
             minWidth: 150,
             renderCell: (params) => {
                 const price = params.value;
-                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
                     {formatCurrency(price)}
                 </Box>;
             },
@@ -88,23 +125,38 @@ export default function WareFrame({ rolePermissions }) {
         {
             field: 'discount',
             headerName: 'Знижка',
+            headerAlign: 'right',
             flex: 0.3,
             minWidth: 100,
             renderCell: (params) => {
                 const discount = params.value;
-                return `${discount}%`;
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {discount} %
+                </Box>
             },
         },
         {
             field: 'finalPrice',
-            headerName: 'Кінцева Ціна',
+            headerName: 'Кінцева ціна',
             flex: 0.3,
             minWidth: 150,
             headerAlign: 'right',
-            align: 'center',
+            align: 'right',
             renderCell: (params) => {
                 const finalPrice = params.value;
-                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
                     {formatCurrency(finalPrice)}
                 </Box>;
             },
@@ -115,6 +167,7 @@ export default function WareFrame({ rolePermissions }) {
             minWidth: 150,
             width: 150,
             maxWidth: 150,
+            headerAlign: 'center',
             renderCell: (params) => {
                 const rating = params.value;
                 return <Box
@@ -140,8 +193,10 @@ export default function WareFrame({ rolePermissions }) {
     if (rolePermissions.IsFrameWare_Button_EditWare_Available || rolePermissions.IsFrameWare_Button_DeleteWare_Available) {
         columns.push({
             field: 'actions',
-            headerName: 'Дії',
+            headerName: '',
             flex: 0,
+            minWidth: 75,
+            maxWidth: 75,
             width: 75,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
@@ -295,6 +350,7 @@ export default function WareFrame({ rolePermissions }) {
                             columns={columns}
                             apiRef={apiRef}
                             loading={loading || dataLoading}
+                            getRowHeight={() => 'auto'} // Динамічна висота рядка
                             initialState={{
                                 pagination: {
                                     paginationModel: {
@@ -389,7 +445,12 @@ export default function WareFrame({ rolePermissions }) {
                                 opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
                                 flexGrow: 1, // Займає доступний простір у контейнері
                                 minWidth: 800, // Мінімальна ширина DataGrid
-
+                                "&. MuiDataGrid-topContainer": {
+                                    backgroundColor: "#f3f3f3"
+                                },
+                                '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
+                                '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
+                                '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
                             }}
                         />
                     )}

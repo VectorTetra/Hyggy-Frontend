@@ -8,6 +8,7 @@ import { useWareItems } from '@/pages/api/WareItemApi';
 import { putWareItem, postWareItem } from '@/pages/api/WareItemApi';
 import { ThemeProvider } from '@mui/material';
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import { useQueryState } from 'nuqs';
 
 const StorageSelector = ({ storages, selectedStore, onChange }) => (
     <Autocomplete
@@ -36,6 +37,7 @@ const ProductSelector = ({ wares, selectedProduct, onChange }) => (
 );
 
 export default function FrameSupply() {
+    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
     const [selectedStore, setSelectedStore] = useState<Storage | null>(null);
     const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
     const [availableQuantity, setAvailableQuantity] = useState(0);
@@ -122,6 +124,7 @@ export default function FrameSupply() {
 
             toast.success('Поставка відбулась успішно!');
             resetForm();
+            setActiveTab('remains');
         } catch (error) {
             toast.error('Не вдалося оновити кількість. Спробуйте ще раз!');
         }
@@ -140,7 +143,7 @@ export default function FrameSupply() {
                 <Typography sx={{ mb: 2 }} variant="h5" gutterBottom>
                     Поставка товарів
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, mb: 4, alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', flexDirection: "column", gap: 2, mb: 4, alignItems: 'stretch' }}>
                     <StorageSelector
                         storages={storages}
                         selectedStore={selectedStore}
@@ -160,7 +163,7 @@ export default function FrameSupply() {
                             setSelectedProduct(product || null);
                         }}
                     />
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                         <TextField
                             type="number"
                             value={quantity}
@@ -168,7 +171,7 @@ export default function FrameSupply() {
                             placeholder="Кількість"
                             disabled={!selectedProduct}
                             fullWidth
-                            sx={{ flex: 1, maxWidth: 150 }}
+                            sx={{ flex: 1 }}
                             slotProps={{
                                 input: {
                                     inputProps: {
@@ -188,6 +191,7 @@ export default function FrameSupply() {
                     color="primary"
                     onClick={handleSave}
                     disabled={!quantity || Number(quantity) <= 0}
+                    fullWidth
                 >
                     Зберегти
                 </Button>

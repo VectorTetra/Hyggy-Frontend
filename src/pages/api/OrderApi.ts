@@ -41,7 +41,7 @@ export class OrderQueryParams {
 	OrderItemId?: number;
 	WareId?: number;
 	WarePriceHistoryId?: number;
-	CustomerId?: number;
+	CustomerId?: string | null;
 	ShopId?: number;
 	Sorting?: string;
 	StringIds?: string;

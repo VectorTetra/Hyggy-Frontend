@@ -125,7 +125,7 @@ const SubMenuItem = ({
 export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
 	const [openEmployees, setEmployees] = useState(false);
-	const { setFrameRemainsSidebarVisibility} = useAdminPanelStore();
+	const { setFrameRemainsSidebarVisibility } = useAdminPanelStore();
 
 	const { window, rolePermissions } = props;
 
@@ -212,7 +212,7 @@ export default function Sidebar(props) {
 					{rolePermissions.IsFrameOrders_Available && <MenuItem icon={<ShoppingCartIcon />} text="Замовлення" value="orders" />}
 					{rolePermissions.IsFrameBlog_Available && <MenuItem icon={<ArticleIcon />} text="Блог" value="blog" />}
 					{/* {rolePermissions.IsFrameReviews_Available && <MenuItem icon={<RateReviewIcon />} text="Відгуки" value="reviews" />} */}
-					<Link prefetch={true} href="../AdminPanelLogin" onClick={() => {
+					<Link prefetch={true} href="../AdminPanelLogin" style={{ textDecoration: "none" }} onClick={() => {
 						removeToken();
 					}}>
 						<MenuItem

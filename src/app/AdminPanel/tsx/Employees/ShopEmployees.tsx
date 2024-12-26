@@ -76,9 +76,11 @@ const ShopEmployees = ({ rolePermissions }) => {
         { field: 'roleName', headerName: 'Посада', flex: 1, minWidth: 150 },
         {
             field: 'actions',
-            headerName: 'Дії',
+            headerName: '',
             flex: 0,
+            minWidth: 75,
             width: 75,
+            maxWidth: 75,
             cellClassName: 'text-center',
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: "5px", height: "100%" }}>

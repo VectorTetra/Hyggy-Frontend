@@ -1,31 +1,45 @@
 "use client";
-import { AddressDTO } from "@/pages/api/AddressApi";
-import { OrderGetDTO, useCreateOrderByTransaction } from "@/pages/api/OrderApi";
-import { OrderDeliveryTypeGetDTO } from "@/pages/api/OrderDeliveryTypeApi";
-import { getDecodedToken, isUser, validateToken } from "@/pages/api/TokenApi";
-import useLocalStorageStore, { CartItem } from "@/store/localStorage";
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
+import Layout from "../../sharedComponents/Layout";
+import Link from "next/link";
+import { OrderGetDTO } from "@/pages/api/OrderApi";
+import useLocalStorageStore from "@/store/localStorage";
 
 const SuccessPage = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryCost, setDeliveryCost] = useState(0);
-  const [createdOrderId, setCreatedOrderId] = useState(0);
-  const [orderCreationProcessComplete, setOrderCreationProcessComplete] = useState(false);
-  const { getCartFromLocalStorage, clearCart, formData, addressInfo, deliveryInfo, paymentStatus, setPaymentStatus, setDeliveryInfo, setAddressInfo, selectedShop } = useLocalStorageStore();
-
-  let selectedDeliveryType: OrderDeliveryTypeGetDTO | null = null;
-  let selectedStore: any = null;
+  const {
+    clearCart,
+    setDeliveryInfo,
+    setPaymentStatus,
+    setAddressInfo
+  } = useLocalStorageStore();
   const [successfullOrder, setSuccessfullOrder] = useState<OrderGetDTO | null>(null);
-  const { mutateAsync: TryToCreateOrderByTransaction } = useCreateOrderByTransaction();
+  const [deliveryDate, setDeliveryDate] = useState("");
 
-  let AddressDTOtoPost = new AddressDTO();
+  useEffect(() => {
+    const orderParam = searchParams ? searchParams.get("order") : null;
+    const deliveryDateParam = searchParams ? searchParams.get("deliveryDate") : null;
+
+    if (orderParam) {
+      setSuccessfullOrder(JSON.parse(decodeURIComponent(orderParam)));
+    }
+
+    if (deliveryDateParam) {
+      setDeliveryDate(decodeURIComponent(deliveryDateParam));
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (successfullOrder) {
+      clearCart();
+      setPaymentStatus(null);
+      setDeliveryInfo(null);
+      setAddressInfo(null);
+    }
+  }, [successfullOrder]);
 
   const formatCurrency = (value) => {
     if (value === null || value === undefined) return '0';
@@ -33,136 +47,8 @@ const SuccessPage = () => {
     return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
   };
 
-  useEffect(() => {
-
-  }, [router]);
-  useEffect(() => {
-    if (!successfullOrder) {
-      const handleOrderCreate = async () => {
-        try {
-          if (paymentStatus !== 'success') {
-            router.push('/cart/payment');
-            return;
-          }
-          if (!deliveryInfo) {
-            router.push('/cart/delivery');
-            return;
-          }
-          if (!addressInfo) {
-            router.push('/cart/address');
-            return;
-          }
-
-          if (deliveryInfo && addressInfo) {
-            const orderDate = new Date();
-            const estimatedDeliveryDate = new Date(orderDate);
-            estimatedDeliveryDate.setDate(
-              orderDate.getDate() + (selectedDeliveryType?.maxDeliveryTimeInDays ?? 0)
-            );
-            const formattedDate = estimatedDeliveryDate.toLocaleDateString('uk-UA');
-
-            setDeliveryDate(formattedDate);
-            selectedDeliveryType = deliveryInfo.selectedDeliveryType;
-            selectedStore = deliveryInfo.selectedStore;
-            const validRegisteredCustomerId = validateToken().status === 200 && isUser() ? getDecodedToken()?.nameid : null;
-            switch (selectedDeliveryType?.id) {
-              case 1:
-                Object.assign(AddressDTOtoPost, {
-                  Id: selectedStore.addressId,
-                  City: selectedStore.city,
-                  Street: selectedStore.street,
-                  HouseNumber: selectedStore.houseNumber,
-                  PostalCode: selectedStore.postalCode,
-                  Latitude: selectedStore.latitude,
-                  Longitude: selectedStore.longitude,
-                });
-                break;
-              case 3:
-                const [city3, street3, houseNumber3] = selectedStore.address.split(',').map((s) => s.trim());
-                Object.assign(AddressDTOtoPost, {
-                  City: city3,
-                  Street: street3,
-                  HouseNumber: houseNumber3,
-                  PostalCode: selectedStore.postalCode,
-                  Latitude: selectedStore.latitude,
-                  Longitude: selectedStore.longitude,
-                });
-                break;
-              case 2:
-                Object.assign(AddressDTOtoPost, {
-                  City: addressInfo.City,
-                  Street: addressInfo.Street,
-                  HouseNumber: addressInfo.HouseNumber,
-                });
-                break;
-              case 4:
-                const [street4, houseNumber4] = selectedStore.address.split(',').map((s) => s.trim());
-                Object.assign(AddressDTOtoPost, {
-                  City: selectedStore.city,
-                  Street: street4,
-                  HouseNumber: houseNumber4,
-                  PostalCode: selectedStore.postalCode,
-                  Latitude: selectedStore.latitude,
-                  Longitude: selectedStore.longitude,
-                });
-                break;
-            }
-
-            const creationOrderDTO = {
-              RegisteredCustomerId: validRegisteredCustomerId ?? null,
-              GuestCustomer: !validRegisteredCustomerId ?
-                {
-                  Name: formData?.firstName!,
-                  Email: formData?.email!,
-                  Surname: formData?.lastName!,
-                  PhoneNumber: formData?.phone ? formData.phone.replace(/[^\d+]/g, '') : '',
-                } : null,
-              Address: {
-                City: addressInfo.City,
-                Street: addressInfo.Street,
-                HouseNumber: addressInfo.HouseNumber,
-              },
-              OrderData: {
-                Phone: formData?.phone ? formData.phone.replace(/[^\d+]/g, '') : '',
-                Comment: null,
-                ShopId: selectedShop?.id ?? 0,
-                DeliveryTypeId: selectedDeliveryType?.id ?? 0,
-              },
-              OrderItems: getCartFromLocalStorage().map((cartItem) => ({
-                WareId: cartItem.product.id,
-                Count: cartItem.quantity,
-                PriceHistoryId: cartItem.product.priceHistoryIds.findLast((x) => x)!,
-                OrderId: 0
-              }))
-            }
-
-            console.log('creationOrderDTO:', creationOrderDTO);
-            const createdOrder = await TryToCreateOrderByTransaction(creationOrderDTO);
-
-            setSuccessfullOrder(createdOrder);
-            clearCart();
-            setPaymentStatus(null);
-            setDeliveryInfo(null);
-            setAddressInfo(null);
-            setOrderCreationProcessComplete(true);
-            toast.success(`Замовлення успішно створено!`);
-          }
-
-
-        } catch (error) {
-          console.error('Error during order creation:', error);
-          toast.error(`Помилка при створенні замовлення! ${error.message}`);
-        }
-      };
-
-      handleOrderCreate();
-    }
-  }, [router, paymentStatus, deliveryInfo, addressInfo, successfullOrder]);
-
-  if (!orderCreationProcessComplete || !successfullOrder) {
-    return <Layout headerType="header1" footerType="footer1">
-      <div>Обробка замовлення...</div>;
-    </Layout>
+  if (!successfullOrder) {
+    return <div>Завантаження...</div>;
   }
 
   return (
@@ -182,7 +68,7 @@ const SuccessPage = () => {
               .filter(([key]) => !["id", "latitude", "longitude", "shopId", "storageId", "orderIds"].includes(key))
               .sort(([key1], [key2]) => key1.length < key2.length ? -1 : 1)
               .map(([key, value], index, array) => (
-                <span key={index}>{value !== null && key !== "id" && `${value.toString()}${index + 1 < array.length ? "," : ''}`} {index < Object.entries(successfullOrder.deliveryAddress).length}</span>
+                <span key={index}>{value !== null && key !== "id" && `${(value ?? '').toString()}${index + 1 < array.length ? "," : ''}`} {index < Object.entries(successfullOrder.deliveryAddress).length}</span>
               ))}
           </h6>
         </center>

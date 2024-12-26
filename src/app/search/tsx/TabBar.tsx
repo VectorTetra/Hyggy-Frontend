@@ -1,7 +1,7 @@
 import styles from "../css/TabBar.module.css";
 import { useQueryState } from 'nuqs';
 
-export default function TabBar({ waresQuantity, articlesQuantity, activeTab, setActiveTab, query }: any) {
+export default function TabBar({ waresQuantity, blogsQuantity, activeTab, setActiveTab, query }: any) {
 	// Використовуємо useQueryState з nuqs для роботи з параметрами URL
 	// Якщо вказати { scroll: false }, то параметр не буде впливати на прокрутку
 	const [type, setType] = useQueryState('type', { scroll: false });
@@ -36,16 +36,16 @@ export default function TabBar({ waresQuantity, articlesQuantity, activeTab, set
 							</a>
 						</li>
 					)}
-					{articlesQuantity > 0 && (
+					{blogsQuantity > 0 && (
 						<li className={styles.tabBarItem}>
 							<a
-								className={`${styles.tabBarLink} ${activeTab === "articles" ? styles.activeLink : styles.nonActiveLink}`}
+								className={`${styles.tabBarLink} ${activeTab === "blogs" ? styles.activeLink : styles.nonActiveLink}`}
 								onClick={() => {
-									setActiveTab("articles");
-									updateUrl("articles");
+									setActiveTab("blogs");
+									updateUrl("blogs");
 								}}
 							>
-								Сторінки ({articlesQuantity})
+								Сторінки ({blogsQuantity})
 							</a>
 						</li>
 					)}
