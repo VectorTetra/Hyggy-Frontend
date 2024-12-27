@@ -22,7 +22,7 @@ export default function ArticleGrid(props: any) {
 						/>
 					</div>
 					<div className={styles.articleInfo}>
-						<h3>{blog.blogTitle}</h3>
+						{blog.blogTitle}
 					</div>
 
 				</Link>
