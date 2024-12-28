@@ -39,6 +39,15 @@
 	display: flex;
 	flex: 0.4 1;
 	/* width: fit-content; */
+	width: 300px;
+	height: 400px;
+}
+
+.wareInfo {
+	/* display: flex;
+	flex-direction: column;
+	flex: 1 1; */
+	min-height: 22ch;
 }
 
 .wareInfo h3 {
@@ -46,12 +55,18 @@
 	margin: 0;
 }
 
-.wareInfo p {
+.wareInfoDescription {
 	font-size: 14px;
 	margin: 0;
 	color: #555;
 	line-height: 20px;
-	/* max-width: 50vw; */
+	min-height: 4ch;
+	max-width: 300px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 
 .warePrice {

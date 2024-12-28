@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import styles from "@/app/sharedComponents/css/ReviewDialog.module.css";
 import Link from "next/link";
@@ -31,7 +31,15 @@ export default function ReviewDialog({ onClose, wareId }: ReviewModalProps) {
         review: "",
         termsAccepted: false,
     });
-
+    // Блокування скролу
+    useEffect(() => {
+        // Блокуємо скрол
+        document.body.style.overflow = "hidden";
+        return () => {
+            // Розблоковуємо скрол при розмонтуванні компонента
+            document.body.style.overflow = "auto";
+        };
+    }, []);
     // Використання useCreateWareReview для відправки запиту
     const { mutateAsync: createReview, isPending: isReviewPending } = useCreateWareReview();
 

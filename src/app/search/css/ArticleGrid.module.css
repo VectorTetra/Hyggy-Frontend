@@ -24,23 +24,26 @@
 
 .articleImageContainer {
 	width: 100%;
-	/* Контейнер займає всю ширину доступного простору */
 	height: 200px;
-	/* Фіксована висота контейнера */
 	overflow: hidden;
-	/* Приховує частини зображення, які виходять за межі контейнера */
-	border-radius: 8px;
 	display: flex;
 	justify-content: center;
 }
 
 .articleImage {
 	width: 100%;
-	/* Зображення займає всю ширину контейнера */
 	height: 100%;
-	/* Зображення займає всю висоту контейнера */
 	object-fit: cover;
-	/* Зображення обрізається по краях, щоб зберегти пропорції */
+}
+
+.articleImageContainer:hover {
+	transition: transform 0.5s;
+	transform: scale(1.02);
+}
+
+.articleInfo {
+	text-align: center;
+	font-size: 1.25rem;
 }
 
 @media screen and (max-width: 1000px) {

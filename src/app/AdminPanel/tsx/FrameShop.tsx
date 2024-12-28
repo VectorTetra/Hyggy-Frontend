@@ -5,7 +5,7 @@ import useAdminPanelStore from '@/store/adminPanel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
-import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -13,12 +13,13 @@ import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
 import themeFrame from './ThemeFrame';
 import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
-export default function FrameShop() {
+
+export default function FrameShop({ rolePermissions }) {
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
   const { data: data = [], isLoading: loading } = useShops({
     SearchParameter: "Query",
     PageNumber: 1,
-    PageSize: 150
+    PageSize: 150,
   });
 
   const { mutateAsync: deleteShop } = useDeleteShop();
@@ -63,41 +64,74 @@ export default function FrameShop() {
   };
 
   // Створюємо масив колонок з перекладеними назвами
-  const columns = [
-    { field: 'id', headerName: 'ID', flex: 0.1, minWidth: 50 },
-    { field: 'name', headerName: 'Назва магазину', flex: 1.5, minWidth: 200 },
+
+  let columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
+    { field: 'name', headerName: 'Назва магазину', flex: 1, minWidth: 200 },
     { field: 'state', headerName: 'Область', flex: 1, minWidth: 150 },
     { field: 'city', headerName: 'Місто', flex: 0.8, minWidth: 150 },
     { field: 'street', headerName: 'Вулиця', flex: 1, minWidth: 150 },
-    { field: 'houseNumber', headerName: '№ буд.', flex: 0.3, minWidth: 100 },
+    { field: 'houseNumber', headerName: '№ буд.', minWidth: 100, maxWidth: 100 },
     { field: 'postalCode', headerName: 'Поштовий індекс', flex: 1, minWidth: 150 },
     {
       field: 'executedOrdersSum',
-      headerName: 'Заг. сума товарів',
+      headerName: '',
       flex: 0.5,
+      headerAlign: 'right',
+      hideSortIcons: true,
+      width: 150,
+      minWidth: 150,
+      maxWidth: 150,
+      renderHeader(params) {
+        return (
+          <div style={{ textAlign: "right", textWrap: "balance" }}>
+            <span style={{ wordBreak: "break-word" }} >Загальний виторг</span>
+          </div>
+        );
+      },
       cellClassName: 'text-right',
-      renderCell: (params) => formatCurrency(params.value),
+      renderCell: (params) => {
+        if (rolePermissions.canReadShopExecutedOrdersSum(params.row.id)) {
+          return formatCurrency(params.value)
+        }
+        else {
+          return null;
+        }
+      },
     },
     {
       field: 'actions',
-      headerName: 'Дії',
-      flex: 0.5,
-      minWidth: 175,
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
+      headerName: '',
+      flex: 0,
+      width: 75,
+      minWidth: 75,
+      maxWidth: 75,
 
-          <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
-            <EditIcon />
-          </Button>
-          <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f' }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
-
-            <DeleteIcon />
-          </Button>
-        </Box>
-      ),
+      renderCell: (params) => {
+        if (rolePermissions.IsFrameShops_Button_EditShop_Available || rolePermissions.IsFrameShops_Button_DeleteShop_Available) {
+          return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
+            {rolePermissions.IsFrameShops_Button_EditShop_Available && rolePermissions.canEditShopAsAdmin(params.row.id) &&
+              <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
+                <EditIcon />
+              </Button>}
+            {rolePermissions.IsFrameShops_Button_DeleteShop_Available &&
+              <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f' }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
+                <DeleteIcon />
+              </Button>}
+          </Box>
+        }
+        else {
+          return null;
+        }
+      },
     },
   ];
-
+  if (!rolePermissions.IsFrameShops_Cell_ExecutedOrdersSum_Available) {
+    columns = columns.filter((column) => column.field !== 'executedOrdersSum');
+  }
+  if (!rolePermissions.IsFrameShops_Cell_Actions_Available) {
+    columns = columns.filter((column) => column.field !== 'actions');
+  }
   const handleEdit = (row) => {
     setShopId(row.id);
     console.log("row.id :", row.id)
@@ -118,13 +152,13 @@ export default function FrameShop() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
           />
-          <Button sx={{ backgroundColor: "#00AAAD" }} variant="contained" onClick={() => {
+          {rolePermissions.IsFrameShops_Button_AddShop_Available && <Button sx={{ backgroundColor: "#00AAAD" }} variant="contained" onClick={() => {
             setShopId(0); setActiveTab('addNewShop')
           }}>
             Додати
-          </Button>
+          </Button>}
         </Box>
-        <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+        <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
           <DataGrid
             rows={filteredData} // Використовуємо відфільтровані дані
             columns={columns}

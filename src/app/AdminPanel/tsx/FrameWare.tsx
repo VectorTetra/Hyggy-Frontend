@@ -14,7 +14,8 @@ import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
 import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
-export default function WareFrame() {
+
+export default function WareFrame({ rolePermissions }) {
     const { mutate: deleteWare } = useDeleteWare();
     //const [activeNewWare, setActiveNewWare] = useQueryState("new-edit", { clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { data: data = [], isLoading: dataLoading, isSuccess: success } = useWares({
@@ -38,8 +39,40 @@ export default function WareFrame() {
     const { wareId, setWareId } = useAdminPanelStore();
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', flex: 0.1, minWidth: 50 },
-        { field: 'name', headerName: 'Виробник', flex: 0.5, minWidth: 100 },
+        {
+            field: 'id', headerName: 'ID', minWidth: 70,
+            width: 70,
+            maxWidth: 70,
+            renderCell: (params) => {
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {params.value}
+                </Box>;
+            }
+        },
+        {
+            field: 'name',
+            headerName: 'Виробник',
+            headerAlign: 'left',
+            flex: 0.5,
+            minWidth: 100,
+            renderCell: (params) => {
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {params.value}
+                </Box>;
+            }
+        },
         {
             field: 'description',
             headerName: 'Товар',
@@ -63,6 +96,7 @@ export default function WareFrame() {
                             sx={{
                                 wordWrap: 'break-word', // Перенос длинных слов
                                 whiteSpace: 'normal',
+                                textWrap: 'wrap',
                                 overflow: 'visible',
                             }}>
                             {params.row.description}</Typography>
@@ -73,11 +107,18 @@ export default function WareFrame() {
         {
             field: 'price',
             headerName: 'Початкова ціна',
+            headerAlign: 'right',
             flex: 0.3,
             minWidth: 150,
             renderCell: (params) => {
                 const price = params.value;
-                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
                     {formatCurrency(price)}
                 </Box>;
             },
@@ -85,23 +126,38 @@ export default function WareFrame() {
         {
             field: 'discount',
             headerName: 'Знижка',
+            headerAlign: 'right',
             flex: 0.3,
             minWidth: 100,
             renderCell: (params) => {
                 const discount = params.value;
-                return `${discount}%`;
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
+                    {discount} %
+                </Box>
             },
         },
         {
             field: 'finalPrice',
-            headerName: 'Кінцева Ціна',
+            headerName: 'Кінцева ціна',
             flex: 0.3,
             minWidth: 150,
             headerAlign: 'right',
-            align: 'center',
+            align: 'right',
             renderCell: (params) => {
                 const finalPrice = params.value;
-                return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                return <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                }}>
                     {formatCurrency(finalPrice)}
                 </Box>;
             },
@@ -109,10 +165,10 @@ export default function WareFrame() {
         {
             field: 'averageRating',
             headerName: 'Рейтинг',
-            flex: 0.3,
-            minWidth: 50,
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
             headerAlign: 'center',
-            align: 'center',
             renderCell: (params) => {
                 const rating = params.value;
                 return <Box
@@ -128,24 +184,47 @@ export default function WareFrame() {
                 </Box>;
             },
         },
-        { field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка', flex: 0.3, width: 50 },
         {
+            field: 'isDeliveryAvailable', type: 'boolean', headerName: 'Доставка',
+            minWidth: 150,
+            width: 150,
+            maxWidth: 150,
+        }
+    ];
+    if (rolePermissions.IsFrameWare_Button_EditWare_Available || rolePermissions.IsFrameWare_Button_DeleteWare_Available) {
+        columns.push({
             field: 'actions',
-            headerName: 'Дії',
+            headerName: '',
             flex: 0,
+            minWidth: 75,
+            maxWidth: 75,
             width: 75,
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
-                        <EditIcon />
-                    </Button>
-                    <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
-                        <DeleteIcon />
-                    </Button>
+                    {rolePermissions.IsFrameWare_Button_EditWare_Available && (
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }}
+                            title='Редагувати'
+                            variant="outlined"
+                            onClick={() => handleEdit(params.row)}
+                        >
+                            <EditIcon />
+                        </Button>
+                    )}
+                    {rolePermissions.IsFrameWare_Button_DeleteWare_Available && (
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }}
+                            title='Видалити'
+                            variant="outlined"
+                            onClick={() => handleDelete(params.row)}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    )}
                 </Box>
             ),
-        },
-    ];
+        });
+    }
 
     const handleEdit = (row) => {
         setWareId(row.id);
@@ -240,21 +319,21 @@ export default function WareFrame() {
                     </Typography>
                     <Box sx={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        justifyContent: rolePermissions.IsFrameWare_Button_AddWare_Available ? 'space-between' : 'flex-start',
                     }}>
                         <SearchField
                             searchTerm={searchTerm}
                             onSearchChange={(event) => setSearchTerm(event.target.value)}
                         />
-                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+                        {rolePermissions.IsFrameWare_Button_AddWare_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
                             setWareId(0);
                             setActiveTab("addEditWare");
                         }}>
                             Додати
-                        </Button>
+                        </Button>}
                     </Box>
                 </Box>
-                <Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
                     {filteredData.length === 0 && !loading && success ? (
                         <Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
                             Нічого не знайдено
@@ -266,6 +345,7 @@ export default function WareFrame() {
                             columns={columns}
                             apiRef={apiRef}
                             loading={loading || dataLoading}
+                            getRowHeight={() => 'auto'} // Динамічна висота рядка
                             initialState={{
                                 pagination: {
                                     paginationModel: {
@@ -360,10 +440,12 @@ export default function WareFrame() {
                                 opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
                                 flexGrow: 1, // Займає доступний простір у контейнері
                                 minWidth: 800, // Мінімальна ширина DataGrid
-                                "& .MuiDataGrid-scrollbar--horizontal": {
-                                    position: 'fixed',
-                                    bottom: "5px"
-                                }
+                                "&. MuiDataGrid-topContainer": {
+                                    backgroundColor: "#f3f3f3"
+                                },
+                                '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
+                                '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
+                                '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
                             }}
                         />
                     )}

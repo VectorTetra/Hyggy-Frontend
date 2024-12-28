@@ -1,34 +1,22 @@
 "use client";
-import { useState, useEffect } from "react";
-import Layout from "../sharedComponents/Layout";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
-import { CircularProgress } from "@mui/material";
 import useLocalStorageStore from '@/store/localStorage';
+import { CircularProgress } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Layout from "../sharedComponents/Layout";
+import styles from "./page.module.css";
 import { formatCurrency } from "../ware/tsx/ProductPrice";
 
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const {
     cart,
-    addToCart,
     removeFromCart,
-    clearCart,
     updateCartQuantity,
-    setSelectedShop,
     increaseQuantity,
     decreaseQuantity,
     handleQuantityChange,

@@ -100,6 +100,13 @@ export default function WareCarousel({ wares }) {
     // Функція для визначення кількості слайдів залежно від розміру екрана
     const updateSlidesToShow = () => {
         const screenWidth = window.innerWidth;
+        // if (screenWidth >= 1536) {
+        //     setSlidesToShow(6);
+        // }
+        // else if (screenWidth >= 1280) {
+        //     setSlidesToShow(5);
+        // }
+        // else 
         if (screenWidth >= 1024) {
             setSlidesToShow(4);
         } else if (screenWidth >= 768) {

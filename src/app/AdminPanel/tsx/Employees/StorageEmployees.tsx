@@ -1,50 +1,45 @@
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
-import { deleteStorageEmployee, getStorageEmployees } from '@/pages/api/EmployeesApi';
+import { useShopEmployeeDelete, useStorageEmployees } from '@/pages/api/EmployeesApi';
+import useAdminPanelStore from '@/store/adminPanel';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useDebounce } from 'use-debounce';
 
-const StorageEmployees = () => {
+const StorageEmployees = ({ rolePermissions }) => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
-    const [data, setData] = useState<any | null>([]);
+    const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
+    const [filteredData, setFilteredData] = useState<any | null>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
-    const [activeNewShopEmployee, setActiveNewShopEmployee] = useQueryState("storageemployee", { scroll: false, history: "push", shallow: true });
+    const { setStorageEmployeeId } = useAdminPanelStore();
+    //const [activeNewShopEmployee, setActiveNewShopEmployee] = useQueryState("storageemployee", { scroll: false, history: "push", shallow: true });
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const apiRef = useGridApiRef();
+    const { mutateAsync: deleteStorageEmployee } = useShopEmployeeDelete();
+    // Завантаження даних
+    const { data: storageEmployees = [], isFetching: dataLoading, refetch } = useStorageEmployees({
+        PageNumber: 1,
+        PageSize: 1000,
+        QueryAny: debouncedSearchTerm ?? null,
+    });
 
     useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const employees = await getStorageEmployees();
-                if (!employees) {
-                    console.log('Користувачів не знайдено');
-                    return;
-                }
-                console.log(employees);
-                setData(employees);
-            } catch (error) {
-                console.error('Error fetching storage data:', error);
-            } finally {
-                setLoading(false);
-                setActiveNewShopEmployee(null);
-            }
-        };
+        refetch();
+    }, [debouncedSearchTerm, refetch]);
 
-        fetchEmployees();
-    }, []);
-    // Фільтрація даних на основі швидкого пошуку
-    const filteredData = data.filter((row) =>
-        Object.values(row).some(
-            (value) =>
-                typeof value === 'string' && value.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
+    const handleEdit = (row) => {
+        // Встановлюємо рядок для видалення та відкриваємо діалог
+        console.log("row", row);
+        setStorageEmployeeId(row.id);
+        setActiveTab('addStorageEmployee');
+    };
     const handleDelete = (row) => {
         // Встановлюємо рядок для видалення та відкриваємо діалог
         console.log("row", row);
@@ -57,28 +52,55 @@ const StorageEmployees = () => {
             console.log("selectedRow", selectedRow);
             await deleteStorageEmployee(selectedRow.id);
             setIsDialogOpen(false);
-
-            setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
             toast.info('Співробітника успішно видалено!');
         }
     };
+    const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
+        id: false, // Приховуємо колонку "ID"
+    });
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
-        { field: 'name', headerName: "Ім'я", flex: 1, minWidth: 200 },
-        { field: 'surname', headerName: 'Прізвище', flex: 1, minWidth: 150 },
-        { field: 'email', headerName: 'Пошта', flex: 0.8, minWidth: 150 },
-        { field: 'phone', headerName: 'Телефон', flex: 1, minWidth: 150 },
+        { field: 'id', headerName: 'ID' },
+        { field: 'name', headerName: "Ім'я", flex: 1, },
+        { field: 'surname', headerName: 'Прізвище', flex: 1, },
+        { field: 'email', headerName: 'Пошта', flex: 0.8, },
+        { field: 'phoneNumber', headerName: 'Телефон', flex: 0.6, },
         {
             field: 'actions',
-            headerName: 'Дії',
-            flex: 0.5,
+            headerName: '',
+            flex: 0,
             minWidth: 75,
+            width: 75,
+            maxWidth: 75,
             cellClassName: 'text-center',
             renderCell: (params) => (
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
-                        <DeleteIcon />
-                    </Button>
+                <Box sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: "5px", height: "100%" }}>
+                    {(rolePermissions.canEditAnyEmployee() ||
+                        rolePermissions.canEditSelf(params.row.id) ||
+                        rolePermissions.canEditEmployeeAsAdmin(params.row.storageId, params.row.roleName))
+                        &&
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0 }}
+                            color="primary"
+                            title="Редагувати"
+                            variant="outlined"
+                            onClick={() => handleEdit(params.row)}
+                        >
+                            <EditIcon />
+                        </Button>
+                    }
+                    {(rolePermissions.canDeleteAnyEmployee() ||
+                        rolePermissions.canDeleteEmployeeAsAdmin(params.row.storageId, params.row.roleName))
+                        &&
+                        <Button
+                            sx={{ minWidth: "10px", padding: 0 }}
+                            color="secondary"
+                            title="Видалити"
+                            variant="outlined"
+                            onClick={() => handleDelete(params.row)}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    }
                 </Box>
             ),
         },
@@ -99,16 +121,17 @@ const StorageEmployees = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
                     />
-                    <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => { setActiveNewShopEmployee('0'); setActiveTab('addStorageEmployee') }}>
+                    {rolePermissions.IsFrameStorageEmployees_Button_AddStorageEmployee_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => { setStorageEmployeeId('0'); setActiveTab('addStorageEmployee') }}>
                         Додати
-                    </Button>
+                    </Button>}
                 </Box>
-                <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
                     <DataGrid
-                        rows={filteredData} // Використовуємо відфільтровані дані
+                        rows={storageEmployees} // Використовуємо відфільтровані дані
                         columns={columns}
                         apiRef={apiRef}
-                        loading={loading}
+                        loading={dataLoading}
+                        columnVisibilityModel={columnVisibilityModel}
                         disableRowSelectionOnClick
                         slots={{ toolbar: GridToolbar }}
                         localeText={{

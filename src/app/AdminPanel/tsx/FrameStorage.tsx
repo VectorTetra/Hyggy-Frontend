@@ -14,7 +14,8 @@ import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
 import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
-export default function FrameStorage() {
+
+export default function FrameStorage({ rolePermissions }) {
 	const { mutate: deleteStorage } = useDeleteStorage();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useStorages({
 		SearchParameter: "Query",
@@ -38,7 +39,7 @@ export default function FrameStorage() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
-	const columns = [
+	let columns = [
 		{
 			field: 'id',
 			headerName: 'ID',
@@ -74,7 +75,7 @@ export default function FrameStorage() {
 							title={params.value}
 							sx={{
 								fontStyle: 'italic',
-								color: 'blue',
+								color: '#00AAAD',
 								display: "flex",
 								alignItems: "center",
 								height: "100%",
@@ -173,10 +174,7 @@ export default function FrameStorage() {
 			),
 		},
 		{
-			field: 'houseNumber',
-			headerName: '№ буд.',
-			flex: 0.3,
-			minWidth: 100,
+			field: 'houseNumber', headerName: '№ буд.', minWidth: 100, maxWidth: 100,
 			renderCell: (params) => (
 				<Typography
 					variant="body2"
@@ -220,30 +218,51 @@ export default function FrameStorage() {
 		},
 		{
 			field: 'storedWaresSum',
-			headerName: 'Заг. сума товарів',
+			headerName: 'Загальна вартість товарів',
 			flex: 1.5,
+			minWidth: 200,
 			cellClassName: 'text-right',
-			renderCell: (params) => formatCurrency(params.value),
+			renderCell: (params) => {
+				if (rolePermissions.canReadStorageStoresSum(params.row.id)) {
+					return formatCurrency(params.value)
+				}
+				else {
+					return null;
+				}
+			},
 		},
 		{
 			field: 'actions',
-			headerName: 'Дії',
+			headerName: '',
 			flex: 0,
+			minWidth: 75,
 			width: 75,
+			maxWidth: 75,
 			disableExport: true,
-			renderCell: (params) => (
-				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-					<Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
-						<EditIcon />
-					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
-						<DeleteIcon />
-					</Button>
-				</Box>
-			),
+			renderCell: (params) => {
+				if (rolePermissions.IsFrameStorage_Button_EditStorage_Available || rolePermissions.IsFrameStorage_Button_DeleteStorage_Available) {
+					return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
+						{rolePermissions.IsFrameStorage_Button_EditStorage_Available && <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
+							<EditIcon />
+						</Button>}
+						{rolePermissions.IsFrameStorage_Button_DeleteStorage_Available && <Button sx={{ minWidth: "10px", padding: 0, color: '#be0f0f', borderColor: '#be0f0f' }} title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
+							<DeleteIcon />
+						</Button>}
+					</Box>
+				}
+				else {
+					return null;
+				}
+			},
 		},
 	];
 
+	if (!rolePermissions.IsFrameStorage_Cell_StoresSum_Available) {
+		columns = columns.filter((column) => column.field !== 'storedWaresSum');
+	}
+	if (!rolePermissions.IsFrameStorage_Cell_Actions_Available) {
+		columns = columns.filter((column) => column.field !== 'actions');
+	}
 	const handleEdit = (row) => {
 		// Встановлюємо warehouseId для редагування обраного складу
 		setWarehouseId(row.id); // Встановлюємо Id складу для редагування
@@ -336,21 +355,21 @@ export default function FrameStorage() {
 					</Typography>
 					<Box sx={{
 						display: 'flex',
-						justifyContent: 'space-between',
+						justifyContent: rolePermissions.IsFrameStorage_Button_AddStorage_Available ? 'space-between' : 'flex-start',
 					}}>
 						<SearchField
 							searchTerm={searchTerm}
 							onSearchChange={(event) => setSearchTerm(event.target.value)}
 						/>
-						<Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+						{rolePermissions.IsFrameStorage_Button_AddStorage_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
 							setWarehouseId(0);
 							setActiveTab("addEditWarehouse");
 						}}>
 							Додати
-						</Button>
+						</Button>}
 					</Box>
 				</Box>
-				<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
+				<Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
 					{filteredData.length === 0 && !loading && success ? (
 						<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
 							Нічого не знайдено
@@ -453,10 +472,10 @@ export default function FrameStorage() {
 								opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
 								flexGrow: 1, // Займає доступний простір у контейнері
 								minWidth: 800, // Мінімальна ширина DataGrid
-								"& .MuiDataGrid-scrollbar--horizontal": {
-									position: 'fixed',
-									bottom: "5px"
-								}
+								// "& .MuiDataGrid-scrollbar--horizontal": {
+								// 	position: 'fixed',
+								// 	bottom: "5px"
+								// }
 							}}
 						/>
 					)}

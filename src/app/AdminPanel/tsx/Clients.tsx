@@ -3,13 +3,14 @@ import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { useCustomers, useDeleteCustomer } from '@/pages/api/CustomerApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { head } from 'lodash';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 
-const Clients = () => {
+const Clients = ({ rolePermissions }) => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
     const { data: data = [], isLoading: dataLoading } = useCustomers({
         SearchParameter: "Query",
@@ -43,31 +44,58 @@ const Clients = () => {
             toast.info('Користувача успішно видалено!');
         }
     };
-    const columns = [
+
+    let columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
         { field: 'name', headerName: "Ім'я", flex: 1, minWidth: 200 },
         { field: 'surname', headerName: 'Прізвище', flex: 1, minWidth: 150 },
         { field: 'email', headerName: 'Пошта', flex: 0.8, minWidth: 150 },
-        { field: 'phone', headerName: 'Телефон', flex: 1, minWidth: 150 },
+        { field: 'phoneNumber', headerName: 'Телефон', flex: 1, minWidth: 150 },
         {
             field: 'executedOrdersSum',
-            headerName: 'Заг. сума замовлень',
+            headerName: '',
+            headerAlign: 'right',
             flex: 0.5,
             cellClassName: 'text-right',
+            hideSortIcons: true,
+            width: 150,
+            minWidth: 150,
+            maxWidth: 150,
+            renderHeader(params) {
+                return (
+                    <div style={{ textAlign: "right", textWrap: "balance" }}>
+                        <span style={{ wordBreak: "break-word" }} >Загальний чек</span>
+                    </div>
+                );
+            },
             renderCell: (params) => formatCurrency(params.value),
         },
         {
             field: 'executedOrdersAvg',
-            headerName: 'Середня сума замовлень',
+            headerName: '',
+            headerAlign: 'right',
             flex: 0.5,
             cellClassName: 'text-right',
+            hideSortIcons: true,
+            width: 150,
+            minWidth: 150,
+            maxWidth: 150,
+            renderHeader(params) {
+                return (
+                    <div style={{ textAlign: "right", textWrap: "balance" }}>
+                        <span style={{ wordBreak: "break-word" }} >Середній чек</span>
+                    </div>
+                );
+            },
             renderCell: (params) => formatCurrency(params.value),
         },
         {
             field: 'actions',
-            headerName: 'Дії',
-            flex: 0.5,
+            headerName: '',
+            flex: 0,
             minWidth: 75,
+            width: 75,
+            maxWidth: 75,
             cellClassName: 'text-center',
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
@@ -78,7 +106,17 @@ const Clients = () => {
             ),
         },
     ];
-    
+
+    if (!rolePermissions.IsFrameClients_Cell_ExecutedOrdersSum_Available) {
+        columns = columns.filter(column => column.field !== 'executedOrdersSum');
+    }
+    if (!rolePermissions.IsFrameClients_Cell_ExecutedOrdersAvg_Available) {
+        columns = columns.filter(column => column.field !== 'executedOrdersAvg');
+    }
+    if (!rolePermissions.IsFrameClients_Cell_Actions_Available) {
+        columns = columns.filter(column => column.field !== 'actions');
+    }
+
     return (
         <Box sx={{ width: '100%' }}>
             <ThemeProvider theme={themeFrame}>
@@ -94,7 +132,7 @@ const Clients = () => {
                         onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
                     />
                 </Box>
-                <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
                     <DataGrid
                         rows={filteredData} // Використовуємо відфільтровані дані
                         columns={columns}

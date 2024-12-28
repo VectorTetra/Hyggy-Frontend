@@ -9,7 +9,7 @@ function FrameExpandableBlock() {
     return (
         <ThemeProvider theme={themeFrame}>
             <Box sx={{ zIndex: 1000, display: "flex", flexDirection: "column" }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography sx={{ textWrap: "wrap" }} variant="h6" gutterBottom>
                         Залишки на складах : {frameRemainsSelectedWare?.description}
                     </Typography>
