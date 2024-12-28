@@ -57,7 +57,7 @@ export default function ReviewWare({ product }: { product: WareGetDTO }) {
       {isModalOpen && (
         <ReviewDialog onClose={() => setIsModalOpen(false)} wareId={product.id} />
       )}
-      <hr className={styles.reviewHr} />
+      {/* <hr className={styles.reviewHr} /> */}
       <div className={styles.reviewsList}>
         {Array.isArray(reviews) && reviews.length > 0 && reviews.map((review, index) => (
           <div key={index} className={styles.reviewItem}>
