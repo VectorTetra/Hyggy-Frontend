@@ -6,10 +6,10 @@ interface ProductPriceProps {
     discount: number;
 }
 
-const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
+export const formatCurrency = (value) => {
+    if (value === null || value === undefined) return '';
     const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
+    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
 };
 
 const ProductPrice: React.FC<ProductPriceProps> = ({ finalPrice, oldPrice, discount }) => (

@@ -6,6 +6,8 @@ import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material
 import { DataGrid, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
+
 
 const Clients = () => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
@@ -76,13 +78,7 @@ const Clients = () => {
             ),
         },
     ];
-    // Функція для форматування значення
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
-
+    
     return (
         <Box sx={{ width: '100%' }}>
             <ThemeProvider theme={themeFrame}>

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
 import themeFrame from './ThemeFrame';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function FrameShop() {
   const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
@@ -35,13 +36,6 @@ export default function FrameShop() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const apiRef = useGridApiRef();
-
-  // Функція для форматування значення
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-  };
 
   // Фільтрація даних на основі швидкого пошуку
   const filteredData = data.filter((row) =>

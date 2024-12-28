@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
 import themeFrame from './ThemeFrame';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
@@ -173,13 +174,6 @@ export default function FrameRemaining() {
             ),
         }
     ];
-
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
 
     useEffect(() => {
         if (success && wares.length > 0) {

@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import data from '../PageProfileUser.json';
 import ReviewDialog from "@/app/sharedComponents/ReviewDialog";
 import { WareGetDTO } from "@/pages/api/WareApi";
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function CompletedOrdersUser() {
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
@@ -22,12 +23,6 @@ export default function CompletedOrdersUser() {
     const handleCloseReviewModal = () => {
         setReviewModalOpen(false);
         setSelectedProduct(null);
-    };
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
     };
 
     // Фильтруем завершённые заказы

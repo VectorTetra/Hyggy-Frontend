@@ -3,6 +3,8 @@ import styles from "../css/CartPopup.module.css";
 import Link from 'next/link';
 import useLocalStorageStore from '@/store/localStorage'; // Імпортуємо store
 import { useEffect } from 'react'; // Імпортуємо useEffect
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
+
 
 interface CartItem {
   productDescription: string;
@@ -18,12 +20,6 @@ interface CartPopupProps {
   onClose: () => void;
   selectedOption: string;
 }
-
-const formatCurrency = (value) => {
-  if (value === null || value === undefined) return '0';
-  const roundedValue = Math.round(value * 100) / 100;
-  return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-};
 
 const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
   const { cart, removeFromCart } = useLocalStorageStore(); // Отримуємо стан з store

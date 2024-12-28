@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 const SuccessPage = () => {
   const router = useRouter();
@@ -26,12 +27,6 @@ const SuccessPage = () => {
   const { mutateAsync: TryToCreateOrderByTransaction } = useCreateOrderByTransaction();
 
   let AddressDTOtoPost = new AddressDTO();
-
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-  };
 
   useEffect(() => {
 

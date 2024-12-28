@@ -1,15 +1,10 @@
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import useAdminPanelStore from '@/store/adminPanel';
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography } from '@mui/material';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 function FrameExpandableBlock() {
     const { frameRemainsSelectedWare, frameRemainsSidebarVisibility, setFrameRemainsSidebarVisibility } = useAdminPanelStore();
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
 
     return (
         <ThemeProvider theme={themeFrame}>

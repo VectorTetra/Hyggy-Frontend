@@ -4,6 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import data from '../PageProfileUser.json';
 import ReviewDialog from '@/app/sharedComponents/ReviewDialog';
 import { WareGetDTO } from "@/pages/api/WareApi";
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function OrdersUser() {
     const [expandedOrderId, setExpandedOrderId] = useState(null);
@@ -26,12 +27,6 @@ export default function OrdersUser() {
 
     //Проверка на наличие заказов
     const hasOrders = data.orders && data.orders.length > 0;
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-    };
 
     return (
         <Box sx={{ padding: '20px', backgroundColor: '#f9f9f9', margin: '20px 0' }}>

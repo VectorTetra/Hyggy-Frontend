@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import { CircularProgress } from "@mui/material";
 import useLocalStorageStore from '@/store/localStorage';
 import Link from "next/link";
+import { formatCurrency } from "../ware/tsx/ProductPrice";
 
 interface CartItem {
   productDescription: string;
@@ -41,12 +42,6 @@ const CartPage = () => {
 
   const handleRemoveItem = (index: number) => {
     removeFromCart(index);
-  };
-
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
   };
 
   const calculateTotalPrice = () => {
