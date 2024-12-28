@@ -1,17 +1,17 @@
 import { Storage, useStorages } from '@/pages/api/StorageApi';
 import { useWares } from '@/pages/api/WareApi';
+import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
+import useAdminPanelStore from '@/store/adminPanel';
 import { Autocomplete, Box, Button, TextField, Typography } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import SearchField from './SearchField';
-import { useWareCategories3, WareCategory3 } from '@/pages/api/WareCategory3Api';
-import useAdminPanelStore from '@/store/adminPanel';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 import '../css/WarehouseFrame.css';
 import FrameExpandableBlock from './FrameExpandableBlock';
+import SearchField from './SearchField';
 import themeFrame from './ThemeFrame';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function FrameRemaining() {
     const [loading, setLoading] = useState(true);
@@ -119,7 +119,7 @@ export default function FrameRemaining() {
             renderCell: (params) => {
                 const price = params.value;
                 return <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', textWrap: "nowrap" }}>
-                    {formatCurrency(price)}
+                    {formatCurrency(price, "₴")}
                 </Box>
             },
         },
@@ -156,7 +156,7 @@ export default function FrameRemaining() {
                     (params.value || 0);
                 return (
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%', textWrap: "nowrap" }}>
-                        {formatCurrency(totalSum)}
+                        {formatCurrency(totalSum, "₴")}
                     </Box>
                 );
             },

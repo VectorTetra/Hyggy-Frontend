@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Layout from "../sharedComponents/Layout";
 import styles from "./page.module.css";
-import { formatCurrency } from "../ware/tsx/ProductPrice";
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 
 const CartPage = () => {
@@ -132,8 +132,8 @@ const CartPage = () => {
                   </button>
                 </div>
                 <div className={styles.price}>
-                  <p>{formatCurrency(item.product.finalPrice)} грн </p>
-                  <p>{formatCurrency(item.product.finalPrice * item.quantity)} грн</p>
+                  <p>{formatCurrency(item.product.finalPrice, "грн / шт")}</p>
+                  <p>{formatCurrency(item.product.finalPrice * item.quantity, "грн")}</p>
                 </div>
               </div>
             ))}
@@ -144,7 +144,7 @@ const CartPage = () => {
             <div className={styles.cartInfo}>
               {calculateTotalSavings() > 0 && (
                 <p>
-                  Загальна економія {formatCurrency(calculateTotalSavings())} грн
+                  Загальна економія {formatCurrency(calculateTotalSavings(), "грн")}
                 </p>
               )}
               <p>
@@ -153,10 +153,9 @@ const CartPage = () => {
                   cart.length > 0 && cart[0].selectedOption === "delivery"
                     ? 100
                     : 0
-                )}{" "}
-                грн
+                  , "грн")}
               </p>
-              <p>Сума ПДВ {formatCurrency(calculatePDV())} грн</p>
+              <p>Сума ПДВ {formatCurrency(calculatePDV(), "грн")}</p>
               {cart.length > 0 &&
                 cart[0].selectedOption === "delivery" && (
                   <p>Доставка протягом 10-12 робочих днів</p>
@@ -164,7 +163,7 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>
-              Всього {formatCurrency(calculateTotalPrice())} грн
+              Всього {formatCurrency(calculateTotalPrice(), "грн")}
             </p>
             <div className={styles.buttonContainer}>
               <Link href="/cart/address">

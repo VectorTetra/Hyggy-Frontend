@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Divider, Button, TableRow, TableCell, Table, Collapse } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 import ReviewDialog from '@/app/sharedComponents/ReviewDialog';
-import { WareGetDTO } from "@/pages/api/WareApi";
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
 import { OrderGetDTO, useOrders } from "@/pages/api/OrderApi";
 import { getDecodedToken } from "@/pages/api/TokenApi";
-import styles from '../page.module.css';
+import { WareGetDTO } from "@/pages/api/WareApi";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Collapse, Table, TableCell, TableRow, Typography } from '@mui/material';
+import Link from "next/link";
+import { useState } from "react";
 
 
 export default function OrdersUser() {
@@ -16,11 +16,6 @@ export default function OrdersUser() {
 
     const handleToggle = (orderId) => {
         setExpandedOrderId(prevId => prevId === orderId ? null : orderId);
-    };
-
-    const handleOpenReviewModal = (orderId, product) => {
-        setSelectedProduct({ orderId, ...product });
-        setReviewModalOpen(true);
     };
 
     const handleCloseReviewModal = () => {
@@ -39,7 +34,7 @@ export default function OrdersUser() {
         CustomerId: getDecodedToken()?.nameid ?? null,
     });
     //Проверка на наличие заказов
-    const hasOrders = data.orders && data.orders.length > 0;
+    const hasOrders = orders && orders.length > 0;
 
     return (
         <Box sx={{ padding: '20px', backgroundColor: '#f9f9f9', margin: '20px 0' }}>
@@ -134,17 +129,14 @@ export default function OrdersUser() {
                                                     fontFamily: 'inherit',
                                                     fontWeight: 'bold',
                                                 }}>
-                                                {formatCurrency(totalPrice)} грн
+                                                {formatCurrency(totalPrice, "грн")}
                                             </Typography>
                                         </Typography>
                                     </Box>
                                     <ExpandMoreIcon onClick={() => handleToggle(order.id)} style={{ cursor: 'pointer' }} />
                                 </Box>
                                 <Collapse in={expandedOrderId === order.id} timeout={300} unmountOnExit sx={{ width: "100%" }}>
-                                    <Box flex="3"
-                                        className={`${expandedOrderId === order.id ? styles["slide-enter-active"] : styles["slide-exit-active"]}`}
-                                        sx={{ marginBottom: { xs: '10px', sm: '10px' }, width: "100%" }}>
-
+                                    <Box flex="3" sx={{ marginBottom: { xs: '10px', sm: '10px' }, width: "100%" }}>
                                         {
                                             // Отображаем сгруппированные товары
                                             order.orderItems.map((item: any, index: number) => (
@@ -156,7 +148,9 @@ export default function OrdersUser() {
                                                     }}>
                                                     {/* Колонка с изображением */}
                                                     <Box flex="1" display="flex" flexDirection="column" alignItems="center">
-                                                        <img src={item.ware.previewImagePath} alt="Товар" style={{ width: '100px', height: '100px', borderRadius: '4px', objectFit: 'cover', margin: '10px 0 15px 0' }} />
+                                                        <Link href={`/ware/${item.ware.id}`}>
+                                                            <img src={item.ware.previewImagePath} alt="Товар" style={{ width: '100px', height: '100px', borderRadius: '4px', objectFit: 'cover', margin: '10px 0 15px 0' }} />
+                                                        </Link>
                                                     </Box>
 
                                                     {/* Колонка с названием товара */}
@@ -168,10 +162,10 @@ export default function OrdersUser() {
 
                                                     {/* Колонка с ценой и количеством */}
                                                     <Box flex="1" display="flex" flexDirection="column" alignItems="center">
-                                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Ціна: {formatCurrency(item.ware.finalPrice * item.count)} грн</Typography>
+                                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Ціна: {formatCurrency(item.ware.finalPrice * item.count, "грн")}</Typography>
                                                         {item.count > 1 && (
                                                             <Typography variant="caption" color="text.secondary">
-                                                                {item.count} x {formatCurrency(item.ware.finalPrice)} грн
+                                                                {item.count} x {formatCurrency(item.ware.finalPrice, "грн")}
                                                             </Typography>
                                                         )}
                                                     </Box>
@@ -197,7 +191,7 @@ export default function OrdersUser() {
                                                             display: 'flex',
                                                         }}
                                                     >
-                                                        Загальна вартість товарів: {order.totalPrice - order.deliveryType.price} грн
+                                                        Загальна вартість товарів: {formatCurrency(order.totalPrice - order.deliveryType.price, "грн")}
                                                     </Typography>
                                                 </TableCell>
                                             </TableRow>
@@ -223,7 +217,7 @@ export default function OrdersUser() {
                                                             display: 'flex',
                                                         }}
                                                     >
-                                                        Вартість доставки: {order.deliveryType.price} грн
+                                                        Вартість доставки: {formatCurrency(order.deliveryType.price, "грн")}
                                                     </Typography>
                                                 </TableCell>
                                             </TableRow>
@@ -236,7 +230,7 @@ export default function OrdersUser() {
                                                             display: 'flex',
                                                         }}
                                                     >
-                                                        Загальна вартість замовлення: {order.totalPrice} грн
+                                                        Загальна вартість замовлення: {formatCurrency(order.totalPrice, "грн")}
                                                     </Typography>
                                                 </TableCell>
                                             </TableRow>

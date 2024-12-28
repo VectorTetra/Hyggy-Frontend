@@ -52,11 +52,15 @@ const DeliveryPage = () => {
       setSearchQuery(`${addressInfo.City}, ${addressInfo.Street}`);
     }
 
+
+  }, [router, addressInfo]);
+
+  useEffect(() => {
     // Якщо тип доставки не обраний, встановлюємо "Самовивіз" за замовчуванням
-    if (!selectedDeliveryType) {
+    if (!selectedDeliveryType && orderDeliveryTypes.length > 0) {
       setSelectedDeliveryType(orderDeliveryTypes.find(deliveryType => deliveryType.id === 1));
     }
-  }, [selectedDeliveryType, router, addressInfo]);
+  }, [selectedDeliveryType, orderDeliveryTypes]);
 
   useEffect(() => {
     if (selectedDeliveryType?.id === 1) {
@@ -74,11 +78,6 @@ const DeliveryPage = () => {
     const deliveryInfo = {
       selectedDeliveryType,
       selectedStore,
-      // deliveryCost: selectedDeliveryType === "courier" ? 110
-      //   : selectedDeliveryType === "novaPoshta" ? 75
-      //     : selectedDeliveryType === "ukrPoshta" ? 50
-      //       : 0,
-      // deliveryDays: selectedDeliveryType === "courier" || selectedDeliveryType === "novaPoshta" || selectedDeliveryType === "ukrPoshta" ? 12 : 18
     };
     setDeliveryInfo(deliveryInfo);
   }, [selectedDeliveryType, selectedStore]);

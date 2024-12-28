@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import '../css/ShopsFrame.css'; // Імпортуємо CSS файл
 import themeFrame from './ThemeFrame';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 
 export default function FrameShop({ rolePermissions }) {
@@ -92,7 +92,7 @@ export default function FrameShop({ rolePermissions }) {
       cellClassName: 'text-right',
       renderCell: (params) => {
         if (rolePermissions.canReadShopExecutedOrdersSum(params.row.id)) {
-          return formatCurrency(params.value)
+          return formatCurrency(params.value, "₴");
         }
         else {
           return null;

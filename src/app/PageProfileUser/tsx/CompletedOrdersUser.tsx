@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Divider, Button } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import data from '../PageProfileUser.json';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 import ReviewDialog from "@/app/sharedComponents/ReviewDialog";
-import { WareGetDTO } from "@/pages/api/WareApi";
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
-import { useOrders } from "@/pages/api/OrderApi";
+import { OrderGetDTO, useOrders } from "@/pages/api/OrderApi";
 import { getDecodedToken } from "@/pages/api/TokenApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, Collapse, Table, TableCell, TableRow, Typography } from '@mui/material';
+import Link from "next/link";
+import { useState } from "react";
 
 
 export default function CompletedOrdersUser() {
@@ -18,28 +18,10 @@ export default function CompletedOrdersUser() {
         setExpandedOrderId(prevId => prevId === orderId ? null : orderId);
     };
 
-    const handleOpenReviewModal = (orderId, product) => {
-        setSelectedProduct({ orderId, ...product });
-        setReviewModalOpen(true);
-    };
-
     const handleCloseReviewModal = () => {
         setReviewModalOpen(false);
         setSelectedProduct(null);
     };
-
-
-    // const {
-    //     data: orders = [],
-    //     isFetching: dataLoading,
-    //     isSuccess: success,
-    // } = useOrders({
-    //     SearchParameter: 'Query',
-    //     PageNumber: 1,
-    //     PageSize: 1000,
-    //     CustomerId: getDecodedToken()?.nameid ?? null,
-    //     StatusId: 7,
-    // });
     const {
         data: ordersStatus7 = [],
     } = useOrders({
@@ -60,7 +42,7 @@ export default function CompletedOrdersUser() {
         StatusId: 12,
     });
 
-    const orders = [...ordersStatus7, ...ordersStatus12].sort((a, b) => b.orderDate - a.orderDate);
+    const orders: OrderGetDTO[] = [...ordersStatus7, ...ordersStatus12].sort((a, b) => b.orderDate - a.orderDate);
     //Проверка на наличие заказов
     const hasOrders = orders && orders.length > 0;
 
@@ -103,107 +85,170 @@ export default function CompletedOrdersUser() {
                                     alignItems: 'center',
                                     textAlign: 'center',
                                     margin: '10px 0 0 10px',
-                                    flexDirection: { xs: 'column', sm: 'row' }
+                                    flexDirection: { xs: 'column', sm: 'column' }
                                 }}
                             >
-                                <Box flex="1" sx={{ marginBottom: { xs: '10px', sm: '0' } }}>
-                                    <Typography variant="subtitle1">Номер замовлення: {order.id}</Typography>
-                                    <Typography variant="subtitle2" color="text.secondary">Дата: {new Date(order.orderDate).toLocaleString('uk-UA')}</Typography>
-                                    <Typography variant="body2" color={[7, 12].includes(order.status.id) ? "green" : order.status.name === "Скасовано" ? "red" : "orange"}>
-                                        Статус: {order.status.name}
-                                    </Typography>
-                                </Box>
-
-                                {/* Отображаем товары */}
-                                <Box flex="3" sx={{ marginBottom: { xs: '10px', sm: '10px' } }}>
-                                    {/* Группировка товаров с использованием `forEach` */}
-                                    {
-                                        // Отображаем сгруппированные товары
-                                        order.orderItems.map((item: any, index: number) => (
-                                            <Box key={index} display="flex" alignItems="center" justifyContent="space-between"
+                                {/* <Box flex="1" sx={{ marginBottom: { xs: '10px', sm: '0' } }}> */}
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: { xs: 'column', sm: 'row', }, // Меняем направление при адаптиве
+                                        justifyContent: "start",
+                                        alignItems: "center",
+                                        width: "100%",
+                                    }}>
+                                    <Box sx={{ display: "flex", justifyContent: "start", flex: 1 }}>
+                                        <Typography
+                                            variant="subtitle1"
+                                            sx={{
+                                                fontFamily: 'inherit',
+                                                display: 'flex',
+                                            }}
+                                        >
+                                            Номер замовлення: {order.id}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "start", flex: 1 }}>
+                                        <Typography
+                                            sx={{
+                                                fontFamily: 'inherit',
+                                                display: 'flex',
+                                            }}
+                                            variant="subtitle2"
+                                            color="text.secondary"
+                                        >
+                                            Дата: {new Date(order.orderDate).toLocaleString('uk-UA')}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "start", flex: 1 }}>
+                                        <Typography sx={{
+                                            fontFamily: 'inherit',
+                                            display: 'flex',
+                                            flexBasis: "250px"
+                                        }}
+                                            variant="body2"
+                                            color={[7, 12].includes(order.status.id) ? "green" : order.status.name === "Скасовано" ? "red" : "orange"}
+                                        >
+                                            Статус: {order.status.name}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "start", flex: 1 }}>
+                                        <Typography variant="body2">
+                                            Загальна сума :&nbsp;
+                                            <Typography component="span"
                                                 sx={{
-                                                    flexDirection: { xs: 'column', sm: 'row' }, // Меняем направление при адаптиве
-                                                    padding: '10px',
-                                                    borderBottom: '1px solid #ddd'
+                                                    fontFamily: 'inherit',
+                                                    fontWeight: 'bold',
                                                 }}>
-
-                                                {/* Колонка с названием товара */}
-                                                <Box flex="1" display="flex" flexDirection="column" alignItems="center">
-                                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{item.ware.name}</Typography>
-                                                    <Typography variant="body2" color="text.secondary">{item.ware.description}</Typography>
-                                                </Box>
-
-                                                {/* Колонка с изображением */}
-                                                <Box flex="1" display="flex" flexDirection="column" alignItems="center">
-                                                    <img src={item.ware.previewImagePath} alt="Товар" style={{ width: '60px', height: '60px', borderRadius: '4px', objectFit: 'cover', margin: '10px 0 15px 0' }} />
-                                                </Box>
-
-                                                {/* Колонка с ценой и количеством */}
-                                                <Box flex="1" display="flex" flexDirection="column" alignItems="center">
-                                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Ціна: {formatCurrency(item.ware.finalPrice * item.count)} грн</Typography>
-                                                    {item.count > 1 && (
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {item.count} x {formatCurrency(item.ware.finalPrice)} грн
-                                                        </Typography>
-                                                    )}
-                                                </Box>
-                                            </Box>
-                                        ))
-                                    }
-                                </Box>
-
-                                <ExpandMoreIcon onClick={() => handleToggle(order.id)} style={{ cursor: 'pointer' }} />
-                            </Box>
-
-                            {
-                                expandedOrderId === order.id && (
-                                    <Accordion expanded={expandedOrderId === order.id} onChange={() => handleToggle(order.id)}>
-                                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                            <Typography sx={{ fontWeight: 'bold', textDecoration: 'underline', fontSize: { xs: '18px', sm: '20', md: '22px' } }}>Деталі замовлення</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-
-                                            {/* Выводим сумму заказа */}
-                                            <Typography variant="body2" sx={{ fontWeight: 'bold', marginBottom: 3, fontSize: { xs: '14px', sm: '16', md: '18px' } }}>
-                                                Загальна сума замовлення:&nbsp;
-                                                <Typography component="span" sx={{ color: 'red', fontWeight: 'bold', fontSize: { xs: '14px', sm: '16', md: '18px' } }}>
-                                                    {formatCurrency(totalPrice)} грн
-                                                </Typography>
+                                                {formatCurrency(totalPrice, "грн")}
                                             </Typography>
-                                            {order.orderItems.map((item, index) => (
-                                                <Box key={index} mb={2} display="flex" justifyContent="space-between" alignItems="center">
-                                                    <Box flex="1">
-                                                        <Divider />
-                                                        <Typography
-                                                            sx={{
-                                                                fontSize: { xs: '10px', sm: '12px', md: '16px', lg: '18px' },
-                                                            }}
-                                                            variant="body2" mt={1}>{item.ware.description}</Typography>
+                                        </Typography>
+                                    </Box>
+                                    <ExpandMoreIcon onClick={() => handleToggle(order.id)} style={{ cursor: 'pointer' }} />
+                                </Box>
+                                <Collapse in={expandedOrderId === order.id} timeout={300} unmountOnExit sx={{ width: "100%" }}>
+                                    <Box flex="3" sx={{ marginBottom: { xs: '10px', sm: '10px' }, width: "100%" }}>
+                                        {
+                                            // Отображаем сгруппированные товары
+                                            order.orderItems.map((item: any, index: number) => (
+                                                <Box key={index} display="flex" alignItems="center" justifyContent="space-between"
+                                                    sx={{
+                                                        flexDirection: { xs: 'column', sm: 'row' }, // Меняем направление при адаптиве
+                                                        padding: '10px',
+                                                        borderBottom: '1px solid #ddd'
+                                                    }}>
+                                                    {/* Колонка с изображением */}
+                                                    <Box flex="1" display="flex" flexDirection="column" alignItems="center">
+                                                        <Link href={`/ware/${item.ware.id}`}>
+                                                            <img src={item.ware.previewImagePath} alt="Товар" style={{ width: '100px', height: '100px', borderRadius: '4px', objectFit: 'cover', margin: '10px 0 15px 0' }} />
+                                                        </Link>
                                                     </Box>
-                                                    <Button
-                                                        variant="outlined"
-                                                        sx={{
-                                                            ml: 2,
-                                                            backgroundColor: '#00AAAD',
-                                                            color: '#FFFFFF',
-                                                            fontSize: { xs: '8px', sm: '10px', md: '12px', lg: '14px' },
-                                                            '&:hover': {
-                                                                color: 'red',
-                                                                backgroundColor: '#00AAAD',
-                                                                borderColor: '#00AAAD'
-                                                            },
-                                                            borderColor: '#00AAAD'
-                                                        }}
-                                                        onClick={() => handleOpenReviewModal(order.id, item)}
-                                                    >
-                                                        Залишити відгук
-                                                    </Button>
+
+                                                    {/* Колонка с названием товара */}
+                                                    <Box flex="1" display="flex" flexDirection="column" alignItems="center">
+                                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{item.ware.name}</Typography>
+                                                        <Typography variant="body2" color="text.secondary">{item.ware.description}</Typography>
+                                                    </Box>
+
+
+                                                    {/* Колонка с ценой и количеством */}
+                                                    <Box flex="1" display="flex" flexDirection="column" alignItems="center">
+                                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Ціна: {formatCurrency(item.ware.finalPrice * item.count, "грн")}</Typography>
+                                                        {item.count > 1 && (
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {item.count} x {formatCurrency(item.ware.finalPrice, "грн")}
+                                                            </Typography>
+                                                        )}
+                                                    </Box>
                                                 </Box>
-                                            ))}
-                                        </AccordionDetails>
-                                    </Accordion>
-                                )
-                            }
+                                            ))
+
+                                        }
+                                        <Table
+                                            sx={{
+                                                "& .MuiTableCell-root": {
+                                                    padding: '8px 16px',
+                                                    border: "none"
+                                                },
+                                                margin: '16px 0 0 0',
+                                            }}
+                                        >
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                        sx={{
+                                                            fontFamily: 'inherit',
+                                                            display: 'flex',
+                                                        }}
+                                                    >
+                                                        Загальна вартість товарів: {formatCurrency(order.totalPrice - order.deliveryType.price, "грн")}
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                        sx={{
+                                                            fontFamily: 'inherit',
+                                                            display: 'flex',
+                                                        }}
+                                                    >
+                                                        Вибраний тип доставки: {order.deliveryType.name}
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                        sx={{
+                                                            fontFamily: 'inherit',
+                                                            display: 'flex',
+                                                        }}
+                                                    >
+                                                        Вартість доставки: {formatCurrency(order.deliveryType.price, "грн")}
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                        sx={{
+                                                            fontFamily: 'inherit',
+                                                            display: 'flex',
+                                                        }}
+                                                    >
+                                                        Загальна вартість замовлення: {formatCurrency(order.totalPrice, "грн")}
+                                                    </Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                        </Table>
+                                    </Box>
+                                </Collapse>
+                            </Box>
                             {
                                 reviewModalOpen && selectedProduct && (
                                     <ReviewDialog

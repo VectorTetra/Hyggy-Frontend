@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 
 export default function FrameStorage({ rolePermissions }) {
@@ -224,7 +224,7 @@ export default function FrameStorage({ rolePermissions }) {
 			cellClassName: 'text-right',
 			renderCell: (params) => {
 				if (rolePermissions.canReadStorageStoresSum(params.row.id)) {
-					return formatCurrency(params.value)
+					return formatCurrency(params.value, "₴");
 				}
 				else {
 					return null;

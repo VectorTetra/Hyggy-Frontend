@@ -12,7 +12,7 @@ import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 
 export default function WareFrame({ rolePermissions }) {
@@ -119,7 +119,7 @@ export default function WareFrame({ rolePermissions }) {
                     width: '100%',
                     height: '100%',
                 }}>
-                    {formatCurrency(price)}
+                    {formatCurrency(price, "₴")}
                 </Box>;
             },
         },
@@ -158,7 +158,7 @@ export default function WareFrame({ rolePermissions }) {
                     width: '100%',
                     height: '100%',
                 }}>
-                    {formatCurrency(finalPrice)}
+                    {formatCurrency(finalPrice, "₴")}
                 </Box>;
             },
         },

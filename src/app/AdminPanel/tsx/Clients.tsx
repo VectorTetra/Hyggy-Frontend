@@ -4,10 +4,9 @@ import { useCustomers, useDeleteCustomer } from '@/pages/api/CustomerApi';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
-import { head } from 'lodash';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 
 const Clients = ({ rolePermissions }) => {
@@ -68,7 +67,7 @@ const Clients = ({ rolePermissions }) => {
                     </div>
                 );
             },
-            renderCell: (params) => formatCurrency(params.value),
+            renderCell: (params) => formatCurrency(params.value, "₴"),
         },
         {
             field: 'executedOrdersAvg',
@@ -87,7 +86,7 @@ const Clients = ({ rolePermissions }) => {
                     </div>
                 );
             },
-            renderCell: (params) => formatCurrency(params.value),
+            renderCell: (params) => formatCurrency(params.value, "₴"),
         },
         {
             field: 'actions',

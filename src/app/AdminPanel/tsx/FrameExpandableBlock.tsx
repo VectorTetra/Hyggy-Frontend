@@ -1,7 +1,7 @@
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
 import useAdminPanelStore from '@/store/adminPanel';
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography } from '@mui/material';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 function FrameExpandableBlock() {
     const { frameRemainsSelectedWare, frameRemainsSidebarVisibility, setFrameRemainsSidebarVisibility } = useAdminPanelStore();
@@ -36,14 +36,14 @@ function FrameExpandableBlock() {
                                     <TableRow key={wareItem.id}>
                                         <TableCell>{wareItem.storage?.shopName || "Загальний склад"}</TableCell>
                                         <TableCell align="right">{wareItem.quantity}</TableCell>
-                                        <TableCell align="right">{formatCurrency(wareItem.totalSum)}</TableCell>
+                                        <TableCell align="right">{formatCurrency(wareItem.totalSum, "₴")}</TableCell>
                                     </TableRow>
                                 ))}
                             <TableRow key={frameRemainsSelectedWare?.id} sx={{ fontWeight: 700 }}>
                                 <TableCell><Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>Всього : </Typography></TableCell>
                                 <TableCell align="right"><Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>{frameRemainsSelectedWare?.totalWareItemsQuantity}</Typography></TableCell>
                                 <TableCell align="right">
-                                    <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>{formatCurrency(frameRemainsSelectedWare?.totalWareItemsSum)}</Typography>
+                                    <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>{formatCurrency(frameRemainsSelectedWare?.totalWareItemsSum ?? 0, "₴")}</Typography>
                                 </TableCell>
                             </TableRow>
                         </TableBody>

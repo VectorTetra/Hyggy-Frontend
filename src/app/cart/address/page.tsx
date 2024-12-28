@@ -7,7 +7,7 @@ import styles from "./page.module.css";
 import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -345,12 +345,12 @@ const AddressPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{formatCurrency(item.product.finalPrice)} грн</p>
-                    <p>{formatCurrency(item.product.finalPrice * item.quantity)} грн</p>
+                    <p>{formatCurrency(item.product.finalPrice, "грн / шт")}</p>
+                    <p>{formatCurrency(item.product.finalPrice * item.quantity, "грн")}</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Всього: {formatCurrency(calculateTotalPrice())} грн</p>
+              <p className={styles.totalPrice}>Всього: {formatCurrency(calculateTotalPrice(), "грн")}</p>
             </div>
           )}
         </div>

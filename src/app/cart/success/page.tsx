@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { formatCurrency } from '../../ware/tsx/ProductPrice';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 import Layout from "../../sharedComponents/Layout";
 import Link from "next/link";
 import { OrderGetDTO } from "@/pages/api/OrderApi";
@@ -54,7 +54,7 @@ const SuccessPage = () => {
       <center><h3><b>Замовлення № {successfullOrder.id}:</b></h3></center>
       <center>
         <h6>Вибраний тип доставки : {successfullOrder.deliveryType.description}</h6>
-        <h6>Вартість доставки : {formatCurrency(successfullOrder.deliveryType.price)} грн</h6>
+        <h6>Вартість доставки : {formatCurrency(successfullOrder.deliveryType.price, "грн")}</h6>
       </center>
       <center>
         <center>
@@ -91,13 +91,13 @@ const SuccessPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{formatCurrency(item.ware.finalPrice)} грн</p>
-                    <p>{formatCurrency(item.ware.finalPrice * item.count)} грн</p>
+                    <p>{formatCurrency(item.ware.finalPrice, "грн")}</p>
+                    <p>{formatCurrency(item.ware.finalPrice * item.count, "грн")}</p>
                   </div>
                 </div>
               ))}
               <p className={styles.totalPrice}>
-                Всього {formatCurrency(successfullOrder.totalPrice)} грн
+                Всього {formatCurrency(successfullOrder.totalPrice, "грн")}
               </p>
             </div>
           )}
