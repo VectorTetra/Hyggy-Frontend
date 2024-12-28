@@ -29,16 +29,14 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const isNotAvailable = wareItems.length > 0 && wareItems.every((item) => item.quantity === 0);
 
     useEffect(() => {
-        setTimeout(() => {
-            if (isWarePageMenuShopsOpened) {
-                document.body.style.overflow = "hidden";
-            } else {
-                document.body.style.overflow = "";
-            }
-            return () => {
-                document.body.style.overflow = "";
-            };
-        }, 300);
+        if (isWarePageMenuShopsOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
     }, [isWarePageMenuShopsOpened]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,11 +64,6 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     useEffect(() => {
         console.log("wareItems", wareItems);
     }, [wareItems]);
-    // useEffect(() => {
-    //     if (wareId > 0) {
-    //         refetch();
-    //     }
-    // }, [wareId]);
 
     const getQuantityForShop = (shopId: number) => {
         const wareItem = wareItems.find((item) => item.storageId === shopId && item.wareId === wareId);
@@ -113,13 +106,11 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
 
     return (
 
-        <Collapse
-            in={isWarePageMenuShopsOpened}
-            timeout={300} // Тривалість анімації (мс)
-            orientation="horizontal" // Анімація по горизонталі
-            unmountOnExit={false}
-        >
-            <div className={`${styles.overlay} ${isWarePageMenuShopsOpened ? styles.show : ""}`}>
+        <div>
+            <Collapse in={isWarePageMenuShopsOpened}
+                timeout={300} // Тривалість анімації (мс)
+                orientation="horizontal" // Анімація по горизонталі
+                unmountOnExit={false} className={`${styles.overlay} ${isWarePageMenuShopsOpened ? styles.show : ""}`}>
                 <div ref={menuRef} className={`${styles.menuContainer}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
@@ -189,8 +180,8 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                     </div>
 
                 </div>
-            </div>
-        </Collapse>
+            </Collapse>
+        </div>
 
     );
 }

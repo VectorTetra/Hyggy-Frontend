@@ -1,11 +1,11 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./css/MenuShops.module.css";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import useLocalStorageStore from "@/store/localStorage";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ShopStatusInner from "./ShopStatusInner";
 import ShopStatusOuter from "./ShopStatusOuter";
 import { Collapse } from "@mui/material";
@@ -16,7 +16,6 @@ const BlockShops: React.FC = () => {
     const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
     const menuRef = useRef<HTMLDivElement | null>(null);
 
-    // Використання кешованих даних з API для отримання списку магазинів
     const { data: shops, isLoading } = useShops({
         SearchParameter: "Query",
         PageNumber: 1,
@@ -24,17 +23,15 @@ const BlockShops: React.FC = () => {
     });
 
     useEffect(() => {
-        setTimeout(() => {
-            //Примусове перерахування
-            if (isMainPageMenuShopsOpened) {
-                document.body.style.overflow = "hidden";
-            } else {
-                document.body.style.overflow = "";
-            }
-            return () => {
-                document.body.style.overflow = "";
-            };
-        }, 300);
+        if (isMainPageMenuShopsOpened) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+
+        return () => {
+            document.body.style.overflow = "";
+        };
     }, [isMainPageMenuShopsOpened]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,23 +55,31 @@ const BlockShops: React.FC = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-
     }, []);
 
     return (
-
-        <Collapse
-            in={isMainPageMenuShopsOpened}
-            timeout={500} // Тривалість анімації (мс)
-            orientation="horizontal" // Анімація по горизонталі
+        <div style={{ display: "flex" }}
         >
-            <div className={styles.overlayBackground}></div>
-            <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
-                <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
+            {isMainPageMenuShopsOpened && <div className={styles.overlayBackground}></div>}
+            <Collapse
+                in={isMainPageMenuShopsOpened}
+                timeout={300}
+                orientation="horizontal"
+                unmountOnExit={false}
+                collapsedSize={0}
+                className={`${styles.overlay}`}
+
+            >
+                <div ref={menuRef} className={styles.menuContainer}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
-                            <div className={styles.menuHeaderText}>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}</div>
-                            <button onClick={() => setIsMainPageMenuShopsOpened(false)} className={styles.closeButton}>
+                            <div className={styles.menuHeaderText}>
+                                {selectedShop ? selectedShop.name : "Виберіть магазин HYGGY"}
+                            </div>
+                            <button
+                                onClick={() => setIsMainPageMenuShopsOpened(false)}
+                                className={styles.closeButton}
+                            >
                                 Х
                             </button>
                         </div>
@@ -107,7 +112,10 @@ const BlockShops: React.FC = () => {
                                             <h2 className={styles.h2}>{shop.name}</h2>
                                         </div>
                                         <ShopStatusInner shop={shop} />
-                                        <button onClick={() => handleShopClick(shop)} className={styles.shopButton}>
+                                        <button
+                                            onClick={() => handleShopClick(shop)}
+                                            className={styles.shopButton}
+                                        >
                                             Обрати магазин
                                         </button>
                                     </div>
@@ -117,10 +125,9 @@ const BlockShops: React.FC = () => {
                         )}
                     </div>
                 </div>
-            </div>
-        </Collapse>
-    )
-}
+            </Collapse>
+        </div>
+    );
+};
 
 export default BlockShops;
-

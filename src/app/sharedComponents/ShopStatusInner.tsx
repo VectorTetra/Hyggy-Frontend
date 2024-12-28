@@ -66,7 +66,7 @@ const ShopStatusInner = ({ shop }: { shop: ShopGetDTO }) => {
 		return { dayweek: dayweek.trim(), open: open.trim(), close: close.trim() };
 	}) : [];
 
-	if (!isMainPageMenuShopsOpened) return null;
+	//if (!isMainPageMenuShopsOpened) return null;
 	return (
 		<div className={styles.ShopStatusInnerWrapper}>
 			<div className={styles.ShopStatusInnerCard}>

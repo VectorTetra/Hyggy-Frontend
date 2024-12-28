@@ -19,9 +19,8 @@ function MainPageHeader(props) {
 		<div id={styles.mainPageHeader}>
 			<MainPageSale infoSales={props.headerData.info} />
 			<div id={styles.mainPageHeaderLogoContainer}>
-				<div style={{ display: "flex" }}>
+				<div className={styles.mainPageHeaderMenuLogoWrapper} >
 					<MainPageHeaderLogo
-						className={styles.notransform}
 						logoHeight={props.headerData.hyggyLogo.height}
 						logoWidth={props.headerData.hyggyLogo.width}
 						logoUrl={props.headerData.hyggyLogo.url} />

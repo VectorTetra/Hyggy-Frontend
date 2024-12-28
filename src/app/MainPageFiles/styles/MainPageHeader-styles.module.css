@@ -51,7 +51,8 @@
 	transform: scale(1.05);
 }
 
-.mainPageHeaderItem:hover .notransform {
+.mainPageHeaderItem:hover,
+.notransform:hover {
 	transform: none !important;
 }
 

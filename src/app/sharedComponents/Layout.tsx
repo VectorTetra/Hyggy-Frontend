@@ -7,12 +7,8 @@ import Footer4 from './Footer4';
 
 import Header1 from './Header1';
 import Header2 from './Header2';
-import dynamic from 'next/dynamic';
 import BlockShops from './BlockShops';
 import BlockMenu from './BlockMenu';
-import BlockShopsByWare from './BlockShopsByWare';
-
-const DynamicBlockMenu = dynamic(() => import('./BlockMenu'));
 // const DynamicBlockShops = dynamic(() => import('./BlockShops'));
 
 export interface LayoutProps {
