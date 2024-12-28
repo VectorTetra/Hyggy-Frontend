@@ -4,6 +4,7 @@ import { useOrderStatuses } from '@/pages/api/OrderStatusApi';
 import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
 import { useUpdateOrder } from '@/pages/api/OrderApi';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 export default function FrameOrderDetails() {
     const { selectedOrder, setOrderDetailsSidebarVisibility, orderDetailsSidebarVisibility } = useAdminPanelStore();
@@ -43,12 +44,6 @@ export default function FrameOrderDetails() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
     };
 
     return (

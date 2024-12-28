@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Layout from "../sharedComponents/Layout";
 import styles from "./page.module.css";
+import { formatCurrency } from "../ware/tsx/ProductPrice";
+
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
@@ -28,12 +30,6 @@ const CartPage = () => {
 
   const handleRemoveItem = (index: number) => {
     removeFromCart(index);
-  };
-
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
   };
 
   const calculateTotalPrice = () => {

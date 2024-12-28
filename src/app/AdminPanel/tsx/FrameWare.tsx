@@ -12,7 +12,8 @@ import SearchField from './SearchField';
 import StarRating from '@/app/sharedComponents/StarRating';
 import useAdminPanelStore from '@/store/adminPanel';
 import themeFrame from './ThemeFrame';
-import { wrap } from 'module';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
+
 
 export default function WareFrame({ rolePermissions }) {
     const { mutate: deleteWare } = useDeleteWare();
@@ -224,12 +225,6 @@ export default function WareFrame({ rolePermissions }) {
             ),
         });
     }
-
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
 
     const handleEdit = (row) => {
         setWareId(row.id);

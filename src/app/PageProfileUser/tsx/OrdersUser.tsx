@@ -3,12 +3,13 @@ import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Divider
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReviewDialog from '@/app/sharedComponents/ReviewDialog';
 import { WareGetDTO } from "@/pages/api/WareApi";
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 import { OrderGetDTO, useOrders } from "@/pages/api/OrderApi";
 import { getDecodedToken } from "@/pages/api/TokenApi";
 import styles from '../page.module.css';
 
+
 export default function OrdersUser() {
-    console.log(styles["slide-block"]);
     const [expandedOrderId, setExpandedOrderId] = useState(null);
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<WareGetDTO | null>(null);
@@ -38,13 +39,7 @@ export default function OrdersUser() {
         CustomerId: getDecodedToken()?.nameid ?? null,
     });
     //Проверка на наличие заказов
-    const hasOrders = orders && orders.length > 0;
-    console.log(orders);
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '0';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-    };
+    const hasOrders = data.orders && data.orders.length > 0;
 
     return (
         <Box sx={{ padding: '20px', backgroundColor: '#f9f9f9', margin: '20px 0' }}>
@@ -143,73 +138,13 @@ export default function OrdersUser() {
                                             </Typography>
                                         </Typography>
                                     </Box>
-
-
-
-
                                     <ExpandMoreIcon onClick={() => handleToggle(order.id)} style={{ cursor: 'pointer' }} />
                                 </Box>
-                                {/* <Table>
-                                    <TableRow>
-                                        <TableCell>
-                                            <Typography
-                                                variant="subtitle1"
-                                                sx={{
-                                                    fontFamily: 'inherit',
-                                                    display: 'flex',
-                                                }}
-                                            >
-                                                Номер замовлення: {order.id}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography
-                                                sx={{
-                                                    fontFamily: 'inherit',
-                                                    display: 'flex',
-                                                }}
-                                                variant="subtitle2"
-                                                color="text.secondary"
-                                            >
-                                                Дата: {new Date(order.orderDate).toLocaleString('uk-UA')}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography sx={{
-                                                fontFamily: 'inherit',
-                                                display: 'flex',
-                                            }}
-                                                variant="body2"
-                                                color={[7, 12].includes(order.status.id) ? "green" : order.status.name === "Скасовано" ? "red" : "orange"}
-                                            >
-                                                Статус: {order.status.name}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Typography variant="body2">
-                                                Загальна сума :&nbsp;
-                                                <Typography component="span" sx={{
-                                                    fontFamily:
-                                                        'inherit',
-                                                }}>
-                                                    {formatCurrency(totalPrice)} грн
-                                                </Typography>
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>
-                                            <ExpandMoreIcon onClick={() => handleToggle(order.id)} style={{ cursor: 'pointer' }} />
-                                        </TableCell>
-                                    </TableRow>
-                                </Table> */}
-
-
-
-                                {/* Отображаем товары */}
                                 <Collapse in={expandedOrderId === order.id} timeout={300} unmountOnExit sx={{ width: "100%" }}>
                                     <Box flex="3"
                                         className={`${expandedOrderId === order.id ? styles["slide-enter-active"] : styles["slide-exit-active"]}`}
                                         sx={{ marginBottom: { xs: '10px', sm: '10px' }, width: "100%" }}>
-                                        {/* Группировка товаров с использованием `forEach` */}
+
                                         {
                                             // Отображаем сгруппированные товары
                                             order.orderItems.map((item: any, index: number) => (
@@ -308,53 +243,7 @@ export default function OrdersUser() {
                                         </Table>
                                     </Box>
                                 </Collapse>
-
-
                             </Box>
-
-                            {/* {
-                                expandedOrderId === order.id && (
-                                    <Accordion expanded={expandedOrderId === order.id} onChange={() => handleToggle(order.id)}>
-                                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                            <Typography sx={{ fontWeight: 'bold', textDecoration: 'underline', fontSize: { xs: '18px', sm: '20', md: '22px' } }}>Деталі замовлення</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-
-
-                                            {order.orderItems.map((item, index) => (
-                                                <Box key={index} mb={2} display="flex" justifyContent="space-between" alignItems="center">
-                                                    <Box flex="1">
-                                                        <Divider />
-                                                        <Typography
-                                                            sx={{
-                                                                fontSize: { xs: '10px', sm: '12px', md: '16px', lg: '18px' },
-                                                            }}
-                                                            variant="body2" mt={1}>{item.ware.description}</Typography>
-                                                    </Box>
-                                                    <Button
-                                                        variant="outlined"
-                                                        sx={{
-                                                            ml: 2,
-                                                            backgroundColor: '#00AAAD',
-                                                            color: '#FFFFFF',
-                                                            fontSize: { xs: '8px', sm: '10px', md: '12px', lg: '14px' },
-                                                            '&:hover': {
-                                                                color: 'red',
-                                                                backgroundColor: '#00AAAD',
-                                                                borderColor: '#00AAAD'
-                                                            },
-                                                            borderColor: '#00AAAD'
-                                                        }}
-                                                        onClick={() => handleOpenReviewModal(order.id, item)}
-                                                    >
-                                                        Залишити відгук
-                                                    </Button>
-                                                </Box>
-                                            ))}
-                                        </AccordionDetails>
-                                    </Accordion>
-                                )
-                            } */}
                             {
                                 reviewModalOpen && selectedProduct && (
                                     <ReviewDialog

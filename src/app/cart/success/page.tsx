@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 import Layout from "../../sharedComponents/Layout";
 import Link from "next/link";
 import { OrderGetDTO } from "@/pages/api/OrderApi";
@@ -40,12 +41,6 @@ const SuccessPage = () => {
       setAddressInfo(null);
     }
   }, [successfullOrder]);
-
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-  };
 
   if (!successfullOrder) {
     return <div>Завантаження...</div>;

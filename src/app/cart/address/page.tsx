@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -191,12 +192,6 @@ const AddressPage = () => {
     return cartItems.reduce((total, item) => {
       return total + item.product.finalPrice * item.quantity;
     }, 0);
-  };
-
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
   };
 
   return (

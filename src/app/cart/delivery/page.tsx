@@ -18,12 +18,12 @@ const Map = dynamic(
   { ssr: false }
 )
 const DeliveryPage = () => {
-  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStore, setSelectedStore] = useState<ShopDTO | null>(null);
   const [isPaymentButtonEnabled, setIsPaymentButtonEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery] = useDebounce(searchQuery, 700);
   const [novaPoshtaWarehouses, setNovaPoshtaWarehouses] = useState([]);
-  const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
+  const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<ShopDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [stores, setStores] = useState<ShopDTO[]>([]);
   const [filteredStores, setFilteredStores] = useState<ShopDTO[]>([]);
@@ -50,6 +50,11 @@ const DeliveryPage = () => {
       router.push('/cart/address');
     } else {
       setSearchQuery(`${addressInfo.City}, ${addressInfo.Street}`);
+    }
+
+    // Якщо тип доставки не обраний, встановлюємо "Самовивіз" за замовчуванням
+    if (!selectedDeliveryType) {
+      setSelectedDeliveryType(orderDeliveryTypes.find(deliveryType => deliveryType.id === 1));
     }
   }, [selectedDeliveryType, router, addressInfo]);
 
@@ -237,11 +242,15 @@ const DeliveryPage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return '0';
-    const roundedValue = Math.round(value * 100) / 100;
-    return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} `;
-  };
+  useEffect(() => {
+    if (selectedDeliveryType?.id === 1 && filteredStores.length > 0 && !selectedStore) {
+      setSelectedStore(filteredStores[0]);
+    } else if (selectedDeliveryType?.id === 3 && novaPoshtaWarehouses.length > 0 && !selectedStore) {
+      setSelectedStore(novaPoshtaWarehouses[0]);
+    } else if (selectedDeliveryType?.id === 4 && ukrPoshtaOffices.length > 0 && !selectedStore) {
+      setSelectedStore(ukrPoshtaOffices[0]);
+    }
+  }, [selectedDeliveryType, filteredStores, novaPoshtaWarehouses, ukrPoshtaOffices, selectedStore]);
 
   return (
     <Layout headerType="header1" footerType="footer1">

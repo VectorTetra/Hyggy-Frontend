@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
 import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
-import { MissingRowIdError } from '@mui/x-data-grid/hooks/features/rows/useGridParamsApi';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
+
 
 export default function FrameStorage({ rolePermissions }) {
 	const { mutate: deleteStorage } = useDeleteStorage();
@@ -262,13 +263,6 @@ export default function FrameStorage({ rolePermissions }) {
 	if (!rolePermissions.IsFrameStorage_Cell_Actions_Available) {
 		columns = columns.filter((column) => column.field !== 'actions');
 	}
-
-	const formatCurrency = (value) => {
-		if (value === null || value === undefined) return '';
-		const roundedValue = Math.round(value * 100) / 100;
-		return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-	};
-
 	const handleEdit = (row) => {
 		// Встановлюємо warehouseId для редагування обраного складу
 		setWarehouseId(row.id); // Встановлюємо Id складу для редагування

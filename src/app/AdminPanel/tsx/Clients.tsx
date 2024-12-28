@@ -7,6 +7,8 @@ import { DataGrid, GridColDef, GridToolbar, useGridApiRef } from '@mui/x-data-gr
 import { head } from 'lodash';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { formatCurrency } from '../../ware/tsx/ProductPrice';
+
 
 const Clients = ({ rolePermissions }) => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
@@ -114,13 +116,6 @@ const Clients = ({ rolePermissions }) => {
     if (!rolePermissions.IsFrameClients_Cell_Actions_Available) {
         columns = columns.filter(column => column.field !== 'actions');
     }
-
-    // Функція для форматування значення
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
 
     return (
         <Box sx={{ width: '100%' }}>
