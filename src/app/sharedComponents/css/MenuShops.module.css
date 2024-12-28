@@ -12,10 +12,11 @@
 .overlay {
   /* visibility: hidden; */
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
   right: 0;
-  width: clamp(450px, 100%, 500px);
+  width: clamp(100%, 100%, 500px);
   height: 100%;
   background-color: white;
   /* transform: translateX(100%); */
@@ -188,7 +189,7 @@
 .card {
   border: 1px solid #ccc;
   margin: 10px 0px 0px 0px;
-  width: clamp(465px, 100%, 500px);
+  width: clamp(100%, 100%, 500px);
 }
 
 .card:hover {
@@ -198,14 +199,6 @@
 .worktime {
   display: flexbox;
   margin-left: 10px;
-}
-
-@media screen and (max-width: 500px) {
-  .card {
-    border: 1px solid #ccc;
-    margin: 10px 0px 0px 0px;
-    width: clamp(400px, 100%, 500px);
-  }
 }
 
 @media screen and (max-width: 400px) {

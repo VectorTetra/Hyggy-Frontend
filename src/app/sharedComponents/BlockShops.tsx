@@ -1,14 +1,14 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import styles from "./css/MenuShops.module.css";
-import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import useLocalStorageStore from "@/store/localStorage";
+import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Slide } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import styles from "./css/MenuShops.module.css";
 import ShopStatusInner from "./ShopStatusInner";
 import ShopStatusOuter from "./ShopStatusOuter";
-import { Collapse } from "@mui/material";
 
 const BlockShops: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -61,14 +61,12 @@ const BlockShops: React.FC = () => {
         <div style={{ display: "flex" }}
         >
             {isMainPageMenuShopsOpened && <div className={styles.overlayBackground}></div>}
-            <Collapse
+            <Slide
                 in={isMainPageMenuShopsOpened}
                 timeout={300}
-                orientation="horizontal"
+                direction="left"
                 unmountOnExit={false}
-                collapsedSize={0}
                 className={`${styles.overlay}`}
-
             >
                 <div ref={menuRef} className={styles.menuContainer}>
                     <div className={styles.menuHeader}>
@@ -125,7 +123,7 @@ const BlockShops: React.FC = () => {
                         )}
                     </div>
                 </div>
-            </Collapse>
+            </Slide>
         </div>
     );
 };

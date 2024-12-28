@@ -7,7 +7,7 @@ import { useWareItems } from "@/pages/api/WareItemApi";
 import useLocalStorageStore from "@/store/localStorage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Collapse } from "@mui/material";
+import { Collapse, Slide } from "@mui/material";
 
 export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -107,9 +107,9 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     return (
 
         <div>
-            <Collapse in={isWarePageMenuShopsOpened}
+            <Slide in={isWarePageMenuShopsOpened}
                 timeout={300} // Тривалість анімації (мс)
-                orientation="horizontal" // Анімація по горизонталі
+                direction="left" // Анімація по горизонталі
                 unmountOnExit={false} className={`${styles.overlay} ${isWarePageMenuShopsOpened ? styles.show : ""}`}>
                 <div ref={menuRef} className={`${styles.menuContainer}`}>
                     <div className={styles.menuHeader}>
@@ -180,7 +180,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
                     </div>
 
                 </div>
-            </Collapse>
+            </Slide>
         </div>
 
     );
