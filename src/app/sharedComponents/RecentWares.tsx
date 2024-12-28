@@ -13,20 +13,22 @@ export default function RecentWares() {
         StringIds: recentWareIds.join("|"),
         PageNumber: 1,
         PageSize: 20
-    });
+    }, recentWareIds.length > 0);
+
+    // Повертаємо null, якщо recentWares не масив або порожній масив
+    if (!Array.isArray(recentWares) || recentWares.length === 0) {
+        return null;
+    }
 
     return (
         <div id={styles.recentWaresWrapper}>
             <h2 style={{
                 fontSize: "1.75rem",
+                marginTop: "20px",
                 marginBottom: "20px",
                 textAlign: "center"
             }}>Нещодавно переглянуті товари</h2>
-            {Array.isArray(recentWares) && recentWares.length > 0 ? (
-                <WareCarousel wares={recentWares} />
-            ) : (
-                null
-            )}
+            <WareCarousel wares={recentWares} />
         </div>
     );
 }

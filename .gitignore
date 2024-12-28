@@ -31,5 +31,11 @@
 *.out
 *.app
 
+# Debug files
 node_modules/
 .next/
+package-lock.json
+
+# Environment files
+*.env.local
+*.env.production

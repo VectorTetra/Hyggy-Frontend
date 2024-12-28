@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 export interface StorageQueryParams {
 	SearchParameter?: string;
 	AddressId?: number;
-	Id?: number;
+	Id?: number | null;
 	ShopId?: number;
 	WareItemId?: number;
 	StorageEmployeeId?: string;
@@ -22,11 +22,33 @@ export interface StorageDTO {
 	Id?: number | null;
 	ShopId?: number | null;
 }
+export interface Storage {
+	id: number;
+	shopId?: number | null;
+	addressId?: number | null;
+	// Для результатів Get-запитів
+	shopName?: string | null; // Назва магазину
+	street?: string | null; // Назва вулиці
+	houseNumber?: string | null; // Номер будинку
+	city?: string | null; // Місто
+	state?: string | null; // Область або штат
+	postalCode?: string | null; // Поштовий індекс
+	latitude?: number | null; // Географічна широта
+	longitude?: number | null; // Географічна довгота
+	storedWaresSum?: number | null; // Загальна сума товарів
+}
+
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_STORAGE in your environment variables.");
+}
 
 // GET запит (вже реалізований)
 export async function getStorages(params: StorageQueryParams = {}) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Storage', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 		// const response = await axios.get('http://localhost:5263/api/Storage', {
@@ -43,7 +65,7 @@ export async function getStorages(params: StorageQueryParams = {}) {
 // POST запит для створення нового складу
 export async function postStorage(storage: StorageDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Storage', storage);
+		const response = await axios.post(API_BASE_URL!, storage);
 		//const response = await axios.post('http://localhost:5263/api/Storage', storage);
 		return response.data;
 	} catch (error) {
@@ -59,7 +81,7 @@ export async function putStorage(storage: StorageDTO) {
 			throw new Error('Id is required for updating a storage');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Storage`, storage);
+		const response = await axios.put(API_BASE_URL!, storage);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating storage:', error);
@@ -70,7 +92,7 @@ export async function putStorage(storage: StorageDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteStorage(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Storage/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting storage:', error);
@@ -79,13 +101,14 @@ export async function deleteStorage(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wares)
-export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }) {
+export function useStorages(params: StorageQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['storages', params],
 		queryFn: () => getStorages(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "../css/WareGrid.module.css";
 import StarRating from "../../sharedComponents/StarRating";
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
 import FavoriteButton from "@/app/sharedComponents/FavoriteButton";
 
 type WareCardProps = {
-    ware: Ware;
+    ware: WareGetDTO;
     isFavorite: boolean;
     toggleFavorite: (wareId: number) => void;
     selectedShop: ShopGetDTO | null;
@@ -67,8 +67,18 @@ export default function WareCard({
                         layout="intrinsic"
                         width={300}
                         height={400}
+                        decoding="async"
+                        loading="lazy"
                         style={{ objectFit: "contain" }} // Заміна layout для об’єкта
                     />
+                    {/* <div style={{ width: '200px', height: '200px', position: 'relative' }}>
+                        <Image
+                            src={ware.previewImagePath ? ware.previewImagePath : "/images/imageFallback.png"}
+                            alt={ware.name}
+                            layout="fill" // Забезпечує, що зображення займає весь контейнер
+                            objectFit="contain" // Надає ефект обрізання для відповідності розмірам
+                        />
+                    </div> */}
                     <div className={styles.wareStickersContainer}>
                         {ware.discount > 0 && (
                             <span className={styles.discountSticker}>- {ware.discount} %</span>
@@ -88,7 +98,7 @@ export default function WareCard({
 
             <div className={styles.wareInfo}>
                 <h3>{ware.name}</h3>
-                <p>{ware.description}</p>
+                <div title={ware.description} className={styles.wareInfoDescription}>{ware.description}</div>
 
                 <div className={styles.rating}>
                     <StarRating rating={ware.averageRating} />

@@ -36,6 +36,7 @@ export class WareQueryParams {
 	StringCategory2Ids?: string | null;
 	StringCategory3Ids?: string | null;
 	QueryAny?: string | null;
+	DTOType?: string | null;
 }
 
 export class WarePostDTO {
@@ -74,7 +75,7 @@ export class WarePutDTO {
 	CustomerFavoriteIds: string[] = [];
 	ImageIds: number[] = [];
 }
-export class Ware {
+export class WareGetDTO {
 	id: number;
 	article: number;
 	name: string;
@@ -104,11 +105,52 @@ export class Ware {
 	wareCategory2Name: string;
 	wareCategory1Name: string;
 	wareItems: any[];
+	totalWareItemsQuantity: number;
+	totalWareItemsSum: number;
 }
+export class Ware2 {
+	id: number;
+	article: number;
+	name: string;
+	description: string;
+	structureFilePath: string;
+	price: number;
+	discount: number;
+	finalPrice: number;
+	isDeliveryAvailable: boolean;
+	wareCategory3Id: number;
+	wareCategory2Id: number;
+	wareCategory1Id: number;
+	statusIds: number[];
+	imageIds: number[];
+	priceHistoryIds: number[];
+	wareItemIds: number[];
+	orderItemIds: number[];
+	reviewIds: number[];
+	trademarkId: number | null;
+	averageRating: number;
+	previewImagePath: string;
+	customerFavoriteIds: string[];
+	statusNames: string[];
+	imagePaths: string[];
+	trademarkName: string;
+	wareCategory3Name: string;
+	wareCategory2Name: string;
+	wareCategory1Name: string;
+	totalWareItemsQuantity: number;
+	totalWareItemsSum: number;
+}
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getWares(params: WareQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Ware', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -122,7 +164,7 @@ export async function getWares(params: WareQueryParams = { SearchParameter: "Que
 // POST запит для створення нового складу
 export async function postWare(Ware: WarePostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Ware', Ware);
+		const response = await axios.post(API_BASE_URL!, Ware);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Ware:', error);
@@ -137,7 +179,7 @@ export async function putWare(Ware: WarePutDTO) {
 			throw new Error('Id is required for updating a Ware');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Ware`, Ware);
+		const response = await axios.put(API_BASE_URL!, Ware);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating Ware:', error);
@@ -148,7 +190,7 @@ export async function putWare(Ware: WarePutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWare(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Ware/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Ware:', error);
@@ -180,7 +222,7 @@ export async function postJsonConstructorFile(wareDetails: string | null, warePr
 	formData.append('JsonConstructorItems', jsonString);
 
 	try {
-		const response = await axios.post<string>("http://www.hyggy.somee.com/api/Ware/PostJsonConstructorFile", formData, {
+		const response = await axios.post<string>(`${API_BASE_URL!}/PostJsonConstructorFile`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -221,7 +263,7 @@ export async function putJsonConstructorFile(wareDetails: string | null, warePro
 	formData.append('JsonConstructorItems', jsonString);
 
 	try {
-		const response = await axios.put<string>("http://www.hyggy.somee.com/api/Ware/PutJsonConstructorFile", formData, {
+		const response = await axios.put<string>(`${API_BASE_URL!}/PutJsonConstructorFile`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -249,13 +291,14 @@ export async function getJsonConstructorFile(filePath: string) {
 
 
 // Використання useQuery для отримання списку складів (wares)
-export function useWares(params: WareQueryParams = { SearchParameter: "Query" }) {
+export function useWares(params: WareQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['wares', params],
 		queryFn: () => getWares(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled
 	});
 }
 

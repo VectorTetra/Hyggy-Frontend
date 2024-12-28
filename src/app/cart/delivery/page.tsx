@@ -11,27 +11,33 @@ import axios from 'axios';
 import { useDebounce } from 'use-debounce';
 import { getShops, ShopDTO } from '@/pages/api/ShopApi';
 import useLocalStorageStore from "@/store/localStorage";
+import { useOrderDeliveryTypes } from "@/pages/api/OrderDeliveryTypeApi";
 
 const Map = dynamic(
   () => import('./tsx/Map'),
   { ssr: false }
 )
 const DeliveryPage = () => {
-  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStore, setSelectedStore] = useState<ShopDTO | null>(null);
   const [isPaymentButtonEnabled, setIsPaymentButtonEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery] = useDebounce(searchQuery, 700);
   const [novaPoshtaWarehouses, setNovaPoshtaWarehouses] = useState([]);
-  const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<{ name: string; address: string; postalCode: string; city: string; latitude: number; longitude: number; }[]>([]);
+  const [ukrPoshtaOffices, setUkrPoshtaOffices] = useState<ShopDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [stores, setStores] = useState<ShopDTO[]>([]);
   const [filteredStores, setFilteredStores] = useState<ShopDTO[]>([]);
   const router = useRouter();
   const { getCartFromLocalStorage, selectedDeliveryType, setSelectedDeliveryType, setDeliveryInfo, addressInfo } = useLocalStorageStore();
+  const { data: orderDeliveryTypes = [], isSuccess: isDeliveryTypesSuccessfullyLoaded } = useOrderDeliveryTypes({
+    SearchParameter: "Query",
+    PageNumber: 1,
+    PageSize: 100,
+  }, true);
 
   const handleDeliveryTypeChange = (e) => {
     const newDeliveryType = e.target.value;
-    setSelectedDeliveryType(newDeliveryType);
+    setSelectedDeliveryType(orderDeliveryTypes.find(deliveryType => deliveryType.id === parseInt(newDeliveryType)));
     setSelectedStore(null);
   };
 
@@ -43,16 +49,25 @@ const DeliveryPage = () => {
     if (!addressInfo) {
       router.push('/cart/address');
     } else {
-      setSearchQuery(`${addressInfo.city}, ${addressInfo.street}`);
+      setSearchQuery(`${addressInfo.City}, ${addressInfo.Street}`);
     }
-  }, [selectedDeliveryType, router, addressInfo]);
+
+
+  }, [router, addressInfo]);
 
   useEffect(() => {
-    if (selectedDeliveryType === "store") {
+    // Якщо тип доставки не обраний, встановлюємо "Самовивіз" за замовчуванням
+    if (!selectedDeliveryType && orderDeliveryTypes.length > 0) {
+      setSelectedDeliveryType(orderDeliveryTypes.find(deliveryType => deliveryType.id === 1));
+    }
+  }, [selectedDeliveryType, orderDeliveryTypes]);
+
+  useEffect(() => {
+    if (selectedDeliveryType?.id === 1) {
       setIsPaymentButtonEnabled(selectedStore !== null);
-    } else if (selectedDeliveryType === "novaPoshta") {
+    } else if (selectedDeliveryType?.id === 3) {
       setIsPaymentButtonEnabled(selectedStore !== null);
-    } else if (selectedDeliveryType === "ukrPoshta") {
+    } else if (selectedDeliveryType?.id === 4) {
       setIsPaymentButtonEnabled(selectedStore !== null);
     } else {
       setIsPaymentButtonEnabled(true);
@@ -63,11 +78,6 @@ const DeliveryPage = () => {
     const deliveryInfo = {
       selectedDeliveryType,
       selectedStore,
-      deliveryCost: selectedDeliveryType === "courier" ? 110
-        : selectedDeliveryType === "novaPoshta" ? 75
-          : selectedDeliveryType === "ukrPoshta" ? 50
-            : 0,
-      deliveryDays: selectedDeliveryType === "courier" || selectedDeliveryType === "novaPoshta" || selectedDeliveryType === "ukrPoshta" ? 12 : 18
     };
     setDeliveryInfo(deliveryInfo);
   }, [selectedDeliveryType, selectedStore]);
@@ -149,7 +159,7 @@ const DeliveryPage = () => {
   };
 
   useEffect(() => {
-    if (selectedDeliveryType === "novaPoshta" && debouncedSearchQuery !== "") {
+    if (selectedDeliveryType?.id === 3 && debouncedSearchQuery !== "") {
       getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
     }
   }, [selectedDeliveryType, debouncedSearchQuery]);
@@ -176,7 +186,7 @@ const DeliveryPage = () => {
   };
 
   useEffect(() => {
-    if (selectedDeliveryType === "store" && debouncedSearchQuery !== "") {
+    if (selectedDeliveryType?.id === 1 && debouncedSearchQuery !== "") {
       getNearestShops(debouncedSearchQuery)
     }
   }, [selectedDeliveryType, debouncedSearchQuery]);
@@ -210,19 +220,19 @@ const DeliveryPage = () => {
   };
 
   useEffect(() => {
-    if (selectedDeliveryType === "ukrPoshta" && debouncedSearchQuery !== "") {
+    if (selectedDeliveryType?.id === 4 && debouncedSearchQuery !== "") {
       getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
     }
   }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const handleButtonSearch = async () => {
-    if (selectedDeliveryType === "novaPoshta") {
+    if (selectedDeliveryType?.id === 3) {
       await getNearestNovaPoshtaWarehouses(searchQuery);
     }
-    if (selectedDeliveryType === "ukrPoshta") {
+    if (selectedDeliveryType?.id === 4) {
       await getUkrPoshtaOfficesByAddress(searchQuery);
     }
-    if (selectedDeliveryType === "store") {
+    if (selectedDeliveryType?.id === 1) {
       await getNearestShops(searchQuery);
     }
   }
@@ -231,6 +241,15 @@ const DeliveryPage = () => {
     setSearchQuery(e.target.value);
   };
 
+  useEffect(() => {
+    if (selectedDeliveryType?.id === 1 && filteredStores.length > 0 && !selectedStore) {
+      setSelectedStore(filteredStores[0]);
+    } else if (selectedDeliveryType?.id === 3 && novaPoshtaWarehouses.length > 0 && !selectedStore) {
+      setSelectedStore(novaPoshtaWarehouses[0]);
+    } else if (selectedDeliveryType?.id === 4 && ukrPoshtaOffices.length > 0 && !selectedStore) {
+      setSelectedStore(ukrPoshtaOffices[0]);
+    }
+  }, [selectedDeliveryType, filteredStores, novaPoshtaWarehouses, ukrPoshtaOffices, selectedStore]);
 
   return (
     <Layout headerType="header1" footerType="footer1">
@@ -242,90 +261,52 @@ const DeliveryPage = () => {
 
       <div className="mx-8 md:mx-24 lg:mx-24">
         <h2><b>Виберіть тип доставки</b></h2>
-
         <div className="mt-6">
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="store"
-                checked={selectedDeliveryType === "store"}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Забрати в магазині HYGGY</b> (0,00 грн Доставка 12-18 робочих днів)
-            </label>
-          </div>
 
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="courier"
-                checked={selectedDeliveryType === "courier"}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка на адресу кур’єром Нової пошти</b> (110,00 грн Доставка 10-12 робочих днів)
-            </label>
-          </div>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="novaPoshta"
-                checked={selectedDeliveryType === "novaPoshta"}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка до відділення Нової пошти</b> (75,00 грн Доставка 10-12 робочих днів)
-            </label>
-          </div>
-
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="delivery"
-                value="ukrPoshta"
-                checked={selectedDeliveryType === "ukrPoshta"}
-                onChange={handleDeliveryTypeChange}
-                className="mr-2"
-              />
-              <b>Доставка до відділення Укрпошти</b> (50,00 грн Доставка протягом 10-12 робочих днів)
-            </label>
-          </div>
+          {isDeliveryTypesSuccessfullyLoaded &&
+            orderDeliveryTypes.map((deliveryType) => (
+              <div key={deliveryType.id}>
+                <label>
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value={deliveryType.id}
+                    checked={selectedDeliveryType?.id === deliveryType.id}
+                    onChange={handleDeliveryTypeChange}
+                    className="mr-2"
+                  />
+                  <b>{deliveryType.name}</b> ({deliveryType.price} грн; Доставка {deliveryType.minDeliveryTimeInDays} -  {deliveryType.maxDeliveryTimeInDays} робочих днів)
+                </label>
+              </div>
+            ))
+          }
         </div>
 
-        {selectedDeliveryType === "store" && (
+        {selectedDeliveryType?.id === 1 && (
           <div className="mt-6">
             <i>Введіть місто і назву вулиці, щоб знайти найближчі магазини HYGGY.</i>
           </div>
         )}
 
-        {selectedDeliveryType === "courier" && (
+        {selectedDeliveryType?.id === 2 && (
           <div className="mt-6">
-            <i>Доставку замовлення здійснює Перевізник. Доставка 10-12 робочих днів.</i>
+            <i>Доставку замовлення здійснює Перевізник. Доставка {selectedDeliveryType.minDeliveryTimeInDays} -  {selectedDeliveryType.maxDeliveryTimeInDays} робочих днів</i>
           </div>
         )}
 
-        {selectedDeliveryType === "novaPoshta" && (
+        {selectedDeliveryType?.id === 3 && (
           <div className="mt-6">
             <i>Введіть місто і назву вулиці, щоб знайти відділення Нової пошти.</i>
           </div>
         )}
 
-        {selectedDeliveryType === "ukrPoshta" && (
+        {selectedDeliveryType?.id === 4 && (
           <div className="mt-6">
-            <i>Введіть місто і назву вулиці, щоб знайти відділення Укрпошти.</i>
+            <i>Введіть місто і назву вулиці, щоб знайти відділення УкрПошти.</i>
           </div>
         )}
 
-        {(selectedDeliveryType === "store" || selectedDeliveryType === "") && (
+        {(selectedDeliveryType?.id === 1 || selectedDeliveryType === null) && (
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input
@@ -357,7 +338,7 @@ const DeliveryPage = () => {
           </>
         )}
 
-        {selectedDeliveryType === "novaPoshta" && (
+        {selectedDeliveryType?.id === 3 && (
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input
@@ -390,7 +371,7 @@ const DeliveryPage = () => {
           </>
         )}
 
-        {selectedDeliveryType === "ukrPoshta" && (
+        {selectedDeliveryType?.id === 4 && (
           <>
             <div className="flex flex-wrap mt-10 gap-4 lg:flex-nowrap">
               <input

@@ -1,39 +1,22 @@
 import { getPhotoByUrlAndDelete, uploadPhotos } from '@/pages/api/ImageApi';
 import useBlogInvoiceStore from '@/store/BlogInvoiceStore';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, IconButton, TextField } from '@mui/material';
-import ReactQuill, { Quill } from 'react-quill';
+import { Box, Button, IconButton } from '@mui/material';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import PhotoUploader from './PhotoUploader';
 import '../css/FrameBlogInvoiceForm.css';
-//import ImageResize from '@ammarkhalidfarooq/quill-image-resize-module-react-fix-for-mobile';
-//import Table from "quill-table"; // Основний модуль для роботи з таблицями
-// import { Resize, BaseModule } from 'quill-image-resize-module';
-// import Editor from './Editor';
+import FrameBlogInvoiceFormKeywordForm from './FrameBlogInvoiceFormKeywordForm';
+import PhotoUploader from './PhotoUploader';
 
-//Quill.register('modules/imageResize', ImageResize);
-// Отримуємо вбудований атрибут 'Size' з Parchment
-// const Size = Quill.import('attributors/style/size');
-
-// // Задаємо дозволені розміри
-// Size.whitelist = ['10px', '12px', '14px', '18px', '24px', '36px'];
-
-// // Реєструємо модифіковану атрибуцію
-// Quill.register(Size, true);
 const FrameBlogInvoiceForm = () => {
     const {
         rows,
-        keywords,
         addTextRow,
         addImageRow,
         addMixedRow,
         removeRow,
         updateRowContent,
         clearRows,
-        addKeyword,
-        removeKeyword,
-        updateKeyword,
-        clearKeywords,
         setIsPhotosDirty,
     } = useBlogInvoiceStore();
 
@@ -55,9 +38,6 @@ const FrameBlogInvoiceForm = () => {
             // toggle to add extra line breaks when pasting HTML:
             matchVisual: false
         },
-        // imageResize: {
-        //     modules: ['Resize', 'DisplaySize', 'Toolbar'],
-        // },
 
     };
 
@@ -86,9 +66,6 @@ const FrameBlogInvoiceForm = () => {
                                         borderRadius: '8px',
                                     }}
                                 />
-                                // <Editor value={typeof row.content === 'string' ? row.content : ''}
-                                //     handlechange={(content) => updateRowContent(row.id, content)}
-                                //     placeholder="Введіть текст абзацу блогу" />
                             )}
                             {row.contentType === 'image' && (
                                 <div style={{
@@ -202,48 +179,23 @@ const FrameBlogInvoiceForm = () => {
                         </div>
                     ))}
                     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                        <Button variant="contained" color="primary" onClick={addTextRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addTextRow}>
                             Додати текстове поле
                         </Button>
-                        <Button variant="contained" color="primary" onClick={addImageRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addImageRow}>
                             Додати галерею
                         </Button>
-                        <Button variant="contained" color="primary" onClick={addMixedRow}>
+                        <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={addMixedRow}>
                             Додати текстове поле з фото
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={clearRows}>
+                        <Button variant="contained" sx={{ backgroundColor: "#be0f0f" }} onClick={clearRows}>
                             Очистити вміст блогу
                         </Button>
                     </Box>
                 </div>
 
             </div>
-
-            <div style={{ marginBottom: '2rem' }}>
-                <h4>Ключові слова</h4>
-                {keywords.map((keyword, index) => (
-                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
-                        <TextField
-                            variant="outlined"
-                            placeholder="Введіть ключове слово"
-                            value={keyword}
-                            onChange={(e) => updateKeyword(index, e.target.value)}
-                            style={{ flex: 1, marginRight: '10px' }}
-                        />
-                        <IconButton onClick={() => removeKeyword(index)} color="error">
-                            <DeleteIcon />
-                        </IconButton>
-                    </div>
-                ))}
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={addKeyword}>
-                        Додати ключове слово
-                    </Button>
-                    <Button variant="contained" color="secondary" onClick={clearKeywords}>
-                        Прибрати всі ключові слова
-                    </Button>
-                </Box>
-            </div>
+            <FrameBlogInvoiceFormKeywordForm />
         </div>
     );
 };

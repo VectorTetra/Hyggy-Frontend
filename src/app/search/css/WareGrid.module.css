@@ -1,7 +1,7 @@
 /* Ware Grid Styles */
 #wareGrid {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(250px, 1fr));
+	grid-template-columns: repeat(4, minmax(200px, 1fr));
 	gap: 20px;
 }
 
@@ -38,7 +38,16 @@
 	border-radius: 8px;
 	display: flex;
 	flex: 0.4 1;
-	width: fit-content;
+	/* width: fit-content; */
+	width: 300px;
+	height: 400px;
+}
+
+.wareInfo {
+	/* display: flex;
+	flex-direction: column;
+	flex: 1 1; */
+	min-height: 22ch;
 }
 
 .wareInfo h3 {
@@ -46,11 +55,18 @@
 	margin: 0;
 }
 
-.wareInfo p {
+.wareInfoDescription {
 	font-size: 14px;
 	margin: 0;
 	color: #555;
 	line-height: 20px;
+	min-height: 4ch;
+	max-width: 300px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 
 .warePrice {
@@ -199,7 +215,7 @@
 /* Responsive Styles */
 @media screen and (max-width: 1000px) and (min-width: 768px) {
 	#wareGrid {
-		grid-template-columns: repeat(3, minmax(250px, 1fr));
+		grid-template-columns: repeat(3, minmax(200px, 1fr));
 	}
 
 
@@ -207,7 +223,7 @@
 
 @media screen and (max-width: 768px) and (min-width: 550px) {
 	#wareGrid {
-		grid-template-columns: repeat(2, minmax(250px, 1fr));
+		grid-template-columns: repeat(2, minmax(200px, 1fr));
 	}
 
 
@@ -216,7 +232,7 @@
 
 @media screen and (max-width: 550px) {
 	#wareGrid {
-		grid-template-columns: repeat(1, minmax(250px, 1fr));
+		grid-template-columns: repeat(1, minmax(200px, 1fr));
 	}
 
 

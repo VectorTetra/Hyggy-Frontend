@@ -4,7 +4,7 @@ import footerData from '../MainPageFiles/json/mainPageFooter.json';
 import RecentWares from './RecentWares';
 const Footer2 = () => {
     return (
-        <footer>
+        <footer className='footer2'>
             <RecentWares />
             <MainPageFooter footerData={footerData.footerData} />
         </footer>

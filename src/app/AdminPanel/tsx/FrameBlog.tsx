@@ -3,18 +3,18 @@ import { useDeleteBlog, useBlogs } from '@/pages/api/BlogApi';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, ThemeProvider, Typography } from '@mui/material';
 import { DataGrid, GridColumnVisibilityModel, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'use-debounce';
-//import '../css/WarehouseFrame.css';
 import SearchField from './SearchField';
+import themeFrame from './ThemeFrame';
+import { max } from 'lodash';
 
-export default function FrameBlog() {
+export default function FrameBlog({ rolePermissions }) {
 	const { mutate: deleteBlog } = useDeleteBlog();
-	//const queryClient = useQueryClient();
 	const { data: data = [], isLoading: dataLoading, isSuccess: success } = useBlogs({
 		SearchParameter: "Query",
 		PageNumber: 1,
@@ -29,14 +29,13 @@ export default function FrameBlog() {
 	const { blogId, setBlogId } = useAdminPanelStore();
 	const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", scroll: false, history: "push", shallow: true });
 	const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>({
-		//id: false,
 		blogCategory1Name: false,
 	});
 	const apiRef = useGridApiRef();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [selectedRow, setSelectedRow] = useState<any | null>(null);
 
-	const columns = [
+	let columns = [
 		{
 			field: 'id',
 			headerName: 'ID',
@@ -78,7 +77,9 @@ export default function FrameBlog() {
 								}}
 							/>
 						)}
-						<Typography variant="body2">{params.row.blogTitle}</Typography>
+						<Typography variant="body2" sx={{
+							textWrap: 'wrap',
+						}}>{params.row.blogTitle}</Typography>
 					</Box>
 				);
 			},
@@ -121,13 +122,15 @@ export default function FrameBlog() {
 						variant="body2"
 						title={keywords.join(', ')}
 						sx={{
-							display: 'flex',
+							display: 'flex !important',
 							flexWrap: 'wrap',
 							gap: '4px',
 							overflow: 'hidden',
 							textOverflow: 'ellipsis',
 							maxWidth: '100%',
 							lineHeight: 1.5,
+							alignItems: 'center',
+							height: "100%"
 						}}
 					>
 						{keywords.map((keyword, index) => (
@@ -142,24 +145,29 @@ export default function FrameBlog() {
 		},
 		{
 			field: 'actions',
-			headerName: 'Дії',
+			headerName: '',
 			flex: 0,
+			minWidth: 75,
 			width: 75,
+			maxWidth: 75,
 			disableExport: true,
 			renderCell: (params) => (
 				<Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-					<Button sx={{ minWidth: "10px", padding: 0 }} title='Редагувати' variant="outlined" color="primary" onClick={() => handleEdit(params.row)}>
+					{rolePermissions.IsFrameBlog_Button_EditBlog_Available && <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
 						<EditIcon />
-					</Button>
-					<Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
+					</Button>}
+					{rolePermissions.IsFrameBlog_Button_DeleteBlog_Available && <Button sx={{ minWidth: "10px", padding: 0 }} color='secondary' title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
 						<DeleteIcon />
-					</Button>
+					</Button>}
 				</Box>
 			),
 		},
 
 	];
 
+	if (!rolePermissions.IsFrameBlog_Cell_Actions_Available) {
+		columns = columns.filter(column => column.field !== 'actions');
+	}
 	const handleEdit = (row) => {
 		// Встановлюємо warehouseId для редагування обраного складу
 		setBlogId(row.id); // Встановлюємо Id складу для редагування
@@ -181,16 +189,12 @@ export default function FrameBlog() {
 				onSuccess: () => {
 					setIsDialogOpen(false);
 					toast.info('Блог успішно видалено!');
-					// Якщо потрібно оновити локальний стан:
-					// setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
 				}
 			});
 		}
 	};
 
 	useEffect(() => {
-		// if (data.length === 0)
-		// 	queryClient.invalidateQueries('storages');
 		console.log("data", data);
 		if (success) {
 			setFilteredData(data);
@@ -206,7 +210,6 @@ export default function FrameBlog() {
 		const fetchFilteredData = () => {
 			setLoading(true);
 			try {
-				//if (data.length === 0) { toast.error('data не ініціалізована!'); return; }
 				if (debouncedSearchTerm) {
 					// Фільтруємо дані локально по будь-якому полю
 					const filteredBlogs = data.filter(item =>
@@ -216,11 +219,9 @@ export default function FrameBlog() {
 						)
 					);
 					setFilteredData(filteredBlogs); // Оновлюємо відфільтровані дані
-					//toast.info('Встановлено filteredStorages!');
 				} else {
 					setFilteredData(data); // Якщо немає терміна пошуку, використовуємо всі дані
 					console.log(data);
-					//toast.info('Встановлено data!');
 				}
 			} catch (error) {
 				console.error('Error filtering data:', error);
@@ -235,155 +236,160 @@ export default function FrameBlog() {
 
 	return (
 		<Box>
-			<Box sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-between',
-				alignItems: 'normal',
-				marginBottom: '1rem',
-				position: 'sticky', // Фіксована позиція
-				top: 0, // Залишається зверху
-				left: 0,
-				zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
-				width: "100%",
-				padding: '0' // Додаємо відступи для панелі
-			}}>
-				<Typography variant="h5" sx={{ marginBottom: 2 }}>
-					Блоги : {loading ? <CircularProgress size={24} /> : filteredData.length}
-				</Typography>
+			<ThemeProvider theme={themeFrame}>
 				<Box sx={{
 					display: 'flex',
+					flexDirection: 'column',
 					justifyContent: 'space-between',
+					alignItems: 'normal',
+					marginBottom: '1rem',
+					position: 'sticky',
+					top: 0,
+					left: 0,
+					zIndex: 1, // Вищий z-index, щоб бути поверх DataGrid
+					width: "100%",
+					padding: '0'
 				}}>
-					<SearchField
-						searchTerm={searchTerm}
-						onSearchChange={(event) => setSearchTerm(event.target.value)}
-					/>
-					<Button variant="contained" sx={{ backgroundColor: "#248922" }} onClick={() => {
-						setBlogId(0);
-						setActiveTab("addEditBlog");
-					}}>
-						Додати
-					</Button>
-				</Box>
-			</Box>
-			<Box className="dataGridContainer" sx={{ flexGrow: 1 }} height="80vh" width="100%" overflow="auto">
-				{filteredData.length === 0 && !loading && success ? (
-					<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
-						Нічого не знайдено
+					<Typography variant="h5" sx={{ marginBottom: 2 }}>
+						Блоги : {loading ? <CircularProgress size={24} /> : filteredData.length}
 					</Typography>
-				) : (
-					<DataGrid
-						className="dataGrid"
-						rows={filteredData}
-						columns={columns}
-						apiRef={apiRef}
-						loading={loading || dataLoading}
-						initialState={{
-							pagination: {
-								paginationModel: {
-									pageSize: 100,
-									page: 0,
+					<Box sx={{
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}>
+						<SearchField
+							searchTerm={searchTerm}
+							onSearchChange={(event) => setSearchTerm(event.target.value)}
+						/>
+						{rolePermissions.IsFrameBlog_Button_AddBlog_Available && <Button variant="contained" sx={{ backgroundColor: "#00AAAD" }} onClick={() => {
+							setBlogId(0);
+							setActiveTab("addEditBlog");
+						}}>
+							Додати
+						</Button>}
+					</Box>
+				</Box>
+				<Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh">
+					{filteredData.length === 0 && !loading && success ? (
+						<Typography variant="h6" sx={{ textAlign: 'center', marginTop: 2 }}>
+							Нічого не знайдено
+						</Typography>
+					) : (
+						<DataGrid
+							className="dataGrid"
+							rows={filteredData}
+							getRowHeight={() => 'auto'} // Динамічна висота рядка
+							columns={columns}
+							apiRef={apiRef}
+							loading={loading || dataLoading}
+							sx={{
+								opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
+								flexGrow: 1, // Займає доступний простір у контейнері
+								minWidth: 800, // Мінімальна ширина DataGrid
+								// "& .MuiDataGrid-scrollbar--horizontal": {
+								// 	position: 'fixed',
+								// 	bottom: "5px"
+								// },
+								"&. MuiDataGrid-topContainer": {
+									backgroundColor: "#f3f3f3"
 								},
-							},
-							sorting: {
-								sortModel: [
-									{
-										field: 'blogTitle',
-										sort: 'asc', // 'asc' для зростання або 'desc' для спадання
+								'&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': { py: '4px' },
+								'&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': { py: '11px' },
+								'&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': { py: '18px' },
+							}}
+							initialState={{
+								pagination: {
+									paginationModel: {
+										pageSize: 100,
+										page: 0,
 									},
-								],
-							},
-						}}
-						pageSizeOptions={[5, 10, 25, 50, 100]}
-						disableRowSelectionOnClick
-						slots={{
-							toolbar: GridToolbar
+								},
+								sorting: {
+									sortModel: [
+										{
+											field: 'blogTitle',
+											sort: 'asc', // 'asc' для зростання або 'desc' для спадання
+										},
+									],
+								},
+							}}
+							pageSizeOptions={[5, 10, 25, 50, 100]}
+							disableRowSelectionOnClick
+							slots={{
+								toolbar: GridToolbar
 
-						}}
-						slotProps={{
-							toolbar: {
-								csvOptions: {
-									fileName: 'Блоги',
-									delimiter: ';',
-									utf8WithBom: true,
+							}}
+							slotProps={{
+								toolbar: {
+									csvOptions: {
+										fileName: 'Блоги',
+										delimiter: ';',
+										utf8WithBom: true,
+									},
+									printOptions: {
+										hideFooter: true,
+										hideToolbar: true,
+									},
 								},
-								printOptions: {
-									hideFooter: true,
-									hideToolbar: true,
-								},
-							},
-						}}
-						columnVisibilityModel={columnVisibilityModel}
-						onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-						localeText={{
-							MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
-							columnsManagementReset: "Скинути",
-							columnsManagementSearchTitle: "Пошук",
-							toolbarExport: 'Експорт',
-							toolbarExportLabel: 'Експорт',
-							toolbarExportCSV: 'Завантажити як CSV',
-							toolbarExportPrint: 'Друк',
-							columnsManagementShowHideAllText: "Показати / Сховати всі",
-							filterPanelColumns: 'Стовпці', // Переклад для "Columns"
-							filterPanelOperator: 'Оператор', // Переклад для "Operator"
-							// filterPanelValue: 'Значення', 
-							// filterPanelFilterValue: 'Значення фільтра',
-							toolbarExportExcel: "Експорт",
-							filterPanelInputLabel: "Значення",
-							filterPanelInputPlaceholder: 'Значення фільтра',
-							filterOperatorContains: 'Містить',
-							filterOperatorDoesNotContain: 'Не містить',
-							filterOperatorEquals: 'Дорівнює',
-							filterOperatorDoesNotEqual: 'Не дорівнює',
-							filterOperatorStartsWith: 'Починається з',
-							filterOperatorIsAnyOf: 'Є одним з',
-							filterOperatorEndsWith: 'Закінчується на',
-							filterOperatorIs: 'Дорівнює',
-							filterOperatorNot: 'Не дорівнює',
-							filterOperatorAfter: 'Після',
-							filterOperatorOnOrAfter: 'Після або в цей день',
-							filterOperatorBefore: 'До',
-							filterOperatorOnOrBefore: 'До або в цей день',
-							filterOperatorIsEmpty: 'Пусто',
-							filterOperatorIsNotEmpty: 'Не пусто',
-							columnMenuLabel: 'Меню стовпця',
-							columnMenuShowColumns: 'Показати стовпці',
-							columnMenuFilter: 'Фільтр',
-							columnMenuHideColumn: 'Приховати стовпець',
-							columnMenuUnsort: 'Скасувати сортування',
-							columnMenuSortAsc: 'Сортувати за зростанням',
-							columnMenuSortDesc: 'Сортувати за спаданням',
-							toolbarDensity: 'Щільність',
-							toolbarDensityLabel: 'Щільність',
-							toolbarDensityCompact: 'Компактно',
-							toolbarDensityStandard: 'Стандарт',
-							toolbarDensityComfortable: 'Комфортно',
-							toolbarColumns: 'Стовпці',
-							toolbarColumnsLabel: 'Оберіть стовпці',
-							toolbarFilters: 'Фільтри',
-							toolbarFiltersLabel: 'Показати фільтри',
-							toolbarFiltersTooltipHide: 'Приховати фільтри',
-							toolbarFiltersTooltipShow: 'Показати фільтри',
-							toolbarQuickFilterPlaceholder: 'Пошук...',
-							toolbarQuickFilterLabel: 'Пошук',
-							toolbarQuickFilterDeleteIconLabel: 'Очистити',
-						}}
-						sx={{
-							opacity: loading || dataLoading ? 0.5 : 1, // Напівпрозорість, якщо завантажується
-							flexGrow: 1, // Займає доступний простір у контейнері
-							minWidth: 800, // Мінімальна ширина DataGrid
-							"& .MuiDataGrid-scrollbar--horizontal": {
-								position: 'fixed',
-								bottom: "5px"
-							},
-							"&. MuiDataGrid-topContainer": {
-								backgroundColor: "#f3f3f3"
-							}
-						}}
-					/>
-				)}
-			</Box>
+							}}
+							columnVisibilityModel={columnVisibilityModel}
+							onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+							localeText={{
+								MuiTablePagination: { labelRowsPerPage: 'Рядків на сторінці' },
+								columnsManagementReset: "Скинути",
+								columnsManagementSearchTitle: "Пошук",
+								toolbarExport: 'Експорт',
+								toolbarExportLabel: 'Експорт',
+								toolbarExportCSV: 'Завантажити як CSV',
+								toolbarExportPrint: 'Друк',
+								columnsManagementShowHideAllText: "Показати / Сховати всі",
+								filterPanelColumns: 'Стовпці',
+								filterPanelOperator: 'Оператор',
+								toolbarExportExcel: "Експорт",
+								filterPanelInputLabel: "Значення",
+								filterPanelInputPlaceholder: 'Значення фільтра',
+								filterOperatorContains: 'Містить',
+								filterOperatorDoesNotContain: 'Не містить',
+								filterOperatorEquals: 'Дорівнює',
+								filterOperatorDoesNotEqual: 'Не дорівнює',
+								filterOperatorStartsWith: 'Починається з',
+								filterOperatorIsAnyOf: 'Є одним з',
+								filterOperatorEndsWith: 'Закінчується на',
+								filterOperatorIs: 'Дорівнює',
+								filterOperatorNot: 'Не дорівнює',
+								filterOperatorAfter: 'Після',
+								filterOperatorOnOrAfter: 'Після або в цей день',
+								filterOperatorBefore: 'До',
+								filterOperatorOnOrBefore: 'До або в цей день',
+								filterOperatorIsEmpty: 'Пусто',
+								filterOperatorIsNotEmpty: 'Не пусто',
+								columnMenuLabel: 'Меню стовпця',
+								columnMenuShowColumns: 'Показати стовпці',
+								columnMenuFilter: 'Фільтр',
+								columnMenuHideColumn: 'Приховати стовпець',
+								columnMenuUnsort: 'Скасувати сортування',
+								columnMenuSortAsc: 'Сортувати за зростанням',
+								columnMenuSortDesc: 'Сортувати за спаданням',
+								toolbarDensity: 'Щільність',
+								toolbarDensityLabel: 'Щільність',
+								toolbarDensityCompact: 'Компактно',
+								toolbarDensityStandard: 'Стандарт',
+								toolbarDensityComfortable: 'Комфортно',
+								toolbarColumns: 'Стовпці',
+								toolbarColumnsLabel: 'Оберіть стовпці',
+								toolbarFilters: 'Фільтри',
+								toolbarFiltersLabel: 'Показати фільтри',
+								toolbarFiltersTooltipHide: 'Приховати фільтри',
+								toolbarFiltersTooltipShow: 'Показати фільтри',
+								toolbarQuickFilterPlaceholder: 'Пошук...',
+								toolbarQuickFilterLabel: 'Пошук',
+								toolbarQuickFilterDeleteIconLabel: 'Очистити',
+							}}
+
+						/>
+					)}
+				</Box>
+			</ThemeProvider>
 			<ConfirmationDialog
 				title="Видалити блог?"
 				contentText={
@@ -393,12 +399,12 @@ export default function FrameBlog() {
 				}
 				onConfirm={handleConfirmDelete}
 				onCancel={() => setIsDialogOpen(false)}
-				confirmButtonColor='#be0f0f'
-				cancelButtonColor='#248922'
+				confirmButtonBackgroundColor='#00AAAD'
+				cancelButtonBackgroundColor='#fff'
+				cancelButtonBorderColor='#be0f0f'
+				cancelButtonColor='#be0f0f'
 				open={isDialogOpen}
 			/>
 		</Box>
-
 	);
-
 }

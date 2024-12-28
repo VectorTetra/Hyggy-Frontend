@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface ShopQueryParams {
 	SearchParameter?: string;
-	Id?: number;
+	Id?: number | null;
 	AddressId?: number;
 	Street?: string;
 	HouseNumber?: string;
@@ -34,7 +34,7 @@ export interface ShopDTO {
 	ShopEmployeeIds?: string[] | null;
 }
 export interface ShopGetDTO {
-	id?: number;
+	id: number;
 	photoUrl?: string;
 	workHours?: string;
 	name?: string;
@@ -46,21 +46,23 @@ export interface ShopGetDTO {
 	latitude?: number;
 	longitude?: number;
 	addressId?: number;
-	storageId?: number;
+	storageId: number;
 	executedOrdersSum?: number;
 	orderIds?: number[] | null;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_SHOP in your environment variables.");
+}
 
 // GET запит (вже реалізований)
 export async function getShops(params: ShopQueryParams = {}) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/Shop', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
-		// const response = await axios.get('http://localhost:5263/api/Shop', {
-		// 	params,
-		// });
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching Shops:', error);
@@ -71,8 +73,7 @@ export async function getShops(params: ShopQueryParams = {}) {
 // POST запит для створення нового складу
 export async function postShop(Shop: ShopDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/Shop', Shop);
-		//const response = await axios.post('http://localhost:5263/api/Shop', Shop);
+		const response = await axios.post(API_BASE_URL!, Shop);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating Shop:', error);
@@ -86,8 +87,7 @@ export async function putShop(Shop: ShopDTO) {
 		if (!Shop.Id) {
 			throw new Error('Id is required for updating a Shop');
 		}
-		//const response = await axios.put(`http://localhost:5263/api/Shop`, Shop);
-		const response = await axios.put(`http://www.hyggy.somee.com/api/Shop`, Shop);
+		const response = await axios.put(API_BASE_URL!, Shop);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating Shop:', error);
@@ -98,9 +98,7 @@ export async function putShop(Shop: ShopDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteShop(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Shop/${id}`);
-
-		//const response = await axios.delete(`http://localhost:5263/api/Shop/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting Shop:', error);
@@ -109,13 +107,14 @@ export async function deleteShop(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (Shops)
-export function useShops(params: ShopQueryParams = { SearchParameter: "Query" }) {
+export function useShops(params: ShopQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['Shops', params],
 		queryFn: () => getShops(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 
@@ -127,6 +126,7 @@ export function useCreateShop() {
 			mutationFn: (newShop: ShopDTO) => postShop(newShop),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після створення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			},
 		});
 }
@@ -139,6 +139,7 @@ export function useUpdateShop() {
 			mutationFn: (newShop: ShopDTO) => putShop(newShop),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після оновлення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			},
 		});
 }
@@ -151,6 +152,7 @@ export function useDeleteShop() {
 			mutationFn: (id: number) => deleteShop(id),
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: ['Shops'] }); // Оновлює кеш даних після видалення складу
+				queryClient.invalidateQueries({ queryKey: ['storages'] }); // Оновлює кеш даних після створення складу
 			}
 		});
 }

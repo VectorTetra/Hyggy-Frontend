@@ -9,7 +9,12 @@ export interface UploadResponse {
 export interface GetPhotoByUrlParams {
     url: string;
 }
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_IMAGE;
 
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_IMAGE in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_IMAGE in your environment variables.");
+}
 // POST запит для завантаження фото
 export async function uploadPhotos(files: FileList): Promise<string[]> {
     try {
@@ -18,12 +23,12 @@ export async function uploadPhotos(files: FileList): Promise<string[]> {
             formData.append('photos', files[i]);
         }
 
-        const response = await axios.post<string[]>("http://www.hyggy.somee.com/api/Image/upload", formData, {
+        const response = await axios.post<string[]>(`${API_BASE_URL!}/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        
+
         return response.data;
     } catch (error) {
         console.error('Error uploading photos:', error);
@@ -34,7 +39,7 @@ export async function uploadPhotos(files: FileList): Promise<string[]> {
 // POST запит для отримання фото за URL та його видалення
 export async function getPhotoByUrlAndDelete(url: string) {
     try {
-        const response = await axios.get(`http://www.hyggy.somee.com/api/Image/getphotobyurlAndDelete`, {
+        const response = await axios.get(`${API_BASE_URL!}/getphotobyurlAndDelete`, {
             params: { url }
         });
         return response.data;
@@ -47,7 +52,7 @@ export async function getPhotoByUrlAndDelete(url: string) {
 // DELETE запит для видалення фото за Id
 export async function deletePhoto(id: string) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/Image/deletephoto`, {
+        const response = await axios.delete(`${API_BASE_URL!}/deletephoto`, {
             params: { id }
         });
         return response.data;

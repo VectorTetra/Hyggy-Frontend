@@ -3,10 +3,10 @@ import forgotPassword from "@/pages/api/resetpassword";
 import React from "react";
 import styles from '../css/passwordResetStyle.module.css';
 import { Button } from "@mui/material";
+import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
-
-export default  function EmailInput({ passwordResetData, onSwitchComponent }) {
+export default function EmailInput({ passwordResetData, onSwitchComponent }) {
     console.log("EmailInput props:", { passwordResetData, onSwitchComponent });
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
@@ -28,10 +28,10 @@ export default  function EmailInput({ passwordResetData, onSwitchComponent }) {
         //     alert("Користувача з таким e-mail не знайдено");
         // }
         const response = await forgotPassword(email);
-        if(response){
-            alert("Ми надіслали листа на вказану вами електронну адресу. Будь ласка, перевірте папку Спам або спробуйте ще раз, якщо ви не отримали листа протягом 15 хвилин.")
+        if (response) {
+            toast.success("Ми надіслали листа на вказану вами електронну адресу. Будь ласка, перевірте папку Спам або спробуйте ще раз, якщо ви не отримали листа протягом 15 хвилин.")
             setEmail("");
-        }else{
+        } else {
             console.log("Щось пішло не так")
         }
     };

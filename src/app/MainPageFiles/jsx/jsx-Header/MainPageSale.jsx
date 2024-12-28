@@ -1,11 +1,9 @@
 "use client";
 
-import React, {useState , useEffect} from 'react';
-import Link from 'next/link';
-import styles from '../../styles/MainPageHeader-styles.module.css';
+import { useBlogs } from '@/pages/api/BlogApi';
 import { useRouter } from "next/navigation";
-import { BlogQueryParams, useBlogs } from '@/pages/api/BlogApi';
-import { type } from 'os';
+import React, { useEffect } from 'react';
+import styles from '../../styles/MainPageHeader-styles.module.css';
 
 
 export default function MainPageSale(props) {
@@ -13,7 +11,7 @@ export default function MainPageSale(props) {
     const router = useRouter();
 
     // Используем useQuery для получения последних 3 акций
-    const { data: sales = [], isLoading, isSuccess } = useBlogs(
+    const { data: sales = [], isSuccess } = useBlogs(
         {
             SearchParameter: "Query",
             PageNumber: 1,
@@ -28,6 +26,8 @@ export default function MainPageSale(props) {
             console.log("OurSales", sales);
             console.log("OurSales is Array", Array.isArray(sales));
             console.log("OurSales type", typeof (sales));
+            const interval = setInterval(nextSale, 3000);
+            return () => clearInterval(interval); // Очистка интервала при размонтировании
         }
     }, [isSuccess]);
 
@@ -37,13 +37,6 @@ export default function MainPageSale(props) {
             (prevIndex + 1) % sales.length
         );
     };
-
-    // Автоматическое переключение распродажи каждые 3 секунды
-    React.useEffect(() => {
-        
-        const interval = setInterval(nextSale, 3000);
-        return () => clearInterval(interval); // Очистка интервала при размонтировании
-    }, []);
 
     // Обработчик клика по баннеру
     const handleBannerClick = () => {
@@ -55,7 +48,7 @@ export default function MainPageSale(props) {
     return (
         <div id={styles.mainPageSale}>
             <div onClick={handleBannerClick} className={styles.bannerLink}>
-                {sales[currentIndex]?.blogTitle}
+                {isSuccess && sales[currentIndex]?.blogTitle}
             </div>
         </div>
     );

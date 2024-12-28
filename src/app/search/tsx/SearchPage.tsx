@@ -1,6 +1,6 @@
 "use client"; // Завжди на стороні клієнта
 import styles from "../css/SearchPage.module.css";
-import { useWares, Ware } from "@/pages/api/WareApi";
+import { useWares, WareGetDTO } from "@/pages/api/WareApi";
 import { useBlogs, Blog } from "@/pages/api/BlogApi";
 import { useState, useEffect } from "react";
 import Layout from "../../sharedComponents/Layout";
@@ -118,31 +118,30 @@ export default function SearchPage() {
 
     return (
 
-        <Layout headerType="header1" footerType='footer1'>
+        <Layout headerType="header1" footerType='footer4'>
             <div className={styles.main}>
                 {allLoadings && <SkeletonPost />}
-                {/* {allLoadings && <CircularProgress size={100} sx={{ display: "flex", margin: "0 auto" }} />} */}
-                <>
-                    {!allLoadings && <>
-                        <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
-                        <SearchHeader foundWaresQuantity={foundWares.length}
-                            foundBlogsQuantity={foundBlogs.length}
-                            activeTab={activeTab}
-                            query={query}
-                            loading={!allLoadings} />
-                        {activeTab === "wares" && <FilterBar />}
-                        <div style={{ minHeight: "32px", margin: "16px 0" }}>
-                            <FilterStickerPanel />
-                        </div>
-                        {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
-                        {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
-                    </>}
-                    <FilterSidebar wares={wares || []} foundWares={foundWares || []}
-                        categories={foundWareCategories || []} trademarks={foundTrademarks || []}
-                        statuses={foundWareStatuses || []}
-                    />
-                    <SortingSidebar />
-                </>
+
+                {!allLoadings && <>
+                    <TabBar waresQuantity={foundWares.length} blogsQuantity={foundBlogs.length} activeTab={activeTab} setActiveTab={setActiveTab} query={query} />
+                    <SearchHeader foundWaresQuantity={foundWares.length}
+                        foundBlogsQuantity={foundBlogs.length}
+                        activeTab={activeTab}
+                        query={query}
+                        loading={!allLoadings} />
+                    {activeTab === "wares" && <FilterBar />}
+                    <div style={{ minHeight: "32px", margin: "16px 0" }}>
+                        <FilterStickerPanel />
+                    </div>
+                    {activeTab === "wares" && <WareGrid wares={foundWares || []} />}
+                    {activeTab === "blogs" && <ArticleGrid blogs={foundBlogs || []} />}
+                </>}
+
+                <FilterSidebar wares={wares || []} foundWares={foundWares || []}
+                    categories={foundWareCategories || []} trademarks={foundTrademarks || []}
+                    statuses={foundWareStatuses || []}
+                />
+                <SortingSidebar />
             </div>
         </Layout>
 

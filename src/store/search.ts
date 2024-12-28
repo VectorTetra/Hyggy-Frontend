@@ -1,6 +1,6 @@
 // store/search.ts
 import { create } from "zustand";
-import { Ware } from "@/pages/api/WareApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import { Blog } from "@/pages/api/BlogApi";
 
 // f_0 : Фільтр ціни, значення вказується через нижнє підкреслення (напр. 250_8000) 
@@ -28,14 +28,14 @@ interface SearchStore {
   setIsStatusOpen: (value: boolean) => void;
   isSortingSidebarOpen: boolean;
   setIsSortingSidebarOpen: (value: boolean) => void;
-  waresBeforeCategories: Ware[];
-  setWaresBeforeCategories: (waresBeforeCategories: Ware[]) => void;
+  waresBeforeCategories: WareGetDTO[];
+  setWaresBeforeCategories: (waresBeforeCategories: WareGetDTO[]) => void;
   minPossible: number;
   maxPossible: number;
   setMinPossible: (minPossible: number) => void;
   setMaxPossible: (maxPossible: number) => void;
-  filteredWares: Ware[];
-  setFilteredWares: (filteredWares: Ware[]) => void;
+  filteredWares: WareGetDTO[];
+  setFilteredWares: (filteredWares: WareGetDTO[]) => void;
   filteredBlogs: Blog[];
   setFilteredBlogs: (filteredBlogs: Blog[]) => void;
   categoriesMap: Record<string, string>;

@@ -44,7 +44,7 @@ const Pagination: FC<PaginationProps> = ({
 			);
 			if (currentPage > 3) {
 				pages.push(
-					<span key="dots-1" className={styles.paginationDots}>...</span>
+					<span key="dots-1" className={styles.paginationButton}>...</span>
 				);
 			}
 		}
@@ -64,7 +64,7 @@ const Pagination: FC<PaginationProps> = ({
 		if (currentPage < totalPages - 1) {
 			if (currentPage < totalPages - 2) {
 				pages.push(
-					<span key="dots-2" className={styles.paginationDots}>...</span>
+					<span key="dots-2" className={styles.paginationButton}>...</span>
 				);
 			}
 			pages.push(
@@ -87,7 +87,7 @@ const Pagination: FC<PaginationProps> = ({
 			<button
 				onClick={() => handlePageClick(currentPage - 1)}
 				disabled={currentPage === 1}
-				className={styles.paginationButton}
+				className={styles.paginationArrow}
 			>
 				&lt;
 			</button>
@@ -95,7 +95,7 @@ const Pagination: FC<PaginationProps> = ({
 			<button
 				onClick={() => handlePageClick(currentPage + 1)}
 				disabled={currentPage === totalPages}
-				className={styles.paginationButton}
+				className={styles.paginationArrow}
 			>
 				&gt;
 			</button>

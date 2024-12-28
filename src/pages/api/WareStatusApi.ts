@@ -32,10 +32,17 @@ export class WareStatus {
 	description: string;
 	wareIds: number[];
 }
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_STATUS;
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_STATUS in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_WARE_STATUS in your environment variables.");
+}
+
 // GET запит (вже реалізований)
 export async function getWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get('http://www.hyggy.somee.com/api/WareStatus', {
+		const response = await axios.get(API_BASE_URL!, {
 			params,
 		});
 
@@ -49,7 +56,7 @@ export async function getWareStatuses(params: WareStatusQueryParams = { SearchPa
 // POST запит для створення нового складу
 export async function postWareStatus(WareStatus: WareStatusPostDTO) {
 	try {
-		const response = await axios.post('http://www.hyggy.somee.com/api/WareStatus', WareStatus);
+		const response = await axios.post(API_BASE_URL!, WareStatus);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating WareStatus:', error);
@@ -64,7 +71,7 @@ export async function putWareStatus(WareStatus: WareStatusPutDTO) {
 			throw new Error('Id is required for updating a WareStatus');
 		}
 
-		const response = await axios.put(`http://www.hyggy.somee.com/api/WareStatus`, WareStatus);
+		const response = await axios.put(API_BASE_URL!, WareStatus);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating WareStatus:', error);
@@ -75,7 +82,7 @@ export async function putWareStatus(WareStatus: WareStatusPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteWareStatus(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/WareStatus/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting WareStatus:', error);
@@ -84,7 +91,7 @@ export async function deleteWareStatus(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wareStatuses)
-export function useWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }) {
+export function useWareStatuses(params: WareStatusQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 
 	return useQuery({
 		queryKey: ['wareStatuses', params],
@@ -92,6 +99,7 @@ export function useWareStatuses(params: WareStatusQueryParams = { SearchParamete
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

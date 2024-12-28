@@ -1,33 +1,22 @@
 "use client";
-import { useState, useEffect } from "react";
-import Layout from "../sharedComponents/Layout";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
-import { CircularProgress } from "@mui/material";
 import useLocalStorageStore from '@/store/localStorage';
+import { CircularProgress } from "@mui/material";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Layout from "../sharedComponents/Layout";
+import styles from "./page.module.css";
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const {
     cart,
-    addToCart,
     removeFromCart,
-    clearCart,
     updateCartQuantity,
-    setSelectedShop,
     increaseQuantity,
     decreaseQuantity,
     handleQuantityChange,
@@ -47,23 +36,23 @@ const CartPage = () => {
     const deliveryPrice =
       cart.length > 0 && cart[0].selectedOption === "delivery" ? 100 : 0;
     return cart.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, deliveryPrice);
   };
 
   const calculatePDV = () => {
     const PDVRate = 0.2;
     const totalProductPrice = cart.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, 0);
     return totalProductPrice * PDVRate;
   };
 
   const calculateTotalSavings = () => {
     return cart.reduce((totalSavings, item) => {
-      if (item.oldPrice) {
-        const oldPrice = parseFloat(item.oldPrice);
-        const price = item.price;
+      if (item.product.price) {
+        const oldPrice = item.product.price;
+        const price = item.product.finalPrice;
         const savings = (oldPrice - price) * item.quantity;
         return totalSavings + savings;
       }
@@ -110,15 +99,15 @@ const CartPage = () => {
                   ×
                 </p>
                 <Image
-                  src={item.productImage}
-                  alt={item.productDescription}
+                  src={item.product.previewImagePath}
+                  alt={item.product.description}
                   width={84}
                   height={90}
                   className={styles.cartItemImage}
                 />
                 <div className={styles.productDescription}>
-                  <p>{item.productDescription}</p>
-                  <p className={styles.product}>{item.productName}</p>
+                  <p>{item.product.description}</p>
+                  <p className={styles.product}>{item.product.name}</p>
                 </div>
                 <div className={styles.quantityContainer}>
                   <button
@@ -143,8 +132,8 @@ const CartPage = () => {
                   </button>
                 </div>
                 <div className={styles.price}>
-                  <p>{Math.ceil(item.price)} грн </p>
-                  <p>{Math.ceil(item.price) * item.quantity} грн</p>
+                  <p>{formatCurrency(item.product.finalPrice, "грн / шт")}</p>
+                  <p>{formatCurrency(item.product.finalPrice * item.quantity, "грн")}</p>
                 </div>
               </div>
             ))}
@@ -155,19 +144,18 @@ const CartPage = () => {
             <div className={styles.cartInfo}>
               {calculateTotalSavings() > 0 && (
                 <p>
-                  Загальна економія {Math.ceil(calculateTotalSavings())} грн
+                  Загальна економія {formatCurrency(calculateTotalSavings(), "грн")}
                 </p>
               )}
               <p>
                 Доставка{" "}
-                {Math.ceil(
+                {formatCurrency(
                   cart.length > 0 && cart[0].selectedOption === "delivery"
                     ? 100
                     : 0
-                )}{" "}
-                грн
+                  , "грн")}
               </p>
-              <p>Сума ПДВ {Math.ceil(calculatePDV())} грн</p>
+              <p>Сума ПДВ {formatCurrency(calculatePDV(), "грн")}</p>
               {cart.length > 0 &&
                 cart[0].selectedOption === "delivery" && (
                   <p>Доставка протягом 10-12 робочих днів</p>
@@ -175,7 +163,7 @@ const CartPage = () => {
             </div>
             <br />
             <p className={styles.calculateTotalPrice}>
-              Усього {Math.ceil(calculateTotalPrice())} грн
+              Всього {formatCurrency(calculateTotalPrice(), "грн")}
             </p>
             <div className={styles.buttonContainer}>
               <Link href="/cart/address">

@@ -1,17 +1,17 @@
 /* CardCarousel.css */
-.carouselWrapper {
+.workpageCarousel {
 	width: 100%;
 	/* margin: auto; */
 	margin: 20px 0;
 }
 
-.slick-list {
+.workpageCarousel .slick-list {
 	overflow: hidden;
 	/* Сховати все, що виходить за межі */
 	max-height: 250px;
 }
 
-.slick-slide {
+.workpageCarousel .slick-slide {
 	height: 240px;
 	display: flex !important;
 	justify-content: center;
@@ -22,7 +22,12 @@
 	/* Застосуйте той же радіус закруглення */
 }
 
-.cardImage {
+.workpageCarousel .slick-track {
+	display: flex;
+	gap: 10px;
+}
+
+.workpageCarousel .cardImage {
 	border-radius: 16px;
 	width: auto;
 	max-width: 300px;
@@ -30,7 +35,7 @@
 	object-fit: cover;
 }
 
-.cardTitle {
+.workpageCarousel .cardTitle {
 	text-align: center;
 	margin-top: 8px;
 	font-size: 16px;
@@ -46,7 +51,7 @@
 }
 
 
-.slick-arrow {
+.workpageCarousel .slick-arrow {
 	background: rgba(255, 255, 255, 0.5);
 	/* Зробіть стрілки напівпрозорими */
 	color: rgb(0, 0, 0);
@@ -62,19 +67,19 @@
 	align-items: center;
 }
 
-.slick-arrow:before {
+.workpageCarousel .slick-arrow:before {
 	color: black;
 	/* Змінити колір стрілки на білий */
 	font-size: 20px;
 	/* Змінити розмір шрифта */
 }
 
-.slick-prev {
+.workpageCarousel .slick-prev {
 	left: -20px;
 	/* Відступ від лівого краю */
 }
 
-.slick-next {
+.workpageCarousel .slick-next {
 	right: -20px;
 	/* Відступ від правого краю */
 }

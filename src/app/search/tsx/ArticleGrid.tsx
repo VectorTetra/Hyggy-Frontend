@@ -2,18 +2,19 @@ import styles from "../css/ArticleGrid.module.css";
 import Link from "next/link";
 import ImageWithFallback from "../../sharedComponents/ImageWithFallback";
 export default function ArticleGrid(props: any) {
+	console.log(props.blogs);
 	return (
 		<div id={styles.articleGrid}>
-			{props.blogs.map((article: any) => (
-				<Link prefetch={true} className={styles.articleLink} key={article.id} href={`/article/${article.id}`}>
+			{props.blogs.map((blog: any) => (
+				<Link prefetch={true} className={styles.articleLink} key={blog.id} href={`/PageBlogIndividual/${blog.id}`}>
 
 					<div className={styles.articleImageContainer}>
 						<ImageWithFallback
 							className={styles.articleImage}
-							src={article.image}
-							alt={article.title}
+							src={blog.previewImagePath}
+							alt={blog.blogTitle}
 							fallbackSrc='/images/imageFallback.png'
-							title={article.title}
+							title={blog.blogTitle}
 							layout="responsive"
 							objectFit="cover"
 							width={800}
@@ -21,8 +22,7 @@ export default function ArticleGrid(props: any) {
 						/>
 					</div>
 					<div className={styles.articleInfo}>
-						<h3>{article.title}</h3>
-						<p>{article.description}</p>
+						{blog.blogTitle}
 					</div>
 
 				</Link>

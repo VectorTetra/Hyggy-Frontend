@@ -38,4 +38,6 @@
 
 .sortingSidebarContent {
 	padding-left: 10px;
+	gap: 5px;
+	display: flex;
 }

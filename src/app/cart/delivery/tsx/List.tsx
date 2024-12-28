@@ -41,9 +41,9 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
                                 {store.name}
                             </label>
                             <p className="text-gray-600">
-                                {selectedDeliveryType === "store"
-                                    ? `${store.street}, ${store.houseNumber}, ${store.city}, ${store.postalCode}`
-                                    : `${store.address}, ${store.city}, ${store.postalCode}`}
+                                {selectedDeliveryType.id === 1 && `${store.street}, ${store.houseNumber}, ${store.city}, ${store.postalCode}`}
+                                {selectedDeliveryType.id === 3 && `${store.address}, ${store.postalCode}`}
+                                {selectedDeliveryType.id === 4 && `${store.address}, ${store.city}, ${store.postalCode}`}
                             </p>
                         </div>
                     ))}

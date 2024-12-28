@@ -1,15 +1,19 @@
 .carouselWrapper1 {
 	width: 100%;
+	/* height: 100%; */
+	object-fit: contain;
+	/* Изображение полностью помещается, сохраняя пропорции */
+	object-position: center;
 	margin: 20px 0;
 }
 
-.slick-list {
+.carouselWrapper1 .slick-list {
 	overflow: hidden;
 	max-height: 250px;
 }
 
-.slick-slide {
-	height: 240px;
+.carouselWrapper1 .slick-slide {
+	height: 250px;
 	display: flex !important;
 	justify-content: center;
 	align-items: center;
@@ -17,14 +21,14 @@
 	border-radius: 16px;
 }
 
-.cardImage1 {
+.carouselWrapper1 .cardImage1 {
 	border-radius: 16px;
 	width: 80vw;
-	height: 250px;
+	height: 200px;
 	object-fit: cover;
 }
 
-.cardTitle {
+.carouselWrapper1 .cardTitle {
 	text-align: center;
 	margin-top: 8px;
 	font-size: 16px;
@@ -40,7 +44,7 @@
 }
 
 
-.slick-arrow {
+.carouselWrapper1 .slick-arrow {
 	background: rgba(255, 255, 255, 0.5);
 	/* Зробіть стрілки напівпрозорими */
 	color: rgb(0, 0, 0);
@@ -56,15 +60,19 @@
 	align-items: center;
 }
 
-.slick-arrow:before {
+.carouselWrapper1 .slick-arrow:before {
 	color: black;
 	font-size: 20px;
 }
 
-.slick-prev {
+.carouselWrapper1 .slick-prev {
 	left: 40px;
+	z-index: 1000;
+	/* Убедитесь, что стрелки поверх всех других элементов */
+	opacity: 1;
+	/* Сделать стрелки видимыми */
 }
 
-.slick-next {
+.carouselWrapper1 .slick-next {
 	right: 40px;
 }

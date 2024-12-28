@@ -1,21 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { AddressDTO } from "@/pages/api/AddressApi";
 import Layout from "../../sharedComponents/Layout";
 import styles from "./page.module.css";
-import useLocalStorageStore from "@/store/localStorage";
+import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
-
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -186,10 +178,10 @@ const AddressPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      const addressInfo = {
-        city: formData?.city || "",
-        street: formData?.street || "",
-        houseNumber: formData?.houseNumber || "",
+      const addressInfo: AddressDTO = {
+        City: formData?.city || "",
+        Street: formData?.street || "",
+        HouseNumber: formData?.houseNumber || "",
       };
       setAddressInfo(addressInfo);
       window.location.href = "/cart/delivery";
@@ -198,7 +190,7 @@ const AddressPage = () => {
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
+      return total + item.product.finalPrice * item.quantity;
     }, 0);
   };
 
@@ -324,7 +316,7 @@ const AddressPage = () => {
             </div>
             <div className={styles.buttonGroup}>
               <button type="submit" className={styles.submitButton}>
-                Перейти до доставка
+                Перейти до доставки
               </button>
             </div>
             <Link prefetch={true} href="/cart">
@@ -340,25 +332,25 @@ const AddressPage = () => {
                 <div key={index} className={styles.cartItem}>
                   <div className={styles.cartItemImageContainer}>
                     <img
-                      src={item.productImage}
-                      alt={item.productDescription}
+                      src={item.product.previewImagePath}
+                      alt={item.product.description}
                       className={styles.cartItemImage}
                     />
                   </div>
                   <div className={styles.cartItemDetails}>
-                    <p>{item.productDescription}</p>
+                    <p>{item.product.description}</p>
                     <div className={styles.info}>
-                      <p>{item.productName}</p>
+                      <p>{item.product.name}</p>
                       <p>Кількість: {item.quantity} шт</p>
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{Math.ceil(item.price)} грн</p>
-                    <p>{Math.ceil(item.price * item.quantity)} грн</p>
+                    <p>{formatCurrency(item.product.finalPrice, "грн / шт")}</p>
+                    <p>{formatCurrency(item.product.finalPrice * item.quantity, "грн")}</p>
                   </div>
                 </div>
               ))}
-              <p className={styles.totalPrice}>Усього {Math.ceil(calculateTotalPrice())} грн</p>
+              <p className={styles.totalPrice}>Всього: {formatCurrency(calculateTotalPrice(), "грн")}</p>
             </div>
           )}
         </div>

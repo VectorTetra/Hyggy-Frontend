@@ -1,19 +1,29 @@
 import Link from "next/link";
-import styles from "./../../styles/MainPageBody-styles.module.css";
+import Image from "next/image";
+import styles from "@/app/MainPageFiles/styles/MainPageBody-styles.module.css";
 
 function MainPageBodyAboutUs(props) {
     return (
-        <div className={styles["brand-container"]}>
+        <div className={styles["brand-container2"]}>
             {props.aboutus.map((item, index) => (
                 <div key={index} className={styles["brand-item"]}>
                     <Link prefetch={true} style={{ textDecoration: "none" }} href={item.urlpage}>
-                        <img className={styles["imageaboutus"]} src={item.urlimage} alt={item.captoin} />
+                        <Image
+                            className={styles["imageaboutus"]}
+                            src={item.urlimage}
+                            alt={item.captoin}
+                            width={50} // Фіксована ширина
+                            height={50} // Фіксована висота
+                            style={{ objectFit: "contain" }} // Пропорційне вміщення
+                        />
+                        {/* <img className={styles["imageaboutus"]} src={item.urlimage} alt={item.captoin} /> */}
                         <div className={styles["aboutus-textcaption"]}>{item.captoin}</div>
                         <div className={styles["aboutus-text"]}>{item.text}</div>
                     </Link>
                 </div>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }
 

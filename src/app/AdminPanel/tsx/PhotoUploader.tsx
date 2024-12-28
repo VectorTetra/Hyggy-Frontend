@@ -4,7 +4,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhotosDirty, maxPhotos = 5, isStarPhotoAssigned = true }) {
+function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhotosDirty, maxPhotos = 5, isStarPhotoAssigned = true, justifyPhotos = "unset" }) {
 
     const handleDragEnd = (event) => {
         const { active, over } = event;
@@ -60,14 +60,14 @@ function PhotoUploader({ photos, setPhotos, UploadPhoto, removePhoto, setIsPhoto
             )}
 
             {photos && photos.length > 0 && (
-                <div>
+                <div style={{ display: 'flex', justifyContent: justifyPhotos || "unset", flexDirection: "column" }}>
                     <div>
                         <div style={{ marginBottom: "10px", fontStyle: "italic", userSelect: "none" }}>
                             Подвійне натискання на кнопку кошику для видалення. {isStarPhotoAssigned && "Фото з зірочкою буде на обкладинці"}
                         </div>
                         <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                             <SortableContext items={photos}>
-                                <div style={{ display: 'flex', gap: "15px", flexWrap: "wrap" }}>
+                                <div style={{ display: 'flex', gap: "15px", flexWrap: "wrap", justifyContent: justifyPhotos || "unset" }}>
                                     {photos.map((photo, index) => (
                                         <SortablePhoto key={photo} id={photo} photo={photo} index={index} removePhoto={removePhoto} isStarPhotoAssigned={isStarPhotoAssigned} />
                                     ))}

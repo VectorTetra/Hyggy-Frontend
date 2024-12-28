@@ -26,6 +26,7 @@ export default function PageProfileUser(props) {
     const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: 'orders' });
     let [customer, setCustomer] = useState<Customer | null>(null);
     const { mutateAsync: updateCustomer } = useUpdateCustomer();
+
     const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
         SearchParameter: "Query",
         Id: getDecodedToken()?.nameid

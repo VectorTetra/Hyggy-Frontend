@@ -126,7 +126,8 @@ interface Row {
 interface BlogInvoiceStore {
     rows: Row[];
     keywords: string[];
-    addKeyword: () => void;
+    //addKeyword: () => void;
+    addKeyword: (newKeyword) => void;
     removeKeyword: (id: number) => void;
     updateKeyword: (id: number, keyword: string) => void;
     clearKeywords: () => void;
@@ -223,11 +224,14 @@ const useBlogInvoiceStore = create<BlogInvoiceStore>((set) => ({
         rows
     })),
     keywords: [],
-    addKeyword: () => set((state) => ({
-        keywords: [
-            ...state.keywords,
-            ''
-        ]
+    // addKeyword: () => set((state) => ({
+    //     keywords: [
+    //         ...state.keywords,
+    //         ''
+    //     ]
+    // })),
+    addKeyword: (newKeyword) => set((state) => ({
+        keywords: [...state.keywords, newKeyword.trim()].sort((a, b) => a.localeCompare(b)),
     })),
     removeKeyword: (id) => set((state) => ({
         keywords: state.keywords.filter((_, i) => i !== id)

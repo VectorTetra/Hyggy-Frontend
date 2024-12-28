@@ -21,8 +21,8 @@ export interface AddressQueryParams {
 	QueryAny?: string | null;
 }
 
-export interface AddressDTO {
-	AddressId?: number;
+export class AddressDTO {
+	//AddressId?: number;
 	Id?: number | null;
 	ShopId?: number | null;
 	StorageId?: number | null;
@@ -37,11 +37,17 @@ export interface AddressDTO {
 	StringIds?: string;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_ADDRESS;
+
+if (!API_BASE_URL) {
+	console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_ADDRESS in your environment variables.");
+	throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_ADDRESS in your environment variables.");
+}
 
 // GET запит для отримання адрес за параметрами
 export async function getAddresses(params: AddressQueryParams = { SearchParameter: "Query" }) {
 	try {
-		const response = await axios.get("http://www.hyggy.somee.com/api/Address", { params });
+		const response = await axios.get(API_BASE_URL!, { params });
 		return response.data;
 	} catch (error) {
 		console.error('Error fetching addresses:', error);
@@ -52,7 +58,7 @@ export async function getAddresses(params: AddressQueryParams = { SearchParamete
 // POST запит для створення нового складу
 export async function postAddress(address: AddressDTO) {
 	try {
-		const response = await axios.post("http://www.hyggy.somee.com/api/Address", address);
+		const response = await axios.post(API_BASE_URL!, address);
 		return response.data;
 	} catch (error) {
 		console.error('Error creating address:', error);
@@ -63,7 +69,7 @@ export async function postAddress(address: AddressDTO) {
 // PUT запит для оновлення існуючого складу
 export async function putAddress(address: AddressDTO) {
 	try {
-		const response = await axios.put("http://www.hyggy.somee.com/api/Address", address);
+		const response = await axios.put(API_BASE_URL!, address);
 		return response.data;
 	} catch (error) {
 		console.error('Error updating address:', error);
@@ -74,7 +80,7 @@ export async function putAddress(address: AddressDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteAddress(id: number) {
 	try {
-		const response = await axios.delete(`http://www.hyggy.somee.com/api/Address/${id}`);
+		const response = await axios.delete(`${API_BASE_URL!}/${id}`);
 		return response.data;
 	} catch (error) {
 		console.error('Error deleting address:', error);
@@ -83,13 +89,14 @@ export async function deleteAddress(id: number) {
 }
 
 // Використання useQuery для отримання списку складів (wares)
-export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }) {
+export function useAddresses(params: AddressQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
 	return useQuery({
 		queryKey: ['addresses', params],
 		queryFn: () => getAddresses(params),
 		staleTime: Infinity, // Дані завжди актуальні
 		gcTime: Infinity, // Дані залишаються в кеші без очищення
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+		enabled: isEnabled,
 	});
 }
 

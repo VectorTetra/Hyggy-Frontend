@@ -40,11 +40,24 @@ export class Customer {
     executedOrdersSum: number;
     executedOrdersAvg: number;
 }
+export class GuestCustomerPostDTO {
+    Name: string
+    Surname: string;
+    Email: string;
+    PhoneNumber: string;
+}
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER;
+
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER in your environment variables.");
+    throw new Error("API_BASE_URL is not defined. Please set NEXT_PUBLIC_BACKEND_SOMEE_API_CUSTOMER in your environment variables.");
+}
 
 // GET запит (вже реалізований)
 export async function getCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }) {
     try {
-        const response = await axios.get('http://www.hyggy.somee.com/api/Customer', {
+        const response = await axios.get(API_BASE_URL!, {
             params,
         });
 
@@ -55,6 +68,17 @@ export async function getCustomers(params: CustomerQueryParams = { SearchParamet
     }
 }
 
+// POST запит для створення або отримання гостьового користувача
+export async function postOrFindGuestCustomer(Customer: GuestCustomerPostDTO) {
+    try {
+        const response = await axios.post(`${API_BASE_URL!}/createOrFindGuest`, Customer);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating Customer:', error);
+        throw new Error('Failed to update Customer');
+    }
+}
+
 // PUT запит для оновлення існуючого складу
 export async function putCustomer(Customer: CustomerPutDTO) {
     try {
@@ -62,7 +86,7 @@ export async function putCustomer(Customer: CustomerPutDTO) {
             throw new Error('Id is required for updating a Customer');
         }
 
-        const response = await axios.put(`http://www.hyggy.somee.com/api/Customer`, Customer);
+        const response = await axios.put(API_BASE_URL!, Customer);
         return response.data;
     } catch (error) {
         console.error('Error updating Customer:', error);
@@ -73,7 +97,7 @@ export async function putCustomer(Customer: CustomerPutDTO) {
 // DELETE запит для видалення складу за Id
 export async function deleteCustomer(id: string) {
     try {
-        const response = await axios.delete(`http://www.hyggy.somee.com/api/Customer/${id}`);
+        const response = await axios.delete(`${API_BASE_URL!}/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting Customer:', error);
@@ -82,14 +106,27 @@ export async function deleteCustomer(id: string) {
 }
 
 // Використання useQuery для отримання списку складів (customers)
-export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }) {
+export function useCustomers(params: CustomerQueryParams = { SearchParameter: "Query" }, isEnabled: boolean = true) {
     return useQuery({
         queryKey: ['customers', params],
         queryFn: () => getCustomers(params),
         staleTime: Infinity, // Дані завжди актуальні
         gcTime: Infinity, // Дані залишаються в кеші без очищення
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
+        enabled: isEnabled, // Запит відбувається тільки при значенні true
     });
+}
+
+// Використання useMutation для створення нового складу (customer)
+export function useCreateOrFindGuestCustomer() {
+    const queryClient = useQueryClient();
+    return useMutation(
+        {
+            mutationFn: (newCustomer: GuestCustomerPostDTO) => postOrFindGuestCustomer(newCustomer),
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['customers'] }); // Оновлює кеш даних після створення складу
+            },
+        });
 }
 
 // Використання useMutation для оновлення існуючого складу (customer)

@@ -17,7 +17,7 @@ export default function WorkPage() {
 	};
 
 	return (
-		<Layout headerType='header1'> {/* Передаем metadata */}
+		<Layout headerType='header1' footerType='footer3'> {/* Передаем metadata */}
 			<div className={styles.pageContainer}>
 				{data.map((item: any) => {
 					if (item.type === "imageHeader") {

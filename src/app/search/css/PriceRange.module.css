@@ -97,7 +97,7 @@
 }
 
 .priceRangeOpen {
-	padding: 10px 16px 0 16px;
+	padding: 20px 16px 0 16px;
 	max-height: 500px;
 	/* Встановіть достатнє значення для розкриття */
 	opacity: 1;

@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, circularProgressClasses, TextField, Typography } from '@mui/material';
-import { DataGrid, GridToolbar, useGridApiRef, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
+import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
+import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
 import { useCustomers, useDeleteCustomer } from '@/pages/api/CustomerApi';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, TextField, ThemeProvider, Typography } from '@mui/material';
+import { DataGrid, GridColDef, GridToolbar, useGridApiRef } from '@mui/x-data-grid';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
-import ConfirmationDialog from '@/app/sharedComponents/ConfirmationDialog';
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
 
-type Customer = {
-    name: string;
-    surname: string;
-    email: string;
-    phone: string;
-    executedOrderSum: number;
-    executedOrdersAvg: number;
-}
 
-const Clients = () => {
+const Clients = ({ rolePermissions }) => {
     const [searchTerm, setSearchTerm] = useState(''); // Стан для швидкого пошуку
-    const { data: data = [], isLoading: dataLoading, isSuccess: success } = useCustomers({
+    const { data: data = [], isLoading: dataLoading } = useCustomers({
         SearchParameter: "Query",
         PageNumber: 1,
         PageSize: 1000
     });
-    const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useQueryState("at", { defaultValue: "products", clearOnDefault: true, scroll: false, history: "push", shallow: true });
     const { mutate: deleteCustomer } = useDeleteCustomer();
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -49,122 +40,153 @@ const Clients = () => {
             console.log("selectedRow", selectedRow);
             await deleteCustomer(selectedRow.id);
             setIsDialogOpen(false);
-
-            //setData((prevData) => prevData.filter((item) => item.id !== selectedRow.id));
             toast.info('Користувача успішно видалено!');
         }
     };
-    const columns = [
+
+    let columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 0.3, minWidth: 50 },
         { field: 'name', headerName: "Ім'я", flex: 1, minWidth: 200 },
         { field: 'surname', headerName: 'Прізвище', flex: 1, minWidth: 150 },
         { field: 'email', headerName: 'Пошта', flex: 0.8, minWidth: 150 },
-        { field: 'phone', headerName: 'Телефон', flex: 1, minWidth: 150 },
+        { field: 'phoneNumber', headerName: 'Телефон', flex: 1, minWidth: 150 },
         {
             field: 'executedOrdersSum',
-            headerName: 'Заг. сума замовлень',
+            headerName: '',
+            headerAlign: 'right',
             flex: 0.5,
             cellClassName: 'text-right',
-            renderCell: (params) => formatCurrency(params.value),
+            hideSortIcons: true,
+            width: 150,
+            minWidth: 150,
+            maxWidth: 150,
+            renderHeader(params) {
+                return (
+                    <div style={{ textAlign: "right", textWrap: "balance" }}>
+                        <span style={{ wordBreak: "break-word" }} >Загальний чек</span>
+                    </div>
+                );
+            },
+            renderCell: (params) => formatCurrency(params.value, "₴"),
         },
         {
             field: 'executedOrdersAvg',
-            headerName: 'Середня сума замовлень',
+            headerName: '',
+            headerAlign: 'right',
             flex: 0.5,
             cellClassName: 'text-right',
-            renderCell: (params) => formatCurrency(params.value),
+            hideSortIcons: true,
+            width: 150,
+            minWidth: 150,
+            maxWidth: 150,
+            renderHeader(params) {
+                return (
+                    <div style={{ textAlign: "right", textWrap: "balance" }}>
+                        <span style={{ wordBreak: "break-word" }} >Середній чек</span>
+                    </div>
+                );
+            },
+            renderCell: (params) => formatCurrency(params.value, "₴"),
         },
         {
             field: 'actions',
-            headerName: 'Дії',
-            flex: 0.5,
+            headerName: '',
+            flex: 0,
             minWidth: 75,
+            width: 75,
+            maxWidth: 75,
             cellClassName: 'text-center',
             renderCell: (params) => (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-                    <Button sx={{ minWidth: "10px", padding: 0 }} title='Видалити' variant="outlined" color="secondary" onClick={() => handleDelete(params.row)}>
+                    <Button sx={{ minWidth: "10px", padding: 0 }} color='secondary' title='Видалити' variant="outlined" onClick={() => handleDelete(params.row)}>
                         <DeleteIcon />
                     </Button>
                 </Box>
             ),
         },
     ];
-    // Функція для форматування значення
-    const formatCurrency = (value) => {
-        if (value === null || value === undefined) return '';
-        const roundedValue = Math.round(value * 100) / 100;
-        return `${roundedValue.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₴`;
-    };
+
+    if (!rolePermissions.IsFrameClients_Cell_ExecutedOrdersSum_Available) {
+        columns = columns.filter(column => column.field !== 'executedOrdersSum');
+    }
+    if (!rolePermissions.IsFrameClients_Cell_ExecutedOrdersAvg_Available) {
+        columns = columns.filter(column => column.field !== 'executedOrdersAvg');
+    }
+    if (!rolePermissions.IsFrameClients_Cell_Actions_Available) {
+        columns = columns.filter(column => column.field !== 'actions');
+    }
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                Користувачі
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <TextField
-                    label="Швидкий пошук"
-                    variant="outlined"
-                    size="small"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
-                />
-            </Box>
-            <Box sx={{ overflowX: 'auto' }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
-                <DataGrid
-                    rows={filteredData} // Використовуємо відфільтровані дані
-                    columns={columns}
-                    apiRef={apiRef}
-                    loading={dataLoading}
-                    disableRowSelectionOnClick
-                    slots={{ toolbar: GridToolbar }}
-                    localeText={{
-                        filterOperatorContains: 'Містить',
-                        filterOperatorDoesNotContain: 'Не містить',
-                        filterOperatorEquals: 'Дорівнює',
-                        filterOperatorDoesNotEqual: 'Не дорівнює',
-                        filterOperatorStartsWith: 'Починається з',
-                        filterOperatorIsAnyOf: 'Є одним з',
-                        filterOperatorEndsWith: 'Закінчується на',
-                        filterOperatorIs: 'Дорівнює',
-                        filterOperatorNot: 'Не дорівнює',
-                        filterOperatorAfter: 'Після',
-                        filterOperatorOnOrAfter: 'Після або в цей день',
-                        filterOperatorBefore: 'До',
-                        filterOperatorOnOrBefore: 'До або в цей день',
-                        filterOperatorIsEmpty: 'Пусто',
-                        filterOperatorIsNotEmpty: 'Не пусто',
-                        columnMenuLabel: 'Меню стовпця',
-                        columnMenuShowColumns: 'Показати стовпці',
-                        columnMenuFilter: 'Фільтр',
-                        columnMenuHideColumn: 'Приховати стовпець',
-                        columnMenuUnsort: 'Скасувати сортування',
-                        columnMenuSortAsc: 'Сортувати за зростанням',
-                        columnMenuSortDesc: 'Сортувати за спаданням',
-                        toolbarDensity: 'Щільність',
-                        toolbarDensityLabel: 'Щільність',
-                        toolbarDensityCompact: 'Компактно',
-                        toolbarDensityStandard: 'Стандарт',
-                        toolbarDensityComfortable: 'Комфортно',
-                        toolbarColumns: 'Стовпці',
-                        toolbarColumnsLabel: 'Вибрати стовпці',
-                        toolbarFilters: 'Фільтри',
-                        toolbarFiltersLabel: 'Показати фільтри',
-                        toolbarFiltersTooltipHide: 'Сховати фільтри',
-                        toolbarFiltersTooltipShow: 'Показати фільтри',
-                        toolbarExport: 'Експорт',
-                        toolbarExportLabel: 'Експорт',
-                        toolbarExportCSV: 'Завантажити як CSV',
-                        toolbarExportPrint: 'Друк',
-                        noRowsLabel: 'Користувачів не знайдено',
-                        noResultsOverlayLabel: 'Результатів не знайдено',
-                        footerRowSelected: (count) => `Вибрано рядків: ${count}`,
-                        MuiTablePagination: {
-                            labelRowsPerPage: 'Рядків на сторінці',
-                        },
-                    }}
-                />
-            </Box>
+            <ThemeProvider theme={themeFrame}>
+                <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                    Клієнти
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                    <TextField
+                        label="Швидкий пошук"
+                        variant="outlined"
+                        size="small"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // Оновлюємо стан для швидкого пошуку
+                    />
+                </Box>
+                <Box sx={{ overflowX: 'auto', maxWidth: process.env.NEXT_PUBLIC_ADMINPANEL_BOX_DATAGRID_MAXWIDTH }} height="80vh"> {/* Додаємо прокрутку при переповненні */}
+                    <DataGrid
+                        rows={filteredData} // Використовуємо відфільтровані дані
+                        columns={columns}
+                        apiRef={apiRef}
+                        loading={dataLoading}
+                        disableRowSelectionOnClick
+                        slots={{ toolbar: GridToolbar }}
+                        localeText={{
+                            filterOperatorContains: 'Містить',
+                            filterOperatorDoesNotContain: 'Не містить',
+                            filterOperatorEquals: 'Дорівнює',
+                            filterOperatorDoesNotEqual: 'Не дорівнює',
+                            filterOperatorStartsWith: 'Починається з',
+                            filterOperatorIsAnyOf: 'Є одним з',
+                            filterOperatorEndsWith: 'Закінчується на',
+                            filterOperatorIs: 'Дорівнює',
+                            filterOperatorNot: 'Не дорівнює',
+                            filterOperatorAfter: 'Після',
+                            filterOperatorOnOrAfter: 'Після або в цей день',
+                            filterOperatorBefore: 'До',
+                            filterOperatorOnOrBefore: 'До або в цей день',
+                            filterOperatorIsEmpty: 'Пусто',
+                            filterOperatorIsNotEmpty: 'Не пусто',
+                            columnMenuLabel: 'Меню стовпця',
+                            columnMenuShowColumns: 'Показати стовпці',
+                            columnMenuFilter: 'Фільтр',
+                            columnMenuHideColumn: 'Приховати стовпець',
+                            columnMenuUnsort: 'Скасувати сортування',
+                            columnMenuSortAsc: 'Сортувати за зростанням',
+                            columnMenuSortDesc: 'Сортувати за спаданням',
+                            toolbarDensity: 'Щільність',
+                            toolbarDensityLabel: 'Щільність',
+                            toolbarDensityCompact: 'Компактно',
+                            toolbarDensityStandard: 'Стандарт',
+                            toolbarDensityComfortable: 'Комфортно',
+                            toolbarColumns: 'Стовпці',
+                            toolbarColumnsLabel: 'Вибрати стовпці',
+                            toolbarFilters: 'Фільтри',
+                            toolbarFiltersLabel: 'Показати фільтри',
+                            toolbarFiltersTooltipHide: 'Сховати фільтри',
+                            toolbarFiltersTooltipShow: 'Показати фільтри',
+                            toolbarExport: 'Експорт',
+                            toolbarExportLabel: 'Експорт',
+                            toolbarExportCSV: 'Завантажити як CSV',
+                            toolbarExportPrint: 'Друк',
+                            noRowsLabel: 'Користувачів не знайдено',
+                            noResultsOverlayLabel: 'Результатів не знайдено',
+                            footerRowSelected: (count) => `Вибрано рядків: ${count}`,
+                            MuiTablePagination: {
+                                labelRowsPerPage: 'Рядків на сторінці',
+                            },
+                        }}
+                    />
+                </Box>
+            </ThemeProvider>
             <ConfirmationDialog
                 title="Видалити користувача?"
                 contentText={
@@ -177,13 +199,13 @@ const Clients = () => {
                 }
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDialogOpen(false)}
-                confirmButtonColor='#be0f0f'
-                cancelButtonColor='#248922'
+                confirmButtonBackgroundColor='#00AAAD'
+                cancelButtonBackgroundColor='#fff'
+                cancelButtonBorderColor='#be0f0f'
+                cancelButtonColor='#be0f0f'
                 open={isDialogOpen}
             />
         </Box>
-
-
     )
 }
 

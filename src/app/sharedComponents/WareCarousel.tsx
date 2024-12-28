@@ -100,6 +100,13 @@ export default function WareCarousel({ wares }) {
     // Функція для визначення кількості слайдів залежно від розміру екрана
     const updateSlidesToShow = () => {
         const screenWidth = window.innerWidth;
+        // if (screenWidth >= 1536) {
+        //     setSlidesToShow(6);
+        // }
+        // else if (screenWidth >= 1280) {
+        //     setSlidesToShow(5);
+        // }
+        // else 
         if (screenWidth >= 1024) {
             setSlidesToShow(4);
         } else if (screenWidth >= 768) {
@@ -135,22 +142,24 @@ export default function WareCarousel({ wares }) {
     };
 
     return (
-        <div className="carouselWrapper wareCarousel" >
-            <Slider ref={sliderRef} {...settings}>
-                {paddedWares.map((wareIter, index) =>
-                    wareIter ? (
-                        <WareCard
-                            key={index}
-                            ware={wareIter}
-                            isFavorite={isFavorite(wareIter.id)}
-                            toggleFavorite={() => toggleFavoriteWare(wareIter.id)}
-                            selectedShop={selectedShop}
-                        />
-                    ) : (
-                        <div key={index} className="wareCardPlaceholder" />
-                    )
-                )}
-            </Slider>
+        <div className="wareCarousel">
+            <div className="carouselWrapper" >
+                <Slider ref={sliderRef} {...settings}>
+                    {paddedWares.map((wareIter, index) =>
+                        wareIter ? (
+                            <WareCard
+                                key={index}
+                                ware={wareIter}
+                                isFavorite={isFavorite(wareIter.id)}
+                                toggleFavorite={() => toggleFavoriteWare(wareIter.id)}
+                                selectedShop={selectedShop}
+                            />
+                        ) : (
+                            <div key={index} className="wareCardPlaceholder" />
+                        )
+                    )}
+                </Slider>
+            </div>
         </div>
     );
 }

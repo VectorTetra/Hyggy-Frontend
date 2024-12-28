@@ -39,7 +39,7 @@ export function MainPageBorder() {
                         <Link href={`/PageBlogIndividual/${card.id}`}>
                             <Image
                                 width={400}
-                                height={300}
+                                height={200}
                                 src={card.previewImagePath}
                                 alt={card.blogTitle}
                                 className="cardImage1"

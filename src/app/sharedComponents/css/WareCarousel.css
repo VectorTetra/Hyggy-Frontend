@@ -1,8 +1,13 @@
-.wareCarousel .carouselWrapper {
+.footer2 .wareCarousel .carouselWrapper,
+.footer4 .wareCarousel .carouselWrapper {
     width: 100%;
-    /* margin: auto; */
-    margin: 20px 0;
+    padding: 1rem 3rem;
 }
+
+/* .wareCarousel .carouselWrapper {
+    width: 100%;
+    margin: 20px 0;
+} */
 
 .wareCarousel .slick-list {
     overflow: hidden;
@@ -43,7 +48,7 @@
 
 .wareCarousel .slick-track {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 .wareCarousel .slick-arrow {

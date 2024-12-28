@@ -1,11 +1,9 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
-import Link from "next/link";
-import styles from "./css/mainblockmenu.module.css";
-import blockData from "./json/blockmenu.json";
-import useMainPageMenuStore from "@/store/mainPageMenu";
 import { useWareCategories1 } from "@/pages/api/WareCategory1Api";
-import { CircularProgress } from "@mui/material";
+import useMainPageMenuStore from "@/store/mainPageMenu";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
+import styles from "./css/mainblockmenu.module.css";
 interface Category {
     caption?: string;
     type?: string;

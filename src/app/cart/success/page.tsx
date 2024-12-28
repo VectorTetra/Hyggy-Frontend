@@ -1,112 +1,103 @@
 "use client";
-import { useState, useEffect } from "react";
-import Layout from "../../sharedComponents/Layout";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
+import Layout from "../../sharedComponents/Layout";
+import Link from "next/link";
+import { OrderGetDTO } from "@/pages/api/OrderApi";
 import useLocalStorageStore from "@/store/localStorage";
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-interface CartItem {
-  productDescription: string;
-  productName: string;
-  productImage: string;
-  quantity: number;
-  price: number;
-  oldPrice: string;
-  selectedOption: string;
-}
 
 const SuccessPage = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [address, setAddress] = useState("");
-  const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryCost, setDeliveryCost] = useState(0);
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const { getCartFromLocalStorage, clearCart, addressInfo, deliveryInfo, paymentStatus, setPaymentStatus, setDeliveryInfo, setAddressInfo } = useLocalStorageStore();
+  const {
+    clearCart,
+    setDeliveryInfo,
+    setPaymentStatus,
+    setAddressInfo
+  } = useLocalStorageStore();
+  const [successfullOrder, setSuccessfullOrder] = useState<OrderGetDTO | null>(null);
+  const [deliveryDate, setDeliveryDate] = useState("");
 
   useEffect(() => {
-    if (paymentStatus !== 'success') {
-      router.push('/cart/payment');
-      return;
+    const orderParam = searchParams ? searchParams.get("order") : null;
+    const deliveryDateParam = searchParams ? searchParams.get("deliveryDate") : null;
+
+    if (orderParam) {
+      setSuccessfullOrder(JSON.parse(decodeURIComponent(orderParam)));
     }
 
-    const savedCartItems = getCartFromLocalStorage();
-    setCartItems(savedCartItems);
-
-    if (deliveryInfo && addressInfo) {
-      const { selectedDeliveryType, selectedStore, deliveryCost, deliveryDays } = deliveryInfo;
-
-      const orderDate = new Date();
-      const estimatedDeliveryDate = new Date(orderDate);
-      estimatedDeliveryDate.setDate(orderDate.getDate() + deliveryDays);
-      const formattedDate = estimatedDeliveryDate.toLocaleDateString('uk-UA');
-
-      if (selectedDeliveryType === 'store') {
-        setAddress(`${selectedStore.street}, ${selectedStore.houseNumber}, ${selectedStore.city}, ${selectedStore.postalCode}`)
-      } else if (selectedDeliveryType === 'novaPoshta') {
-        setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
-      } else if (selectedDeliveryType === 'courier') {
-        setAddress(`${addressInfo.city}, ${addressInfo.street}, ${addressInfo.houseNumber}`);
-      } else if (selectedDeliveryType === 'ukrPoshta') {
-        setAddress(`${selectedStore.address}, ${selectedStore.postalCode}`)
-      }
-      setDeliveryDate(formattedDate);
-      setDeliveryCost(deliveryCost);
+    if (deliveryDateParam) {
+      setDeliveryDate(decodeURIComponent(deliveryDateParam));
     }
+  }, [searchParams]);
 
-    setTimeout(() => {
+  useEffect(() => {
+    if (successfullOrder) {
       clearCart();
       setPaymentStatus(null);
       setDeliveryInfo(null);
       setAddressInfo(null);
-    }, 1000);
-  }, [router]);
+    }
+  }, [successfullOrder]);
 
-
-  const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-  };
+  if (!successfullOrder) {
+    return <div>Завантаження...</div>;
+  }
 
   return (
     <Layout headerType="header1" footerType="footer1">
       <div className={styles.Page}>
         <h2>Оплата успішна</h2>
       </div>
-      <center><h3><b>Замовлення №123456:</b></h3></center>
+      <center><h3><b>Замовлення № {successfullOrder.id}:</b></h3></center>
       <center>
-        <h6>Доставка за адресою {address} до {deliveryDate}</h6>
+        <h6>Вибраний тип доставки : {successfullOrder.deliveryType.description}</h6>
+        <h6>Вартість доставки : {formatCurrency(successfullOrder.deliveryType.price, "грн")}</h6>
+      </center>
+      <center>
+        <center>
+          <h6>Доставка за адресою:&nbsp;
+            {Object.entries(successfullOrder.deliveryAddress)
+              .filter(([key]) => !["id", "latitude", "longitude", "shopId", "storageId", "orderIds"].includes(key))
+              .sort(([key1], [key2]) => key1.length < key2.length ? -1 : 1)
+              .map(([key, value], index, array) => (
+                <span key={index}>{value !== null && key !== "id" && `${(value ?? '').toString()}${index + 1 < array.length ? "," : ''}`} {index < Object.entries(successfullOrder.deliveryAddress).length}</span>
+              ))}
+          </h6>
+        </center>
+        <h6> Очікувана дата доставки: до {deliveryDate}</h6>
       </center>
 
       <div className={styles.checkoutPage}>
         <div className={styles.cartSummary}>
-          {cartItems.length > 0 && (
+          {successfullOrder.orderItems.length > 0 && (
             <div>
-              {cartItems.map((item, index) => (
+              {successfullOrder.orderItems.map((item, index) => (
                 <div key={index} className={styles.cartItem}>
                   <div className={styles.cartItemImageContainer}>
                     <img
-                      src={item.productImage}
-                      alt={item.productDescription}
+                      src={item.ware.previewImagePath}
+                      alt={item.ware.description}
                       className={styles.cartItemImage}
                     />
                   </div>
                   <div className={styles.cartItemDetails}>
-                    <p>{item.productDescription}</p>
+                    <p>{item.ware.description}</p>
                     <div className={styles.info}>
-                      <p>{item.productName}</p>
-                      <p>Кількість: {item.quantity} шт</p>
+                      <p>{item.ware.name}</p>
+                      <p>Кількість: {item.count} шт</p>
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{Math.ceil(item.price)} грн</p>
-                    <p>{(Math.ceil(item.price) * item.quantity)} грн</p>
+                    <p>{formatCurrency(item.ware.finalPrice, "грн")}</p>
+                    <p>{formatCurrency(item.ware.finalPrice * item.count, "грн")}</p>
                   </div>
                 </div>
               ))}
               <p className={styles.totalPrice}>
-                Усього {Math.ceil(calculateTotalPrice() + deliveryCost)} грн
+                Всього {formatCurrency(successfullOrder.totalPrice, "грн")}
               </p>
             </div>
           )}

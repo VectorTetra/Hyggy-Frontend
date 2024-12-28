@@ -1,31 +1,24 @@
 "use client";
+import { AddressDTO } from "@/pages/api/AddressApi";
+import { OrderDeliveryTypeGetDTO } from "@/pages/api/OrderDeliveryTypeApi";
 import { ShopGetDTO } from "@/pages/api/ShopApi";
+import { WareGetDTO } from "@/pages/api/WareApi";
 import { create } from "zustand";
 
-interface CartItem {
-    productDescription: string;
-    productName: string;
-    productImage: string;
+//export type DeliveryOption = "delivery" | "store";
+//export type DeliveryType = "courier" | "novaPoshta" | "ukrPoshta" | "store";
+export interface CartItem {
+    product: WareGetDTO
     quantity: number;
-    price: number;
-    oldPrice: string;
-    selectedOption: string;
+    selectedOption: string; //"delivery" | "store";
 }
-
-interface AddressInfo {
-    city: string;
-    street: string;
-    houseNumber: string;
-}
-
-interface DeliveryInfo {
-    selectedDeliveryType: string;
+export interface DeliveryInfo {
+    selectedDeliveryType: OrderDeliveryTypeGetDTO | null; //"courier" | "novaPoshta" | "ukrPoshta" | "store";
     selectedStore: any;
-    deliveryCost: number;
-    deliveryDays: number;
+    // deliveryCost: number;
+    // deliveryDays: number;
 }
-
-interface FormData {
+export interface FormData {
     firstName: string;
     lastName: string;
     city: string;
@@ -35,6 +28,21 @@ interface FormData {
     phone: string;
     termsAccepted: boolean;
 }
+// export interface Cart {
+//     items: CartItem[];
+//     deliveryInfo: DeliveryInfo;
+//     addressInfo: AddressDTO;
+//     paymentStatus: string;
+//     formData: FormData;
+// }
+
+// interface AddressInfo {
+//     city: string;
+//     street: string;
+//     houseNumber: string;
+// }
+
+
 
 // Інтерфейс для стану
 interface LocalStorageStore {
@@ -45,10 +53,10 @@ interface LocalStorageStore {
     recentWareIds: number[];
     addRecentWareId: (wareId: number) => void; // Додавання ідентифікатора товару
     cart: CartItem[];
-    addressInfo: AddressInfo | null;
+    addressInfo: AddressDTO | null;
     deliveryInfo: DeliveryInfo | null;
     formData: FormData | null;
-    selectedDeliveryType: string;
+    selectedDeliveryType: OrderDeliveryTypeGetDTO | null;
     paymentStatus: string | null;
     addToCart: (newItem: CartItem) => void;
     removeFromCart: (index: number) => void;
@@ -61,10 +69,10 @@ interface LocalStorageStore {
     getCartFromLocalStorage: () => CartItem[];
     saveCartToLocalStorage: (cartItems: CartItem[]) => void;
     getSelectedShopFromLocalStorage: () => any | null;
-    setAddressInfo: (addressInfo: AddressInfo | null) => void;
+    setAddressInfo: (addressInfo: AddressDTO | null) => void;
     setDeliveryInfo: (deliveryInfo: DeliveryInfo | null) => void;
     setFormData: (formData: FormData) => void;
-    setSelectedDeliveryType: (selectedDeliveryType: string) => void;
+    setSelectedDeliveryType: (selectedDeliveryType: OrderDeliveryTypeGetDTO | null) => void;
     setPaymentStatus: (paymentStatus: string | null) => void;
 }
 
@@ -141,8 +149,17 @@ const setRecentWareIdsToLocalStorage = (ids: number[]): void => {
 
 const getCartFromLocalStorage = (): CartItem[] => {
     if (!isClient) return [];
+    console.log("isClient", isClient);
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
+};
+
+const getCartQuantityFromLocalStorage = (): number => {
+    if (!isClient) return 0;
+    const savedCart = localStorage.getItem("cart");
+    const cart = savedCart ? JSON.parse(savedCart) : null;
+    if (!cart) return 0;
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
 };
 
 const saveCartToLocalStorage = (cartItems: CartItem[]): void => {
@@ -151,13 +168,13 @@ const saveCartToLocalStorage = (cartItems: CartItem[]): void => {
     window.dispatchEvent(new Event("storage"));
 };
 
-const getAddressInfoFromLocalStorage = (): AddressInfo | null => {
+const getAddressInfoFromLocalStorage = (): AddressDTO | null => {
     if (!isClient) return null;
     const savedAddressInfo = localStorage.getItem("addressInfo");
     return savedAddressInfo ? JSON.parse(savedAddressInfo) : null;
 };
 
-const saveAddressInfoToLocalStorage = (addressInfo: AddressInfo | null): void => {
+const saveAddressInfoToLocalStorage = (addressInfo: AddressDTO | null): void => {
     if (!isClient) return;
     localStorage.setItem("addressInfo", JSON.stringify(addressInfo));
 };
@@ -193,16 +210,73 @@ const saveFormDataToLocalStorage = (formData: FormData): void => {
     localStorage.setItem("formData", JSON.stringify(formData));
 };
 
-const getSelectedDeliveryTypeFromLocalStorage = (): string => {
-    if (!isClient) return "store";
+const getSelectedDeliveryTypeFromLocalStorage = (): OrderDeliveryTypeGetDTO | null => {
+    // if (!isClient) return {
+    //     id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //     name: "Забрати в магазині HYGGY",
+    //     description: "Доставка 12-18 робочих днів",
+    //     price: 0,
+    //     minDeliveryTimeInDays: 12,
+    //     maxDeliveryTimeInDays: 18,
+    // };;
+
+    // const savedDeliveryType = localStorage.getItem("selectedDeliveryType");
+    // if (savedDeliveryType) {
+    //     try {
+    //         return JSON.parse(savedDeliveryType) as OrderDeliveryTypeGetDTO;
+    //     } catch (error) {
+    //         console.error("Invalid delivery type data in localStorage", error);
+    //         // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    //         return {
+    //             id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //             name: "Забрати в магазині HYGGY",
+    //             description: "Доставка 12-18 робочих днів",
+    //             price: 0,
+    //             minDeliveryTimeInDays: 12,
+    //             maxDeliveryTimeInDays: 18,
+    //         };
+    //     }
+    // }
+
+    // // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    // return {
+    //     id: 1, // ID доставки "Забрати в магазині HYGGY"
+    //     name: "Забрати в магазині HYGGY",
+    //     description: "Доставка 12-18 робочих днів",
+    //     price: 0,
+    //     minDeliveryTimeInDays: 12,
+    //     maxDeliveryTimeInDays: 18,
+    // };
+
+
+    if (!isClient) return null;
+
     const savedDeliveryType = localStorage.getItem("selectedDeliveryType");
-    return savedDeliveryType ? savedDeliveryType : "store";
+    if (savedDeliveryType) {
+        try {
+            return JSON.parse(savedDeliveryType) as OrderDeliveryTypeGetDTO;
+        } catch (error) {
+            console.error("Invalid delivery type data in localStorage", error);
+            // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+            return null;
+        }
+    }
+
+    // Повертаємо дефолтний об'єкт типу OrderDeliveryTypeGetDTO
+    return null;
 };
 
-const saveSelectedDeliveryTypeToLocalStorage = (selectedDeliveryType: string): void => {
+const saveSelectedDeliveryTypeToLocalStorage = (selectedDeliveryType: OrderDeliveryTypeGetDTO | null): void => {
     if (!isClient) return;
-    localStorage.setItem("selectedDeliveryType", selectedDeliveryType);
+
+    try {
+        const deliveryTypeString = JSON.stringify(selectedDeliveryType);
+        localStorage.setItem("selectedDeliveryType", deliveryTypeString);
+    } catch (error) {
+        console.error("Failed to save selected delivery type to localStorage", error);
+    }
 };
+
 
 const getPaymentStatusFromLocalStorage = (): string | null => {
     if (!isClient) return null;
@@ -227,7 +301,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
     formData: getFormDataFromLocalStorage(),
     selectedDeliveryType: getSelectedDeliveryTypeFromLocalStorage(),
     paymentStatus: getPaymentStatusFromLocalStorage(),
-    cartQuantity: 0,
+    cartQuantity: getCartQuantityFromLocalStorage(),
     selectedShop: isClient ? getSelectedShopFromLocalStorage() : null,
     setSelectedShop: (shop) => {
         set({ selectedShop: shop });
@@ -253,7 +327,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
     addToCart: (newItem) => {
         set((state) => {
             const existingItemIndex = state.cart.findIndex(
-                (item) => item.productName === newItem.productName
+                (item) => item.product.id === newItem.product.id
             );
 
             let updatedCart;
@@ -269,7 +343,7 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
                 updatedCart = [...state.cart, newItem];
             }
 
-            // Оновлення типу доставки для всіх товарів в кошику
+            //Оновлення типу доставки для всіх товарів в кошику
             const lastSelectedDeliveryType = newItem.selectedOption; // Тип доставки нового товару
             updatedCart = updatedCart.map((item) => ({
                 ...item,

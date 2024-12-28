@@ -51,8 +51,22 @@
 }
 
 .sidebarHr {
-	width: 90%;
+	width: calc(100% - 30px);
 	text-align: center;
 	display: flex;
 	align-self: center;
+}
+
+/* Медіа-запит для екранів менше 740px */
+@media (max-width: 740px) {
+	.sidebar {
+		width: 400px;
+		transform: translateX(100%);
+		/* Початковий стан - за межами екрана */
+	}
+
+	.sidebar.open {
+		transform: translateX(0);
+		/* Відкривається */
+	}
 }
