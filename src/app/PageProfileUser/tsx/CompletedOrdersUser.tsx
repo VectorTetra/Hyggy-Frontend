@@ -30,7 +30,7 @@ export default function CompletedOrdersUser() {
         PageSize: 1000,
         CustomerId: getDecodedToken()?.nameid ?? null,
         StatusId: 7,
-    });
+    }, getDecodedToken()?.nameid !== null && getDecodedToken()?.nameid !== undefined);
 
     const {
         data: ordersStatus12 = [],
@@ -40,7 +40,7 @@ export default function CompletedOrdersUser() {
         PageSize: 1000,
         CustomerId: getDecodedToken()?.nameid ?? null,
         StatusId: 12,
-    });
+    }, getDecodedToken()?.nameid !== null && getDecodedToken()?.nameid !== undefined);
 
     const orders: OrderGetDTO[] = [...ordersStatus7, ...ordersStatus12].sort((a, b) => b.orderDate - a.orderDate);
     //Проверка на наличие заказов

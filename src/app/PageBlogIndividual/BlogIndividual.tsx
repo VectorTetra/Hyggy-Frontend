@@ -61,7 +61,7 @@ export default function BlogIndividual(props) {
                     alt={article.blogTitle || "Blog Image"}
                 />
                 <h1 className={styles.h1}>{article.blogTitle}</h1>
-                <div className={styles.blogItemsСontainer}>
+                <div className={styles.blogItemsContainer}>
                     {articleItems !== null &&
                         articleItems.map((item, index) => (
                             <div key={index}>

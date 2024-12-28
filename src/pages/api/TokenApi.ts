@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import { c } from 'nuqs/dist/serializer-DjSGvhZt';
-import { get } from 'lodash';
 
 class JwtPayload {
 	nameid: string;
