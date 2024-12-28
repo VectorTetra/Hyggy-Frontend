@@ -53,10 +53,6 @@ const BlockShops: React.FC = () => {
         }
     };
 
-
-
-
-
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
@@ -64,7 +60,7 @@ const BlockShops: React.FC = () => {
         };
 
     }, []);
-    //if (!isMainPageMenuShopsOpened) return null;
+
     return (
 
         <Collapse
