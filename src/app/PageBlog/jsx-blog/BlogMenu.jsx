@@ -13,10 +13,10 @@ import { getBlogSubCatsByMainCat } from "@/pages/api/BlogSubCategory";
 
 
 
-export default function BlogMenu(props) {
-    const [images, setImages] = useState([]);
-    const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
-    const router = useRouter();
+// export default function BlogMenu(props) {
+//     const [images, setImages] = useState([]);
+//     const [selectedCaption, setSelectedCaption] = useState("Для дому"); // Начальное состояние
+//     const router = useRouter();
 
 
 //     const [category, setCategory] = useState("");
@@ -198,4 +198,3 @@ export default function BlogMenu({ currentCategory, setCurrentCategory }) {
             </div>
         );
             }
-        

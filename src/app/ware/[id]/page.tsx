@@ -299,7 +299,7 @@ export default function WarePage() {
                 {product.wareItems.every(wi => wi.quantity === 0) ? "Немає в наявності" : "Додати до кошика"}
               </button>
             </span>
-            {isWarePageMenuShopsOpened && <BlockShopsByWare wareId={id} />}
+            <BlockShopsByWare wareId={id} />
             {showPopup && (
               <CartPopup
                 onClose={handleClosePopup}

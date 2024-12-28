@@ -38,13 +38,13 @@
   transition: transform 0.3s ease;
 }
 
-.mainPageHeaderItem:hover {
-  transform: scale(1.05);
-}
+/* .mainPageHeaderItem:hover {
+} */
 .mainPageHeaderItem:hover .notransform {
   transform: none !important;
 }
 .mainPageHeaderItem:hover .disappearOnAdapt {
+  transform: scale(1.05);
   text-decoration: underline;
   color: black;
 }

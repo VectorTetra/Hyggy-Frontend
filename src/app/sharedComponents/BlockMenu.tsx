@@ -6,6 +6,8 @@ import blockData from "./json/blockmenu.json";
 import useMainPageMenuStore from "@/store/mainPageMenu";
 import { useWareCategories1 } from "@/pages/api/WareCategory1Api";
 import { CircularProgress } from "@mui/material";
+import { Collapse } from "@mui/material";
+
 interface Category {
     caption?: string;
     type?: string;
@@ -122,58 +124,67 @@ const BlockMenu: React.FC = () => {
     }, [isMainPageMenuOpened]);
 
 
-    if (!isMainPageMenuOpened) return null;
+    //if (!isMainPageMenuOpened) return null;
     return (
-        <div className={styles.overlay}> <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
-            <div className={styles.menuHeader}>
-                {history.length === 0 ? (
-                    <>
-                        <div className={styles.menuContainerLogo}>
-                            <img src="/images/AdminPanel/hyggyIcon.png" alt="Logo" className={styles.logo} />
-                            <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+        <div>
+            <Collapse
+                in={isMainPageMenuOpened}
+                timeout={300} // Тривалість анімації (мс)
+                orientation="horizontal" // Анімація по горизонталі
+            >
+                <div className={`${styles.menuContainer} ${isMainPageMenuOpened ? styles.show : ""}`}>
+                    <div ref={menuRef}>
+                        <div className={styles.menuHeader}>
+                            {history.length === 0 ? (
+                                <>
+                                    <div className={styles.menuContainerLogo}>
+                                        <img src="/images/AdminPanel/hyggyIcon.png" alt="Logo" className={styles.logo} />
+                                        <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className={styles.headermenucategory}>
+                                        <button onClick={handleBackClick} className={styles.backButton}>
+                                            {'<'}
+                                        </button>
+                                        <div className={styles.menuTitle}>
+                                            {/* Отображение правильного заголовка в зависимости от уровня меню */}
+                                            {history.length === 1 && currentCategory ? (
+                                                // Второй уровень 
+                                                currentCategory.caption || currentCategory.type
+                                            ) : history.length === 2 && currentCategory ? (
+                                                // Третий уровень
+                                                currentCategory.type || currentCategory.name
+                                            ) : ''}
+                                        </div>
+                                        <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
+                                    </div>
+                                </>
+                            )}
                         </div>
-                    </>
-                ) : (
-                    <>
-                        <div className={styles.headermenucategory}>
-                            <button onClick={handleBackClick} className={styles.backButton}>
-                                {'<'}
-                            </button>
-                            <div className={styles.menuTitle}>
-                                {/* Отображение правильного заголовка в зависимости от уровня меню */}
-                                {history.length === 1 && currentCategory ? (
-                                    // Второй уровень 
-                                    currentCategory.caption || currentCategory.type
-                                ) : history.length === 2 && currentCategory ? (
-                                    // Третий уровень
-                                    currentCategory.type || currentCategory.name
-                                ) : ''}
-                            </div>
-                            <button onClick={() => { setIsMainPageMenuOpened(false) }} className={styles.closeButton}>Х</button>
-                        </div>
-                    </>
-                )}
-            </div>
-            <hr className={styles.divider} />
-            <ul className={styles.menu}>
-                {currentMenu.map((category, index) => (
-                    <li key={index} className={styles.menuItem} onClick={() => handleCategoryClick(category)}>
-                        {category.subCategories && history.length < 2 ? (
-                            <span className={styles.menuText}>
-                                {category.caption || category.type || category.name}
-                            </span>
-                        ) : (
-                            <Link prefetch={true} href={`/search?query=${category.name}`} className={styles.menuText}>
-                                {category.caption || category.type || category.name}
-                            </Link>
-                        )}
-                        {category.subCategories && history.length < 2 && (
-                            <span className={styles.menuIcon}>{'>'}</span>
-                        )}
-                    </li>
-                ))}
-            </ul>
-        </div>
+                        <hr className={styles.divider} />
+                        <ul className={styles.menu}>
+                            {currentMenu.map((category, index) => (
+                                <li key={index} className={styles.menuItem} onClick={() => handleCategoryClick(category)}>
+                                    {category.subCategories && history.length < 2 ? (
+                                        <span className={styles.menuText}>
+                                            {category.caption || category.type || category.name}
+                                        </span>
+                                    ) : (
+                                        <Link prefetch={true} href={`/search?query=${category.name}`} className={styles.menuText}>
+                                            {category.caption || category.type || category.name}
+                                        </Link>
+                                    )}
+                                    {category.subCategories && history.length < 2 && (
+                                        <span className={styles.menuIcon}>{'>'}</span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </Collapse>
         </div>
     );
 }
