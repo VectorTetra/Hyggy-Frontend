@@ -7,6 +7,7 @@ import { useWareItems } from "@/pages/api/WareItemApi";
 import useLocalStorageStore from "@/store/localStorage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Collapse } from "@mui/material";
 
 export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,14 +29,16 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     const isNotAvailable = wareItems.length > 0 && wareItems.every((item) => item.quantity === 0);
 
     useEffect(() => {
-        if (isWarePageMenuShopsOpened) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        return () => {
-            document.body.style.overflow = "";
-        };
+        setTimeout(() => {
+            if (isWarePageMenuShopsOpened) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
+            return () => {
+                document.body.style.overflow = "";
+            };
+        }, 300);
     }, [isWarePageMenuShopsOpened]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,10 +112,15 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
     };
 
     return (
-        <>
-            {isWarePageMenuShopsOpened && <div className={styles.overlayBackground}></div>}
+
+        <Collapse
+            in={isWarePageMenuShopsOpened}
+            timeout={300} // Тривалість анімації (мс)
+            orientation="horizontal" // Анімація по горизонталі
+            unmountOnExit={false}
+        >
             <div className={`${styles.overlay} ${isWarePageMenuShopsOpened ? styles.show : ""}`}>
-                <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
+                <div ref={menuRef} className={`${styles.menuContainer}`}>
                     <div className={styles.menuHeader}>
                         <div className={styles.menuContainerLogo}>
                             <div className={styles.menuHeaderText}>{selectedShop ? selectedShop.name : "Виберіть магазин HYGGY для доставки"}</div>
@@ -182,6 +190,7 @@ export default function BlockShopsByWare({ wareId }: { wareId: number }) {
 
                 </div>
             </div>
-        </>
+        </Collapse>
+
     );
 }

@@ -6,12 +6,14 @@ import { MainPageBorder } from "./MainPageFiles/jsx/jsx-Border/MainPageBorder";
 import MainPageBody from "./MainPageFiles/jsx/jsx-Body/MainPageBody";
 import borderData from "./MainPageFiles/json/mainPageBorder.json";
 import bodyData from "./MainPageFiles/json/mainPageBody.json";
+import BlockShops from "./sharedComponents/BlockShops";
 
 export default function Home() {
   console.log("borderData", borderData);
   return (
     <Layout headerType="header1" footerType="footer1">
       {/* <div> */}
+
       <MainPageBorder />
       <MainPageBody bodyData={bodyData.bodyData} />
       <div></div>

@@ -1,13 +1,14 @@
 "use client";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import styles from "./css/MenuShops.module.css";
+import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
 import useLocalStorageStore from "@/store/localStorage";
-import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./css/MenuShops.module.css";
 import ShopStatusInner from "./ShopStatusInner";
 import ShopStatusOuter from "./ShopStatusOuter";
+import { Collapse } from "@mui/material";
 
 const BlockShops: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -23,14 +24,17 @@ const BlockShops: React.FC = () => {
     });
 
     useEffect(() => {
-        if (isMainPageMenuShopsOpened) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "";
-        }
-        return () => {
-            document.body.style.overflow = "";
-        };
+        setTimeout(() => {
+            //Примусове перерахування
+            if (isMainPageMenuShopsOpened) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
+            return () => {
+                document.body.style.overflow = "";
+            };
+        }, 300);
     }, [isMainPageMenuShopsOpened]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,12 +62,17 @@ const BlockShops: React.FC = () => {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
+
     }, []);
-    if (!isMainPageMenuShopsOpened) return null;
+    //if (!isMainPageMenuShopsOpened) return null;
     return (
 
-        <div className={styles.overlayBackground}>
-            <div ></div>
+        <Collapse
+            in={isMainPageMenuShopsOpened}
+            timeout={500} // Тривалість анімації (мс)
+            orientation="horizontal" // Анімація по горизонталі
+        >
+            <div className={styles.overlayBackground}></div>
             <div className={`${styles.overlay} ${isMainPageMenuShopsOpened ? styles.show : ""}`}>
                 <div ref={menuRef} className={`${styles.menuContainer} ${styles.show}`}>
                     <div className={styles.menuHeader}>
@@ -113,7 +122,7 @@ const BlockShops: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Collapse>
     )
 }
 

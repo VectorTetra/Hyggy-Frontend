@@ -12,7 +12,11 @@ export default function MainPageHeaderGeo(props) {
   const [shopName, setShopName] = useState(null);
   const handleMenuClick = () => {
     if (!isMainPageMenuShopsOpened) {
-      setIsMainPageMenuShopsOpened(true); // Відкриваємо меню
+      // setTimeout(
+      //   setTimeout(() => {
+      //     setIsMainPageMenuShopsOpened(true)
+      //   }, 300));
+      setIsMainPageMenuShopsOpened(true)
     }
   };
   useEffect(() => {

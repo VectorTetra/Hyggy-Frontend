@@ -8,8 +8,12 @@ import Footer4 from './Footer4';
 import Header1 from './Header1';
 import Header2 from './Header2';
 import dynamic from 'next/dynamic';
+import BlockShops from './BlockShops';
+import BlockMenu from './BlockMenu';
+import BlockShopsByWare from './BlockShopsByWare';
+
 const DynamicBlockMenu = dynamic(() => import('./BlockMenu'));
-const DynamicBlockShops = dynamic(() => import('./BlockShops'));
+// const DynamicBlockShops = dynamic(() => import('./BlockShops'));
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -24,8 +28,10 @@ const Layout: React.FC<LayoutProps> = ({ children, headerType = 'header1', foote
       {headerType === 'header1' && <Header1 />}
       {headerType === 'header2' && <Header2 />}
       {headerType === 'null' && null}
-      <DynamicBlockMenu />
-      <DynamicBlockShops />
+
+      <BlockMenu />
+      <BlockShops />
+      {/* <DynamicBlockShops /> */}
 
       <main>{children}</main>
       {footerType === 'footer1' && <Footer1 />}
