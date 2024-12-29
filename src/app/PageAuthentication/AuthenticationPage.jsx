@@ -6,12 +6,40 @@ import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./styles/AuthenticationStyles.module.css";
+import { makeStyles } from '@mui/styles';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+export const theme = createTheme({
+    components: {
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#00AAAD', // Колір бордера при фокусі
+                    },
+                },
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused': {
+                        color: '#00AAAD', // Колір label при фокусі
+                    },
+                },
+            },
+        },
+    },
+});
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const router = useRouter();
+
+    //Клас для стилю input focus
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -59,45 +87,55 @@ export default function AuthenticationPage(props) {
                     padding: '2rem',
                 }}
             >
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    label="Email"
-                    variant="outlined"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                    fullWidth
-                />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    label="Пароль"
-                    variant="outlined"
-                    type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+                <ThemeProvider theme={theme}>
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        label="Email"
+                        variant="outlined"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                        fullWidth
+
+                    />
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        label="Пароль"
+                        variant="outlined"
+                        type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </ThemeProvider>
+
                 <Button
                     variant="contained"
                     type="submit"
                     color="primary"
                     fullWidth
-                    sx={{ backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem' }}
+                    sx={{
+                        backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem',
+                        textTransform: 'none',
+                        ':hover': {
+                            backgroundColor: '#008C8D', // Цвет при наведении
+                        },
+                    }}
                 >
                     Увійти
                 </Button>

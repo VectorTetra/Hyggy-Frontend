@@ -119,7 +119,6 @@
   cursor: pointer;
 }
 
-
 .shopListContainer {
   flex-grow: 1;
   /* Занимает оставшееся пространство */
@@ -182,7 +181,7 @@
 }
 
 .shopButton:hover {
-  background-color: darkblue;
+  background-color: #008c8d;
   /* Темный синий цвет при наведении */
 }
 

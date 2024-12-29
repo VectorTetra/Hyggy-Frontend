@@ -84,37 +84,36 @@ const ShopStatusOuter = ({ shop }: { shop: ShopGetDTO }) => {
 					Робочі години
 				</span>
 			</div>
-			{isDetailsOpen && (
-				<div className={styles.ShopStatusOuterDetails} >
-					<div>
-						<p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
-						<div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-							<strong>Адреса:</strong>
-							<span style={{ marginLeft: "50px" }}>
-								{shop.street},
-								<p style={{ marginBottom: 0 }}>{shop.city}</p>
-								<Link prefetch={true} className={styles.customlink} href="/shops">Як знайти магазин</Link>
-							</span>
-						</div>
-					</div>
-					<div style={{ display: "flex", margin: "20px 0 10px 0", flexDirection: "column" }}>
-						<p style={{ fontWeight: "bold", marginBottom: "10px" }}>Робочі години:</p>
-						<ul className={styles.worktimelist}>
-							{parsedWorkHours.map((time, index) => (
-								<li key={index} className={styles.worktimeitem}>
-									<span className={styles.worktimeday}>{time.dayweek}:</span>
-									<span style={{ fontSize: "14px" }}>{time.open} - {time.close}</span>
-								</li>
-							))}
-						</ul>
-						<button className={styles.customlink2} onClick={() => {
-							setShopToViewOnShopPage(shop);
-							setIsMainPageMenuShopsOpened(false);
-							router.push("/shop");
-						}} >Показати магазин</button>
+			<div className={`${styles.ShopStatusOuterDetails} ${isDetailsOpen ? styles.open : ""
+				}`} >
+				<div>
+					<p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
+					<div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+						<strong>Адреса:</strong>
+						<span style={{ marginLeft: "50px" }}>
+							{shop.street},
+							<p style={{ marginBottom: 0 }}>{shop.city}</p>
+							<Link prefetch={true} className={styles.customlink} href="/shops">Як знайти магазин</Link>
+						</span>
 					</div>
 				</div>
-			)}
+				<div style={{ display: "flex", margin: "20px 0 10px 0", flexDirection: "column" }}>
+					<p style={{ fontWeight: "bold", marginBottom: "10px" }}>Робочі години:</p>
+					<ul className={styles.worktimelist}>
+						{parsedWorkHours.map((time, index) => (
+							<li key={index} className={styles.worktimeitem}>
+								<span className={styles.worktimeday}>{time.dayweek}:</span>
+								<span style={{ fontSize: "14px" }}>{time.open} - {time.close}</span>
+							</li>
+						))}
+					</ul>
+					<button className={styles.customlink2} onClick={() => {
+						setShopToViewOnShopPage(shop);
+						setIsMainPageMenuShopsOpened(false);
+						router.push("/shop");
+					}} >Показати магазин</button>
+				</div>
+			</div>
 		</div>
 	);
 };

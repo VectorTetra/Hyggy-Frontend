@@ -5,6 +5,8 @@ import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./css/RegistrationStyles.module.css";
+import { theme } from "../PageAuthentication/AuthenticationPage";
+import { ThemeProvider } from "@mui/material/styles";
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -122,84 +124,87 @@ export default function RegistrationPage(props) {
 
                 }}
             >
-                <TextField sx={{
+                <ThemeProvider theme={theme}>
+                    <TextField sx={{
 
-                    backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px'
-                }}
-                    label="Ім'я"
-                    variant="outlined"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    fullWidth
-                />
+                        backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px'
+                    }}
+                        label="Ім'я"
+                        variant="outlined"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        fullWidth
+                    />
 
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    type="text"
-                    label="Прізвище"
-                    variant="outlined"
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                    required
-                    fullWidth
-                />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    type="email"
-                    label="email"
-                    variant="outlined"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                    required
-                    fullWidth
-                />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    type={showPassword ? 'text' : 'password'}
-                    label="Пароль"
-                    value={password}
-                    variant="outlined"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    label="Підтвердіть пароль"
-                    value={confirmPassword}
-                    variant="outlined"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    edge="end"
-                                >
-                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        type="text"
+                        label="Прізвище"
+                        variant="outlined"
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
+                        required
+                        fullWidth
+                    />
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        type="email"
+                        label="email"
+                        variant="outlined"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                        required
+                        fullWidth
+                    />
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        type={showPassword ? 'text' : 'password'}
+                        label="Пароль"
+                        value={password}
+                        variant="outlined"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', borderradius: '6px' }}
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        label="Підтвердіть пароль"
+                        value={confirmPassword}
+                        variant="outlined"
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </ThemeProvider>
+
                 <div className={styles.checkboxesTableContainer}>
                     <table className={styles.checkboxesTable}>
                         <tbody>

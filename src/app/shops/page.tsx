@@ -130,13 +130,17 @@ export default function Shops() {
             placeholder="Місто, вулиця"
           />
           <button
-            className="bg-[#00AAAD] text-white text-2xl whitespace-nowrap  px-8 h-10 border rounded-md xs:w-full lg:w-auto"
+            className="bg-[#00AAAD] text-white text-2xl whitespace-nowrap  px-8 h-10 border rounded-md xs:w-full lg:w-auto hover:bg-[#008c8d]"
             onClick={SearchShop}
           >
             Шукати магазини
           </button>
           <button
-            className={!isCheckOpen ? "font-light whitespace-nowrap bg-[#E0E0E0] h-10 px-8" : "flex gap-2 items-center justify-center font-bold whitespace-nowrap bg-[#00AAAD] h-10 px-8 text-white"}
+            className={`
+              ${!isCheckOpen
+                ?
+                "font-light whitespace-nowrap bg-[#E0E0E0] h-10 px-8 hover:bg-gray-300"
+                : "flex gap-2 items-center justify-center font-bold whitespace-nowrap bg-[#00AAAD] h-10 px-8 text-white hover:bg-[#008c8d]"}`}
             onClick={() => setIsCheckOpen(!isCheckOpen)}
           >
             {isCheckOpen && <span><FontAwesomeIcon icon={faCheck} /></span>}
