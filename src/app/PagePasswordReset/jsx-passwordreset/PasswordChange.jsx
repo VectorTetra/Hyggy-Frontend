@@ -18,6 +18,7 @@ export default function PasswordChange({ passwordResetData }) {
     const token = searchParams?.get('token');
     const email = searchParams?.get('email');
     const navigate = useRouter();
+    const router = useRouter();
 
     // Получаем userId из параметра запроса
     const userId = new URLSearchParams(window.location.search).get('reset');
@@ -74,11 +75,11 @@ export default function PasswordChange({ passwordResetData }) {
     };
 
     // Обработка отмены
-    const handleCancel = () => {
-        setNewPassword('');
-        setConfirmPassword('');
-        setMessage('');
-    };
+    // const handleCancel = () => {
+    //     setNewPassword('');
+    //     setConfirmPassword('');
+    //     setMessage('');
+    // };
 
     return (
         <div className={styles.maincontainer}>
@@ -116,7 +117,7 @@ export default function PasswordChange({ passwordResetData }) {
                     <div>
                         <button type="submit" className={styles.submitbutton}>Підтвердити</button>
                     </div>
-                    <button type="button" className={styles.submitbutton2} onClick={handleCancel}>Скасувати</button>
+                    <button type="button" className={styles.submitbutton2} onClick={() => router.back()}>Скасувати</button>
                 </form>
                 {message && <p>{message}</p>}
             </div>

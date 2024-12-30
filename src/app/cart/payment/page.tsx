@@ -194,19 +194,20 @@ const PaymentPage = () => {
                 {errors.cvv && <p className={styles.error}>{errorMessages.cvv}</p>}
               </div>
             </div>
-
-            <div className={styles.buttonGroup}>
-              <button
-                type="button"
-                className={styles.submitButton}
-                onClick={handleSubmit}
-              >
-                Підтвердження
-              </button>
-            </div>
-            <Link prefetch={true} href="/cart/delivery">
-              <button type="button" className={styles.cancelButton}>Скасувати</button>
-            </Link>
+            <center>
+              <div className={styles.buttonGroup}>
+                <button
+                  type="button"
+                  className={styles.submitButton}
+                  onClick={handleSubmit}
+                >
+                  Підтвердження
+                </button>
+              </div>
+              <p>
+                <button type="button" className={styles.cancelButton} onClick={() => router.back()}>Скасувати</button>
+              </p>
+            </center>
           </form>
         </div>
       </div>

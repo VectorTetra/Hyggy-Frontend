@@ -33,6 +33,17 @@
   margin-bottom: 15px;
 }
 
+.formGroup input[type="text"]:focus,
+.formGroup input[type="email"]:focus,
+.formGroup input[type="tel"]:focus{
+  border: 1px solid #00aaad;
+  outline: none;
+}
+
+.formGroup input[type="checkbox"]:checked {
+  accent-color: #00aaad; /* Це змінює колір відмітки у чекбоксі */
+}
+
 .formGroup label {
   font-weight: bold;
   margin-bottom: 5px;
@@ -76,10 +87,12 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
   color: #00aaad;
   text-decoration: underline;
-  text-decoration-skip-ink: none;
+}
+
+.cancelButton:hover {
+  text-decoration: none;
 }
 
 .cartSummary {
@@ -194,6 +207,14 @@
   font-size: 0.875rem;
 }
 
+.termsLink {
+  color: #00aaad;
+}
+
+.termsLink:hover {
+  text-decoration: none;
+}
+
 @media (max-width: 1024px) {
   .checkoutPage {
     flex-direction: column;
@@ -203,5 +224,6 @@
   .cartSummary {
     width: 100%;
     margin-bottom: 20px;
+    padding: 0px;
   }
 }

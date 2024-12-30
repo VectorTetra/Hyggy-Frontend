@@ -91,7 +91,7 @@ const SuccessPage = () => {
                     </div>
                   </div>
                   <div className={styles.price}>
-                    <p>{formatCurrency(item.ware.finalPrice, "грн")}</p>
+                    <p>{formatCurrency(item.ware.finalPrice, "грн / шт")}</p>
                     <p>{formatCurrency(item.ware.finalPrice * item.count, "грн")}</p>
                   </div>
                 </div>

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import styles from "./../page.module.css";
 
 const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType }) => {
     const refs = useRef<(HTMLDivElement | null)[]>([]);
@@ -22,7 +23,7 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
     return (
         <div>
             {stores.length === 0 ? (
-                <p>Не знайдено</p>
+                <p></p>
             ) : (
                 <div className={`overflow-y-auto ${stores.length > 5 ? 'h-[540px]' : ''}`}>
                     {stores.map((store, index) => (
@@ -34,7 +35,7 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
                             <label className="block font-bold text-lg">
                                 <input
                                     type="radio"
-                                    className="mr-2"
+                                    className={`mr-2 ${styles.radioInput}`}
                                     checked={selectedStore?.name === store.name}
                                     onChange={() => handleCheckboxChange(store)}
                                 />

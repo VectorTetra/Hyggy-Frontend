@@ -27,8 +27,10 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
   color: #00aaad;
   text-decoration: underline;
-  text-decoration-skip-ink: none;
+}
+
+.cancelButton:hover {
+  text-decoration: none;
 }

@@ -158,11 +158,11 @@ const DeliveryPage = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 3 && debouncedSearchQuery !== "") {
-      getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 3 && debouncedSearchQuery !== "") {
+  //     getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const getNearestShops = async (searchQuery) => {
     try {
@@ -185,11 +185,11 @@ const DeliveryPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 1 && debouncedSearchQuery !== "") {
-      getNearestShops(debouncedSearchQuery)
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 1 && debouncedSearchQuery !== "") {
+  //     getNearestShops(debouncedSearchQuery)
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const getUkrPoshtaOfficesByAddress = async (searchQuery) => {
     setLoading(true);
@@ -219,11 +219,11 @@ const DeliveryPage = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 4 && debouncedSearchQuery !== "") {
-      getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 4 && debouncedSearchQuery !== "") {
+  //     getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const handleButtonSearch = async () => {
     if (selectedDeliveryType?.id === 3) {
@@ -432,9 +432,9 @@ const DeliveryPage = () => {
             </div>
           </>
         )}
-
-        <Link prefetch={true} href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
-          <center>
+        <center>
+          <Link prefetch={true} href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
+          
             <button
               type="submit"
               className={styles.submitButton}
@@ -442,12 +442,11 @@ const DeliveryPage = () => {
             >
               Виберіть тип оплати
             </button>
-          </center>
-        </Link>
-
-        <Link prefetch={true} href="/cart/address">
-          <button type="button" className={styles.cancelButton}>Скасувати</button>
-        </Link>
+          </Link>
+          <p>
+            <button type="button" className={styles.cancelButton} onClick={() => router.back()}>Скасувати</button>
+          </p>
+        </center>
       </div>
     </Layout>
   );

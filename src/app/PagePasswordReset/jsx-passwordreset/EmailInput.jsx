@@ -11,6 +11,7 @@ export default function EmailInput({ passwordResetData, onSwitchComponent }) {
     const [email, setEmail] = React.useState('');
     const [message, setMessage] = React.useState('');
     const navigate = useRouter();
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,9 +37,9 @@ export default function EmailInput({ passwordResetData, onSwitchComponent }) {
         }
     };
 
-    const backToLogin = () => {
-        navigate.push('/PageAuthentication')
-    };
+    // const backToLogin = () => {
+    //     navigate.push('/PageAuthentication')
+    // };
 
     return (
         <div className={styles.formcontainer}>
@@ -55,7 +56,7 @@ export default function EmailInput({ passwordResetData, onSwitchComponent }) {
                 <div>
                     <button type="submit" className={styles.submitbutton}>Надіслати</button>
                 </div>
-                <button type="button" className={styles.submitbutton2} onClick={backToLogin}>Скасувати</button>
+                <button type="button" className={styles.submitbutton2} onClick={() => router.back()}>Скасувати</button>
             </form>
         </div>
     );

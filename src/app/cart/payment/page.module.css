@@ -45,6 +45,12 @@
   width: 100%;
 }
 
+.formGroup input[type="text"]:focus,
+.formGroup input[type="password"]:focus{
+  border: 1px solid #00aaad;
+  outline: none;
+}
+
 .formGroup input[type="checkbox"] {
   margin-right: 10px;
 }
@@ -74,10 +80,12 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
   color: #00aaad;
   text-decoration: underline;
-  text-decoration-skip-ink: none;
+}
+
+.cancelButton:hover {
+  text-decoration: none;
 }
 
 .error {

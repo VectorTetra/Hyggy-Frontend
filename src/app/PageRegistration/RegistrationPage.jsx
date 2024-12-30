@@ -5,6 +5,7 @@ import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./css/RegistrationStyles.module.css";
+import { useRouter } from "next/navigation";
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -16,6 +17,7 @@ export default function RegistrationPage(props) {
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Добавлено состояние для показа пароля
+    const router = useRouter();
 
 
     // Функция для проверки пароля
@@ -28,15 +30,15 @@ export default function RegistrationPage(props) {
 
 
     // Очищаем форму, если нажата кнопка "Скасувати"
-    const handleReset = () => {
-        setName('');
-        setSurname('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setCheckboxStates({});
-        setErrorMessage('');
-    };
+    // const handleReset = () => {
+    //     setName('');
+    //     setSurname('');
+    //     setEmail('');
+    //     setPassword('');
+    //     setConfirmPassword('');
+    //     setCheckboxStates({});
+    //     setErrorMessage('');
+    // };
 
     // Проверки
     const handleSubmit = (e) => {
@@ -250,7 +252,7 @@ export default function RegistrationPage(props) {
                     // component="div"
                     color="primary"
                     fullWidth
-                    onClick={handleReset}
+                    onClick={() => router.back()}
                     sx={{
                         backgroundColor: '#f3f3f3',
                         padding: '0.75rem',
