@@ -151,11 +151,13 @@
 .blog-image {
     width: 100%;
     height: auto;
+    min-height: 200px;
 }
 
 .blog-caption {
     font-weight: bold;
     margin-top: 10px;
+    color: #00AAAD;
 }
 
 .blog-text {
@@ -191,9 +193,25 @@
     border: 1px solid #018183;
     color: white;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
 }
 
-.blog-button:hover {
+.blog-buttonSmall {
+    width: 100%;
+    display: none;
+    padding: 5px 0 5px 0;
+    background-color: #00AAAD;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid #018183;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+
+.blog-button:hover,
+.blog-buttonSmall:hover {
     background-color: #005F60;
     color: azure;
 }
@@ -294,6 +312,15 @@
 }
 
 @media screen and (max-width: 1000px) and (min-width: 700px) {
+
+    .blog-button {
+        display: none;
+    }
+
+    .blog-buttonSmall {
+        display: flex;
+        justify-content: center;
+    }
 
     .form-containerInput input[type="text"],
     .form-containerInput input[type="email"] {
@@ -410,6 +437,15 @@
 }
 
 @media screen and (max-width: 700px) {
+
+    .blog-button {
+        display: none;
+    }
+
+    .blog-buttonSmall {
+        display: flex;
+        justify-content: center;
+    }
 
     .form-containerInput input[type="text"],
     .form-containerInput input[type="email"] {
