@@ -2,7 +2,7 @@
 import { Authorize, isUser } from "@/pages/api/TokenApi";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./styles/AuthenticationStyles.module.css";
@@ -12,7 +12,8 @@ export default function AuthenticationPage(props) {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const router = useRouter();
-    const { ecs: ecs } = useParams();
+    const searchParams = useSearchParams(); // Отримуємо всі параметри запиту
+    const ecs = searchParams ? searchParams.get("ecs") : null; // Отримуємо значення параметра ecs
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -28,7 +29,6 @@ export default function AuthenticationPage(props) {
             }
         });
     };
-
     useEffect(() => {
         if (ecs && ecs.toString() === "true") {
             toast.dismiss();
