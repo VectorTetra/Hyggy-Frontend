@@ -2,11 +2,9 @@ import { ShopGetDTO } from "@/pages/api/ShopApi"; // Переконайтеся,
 import useLocalStorageStore from "@/store/localStorage";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css"; // Стилі Leaflet
+import 'leaflet/dist/leaflet.css';
 import { useRouter } from "next/navigation"; // Використання useRouter з коректним шляхом
-import { useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
 
 // Іконка для маркерів
 export const customIcon = new L.Icon({
@@ -20,7 +18,7 @@ export const customIcon = new L.Icon({
 
 export const Map = ({ places }: { places: ShopGetDTO[] }) => {
   const router = useRouter();
-  const [selectedPlace, setSelectedPlace] = useState<ShopGetDTO | undefined>(undefined);
+
   const { setShopToViewOnShopPage } = useLocalStorageStore();
   const { setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
 
@@ -41,38 +39,28 @@ export const Map = ({ places }: { places: ShopGetDTO[] }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      {places && places.length > 0 && (
-        <MarkerClusterGroup>
-          {places.map((place, index) => (
-            <Marker
-              key={index}
-              position={[place.latitude ?? 0, place.longitude ?? 0]}
-              icon={customIcon}
-              eventHandlers={{
-                click: () => setSelectedPlace(place), // Вибір місця
-              }}
-            >
-              {selectedPlace && selectedPlace.name === place.name && (
-                <Popup
-                  position={[place.latitude ?? 0, place.longitude ?? 0]}
-                  eventHandlers={{
-                    popupclose: () => setSelectedPlace(undefined), // Закриття вікна
-                  }}
-                >
-                  <div>
-                    <h3>{place.name}</h3>
-                    <p>{place.street}, {place.houseNumber}</p>
-                    <button onClick={() => handleMarkerClick(place)}>Деталі</button>
-                  </div>
-                </Popup>
-              )}
-            </Marker>
-          ))}
-        </MarkerClusterGroup>
-      )}
+
+      {places.map((place, index) => (
+        <Marker
+          key={index}
+          position={[place.latitude ?? 0, place.longitude ?? 0]}
+          icon={customIcon}
+
+        >
+          <Popup
+          // position={[selectedPlace.latitude ?? 0, selectedPlace.longitude ?? 0]}
+          >
+            <div>
+              <h3>{place.name}</h3>
+              <p>{place.street}, {place.houseNumber}</p>
+              <button onClick={() => handleMarkerClick(place)}>Деталі</button>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+
     </MapContainer>
   );
 };
 
 export default Map;
-
