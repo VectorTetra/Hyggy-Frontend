@@ -2,26 +2,35 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Layout from "../sharedComponents/Layout";
+import Layout from "../../sharedComponents/Layout";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import useLocalStorageStore from "@/store/localStorage";
-import { ShopGetDTO } from "@/pages/api/ShopApi";
+import { ShopGetDTO, useShops } from "@/pages/api/ShopApi";
+import { useParams } from "next/navigation";
 //import MapComponent from "./tsx/MapComponent";  // імпортуємо новий компонент карти
 const DynamicMap = dynamic(
-    () => import('./tsx/MapComponent'),
+    () => import('../tsx/MapComponent'),
     { ssr: false }
 )
 export default function Shop() {
     const [place, setPlace] = useState<ShopGetDTO | null>(null);
-    const { shopToViewOnShopPage } = useLocalStorageStore();
+    //const { shopToViewOnShopPage } = useLocalStorageStore();
+    const params = useParams<{ id: string }>();
+    const id = Number(params?.id);
+    const { data: shopOneCol = [] } = useShops({
+        SearchParameter: "Query",
+        Id: id
+    }, id !== null);
+
 
     useEffect(() => {
-        setPlace(shopToViewOnShopPage || null);
-    }, [shopToViewOnShopPage]);
+        if (shopOneCol.length > 0)
+            setPlace(shopOneCol[0] || null);
+    }, [shopOneCol]);
 
     const todayIndex = (new Date().getDay() + 6) % 7;
-
+    if (!place) return null;
     return (
         <Layout footerType="footer4">
             <div className="md:mx-24 lg:mx-20 xs:mx-4">

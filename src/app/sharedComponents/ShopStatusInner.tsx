@@ -3,8 +3,7 @@ import { ShopGetDTO } from "@/pages/api/ShopApi";
 import { useState } from "react";
 import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import Link from "next/link";
-import styles from "@/app/sharedComponents/css/ShopStatusInner.module.css"
-import useLocalStorageStore from "@/store/localStorage";
+import styles from "@/app/sharedComponents/css/ShopStatusInner.module.css";
 import { useRouter } from "next/navigation";
 
 const checkShopStatus = (workHours: string) => {
@@ -53,7 +52,6 @@ const checkShopStatus = (workHours: string) => {
 
 const ShopStatusInner = ({ shop }: { shop: ShopGetDTO }) => {
 	const { isMainPageMenuShopsOpened, setIsMainPageMenuShopsOpened } = useMainPageMenuShops();
-	const { setShopToViewOnShopPage } = useLocalStorageStore();
 	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 	const router = useRouter();
 	const toggleWorkHours = () => {
@@ -107,11 +105,9 @@ const ShopStatusInner = ({ shop }: { shop: ShopGetDTO }) => {
 								</li>
 							))}
 						</ul>
-						<button className={styles.customlink2} onClick={() => {
-							setShopToViewOnShopPage(shop);
+						<Link className={styles.customlink2} href={`/shop/${shop.id}`} onClick={() => {
 							setIsMainPageMenuShopsOpened(false);
-							router.push("/shop");
-						}} >Показати магазин</button>
+						}} >Показати магазин</Link>
 					</div>
 				</div>
 			)}

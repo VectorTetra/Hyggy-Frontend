@@ -6,26 +6,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import Layout from "../sharedComponents/Layout";
 
-// Оголошуємо типи для ShopDTO та ShopGetDTO, якщо їх ще немає
-export type Place = {
-  id: number;
-  photoUrl: string;
-  name: string;
-  street: string;
-  houseNumber: string;
-  addressId: number;
-  storageId: number;
-  orderIds: number[];
-  shopEmployeeIds: number[];
-  postalCode: string;
-  city: string;
-  state: string;
-  workHours: string;
-  latitude: number;
-  longitude: number;
-  executedOrdersSum: number;
-};
-const DynamicMap = dynamic(
+const Map = dynamic(
   () => import('./components/Map'),
   { ssr: false }
 )
@@ -34,8 +15,8 @@ export default function Shops() {
     title: "Магазини HYGGY",
     description: "Магазини HYGGY",
   };
-
   const [places, setPlaces] = useState<ShopGetDTO[]>([]);
+  const [selectedShop, setSelectedShop] = useState<ShopGetDTO | null>(null);
   const [filteredPlaces, setFilteredPlaces] = useState<ShopGetDTO[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -94,7 +75,7 @@ export default function Shops() {
 
   useEffect(() => {
     SearchShop();
-  }, [isCheckOpen, search]); // додано search в залежності від змін
+  }, [isCheckOpen]); // додано search в залежності від isCheckOpen
 
   const SearchShop = () => {
     let searchPlaces = places;
@@ -145,7 +126,7 @@ export default function Shops() {
         </div>
         <div className="flex flex-col lg:flex-row gap-8 mt-4 mb-10">
           <div className="bg-gray-500 shrink-0 lg:w-2/3 h-[500px]">
-            <DynamicMap places={filteredPlaces} />
+            {filteredPlaces && <Map shops={filteredPlaces} selectedShop={selectedShop} setSelectedShop={setSelectedShop} />}
           </div>
           <div className="flex flex-col lg:w-1/3 text-center shadow-md h-fit py-4 px-8">
             <h3 className="text-2xl">Виберіть магазин</h3>
