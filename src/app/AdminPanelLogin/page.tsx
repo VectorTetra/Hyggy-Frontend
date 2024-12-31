@@ -30,7 +30,7 @@ export default function Login() {
         });
     };
     useEffect(() => {
-        if (ecs === "true") {
+        if (ecs && ecs.toString() === "true") {
             toast.dismiss();
             toast.success('Ви успішно підтвердили обліковий запис!');
         }
