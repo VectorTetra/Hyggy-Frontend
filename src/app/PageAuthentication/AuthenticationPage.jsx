@@ -2,8 +2,8 @@
 import { Authorize, isUser } from "@/pages/api/TokenApi";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { useRouter } from "next/navigation";
-import { useState } from 'react';
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./styles/AuthenticationStyles.module.css";
 
@@ -12,7 +12,7 @@ export default function AuthenticationPage(props) {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const router = useRouter();
-
+    const { ecs: ecs } = useParams();
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!email || !password) {
@@ -28,6 +28,13 @@ export default function AuthenticationPage(props) {
             }
         });
     };
+
+    useEffect(() => {
+        if (ecs === "true") {
+            toast.dismiss();
+            toast.success('Ви успішно підтвердили обліковий запис!');
+        }
+    }, [ecs]);
 
     // Функція для перемикання видимості пароля
     const handleClickShowPassword = () => setShowPassword(!showPassword);

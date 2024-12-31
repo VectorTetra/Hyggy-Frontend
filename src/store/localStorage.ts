@@ -48,8 +48,8 @@ export interface FormData {
 interface LocalStorageStore {
     selectedShop: ShopGetDTO | null;
     setSelectedShop: (shop: ShopGetDTO | null) => void;
-    shopToViewOnShopPage: ShopGetDTO | null;
-    setShopToViewOnShopPage: (shop: ShopGetDTO | null) => void;
+    // shopToViewOnShopPage: ShopGetDTO | null;
+    // setShopToViewOnShopPage: (shop: ShopGetDTO | null) => void;
     recentWareIds: number[];
     addRecentWareId: (wareId: number) => void; // Додавання ідентифікатора товару
     cart: CartItem[];
@@ -307,11 +307,11 @@ const useLocalStorageStore = create<LocalStorageStore>((set, get) => ({
         set({ selectedShop: shop });
         setSelectedShopToLocalStorage(shop);
     },
-    shopToViewOnShopPage: isClient ? getShopToViewOnShopPageFromLocalStorage() : null,
-    setShopToViewOnShopPage: (shop) => {
-        set({ shopToViewOnShopPage: shop });
-        setShopToViewOnShopPageToLocalStorage(shop);
-    },
+    // shopToViewOnShopPage: isClient ? getShopToViewOnShopPageFromLocalStorage() : null,
+    // setShopToViewOnShopPage: (shop) => {
+    //     set({ shopToViewOnShopPage: shop });
+    //     setShopToViewOnShopPageToLocalStorage(shop);
+    // },
     recentWareIds: isClient ? getRecentWareIdsFromLocalStorage() : [],
     addRecentWareId: (wareId) => {
         const recentWareIds = get().recentWareIds;

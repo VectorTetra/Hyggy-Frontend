@@ -4,8 +4,8 @@ import { ThemeProvider } from '@emotion/react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Alert, Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import themeFrame from '../AdminPanel/tsx/ThemeFrame';
 
@@ -15,7 +15,8 @@ export default function Login() {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Стан для видимості пароля
     const router = useRouter();
-
+    const params = useParams();
+    const ecs = params?.ecs;
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -28,6 +29,12 @@ export default function Login() {
             }
         });
     };
+    useEffect(() => {
+        if (ecs === "true") {
+            toast.dismiss();
+            toast.success('Ви успішно підтвердили обліковий запис!');
+        }
+    }, [ecs]);
 
     // Функція для перемикання видимості пароля
     const handleClickShowPassword = () => setShowPassword(!showPassword);

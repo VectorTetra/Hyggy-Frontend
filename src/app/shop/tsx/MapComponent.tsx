@@ -151,8 +151,8 @@ const MapComponent: React.FC<MapProps> = ({ place }) => {
                         <Popup>
                             <div>
                                 <h2>{place.name}</h2>
-                                <p>{place.street}</p>
-                                <button onClick={openGoogleMaps}>Відкрити у Google Maps</button>
+                                <p>{place?.city}, {place?.street}, {place?.houseNumber}, {place?.postalCode}</p>
+                                <button style={{ color: "#00AAAD" }} onClick={openGoogleMaps}>Відкрити у Google Maps</button>
                             </div>
                         </Popup>
                     </Marker>
