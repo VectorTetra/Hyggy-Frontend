@@ -91,7 +91,9 @@ const ShopStatusOuter = ({ shop }: { shop: ShopGetDTO }) => {
 							<span style={{ marginLeft: "50px" }}>
 								{shop.street},
 								<p style={{ marginBottom: 0 }}>{shop.city}</p>
-								<Link prefetch={true} className={styles.customlink} href="/shops">Як знайти магазин</Link>
+								<Link prefetch={true} className={styles.customlink} href="/shops" onClick={() => {
+									setIsMainPageMenuShopsOpened(false);
+								}}>Як знайти магазин</Link>
 							</span>
 						</div>
 					</div>

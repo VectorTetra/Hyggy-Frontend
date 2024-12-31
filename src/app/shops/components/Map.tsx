@@ -141,7 +141,7 @@ const Map = ({ selectedShop, setSelectedShop, shops }) => {
               <div>
                 <h3>{shopp.name}</h3>
                 <p>{shopp.street}, {shopp.houseNumber}</p>
-                <Link style={{ color: "#00AAAD" }} href={`/shop/${shopp.id}`}>
+                <Link style={{ color: "#00AAAD", textDecoration: "none" }} href={`/shop/${shopp.id}`}>
                   Деталі
                 </Link>
               </div>
