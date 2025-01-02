@@ -39,3 +39,4 @@ package-lock.json
 # Environment files
 *.env.local
 *.env.production
+package-lock.json
