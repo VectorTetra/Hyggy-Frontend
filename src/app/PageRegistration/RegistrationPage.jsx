@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./css/RegistrationStyles.module.css";
 import { useRouter } from "next/navigation";
-import { Checkbox } from "@mui/material";
+import { Checkbox, ThemeProvider } from "@mui/material";
+import themeFrame from "../AdminPanel/tsx/ThemeFrame";
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -27,19 +28,6 @@ export default function RegistrationPage(props) {
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return passwordRegex.test(password);
     };
-
-
-
-    // Очищаем форму, если нажата кнопка "Скасувати"
-    // const handleReset = () => {
-    //     setName('');
-    //     setSurname('');
-    //     setEmail('');
-    //     setPassword('');
-    //     setConfirmPassword('');
-    //     setCheckboxStates({});
-    //     setErrorMessage('');
-    // };
 
     // Проверки
     const handleSubmit = (e) => {
@@ -97,229 +85,181 @@ export default function RegistrationPage(props) {
     };
 
     return (
-        <Box
-            component="div"
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-                padding: '2rem',
-
-            }}
-        >
-            <Typography variant="div" component="h1" gutterBottom sx={{}}>
-                Створити обліковий запис
-            </Typography>
+        <ThemeProvider theme={themeFrame}>
             <Box
-                component="form"
-                onSubmit={handleSubmit}
+                component="div"
                 sx={{
-                    width: '100%',
-                    maxWidth: 'clamp(400px,42vmax,800px)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '1rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '100vh',
                     padding: '2rem',
 
                 }}
             >
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    label="Ім'я"
-                    variant="outlined"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    fullWidth
-                />
-
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    type="text"
-                    label="Прізвище"
-                    variant="outlined"
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                    required
-                    fullWidth
-                />
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    type="email"
-                    label="email"
-                    variant="outlined"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                    required
-                    fullWidth
-                />
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    type={showPassword ? 'text' : 'password'}
-                    label="Пароль"
-                    value={password}
-                    variant="outlined"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    label="Підтвердіть пароль"
-                    value={confirmPassword}
-                    variant="outlined"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    edge="end"
-                                >
-                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <div className={styles.checkboxesTableContainer}>
-                    <table className={styles.checkboxesTable}>
-                        <tbody>
-                            {props.registration.label.map((item, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        <Checkbox
-                                            sx={{
-                                            padding: '0px',
-                                            color: '#00AAAD',
-                                            '&.Mui-checked': {
-                                                color: '#00AAAD',
-                                            },
-                                            }}
-                                            size="small"
-                                            checked={checkboxStates[item.name] || false}
-                                            onChange={() => handleCheckboxChange(item.name)}
-                                        />
-                                    </td>
-                                    <td>
-                                        <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
-                                            onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-
-                        {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
-                    </table >
-                </div>
-
-                <Button
-                    variant="contained"
-                    type="submit"
-                    color="primary"
-                    fullWidth
-                    sx={{
-                        backgroundColor: '#00AAAD',
-                        padding: '0.75rem',
-                        fontSize: '1rem',
-
-                        color: 'white', // Цвет текста
-                        textTransform: 'none',
-                        ':hover': {
-                            backgroundColor: '#008C8D', // Цвет при наведении
-                        },
-                    }}
-                >
+                <Typography variant="div" component="h1" gutterBottom sx={{}}>
                     Створити обліковий запис
-                </Button>
-
-                <Button
-                    // variant="outlined"
-                    // type="div"
-                    // component="div"
-                    color="primary"
-                    fullWidth
-                    onClick={() => router.back()}
+                </Typography>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
                     sx={{
-                        backgroundColor: '#f3f3f3',
-                        padding: '0.75rem',
-                        fontSize: '1rem',
-                        color: '#00AAAD', // Цвет текста
-                        textDecoration: 'underline',
-                        textTransform: 'none',
+                        width: '100%',
+                        maxWidth: 'clamp(400px,42vmax,800px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem',
+                        padding: '2rem',
+
                     }}
                 >
-                    Скасувати
-                </Button>
-            </Box>
-        </Box >
+                    <TextField sx={{ backgroundColor: '#E0E0E0' }}
+                        label="Ім'я"
+                        variant="outlined"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        fullWidth
+                    />
+
+                    <TextField sx={{ backgroundColor: '#E0E0E0' }}
+                        type="text"
+                        label="Прізвище"
+                        variant="outlined"
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
+                        required
+                        fullWidth
+                    />
+                    <TextField sx={{ backgroundColor: '#E0E0E0' }}
+                        type="email"
+                        label="Email"
+                        variant="outlined"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                        required
+                        fullWidth
+                    />
+                    <TextField sx={{ backgroundColor: '#E0E0E0' }}
+                        type={showPassword ? 'text' : 'password'}
+                        label="Пароль"
+                        value={password}
+                        variant="outlined"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField sx={{ backgroundColor: '#E0E0E0' }}
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        label="Підтвердіть пароль"
+                        value={confirmPassword}
+                        variant="outlined"
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        edge="end"
+                                    >
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <div className={styles.checkboxesTableContainer}>
+                        <table className={styles.checkboxesTable}>
+                            <tbody>
+                                {props.registration.label.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <Checkbox
+                                                sx={{
+                                                    padding: '0px',
+                                                    color: '#00AAAD',
+                                                    '&.Mui-checked': {
+                                                        color: '#00AAAD',
+                                                    },
+                                                }}
+                                                size="small"
+                                                checked={checkboxStates[item.name] || false}
+                                                onChange={() => handleCheckboxChange(item.name)}
+                                            />
+                                        </td>
+                                        <td>
+                                            <label style={{ "margin": "0", "padding": "0", "fontSize": "14px" }}
+                                                onClick={() => handleCheckboxChange(item.name)}> {item.name} </label>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+
+                            {errorMessage && <div className={styles.errormessage}>{errorMessage}</div>}
+                        </table >
+                    </div>
+
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        fullWidth
+                        sx={{
+                            backgroundColor: '#00AAAD',
+                            padding: '0.75rem',
+                            fontSize: '1rem',
+
+                            color: 'white', // Цвет текста
+                            textTransform: 'none',
+                            ':hover': {
+                                backgroundColor: '#008C8D', // Цвет при наведении
+                            },
+                        }}
+                    >
+                        Створити обліковий запис
+                    </Button>
+
+                    <Button
+                        // variant="outlined"
+                        // type="div"
+                        // component="div"
+                        color="primary"
+                        fullWidth
+                        onClick={() => router.back()}
+                        sx={{
+                            backgroundColor: '#f3f3f3',
+                            padding: '0.75rem',
+                            fontSize: '1rem',
+                            color: '#00AAAD', // Цвет текста
+                            textDecoration: 'underline',
+                            textTransform: 'none',
+                        }}
+                    >
+                        Скасувати
+                    </Button>
+                </Box>
+            </Box >
+        </ThemeProvider>
     );
 }

@@ -1,11 +1,12 @@
 "use client";
 import { Authorize, isUser } from "@/pages/api/TokenApi";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, TextField, ThemeProvider, Typography } from '@mui/material';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./styles/AuthenticationStyles.module.css";
+import themeFrame from "../AdminPanel/tsx/ThemeFrame";
 
 export default function AuthenticationPage(props) {
     const [email, setEmail] = useState('');
@@ -40,118 +41,103 @@ export default function AuthenticationPage(props) {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
 
     return (
-        <Box
-            component="div"
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-                padding: '2rem',
-            }}
-        >
-            <Typography variant="h4" component="h1" gutterBottom>
-                Вхід
-            </Typography>
+        <ThemeProvider theme={themeFrame}>
             <Box
-                component="form"
-                onSubmit={handleSubmit}
+                component="div"
                 sx={{
-                    width: '100%',
-                    maxWidth: 'clamp(400px,42vmax,800px)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '1rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '100vh',
                     padding: '2rem',
                 }}
             >
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    label="Email"
-                    variant="outlined"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
-                    fullWidth
-                />
-                <TextField sx={{
-                    '& .MuiOutlinedInput-root': {
-                        '&:hover fieldset': {
-                            borderColor: '#ccc',
-                        },
-                        '&.Mui-focused fieldset': {
-                            border: '1px solid #00aaad',
-                            outline: 'none',
-                        },
-                    },
-                }}
-                    label="Пароль"
-                    variant="outlined"
-                    type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    fullWidth
-                    InputProps={{
-                        // Додаємо іконку для перемикання видимості пароля
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Вхід
+                </Typography>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        width: '100%',
+                        maxWidth: 'clamp(400px,42vmax,800px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem',
+                        padding: '2rem',
                     }}
-                />
-                <Button
-                    variant="contained"
-                    type="submit"
-                    color="primary"
-                    fullWidth
-                    sx={{ backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem' }}
                 >
-                    Увійти
-                </Button>
-                <div className={styles.forgotpasswordlink}>
-                    <a href="../PagePasswordReset">Забули пароль?</a>
-                </div>
-                <div>
-                    <h2 className={styles.h2}>Створити новий обліковий запис</h2>
-                    <div className={styles.features}>
-                        <ul className={styles.featuresul}>
-                            <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
-                            <li className={styles.featuresil}>Зберігайте історію замовлень</li>
-                            <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
-                            <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
-                        </ul>
+                    <TextField
+                        sx={{ backgroundColor: '#E0E0E0' }}
+                        label="Email"
+                        variant="outlined"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
+                        fullWidth
+                    />
+                    <TextField
+                        sx={{ backgroundColor: '#E0E0E0' }}
+                        label="Пароль"
+                        variant="outlined"
+                        type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        fullWidth
+                        InputProps={{
+                            // Додаємо іконку для перемикання видимості пароля
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        fullWidth
+                        sx={{ backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem' }}
+                    >
+                        Увійти
+                    </Button>
+                    <div className={styles.forgotpasswordlink}>
+                        <a href="../PagePasswordReset">Забули пароль?</a>
                     </div>
-                </div>
-                <div style={{ display: "flex" }}>
-                    <button
-                        className={styles.submitbutton2}
-                        onClick={() => window.location.href = '../PageRegistration'}>
-                        Створити новий обліковий запис
-                    </button>
-                </div>
+                    <div>
+                        <h2 className={styles.h2}>Створити новий обліковий запис</h2>
+                        <div className={styles.features}>
+                            <ul className={styles.featuresul}>
+                                <li className={styles.featuresil}>Відстежуйте ваші посилки від замовлення до доставки</li>
+                                <li className={styles.featuresil}>Зберігайте історію замовлень</li>
+                                <li className={styles.featuresil}>Додавайте товари до списку бажань</li>
+                                <li className={styles.featuresil}>Зберігайте інформацію для майбутніх покупок</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                        <button
+                            className={styles.submitbutton2}
+                            onClick={() => window.location.href = '../PageRegistration'}>
+                            Створити новий обліковий запис
+                        </button>
+                    </div>
+                </Box>
+
+
             </Box>
 
-
-        </Box>
+        </ThemeProvider>
     );
 }

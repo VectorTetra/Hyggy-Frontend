@@ -1,8 +1,9 @@
 "use client";
+import themeFrame from "@/app/AdminPanel/tsx/ThemeFrame";
+import { ThemeProvider } from "@mui/material";
 import React from "react";
-import styles from "../css/passwordResetStyle.module.css";
-import PasswordChange from "./PasswordChange";
 import EmailInput from "./EmailInput";
+import PasswordChange from "./PasswordChange";
 
 export default class PasswordResetApp extends React.Component {
     constructor(props) {
@@ -30,17 +31,20 @@ export default class PasswordResetApp extends React.Component {
         const { passwordResetData } = this.props;
 
         return (
-            <div>
-                {currentComponent === 'EmailInput' &&
-                    <EmailInput
-                        passwordResetData={passwordResetData}
-                        onSwitchComponent={this.switchComponent}
-                    />}
-                {currentComponent === 'PasswordChange' &&
-                    <PasswordChange
-                        passwordResetData={passwordResetData}
-                    />}
-            </div>
+            <ThemeProvider theme={themeFrame}>
+
+                <div>
+                    {currentComponent === 'EmailInput' &&
+                        <EmailInput
+                            passwordResetData={passwordResetData}
+                            onSwitchComponent={this.switchComponent}
+                        />}
+                    {currentComponent === 'PasswordChange' &&
+                        <PasswordChange
+                            passwordResetData={passwordResetData}
+                        />}
+                </div>
+            </ThemeProvider>
         );
     }
 }

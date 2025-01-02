@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from 'react-toastify';
+import { TextField } from "@mui/material";
 
 export default function PasswordChange({ passwordResetData }) {
     const [newPassword, setNewPassword] = React.useState('');
@@ -56,15 +57,6 @@ export default function PasswordChange({ passwordResetData }) {
             return;
         }
 
-        // Проверка наличия пользователя и обновление пароля
-        // if (user) {
-        //     user.newPassword = newPassword;
-        //     setMessage('');
-        //     alert("Ваш пароль успішно оновлено!");
-        // } else {
-        //     setMessage('');
-        //     alert("Неправильне посилання для скидання паролю.");
-        // }
         const response = await resetPassword(newPassword, confirmPassword, email, token);
         if (response) {
             toast.success(response);
@@ -74,20 +66,13 @@ export default function PasswordChange({ passwordResetData }) {
         }
     };
 
-    // Обработка отмены
-    // const handleCancel = () => {
-    //     setNewPassword('');
-    //     setConfirmPassword('');
-    //     setMessage('');
-    // };
-
     return (
         <div className={styles.maincontainer}>
             <div className={styles.formcontainer}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.caption}>Введіть новий пароль</div>
                     <div className="relative">
-                        <input className={styles.formInput}
+                        <TextField className={styles.formInput}
                             type={showPwd ? "text" : "password"}
                             placeholder="Введіть новий пароль"
                             value={newPassword}
@@ -102,7 +87,7 @@ export default function PasswordChange({ passwordResetData }) {
 
 
                     <div className="relative">
-                        <input className={styles.formInput}
+                        <TextField className={styles.formInput}
                             type={showMatch ? "text" : "password"}
                             placeholder="Повторіть новий пароль"
                             value={confirmPassword}

@@ -17,15 +17,14 @@
 }
 
 .customlink {
-	color: darkblue;
+	color: #00aaad;
 	text-decoration: none;
 	padding: 0;
 	margin: 0;
 }
 
 .customlink:hover {
-	color: #ff4500;
-	/* Замените на нужный цвет при наведении */
+	color: #016264;
 	text-decoration: underline;
 }
 
@@ -46,7 +45,7 @@
 }
 
 .customlink2 {
-	color: darkblue;
+	color: #00aaad;
 	text-decoration: none;
 	margin: 20px 0 5px 0;
 }

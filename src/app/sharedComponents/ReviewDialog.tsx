@@ -155,7 +155,7 @@ export default function ReviewDialog({ onClose, wareId }: ReviewModalProps) {
                                     padding: '0px',
                                     color: '#00AAAD',
                                     '&.Mui-checked': {
-                                    color: '#00AAAD',
+                                        color: '#00AAAD',
                                     },
                                 }}
                                 size="small"
@@ -165,7 +165,7 @@ export default function ReviewDialog({ onClose, wareId }: ReviewModalProps) {
                                 required
                             />
                             &nbsp;Прийняти{" "}
-                            <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">
+                            <Link style={{ color: "#00AAAD" }} prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">
                                 Умови та Положення
                             </Link>
                         </label>

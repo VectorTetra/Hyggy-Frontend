@@ -109,10 +109,10 @@
   transition: box-shadow 0.3s ease;
 }
 
-.searchInput:focus{
+.searchInput:focus {
   border: 2px solid #00aaad;
   outline: none;
-} 
+}
 
 .searchButton {
   position: absolute;
@@ -197,7 +197,7 @@
 }
 
 .card:hover {
-  border: 2px solid #00aaad;
+  border: 1px solid #00aaad;
 }
 
 .worktime {

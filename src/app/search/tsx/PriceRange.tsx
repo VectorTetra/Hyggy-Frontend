@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useQueryState } from 'nuqs';
-import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import useSearchStore from "@/store/search";
 import styles from "../css/PriceRange.module.css";
 import debounce from 'lodash/debounce';
 import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
+import { Slider, ThemeProvider } from "@mui/material";
+
+import themeFrame from "@/app/AdminPanel/tsx/ThemeFrame";
 
 const PriceRange = () => {
 	const [f_0, setf_0] = useQueryState('f_0', { scroll: false, shallow: true, throttleMs: 500 });
@@ -41,7 +43,8 @@ const PriceRange = () => {
 	const MAX = Math.max(minPossible, maxPossible);
 	const isRangeValid = MIN < MAX && !isNaN(MIN) && !isNaN(MAX);
 
-	const handleSliderChange = (newValues) => {
+	const handleSliderChange = (event, newValues) => {
+		console.log("newValues", newValues);
 		setValues(newValues);
 	};
 
@@ -60,16 +63,29 @@ const PriceRange = () => {
 			<SidebarBlockHeader title="Ціна" setIsSidebarBlockOpen={setIsPriceRangeOpen} isSidebarBlockOpen={isPriceRangeOpen} />
 			<div className={`${isPriceRangeOpen ? styles.priceRangeOpen : styles.priceRange}`}>
 				{isRangeValid && (
-					<RangeSlider
-						disabled={!isPriceRangeOpen}
-						value={values}
-						step={10}
-						min={MIN}
-						defaultValue={[MIN, MAX]}
-						max={MAX}
-						onInput={handleSliderChange}
-						onThumbDragEnd={handleBlur}
-					/>
+					// <RangeSlider
+					// 	className={styles.customSlider}
+					// 	disabled={!isPriceRangeOpen}
+					// 	value={values}
+					// 	step={1}
+					// 	min={MIN}
+					// 	defaultValue={[MIN, MAX]}
+					// 	max={MAX}
+					// 	onInput={handleSliderChange}
+					// 	onThumbDragEnd={handleBlur}
+					// />
+					<ThemeProvider theme={themeFrame}>
+						<Slider
+							value={values}
+							onChange={handleSliderChange}
+							onChangeCommitted={handleBlur}
+							min={MIN}
+							max={MAX}
+							step={1}
+							disabled={!isPriceRangeOpen}
+							valueLabelDisplay="auto"
+						/>
+					</ThemeProvider>
 				)}
 				<div className={styles.inputs}>
 					<div className={styles.formGroup}>

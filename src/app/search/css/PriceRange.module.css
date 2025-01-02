@@ -2,6 +2,25 @@
 	padding: 0 15px;
 }
 
+.customSlider {
+	--range-slider-track-color: #00AAAD;
+	/* Колір треку */
+	--range-slider-thumb-color: #006666;
+	/* Колір повзунків */
+	--range-slider-fill-color: #00CCCC;
+	/* Колір заповнення */
+}
+
+/* :global(.range-slider) {
+	--range-slider-thumb-color: #00AAAD !important;
+	--range-slider-track-color: #CCCCCC !important;
+	--range-slider-fill-color: #00AAAD !important;
+} */
+
+.range-slider .range-slider__thumb {
+	background-color: #00AAAD;
+}
+
 .track {
 	height: 6px;
 	width: 100%;
@@ -14,7 +33,7 @@
 .thumb {
 	height: 20px;
 	width: 20px;
-	background-color: #548BF4;
+	background-color: #00AAAD;
 	border-radius: 50%;
 	position: static !important;
 	/* transform: translateX(-50%); */
@@ -68,7 +87,7 @@
 
 .formGroup:hover,
 .formGroup:focus {
-	border-color: rgb(20, 60, 138);
+	border-color: #00AAAD;
 }
 
 .inputPrice {
