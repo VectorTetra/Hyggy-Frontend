@@ -12,6 +12,7 @@ import { useDebounce } from 'use-debounce';
 import { getShops, ShopDTO } from '@/pages/api/ShopApi';
 import useLocalStorageStore from "@/store/localStorage";
 import { useOrderDeliveryTypes } from "@/pages/api/OrderDeliveryTypeApi";
+import { Radio } from "@mui/material";
 
 const Map = dynamic(
   () => import('./tsx/Map'),
@@ -158,11 +159,11 @@ const DeliveryPage = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 3 && debouncedSearchQuery !== "") {
-      getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 3 && debouncedSearchQuery !== "") {
+  //     getNearestNovaPoshtaWarehouses(debouncedSearchQuery);
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const getNearestShops = async (searchQuery) => {
     try {
@@ -185,11 +186,11 @@ const DeliveryPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 1 && debouncedSearchQuery !== "") {
-      getNearestShops(debouncedSearchQuery)
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 1 && debouncedSearchQuery !== "") {
+  //     getNearestShops(debouncedSearchQuery)
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const getUkrPoshtaOfficesByAddress = async (searchQuery) => {
     setLoading(true);
@@ -219,11 +220,11 @@ const DeliveryPage = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (selectedDeliveryType?.id === 4 && debouncedSearchQuery !== "") {
-      getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
-    }
-  }, [selectedDeliveryType, debouncedSearchQuery]);
+  // useEffect(() => {
+  //   if (selectedDeliveryType?.id === 4 && debouncedSearchQuery !== "") {
+  //     getUkrPoshtaOfficesByAddress(debouncedSearchQuery);
+  //   }
+  // }, [selectedDeliveryType, debouncedSearchQuery]);
 
   const handleButtonSearch = async () => {
     if (selectedDeliveryType?.id === 3) {
@@ -267,8 +268,15 @@ const DeliveryPage = () => {
             orderDeliveryTypes.map((deliveryType) => (
               <div key={deliveryType.id}>
                 <label>
-                  <input
-                    type="radio"
+                  <Radio
+                    sx={{
+                      padding: '3px',
+                      color: '#00AAAD',
+                      '&.Mui-checked': {
+                        color: '#00AAAD',
+                      },
+                    }}
+                    size="small"
                     name="delivery"
                     value={deliveryType.id}
                     checked={selectedDeliveryType?.id === deliveryType.id}
@@ -432,9 +440,9 @@ const DeliveryPage = () => {
             </div>
           </>
         )}
-
-        <Link prefetch={true} href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
-          <center>
+        <center>
+          <Link prefetch={true} href={isPaymentButtonEnabled ? "/cart/payment" : "#"}>
+          
             <button
               type="submit"
               className={styles.submitButton}
@@ -442,12 +450,11 @@ const DeliveryPage = () => {
             >
               Виберіть тип оплати
             </button>
-          </center>
-        </Link>
-
-        <Link prefetch={true} href="/cart/address">
-          <button type="button" className={styles.cancelButton}>Скасувати</button>
-        </Link>
+          </Link>
+          <p>
+            <button type="button" className={styles.cancelButton} onClick={() => router.back()}>Скасувати</button>
+          </p>
+        </center>
       </div>
     </Layout>
   );

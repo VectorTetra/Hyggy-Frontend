@@ -49,6 +49,13 @@
     width: 810px;
 }
 
+.formGroup input[type="text"]:focus,
+.formGroup input[type="email"]:focus,
+.formGroup textarea:focus{
+  border: 1px solid #00aaad;
+  outline: none;
+}
+
 .formInput {
     width: 100%;
     padding: 8px;

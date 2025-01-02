@@ -3,6 +3,8 @@ import useSearchStore from "@/store/search";
 import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/StatusPicker.module.css";
 import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
+import { Checkbox } from "@mui/material";
+
 interface Filter {
 	id: string; // або number, в залежності від типу вашого id
 	name: string;
@@ -37,9 +39,16 @@ function StatusPicker(props: any) {
 						<span className={styles.statusName}>{status.name}</span>
 						<div>
 							<span className={styles.statusCount}>{status.count}</span>
-							<input
-								type="checkbox"
-								className={styles.checkbox}
+							<Checkbox
+								sx={{
+									marginLeft: '10px',
+									padding: '0px',
+									color: '#00AAAD',
+									'&.Mui-checked': {
+									color: '#00AAAD',
+									},
+								}}
+								size="small"
 								value={status.id}
 								onChange={onChange}
 								checked={filters !== null && filters?.some((filter: Filter) => Number(filter.id) === status.id)} // Перевірка, чи фільтр вибраний

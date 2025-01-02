@@ -1,6 +1,7 @@
 // File: SaleCheckbox.tsx
 import { useQueryState } from 'nuqs';
 import styles from "../css/SaleCheckbox.module.css";
+import { Checkbox } from "@mui/material";
 
 function SaleCheckbox() {
 	const [filter, setFilter] = useQueryState("f_4", { scroll: false });
@@ -19,9 +20,15 @@ function SaleCheckbox() {
 			<div className={styles.saleCheckboxItem}>
 				<h2 className={styles.saleCheckboxName}>Товари на акції</h2>
 				<div>
-					<input
-						type="checkbox"
-						className={styles.checkbox}
+					<Checkbox
+						sx={{
+						padding: '0px',
+						color: '#00AAAD',
+						'&.Mui-checked': {
+							color: '#00AAAD',
+						},
+						}}
+						size="small"
 						value="sale"
 						onChange={onChange}
 						checked={filter === "sale"}

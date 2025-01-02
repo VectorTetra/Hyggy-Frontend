@@ -89,7 +89,9 @@
 
 .close {
   cursor: pointer;
-  text-align: right;
+  float: right;
+  font-size: xx-large;
+  margin-top: -20px;
 }
 
 @media (max-width: 1024px) {

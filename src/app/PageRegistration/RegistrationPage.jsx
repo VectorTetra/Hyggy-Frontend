@@ -5,6 +5,8 @@ import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '
 import { useState } from 'react';
 import { toast } from "react-toastify";
 import styles from "./css/RegistrationStyles.module.css";
+import { useRouter } from "next/navigation";
+import { Checkbox } from "@mui/material";
 
 export default function RegistrationPage(props) {
     const [name, setName] = useState('');
@@ -16,6 +18,7 @@ export default function RegistrationPage(props) {
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false); // Добавлено состояние для показа пароля
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Добавлено состояние для показа пароля
+    const router = useRouter();
 
 
     // Функция для проверки пароля
@@ -28,15 +31,15 @@ export default function RegistrationPage(props) {
 
 
     // Очищаем форму, если нажата кнопка "Скасувати"
-    const handleReset = () => {
-        setName('');
-        setSurname('');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setCheckboxStates({});
-        setErrorMessage('');
-    };
+    // const handleReset = () => {
+    //     setName('');
+    //     setSurname('');
+    //     setEmail('');
+    //     setPassword('');
+    //     setConfirmPassword('');
+    //     setCheckboxStates({});
+    //     setErrorMessage('');
+    // };
 
     // Проверки
     const handleSubmit = (e) => {
@@ -123,8 +126,15 @@ export default function RegistrationPage(props) {
                 }}
             >
                 <TextField sx={{
-
-                    backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px'
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
                 }}
                     label="Ім'я"
                     variant="outlined"
@@ -135,7 +145,17 @@ export default function RegistrationPage(props) {
                     fullWidth
                 />
 
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     type="text"
                     label="Прізвище"
                     variant="outlined"
@@ -144,7 +164,17 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     type="email"
                     label="email"
                     variant="outlined"
@@ -154,7 +184,17 @@ export default function RegistrationPage(props) {
                     required
                     fullWidth
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     type={showPassword ? 'text' : 'password'}
                     label="Пароль"
                     value={password}
@@ -177,7 +217,17 @@ export default function RegistrationPage(props) {
                         ),
                     }}
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     type={showConfirmPassword ? 'text' : 'password'}
                     label="Підтвердіть пароль"
                     value={confirmPassword}
@@ -206,8 +256,15 @@ export default function RegistrationPage(props) {
                             {props.registration.label.map((item, index) => (
                                 <tr key={index}>
                                     <td>
-                                        <input className={styles.formCheckbox}
-                                            type="checkbox"
+                                        <Checkbox
+                                            sx={{
+                                            padding: '0px',
+                                            color: '#00AAAD',
+                                            '&.Mui-checked': {
+                                                color: '#00AAAD',
+                                            },
+                                            }}
+                                            size="small"
                                             checked={checkboxStates[item.name] || false}
                                             onChange={() => handleCheckboxChange(item.name)}
                                         />
@@ -250,7 +307,7 @@ export default function RegistrationPage(props) {
                     // component="div"
                     color="primary"
                     fullWidth
-                    onClick={handleReset}
+                    onClick={() => router.back()}
                     sx={{
                         backgroundColor: '#f3f3f3',
                         padding: '0.75rem',

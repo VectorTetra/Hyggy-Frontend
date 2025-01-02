@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from "react";
+import styles from "./../page.module.css";
+import { Radio } from "@mui/material";
 
 const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType }) => {
     const refs = useRef<(HTMLDivElement | null)[]>([]);
@@ -22,7 +24,7 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
     return (
         <div>
             {stores.length === 0 ? (
-                <p>Не знайдено</p>
+                <p></p>
             ) : (
                 <div className={`overflow-y-auto ${stores.length > 5 ? 'h-[540px]' : ''}`}>
                     {stores.map((store, index) => (
@@ -32,9 +34,16 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
                             ref={el => { refs.current[index] = el; }}
                         >
                             <label className="block font-bold text-lg">
-                                <input
-                                    type="radio"
-                                    className="mr-2"
+                                <Radio
+                                    sx={{
+                                        padding: '3px',
+                                        color: '#00AAAD',
+                                        '&.Mui-checked': {
+                                        color: '#00AAAD',
+                                        },
+                                    }}
+                                    size="small"
+                                    className={`mr-2 ${styles.radioInput}`}
                                     checked={selectedStore?.name === store.name}
                                     onChange={() => handleCheckboxChange(store)}
                                 />

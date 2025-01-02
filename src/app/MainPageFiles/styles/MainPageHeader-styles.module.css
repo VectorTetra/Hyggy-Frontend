@@ -62,11 +62,6 @@
 	color: black;
 }
 
-.inputSearch {
-	border-radius: 6px;
-	border: none !important;
-}
-
 #mainPageHeaderLogo {
 	width: 110px;
 	height: 71px;
@@ -112,7 +107,6 @@
 
 .inputSearch {
 	background-color: rgb(232, 230, 230);
-	border: 2px solid black;
 	width: auto;
 	height: 30px;
 	font-size: 14px;
@@ -120,6 +114,12 @@
 	padding: 5px;
 	order: 4;
 	display: flex;
+	border-radius: 6px;
+}
+
+.inputSearch:focus {
+	border: 2px solid #00aaad;
+	outline: none;
 }
 
 #mainPageHeaderUserPhoto {
@@ -263,7 +263,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		width: 100%;
 		height: 30px;
 		font-size: 14px;
@@ -405,7 +405,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		width: 100%;
 		height: 30px;
 		font-size: 14px;
@@ -536,7 +536,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		/* width: 100%; */
 		height: 30px;
 		font-size: 14px;
@@ -693,7 +693,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		width: 100%;
 		height: 30px;
 		font-size: 14px;
@@ -846,7 +846,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		width: 100%;
 		height: 30px;
 		font-size: 14px;
@@ -999,7 +999,7 @@
 
 	.inputSearch {
 		background-color: rgb(232, 230, 230);
-		border: 2px solid black;
+		
 		width: 100%;
 		height: 30px;
 		font-size: 14px;

@@ -33,6 +33,13 @@
   margin-bottom: 15px;
 }
 
+.formGroup input[type="text"]:focus,
+.formGroup input[type="email"]:focus,
+.formGroup input[type="tel"]:focus{
+  border: 1px solid #00aaad;
+  outline: none;
+}
+
 .formGroup label {
   font-weight: bold;
   margin-bottom: 5px;
@@ -42,13 +49,9 @@
 .formGroup input[type="email"],
 .formGroup input[type="tel"] {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #bab8b8;
   border-radius: 5px;
   width: 100%;
-}
-
-.formGroup input[type="checkbox"] {
-  margin-right: 10px;
 }
 
 .buttonGroup {
@@ -76,10 +79,12 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
   color: #00aaad;
   text-decoration: underline;
-  text-decoration-skip-ink: none;
+}
+
+.cancelButton:hover {
+  text-decoration: none;
 }
 
 .cartSummary {
@@ -162,7 +167,7 @@
 
 .suggestionsList {
   background-color: white;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
   max-height: 150px;
   overflow-y: auto;
@@ -174,7 +179,7 @@
 .suggestionsList li {
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
   transition: background-color 0.2s ease-in-out;
 }
 
@@ -194,6 +199,14 @@
   font-size: 0.875rem;
 }
 
+.termsLink {
+  color: #00aaad;
+}
+
+.termsLink:hover {
+  text-decoration: none;
+}
+
 @media (max-width: 1024px) {
   .checkoutPage {
     flex-direction: column;
@@ -203,5 +216,6 @@
   .cartSummary {
     width: 100%;
     margin-bottom: 20px;
+    padding: 0px;
   }
 }

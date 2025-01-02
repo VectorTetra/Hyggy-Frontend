@@ -8,6 +8,7 @@ import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
 import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
+import { Checkbox } from "@mui/material";
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -305,23 +306,32 @@ const AddressPage = () => {
             </div>
             <div className={styles.formGroup}>
               <label>
-                <input
-                  type="checkbox"
+              <Checkbox
+                  sx={{
+                    padding: '0px',
+                    color: '#00AAAD',
+                    '&.Mui-checked': {
+                      color: '#00AAAD',
+                    },
+                  }}
+                  size="small"
                   name="termsAccepted"
                   checked={formData?.termsAccepted || false}
                   onChange={handleInputChange}
                   required
-                /> Прийняти <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8">Умови та положення</Link>
+                /> Прийняти <Link prefetch={true} href="https://jysk.ua/umovi-ta-polozhennya#8" className={styles.termsLink}>Умови та положення</Link>
               </label>
             </div>
-            <div className={styles.buttonGroup}>
-              <button type="submit" className={styles.submitButton}>
-                Перейти до доставки
-              </button>
-            </div>
-            <Link prefetch={true} href="/cart">
-              <button type="button" className={styles.cancelButton}>Скасувати</button>
-            </Link>
+            <center>
+              <div className={styles.buttonGroup}>
+                <button type="submit" className={styles.submitButton}>
+                  Перейти до доставки
+                </button>
+              </div>
+              <p>
+                <button type="button" className={styles.cancelButton} onClick={() => router.back()}>Скасувати</button>
+              </p>
+            </center>
           </form>
         </div>
 

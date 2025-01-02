@@ -52,7 +52,7 @@ const CartPopup: React.FC<CartPopupProps> = ({ onClose, selectedOption }) => {
   return (
     <div className={styles.popupOverlay}>
       <div className={styles.popupContent}>
-        <div onClick={onClose} className={styles.close}>&times;</div>
+        <span onClick={onClose} className={styles.close}>&times;</span>
         {cart.length === 0 ? (
           <p>Кошик пустий</p>
         ) : (
