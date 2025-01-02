@@ -108,7 +108,13 @@ export default function AuthenticationPage(props) {
                         type="submit"
                         color="primary"
                         fullWidth
-                        sx={{ backgroundColor: '#00AAAD', padding: '0.75rem', fontSize: '1rem' }}
+                        sx={{
+                            backgroundColor: '#00AAAD',
+                            padding: '0.75rem',
+                            fontSize: '1rem',
+                            fontFamily: "inherit",
+                            textTransform: 'none',
+                        }}
                     >
                         Увійти
                     </Button>

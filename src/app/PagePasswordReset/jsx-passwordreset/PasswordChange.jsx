@@ -1,13 +1,13 @@
 "use client";
 import { resetPassword } from "@/pages/api/resetpassword";
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
-import styles from '../css/passwordResetStyle.module.css';
-import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState } from "react";
 import { toast } from 'react-toastify';
-import { TextField } from "@mui/material";
+import styles from '../css/passwordResetStyle.module.css';
 
 export default function PasswordChange({ passwordResetData }) {
     const [newPassword, setNewPassword] = React.useState('');
@@ -71,34 +71,61 @@ export default function PasswordChange({ passwordResetData }) {
             <div className={styles.formcontainer}>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.caption}>Введіть новий пароль</div>
-                    <div className="relative">
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            maxWidth: 'clamp(400px,42vmax,800px)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1rem',
+                        }}
+                    >
+
                         <TextField className={styles.formInput}
                             type={showPwd ? "text" : "password"}
-                            placeholder="Введіть новий пароль"
+                            label="Введіть новий пароль"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
+                            InputProps={{
+                                // Додаємо іконку для перемикання видимості пароля
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setShowPwd(!showPwd)}
+                                            edge="end"
+                                        >
+                                            {showPwd ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
-                        <button className={styles.showPassword}
-                            type="button"
-                            onClick={() => setShowPwd(!showPwd)}>
-                            <FontAwesomeIcon icon={showPwd ? faEyeSlash : faEye} />
-                        </button>
-                    </div>
 
 
-                    <div className="relative">
                         <TextField className={styles.formInput}
                             type={showMatch ? "text" : "password"}
-                            placeholder="Повторіть новий пароль"
+                            label="Повторіть новий пароль"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            InputProps={{
+                                // Додаємо іконку для перемикання видимості пароля
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setShowMatch(!showMatch)}
+                                            edge="end"
+                                        >
+                                            {showMatch ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
-                        <button className={styles.showPassword}
-                            type="button"
-                            onClick={() => setShowMatch(!showMatch)}>
-                            <FontAwesomeIcon icon={showMatch ? faEyeSlash : faEye} />
-                        </button>
-                    </div>
+                    </Box>
+
                     <div>
                         <button type="submit" className={styles.submitbutton}>Підтвердити</button>
                     </div>

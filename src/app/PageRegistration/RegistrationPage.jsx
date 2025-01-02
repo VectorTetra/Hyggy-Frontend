@@ -111,7 +111,7 @@ export default function RegistrationPage(props) {
                         flexDirection: 'column',
                         gap: '1rem',
                         padding: '2rem',
-
+                        fontFamily: "inherit",
                     }}
                 >
                     <TextField sx={{ backgroundColor: '#E0E0E0' }}
@@ -151,6 +151,7 @@ export default function RegistrationPage(props) {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         fullWidth
+
                         InputProps={{
                             // Додаємо іконку для перемикання видимості пароля
                             endAdornment: (
@@ -229,7 +230,7 @@ export default function RegistrationPage(props) {
                             backgroundColor: '#00AAAD',
                             padding: '0.75rem',
                             fontSize: '1rem',
-
+                            fontFamily: "inherit",
                             color: 'white', // Цвет текста
                             textTransform: 'none',
                             ':hover': {
@@ -254,6 +255,7 @@ export default function RegistrationPage(props) {
                             color: '#00AAAD', // Цвет текста
                             textDecoration: 'underline',
                             textTransform: 'none',
+                            fontFamily: "inherit",
                         }}
                     >
                         Скасувати
