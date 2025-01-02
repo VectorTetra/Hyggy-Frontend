@@ -84,7 +84,7 @@ const ShopStatusOuter = ({ shop }: { shop: ShopGetDTO }) => {
 				</span>
 			</div>
 			{isDetailsOpen && (
-				<div className={styles.ShopStatusOuterDetails} >
+				<div className={`${styles.ShopStatusOuterDetails} ${styles.open}`} >
 					<div>
 						<p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
 						<div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
