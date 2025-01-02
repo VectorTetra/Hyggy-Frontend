@@ -40,10 +40,6 @@
   outline: none;
 }
 
-.formGroup input[type="checkbox"]:checked {
-  accent-color: #00aaad; /* Це змінює колір відмітки у чекбоксі */
-}
-
 .formGroup label {
   font-weight: bold;
   margin-bottom: 5px;
@@ -53,13 +49,9 @@
 .formGroup input[type="email"],
 .formGroup input[type="tel"] {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #bab8b8;
   border-radius: 5px;
   width: 100%;
-}
-
-.formGroup input[type="checkbox"] {
-  margin-right: 10px;
 }
 
 .buttonGroup {
@@ -175,7 +167,7 @@
 
 .suggestionsList {
   background-color: white;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
   max-height: 150px;
   overflow-y: auto;
@@ -187,7 +179,7 @@
 .suggestionsList li {
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
   transition: background-color 0.2s ease-in-out;
 }
 

@@ -59,7 +59,17 @@ export default function AuthenticationPage(props) {
                     padding: '2rem',
                 }}
             >
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     label="Email"
                     variant="outlined"
                     type="email"
@@ -69,7 +79,17 @@ export default function AuthenticationPage(props) {
                     pattern="^[A-Za-z.-_]{3,}@[A-Za-z]+\.[A-Za-z]+$"
                     fullWidth
                 />
-                <TextField sx={{ backgroundColor: 'rgb(227, 223, 223)', boxsizing: 'border-box', border: '2px solid #bab8b8', borderradius: '6px' }}
+                <TextField sx={{
+                    '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                            borderColor: '#ccc',
+                        },
+                        '&.Mui-focused fieldset': {
+                            border: '1px solid #00aaad',
+                            outline: 'none',
+                        },
+                    },
+                }}
                     label="Пароль"
                     variant="outlined"
                     type={showPassword ? 'text' : 'password'} // Перемикаємо тип поля

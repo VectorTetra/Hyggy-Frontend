@@ -4,6 +4,7 @@ import useSearchStore from "@/store/search";
 import { parseAsArrayOf, parseAsJson, useQueryState } from 'nuqs';
 import styles from "../css/TrademarkPicker.module.css";
 import SidebarBlockHeader from "@/app/sharedComponents/SidebarBlockHeader";
+import { Checkbox } from "@mui/material";
 interface Filter {
 	id: string; // або number, в залежності від типу вашого id
 	name: string;
@@ -38,9 +39,16 @@ function TrademarkPicker(props: any) {
 						<span className={styles.trademarkName}>{trademark.name}</span>
 						<div>
 							<span className={styles.trademarkCount}>{trademark.count}</span>
-							<input
-								type="checkbox"
-								className={styles.checkbox}
+							<Checkbox
+								sx={{
+									marginLeft: '10px',
+									padding: '0px',
+									color: '#00AAAD',
+									'&.Mui-checked': {
+									color: '#00AAAD',
+									},
+								}}
+								size="small"
 								value={trademark.id}
 								onChange={onChange}
 								checked={filters !== null && filters?.some((filter: Filter) => Number(filter.id) === trademark.id)} // Перевірка, чи фільтр вибраний

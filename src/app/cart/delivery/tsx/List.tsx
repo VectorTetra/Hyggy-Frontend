@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./../page.module.css";
+import { Radio } from "@mui/material";
 
 const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType }) => {
     const refs = useRef<(HTMLDivElement | null)[]>([]);
@@ -33,8 +34,15 @@ const List = ({ selectedStore, setSelectedStore, stores, selectedDeliveryType })
                             ref={el => { refs.current[index] = el; }}
                         >
                             <label className="block font-bold text-lg">
-                                <input
-                                    type="radio"
+                                <Radio
+                                    sx={{
+                                        padding: '3px',
+                                        color: '#00AAAD',
+                                        '&.Mui-checked': {
+                                        color: '#00AAAD',
+                                        },
+                                    }}
+                                    size="small"
                                     className={`mr-2 ${styles.radioInput}`}
                                     checked={selectedStore?.name === store.name}
                                     onChange={() => handleCheckboxChange(store)}

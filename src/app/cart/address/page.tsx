@@ -8,6 +8,7 @@ import useLocalStorageStore, { CartItem } from "@/store/localStorage";
 import Link from 'next/link';
 import InputMask from 'react-input-mask';
 import { formatCurrency } from "@/app/sharedComponents/methods/formatCurrency";
+import { Checkbox } from "@mui/material";
 
 const AddressPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -305,8 +306,15 @@ const AddressPage = () => {
             </div>
             <div className={styles.formGroup}>
               <label>
-                <input
-                  type="checkbox"
+              <Checkbox
+                  sx={{
+                    padding: '0px',
+                    color: '#00AAAD',
+                    '&.Mui-checked': {
+                      color: '#00AAAD',
+                    },
+                  }}
+                  size="small"
                   name="termsAccepted"
                   checked={formData?.termsAccepted || false}
                   onChange={handleInputChange}

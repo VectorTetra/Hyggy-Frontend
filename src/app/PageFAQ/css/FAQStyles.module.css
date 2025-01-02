@@ -256,6 +256,11 @@
 
 .adaptivurl {
   font-size: 15px;
+  color: #00aaad;
+}
+
+.adaptivurl:hover {
+  color: #016264;
 }
 
 @media screen and (max-width: 1000px) and (min-width: 700px) {

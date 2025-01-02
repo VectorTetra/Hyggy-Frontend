@@ -87,10 +87,11 @@
 .text-link {
     padding-top: 100px;
     text-decoration: none;
+    color: #00aaad;
 }
 
 .text-link:hover {
-    color: brown;
+    color: #016264;
 }
 
 .brand-container,
@@ -156,6 +157,11 @@
 .blog-caption {
     font-weight: bold;
     margin-top: 10px;
+    color:#00AAAD;
+}
+
+.blog-caption:hover{
+    color:#016264;
 }
 
 .blog-text {
@@ -188,7 +194,6 @@
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
-    border: 1px solid #018183;
     color: white;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -271,6 +276,13 @@
     border-radius: 10px;
     background-color: #D9D9D9;
     color: #231F20;
+    border: 1px solid transparent;
+}
+
+.form-containerInput input[type="email"]:focus,
+.form-containerInput input[type="text"]:focus {
+    border: 1px solid #00aaad;
+    outline: none;
 }
 
 .inputSubmit {

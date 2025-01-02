@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./../../styles/MainPageBody-styles.module.css";
+import { Checkbox } from "@mui/material";
 
 export default function MainPageBodySubscriptionForm(props) {
     const [isChecked, setIsChecked] = React.useState(false);
@@ -42,8 +43,14 @@ export default function MainPageBodySubscriptionForm(props) {
                         <input type="submit" className={styles.inputSubmit} name="subscrSubmit" value="Підписатися на розсилку" />
                     </div>
                     <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center' }}>
-                        <input
-                            type="checkbox"
+                        <Checkbox
+                            sx={{
+                            color: '#00AAAD',
+                            '&.Mui-checked': {
+                                color: '#00AAAD',
+                            },
+                            }}
+                            size="small"
                             id={styles.termsCheckbox}
                             onChange={handleCheckboxChange}
                         />

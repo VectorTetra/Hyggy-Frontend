@@ -12,6 +12,7 @@ import { useDebounce } from 'use-debounce';
 import { getShops, ShopDTO } from '@/pages/api/ShopApi';
 import useLocalStorageStore from "@/store/localStorage";
 import { useOrderDeliveryTypes } from "@/pages/api/OrderDeliveryTypeApi";
+import { Radio } from "@mui/material";
 
 const Map = dynamic(
   () => import('./tsx/Map'),
@@ -267,8 +268,15 @@ const DeliveryPage = () => {
             orderDeliveryTypes.map((deliveryType) => (
               <div key={deliveryType.id}>
                 <label>
-                  <input
-                    type="radio"
+                  <Radio
+                    sx={{
+                      padding: '3px',
+                      color: '#00AAAD',
+                      '&.Mui-checked': {
+                        color: '#00AAAD',
+                      },
+                    }}
+                    size="small"
                     name="delivery"
                     value={deliveryType.id}
                     checked={selectedDeliveryType?.id === deliveryType.id}

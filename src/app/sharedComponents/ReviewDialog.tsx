@@ -6,6 +6,7 @@ import useReviewDialogStore from "@/store/reviewDialogStore";
 import { useCreateWareReview } from "@/pages/api/WareReviewApi";
 import { toast } from "react-toastify";
 import { getDecodedToken, isUser, validateToken } from "@/pages/api/TokenApi";
+import { Checkbox } from "@mui/material";
 
 interface ReviewModalProps {
     onClose: () => void;
@@ -149,8 +150,15 @@ export default function ReviewDialog({ onClose, wareId }: ReviewModalProps) {
                     </div>
                     <div className={styles.formGroup}>
                         <label>
-                            <input
-                                type="checkbox"
+                            <Checkbox
+                                sx={{
+                                    padding: '0px',
+                                    color: '#00AAAD',
+                                    '&.Mui-checked': {
+                                    color: '#00AAAD',
+                                    },
+                                }}
+                                size="small"
                                 name="termsAccepted"
                                 checked={reviewData.termsAccepted}
                                 onChange={handleCheckboxChange}

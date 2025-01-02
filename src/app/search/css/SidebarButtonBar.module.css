@@ -33,11 +33,14 @@
 
 .showResultsButton {
 	color: #fff;
-	background-color: #007bff;
-	border: 1px solid #000;
+	background-color: #00aaad;
 	border-radius: 5px;
 	padding: 10px 5px;
 	cursor: pointer;
 	display: flex;
 	/* flex: none; */
 }
+
+.showResultsButton:hover {
+	background-color: #016264;
+  }

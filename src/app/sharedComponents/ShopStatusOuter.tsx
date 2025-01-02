@@ -75,8 +75,9 @@ const ShopStatusOuter = ({ shop }: { shop: ShopGetDTO }) => {
 					onClick={toggleWorkHours}
 					style={{
 						margin: "10px 15px 10px 0",
-						color: "#007bff",
+						color: "#00AAAD",
 						textDecoration: "underline",
+						fontWeight: "bold",
 						cursor: "pointer",
 						fontSize: "14px",
 					}}

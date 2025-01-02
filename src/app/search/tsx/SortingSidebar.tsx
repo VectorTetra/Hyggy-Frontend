@@ -5,6 +5,7 @@ import filterStyles from "../css/FilterSidebar.module.css";
 import { useQueryState } from 'nuqs';
 import useSearchStore from "@/store/search"; // Імпортуємо Zustand store
 import SidebarButtonBar from "./SidebarButtonBar";
+import { Radio } from "@mui/material";
 
 export default function SortingSidebar(props: any) {
 	const { isSortingSidebarOpen, setIsSortingSidebarOpen } = useSearchStore();
@@ -38,8 +39,15 @@ export default function SortingSidebar(props: any) {
 					<hr className={filterStyles.sidebarHr} />
 				</div>
 				<div className={styles.sortingSidebarContent}>
-					<input
-						type="radio"
+				<Radio
+						sx={{
+							padding: '0px',
+							color: '#00AAAD',
+							'&.Mui-checked': {
+							color: '#00AAAD',
+							},
+						}}
+						size="small"
 						name="sorting"
 						id="Rating"
 						value="Rating"
@@ -49,8 +57,15 @@ export default function SortingSidebar(props: any) {
 					<label htmlFor="Rating">Найкращий відгук</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
-					<input
-						type="radio"
+					<Radio
+						sx={{
+							padding: '0px',
+							color: '#00AAAD',
+							'&.Mui-checked': {
+							color: '#00AAAD',
+							},
+						}}
+						size="small"
 						name="sorting"
 						id="PriceAsc"
 						value="PriceAsc"
@@ -60,8 +75,15 @@ export default function SortingSidebar(props: any) {
 					<label htmlFor="PriceAsc">Найменша ціна</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
-					<input
-						type="radio"
+					<Radio
+						sx={{
+							padding: '0px',
+							color: '#00AAAD',
+							'&.Mui-checked': {
+							color: '#00AAAD',
+							},
+						}}
+						size="small"
 						name="sorting"
 						id="PriceDesc"
 						value="PriceDesc"
@@ -71,8 +93,15 @@ export default function SortingSidebar(props: any) {
 					<label htmlFor="PriceDesc">Найбільша ціна</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
-					<input
-						type="radio"
+					<Radio
+						sx={{
+							padding: '0px',
+							color: '#00AAAD',
+							'&.Mui-checked': {
+							color: '#00AAAD',
+							},
+						}}
+						size="small"
 						name="sorting"
 						id="NameAsc"
 						value="NameAsc"
@@ -82,8 +111,15 @@ export default function SortingSidebar(props: any) {
 					<label htmlFor="NameAsc">За алфавітом (А-Я)</label>
 				</div>
 				<div className={styles.sortingSidebarContent}>
-					<input
-						type="radio"
+					<Radio
+						sx={{
+							padding: '0px',
+							color: '#00AAAD',
+							'&.Mui-checked': {
+							color: '#00AAAD',
+							},
+						}}
+						size="small"
 						name="sorting"
 						id="NameDesc"
 						value="NameDesc"
