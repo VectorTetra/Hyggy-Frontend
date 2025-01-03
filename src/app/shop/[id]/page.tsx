@@ -95,9 +95,13 @@ export default function Shop() {
                         <h1 id="workhours" className="mt-10 text-2xl font-semibold">
                             Робочі години
                         </h1>
-                        <ul className="mt-1 space-y-1">
+                        <ul className="mt-1 space-y-1 pl-0">
                             {place?.workHours?.split("|").map((item, index) => (
-                                <li key={index} className={index === todayIndex ? "bg-yellow-200" : ""}>
+                                <li key={index} style={{
+                                    backgroundColor: index === todayIndex ? "#00AAAD" : "",
+                                    fontWeight: index === todayIndex ? "bold" : "normal",
+                                    color: index === todayIndex ? "white" : "black"
+                                }}>
                                     <span>{item.split(",")[0]}</span>: <span>{item.split(",")[1]}</span>
                                 </li>
                             ))}
