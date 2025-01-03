@@ -32,17 +32,17 @@ export function MainPageBorder() {
     };
 
     return (
-        <div className="carouselWrapper1">
+        <div className='carouselWrapper1'>
             <Slider ref={sliderRef} {...settings}>
                 {Array.isArray(sales) && sales.length > 0 && sales.map((card, index) => (
-                    <div key={index} className="slide">
+                    <div key={index} className='slide'>
                         <Link href={`/PageBlogIndividual/${card.id}`}>
                             <Image
                                 width={400}
                                 height={200}
                                 src={card.previewImagePath}
                                 alt={card.blogTitle}
-                                className="cardImage1"
+                                className='cardImage1'
                             />
                         </Link>
                     </div>
