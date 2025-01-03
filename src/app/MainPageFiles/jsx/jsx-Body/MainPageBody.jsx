@@ -34,7 +34,7 @@ export default function MainPageBody(props) {
 			{/* <hr id="horizontalBar3" /> */}
 			<br></br>
 			<div>
-				<MainPageBodyBlogCaption caption={props.bodyData.blogcaption.caption} />
+				{props.bodyData.blogcaption && <MainPageBodyBlogCaption caption={props.bodyData.blogcaption.caption} />}
 				<MainPageBodyBlog blog={props.bodyData.blog} />
 				<MainPageBodyBlogButton button={props.bodyData.blog} />
 			</div>
