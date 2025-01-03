@@ -16,16 +16,19 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useQueryState } from "nuqs";
 import FavoriteWaresUser from "./FavoriteWaresUser";
+import ConfirmationDialog from "@/app/sharedComponents/ConfirmationDialog";
 
 export default function PageProfileUser(props) {
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isExitingDialogOpen, setIsExitingDialogOpen] = useState(false);
     const queryClient = useQueryClient();
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(data.profile.urlphoto || null);
     const router = useRouter();
     const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: 'orders' });
     let [customer, setCustomer] = useState<Customer | null>(null);
     const { mutateAsync: updateCustomer } = useUpdateCustomer();
+
 
     const { data: customers = [], isLoading: customerLoading, isSuccess: customerSuccess } = useCustomers({
         SearchParameter: "Query",
@@ -93,71 +96,62 @@ export default function PageProfileUser(props) {
         }
     };
 
-    const uploadImage = async (file: File) => {
-        // Удаление старого изображения на ImageKit, если оно существует
-        if (data.profile.urlphoto) {
-            await deleteOldImage(data.profile.urlphoto);
-        }
+    // const uploadImage = async (file: File) => {
+    //     // Удаление старого изображения на ImageKit, если оно существует
+    //     if (data.profile.urlphoto) {
+    //         await deleteOldImage(data.profile.urlphoto);
+    //     }
 
-        // Загрузка нового изображения на ImageKit
-        const formData = new FormData();
-        formData.append('photos', file);
-        formData.append('fileName', file.name);
+    //     // Загрузка нового изображения на ImageKit
+    //     const formData = new FormData();
+    //     formData.append('photos', file);
+    //     formData.append('fileName', file.name);
 
-        try {
-            const response = await fetch('https://api.imagekit.io/v1/files/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${btoa('public_M7rp5a+A03bMXqAwHwTbXJozb2Q=')}`,
-                },
-                body: formData,
-            });
+    //     try {
+    //         const response = await fetch('https://api.imagekit.io/v1/files/upload', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Authorization': `Basic ${btoa('public_M7rp5a+A03bMXqAwHwTbXJozb2Q=')}`,
+    //             },
+    //             body: formData,
+    //         });
 
-            const data = await response.json();
-            if (data.profile.urlphoto) {
-                // Обновляем URL изображения в JSON
-                updateProfilePhotoUrl(data.profile.urlphoto);
-            }
-        } catch (error) {
-            console.error("Ошибка загрузки изображения:", error);
-        }
-    };
+    //         const data = await response.json();
+    //         if (data.profile.urlphoto) {
+    //             // Обновляем URL изображения в JSON
+    //             updateProfilePhotoUrl(data.profile.urlphoto);
+    //         }
+    //     } catch (error) {
+    //         console.error("Ошибка загрузки изображения:", error);
+    //     }
+    // };
 
-    const deleteOldImage = async (imageUrl: string) => {
-        const imageId = imageUrl.split('/').pop(); // Извлечение ID изображения из URL
-        try {
-            await fetch(`https://api.imagekit.io/v1/files/${imageId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Basic ${btoa('private_XDeaQHKGVMyTnXaAJfkHZuGc+nQ=')}`,
-                },
-            });
-        } catch (error) {
-            console.error("Ошибка удаления старого изображения:", error);
-        }
-    };
+    // const deleteOldImage = async (imageUrl: string) => {
+    //     const imageId = imageUrl.split('/').pop(); // Извлечение ID изображения из URL
+    //     try {
+    //         await fetch(`https://api.imagekit.io/v1/files/${imageId}`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 'Authorization': `Basic ${btoa('private_XDeaQHKGVMyTnXaAJfkHZuGc+nQ=')}`,
+    //             },
+    //         });
+    //     } catch (error) {
+    //         console.error("Ошибка удаления старого изображения:", error);
+    //     }
+    // };
 
-    const updateProfilePhotoUrl = (newUrl: string) => {
-        data.profile.urlphoto = newUrl;
-    };
+    // const updateProfilePhotoUrl = (newUrl: string) => {
+    //     data.profile.urlphoto = newUrl;
+    // };
 
     // Функция для выхода
-    const handleLogout = () => {
-        const userConfirmed = window.confirm("Ви дійсно бажаєте вийти з власного кабінету");
-        if (userConfirmed) {
-            removeToken();
-            router.push("/");
-        }
+
+    const handleConfirmedLogout = () => {
+        removeToken();
+        router.push("/");
     };
 
-    // Функция для удаления аккаунта
-    const handleDeleteAccount = () => {
-        const userConfirmed = window.confirm("Ви дійсно бажаєте видалити свій акаунт?");
-        if (userConfirmed) {
-            removeToken();
-            router.push("/");
-        }
-    };
+
 
     const renderActiveTabContent = () => {
         // Если мы редактируем профиль, то отображаем форму редактирования
@@ -217,7 +211,7 @@ export default function PageProfileUser(props) {
                         </ul>
                         <div className={styles.deleteAccountButtonContainer}>
                             <button className={styles.deleteAccountButton} onClick={handleEdit}>Редагувати</button>
-                            <button className={styles.deleteAccountButton} onClick={handleLogout}>Вийти</button>
+                            <button className={styles.deleteAccountButton} onClick={() => { setIsExitingDialogOpen(true) }}>Вийти</button>
                         </div>
                     </div>
                     <div className={styles.profileBlock}>
@@ -232,6 +226,18 @@ export default function PageProfileUser(props) {
                 <div className={styles.tabContent}>
                     {renderActiveTabContent()}
                 </div>
+                <ConfirmationDialog
+                    title="Вийти?"
+                    contentText={`Ви дійсно бажаєте вийти з власного кабінету?`}
+                    onConfirm={handleConfirmedLogout}
+                    onCancel={() => setIsExitingDialogOpen(false)}
+                    confirmButtonBackgroundColor='#00AAAD'
+                    cancelButtonBackgroundColor='#fff'
+                    cancelButtonBorderColor='#be0f0f'
+                    cancelButtonColor='#be0f0f'
+                    open={isExitingDialogOpen}
+                />
+
             </div>}
         </div>
     )

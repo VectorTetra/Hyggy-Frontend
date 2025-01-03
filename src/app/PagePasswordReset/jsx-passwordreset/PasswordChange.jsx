@@ -129,7 +129,7 @@ export default function PasswordChange({ passwordResetData }) {
                     <div>
                         <button type="submit" className={styles.submitbutton}>Підтвердити</button>
                     </div>
-                    <button type="button" className={styles.submitbutton2} onClick={() => router.back()}>Скасувати</button>
+                    <button type="button" className={styles.submitbutton2} onClick={() => router.push("/PageAuthentication")}>Скасувати</button>
                 </form>
                 {message && <p>{message}</p>}
             </div>
