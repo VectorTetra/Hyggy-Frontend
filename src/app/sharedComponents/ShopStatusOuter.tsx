@@ -5,6 +5,7 @@ import useMainPageMenuShops from "@/store/mainPageMenuShops";
 import Link from "next/link";
 import styles from "@/app/sharedComponents/css/ShopStatusOuter.module.css";
 import { useRouter } from "next/navigation";
+import { Collapse } from "@mui/material";
 
 const checkShopStatus = (workHours: string) => {
 	const currentDate = new Date();
@@ -78,42 +79,41 @@ const ShopStatusOuter = ({ shop }: { shop: ShopGetDTO }) => {
 						fontWeight: "bold",
 						cursor: "pointer",
 						fontSize: "14px",
+						userSelect: "none"
 					}}
 				>
 					Робочі години
 				</span>
 			</div>
-			{isDetailsOpen && (
-				<div className={`${styles.ShopStatusOuterDetails} ${styles.open}`} >
-					<div>
-						<p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
-						<div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-							<strong>Адреса:</strong>
-							<span style={{ marginLeft: "50px" }}>
-								{shop.street},
-								<p style={{ marginBottom: 0 }}>{shop.city}</p>
-								<Link prefetch={true} className={styles.customlink} href="/shops" onClick={() => {
-									setIsMainPageMenuShopsOpened(false);
-								}}>Як знайти магазин</Link>
-							</span>
-						</div>
-					</div>
-					<div style={{ display: "flex", margin: "20px 0 10px 0", flexDirection: "column" }}>
-						<p style={{ fontWeight: "bold", marginBottom: "10px" }}>Робочі години:</p>
-						<ul className={styles.worktimelist}>
-							{parsedWorkHours.map((time, index) => (
-								<li key={index} className={styles.worktimeitem}>
-									<span className={styles.worktimeday}>{time.dayweek}:</span>
-									<span style={{ fontSize: "14px" }}>{time.open} - {time.close}</span>
-								</li>
-							))}
-						</ul>
-						<Link className={styles.customlink2} href={`/shop/${shop.id}`} onClick={() => {
-							setIsMainPageMenuShopsOpened(false);
-						}} >Показати магазин</Link>
+			<Collapse className={styles.ShopStatusOuterDetails} in={isDetailsOpen} timeout={200} unmountOnExit>
+				<div>
+					<p style={{ fontWeight: "bold" }}>Інформація про магазин:</p>
+					<div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+						<strong>Адреса:</strong>
+						<span style={{ marginLeft: "50px" }}>
+							{shop.street},
+							<p style={{ marginBottom: 0 }}>{shop.city}</p>
+							<Link prefetch={true} className={styles.customlink} href="/shops" onClick={() => {
+								setIsMainPageMenuShopsOpened(false);
+							}}>Як знайти магазин</Link>
+						</span>
 					</div>
 				</div>
-			)}
+				<div style={{ display: "flex", margin: "20px 0 10px 0", flexDirection: "column" }}>
+					<p style={{ fontWeight: "bold", marginBottom: "10px" }}>Робочі години:</p>
+					<ul className={styles.worktimelist}>
+						{parsedWorkHours.map((time, index) => (
+							<li key={index} className={styles.worktimeitem}>
+								<span className={styles.worktimeday}>{time.dayweek}:</span>
+								<span style={{ fontSize: "14px" }}>{time.open} - {time.close}</span>
+							</li>
+						))}
+					</ul>
+					<Link className={styles.customlink2} href={`/shop/${shop.id}`} onClick={() => {
+						setIsMainPageMenuShopsOpened(false);
+					}} >Показати магазин</Link>
+				</div>
+			</Collapse>
 		</div>
 	);
 };

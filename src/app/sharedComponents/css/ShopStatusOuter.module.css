@@ -17,18 +17,17 @@
   margin-top: 10px;
 } */
 .ShopStatusOuterDetails {
-  max-height: 0;
   overflow: hidden;
   width: 100%;
-  transition: all 0.3s ease-out;
+  padding: 10px;
+  /* transition: all 0.3s ease-out; */
 }
 
-.ShopStatusOuterDetails.open {
+/* .ShopStatusOuterDetails.open {
   padding: 10px;
   margin-top: 10px;
   max-height: 500px;
-  /* Достатньо велике значення, щоб вміст повністю розкрився */
-}
+} */
 
 .customlink {
   color: #00aaad;
