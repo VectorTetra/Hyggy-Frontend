@@ -153,16 +153,17 @@
     width: 100%;
     height: auto;
     min-height: 200px;
+    object-fit: cover;
 }
 
 .blog-caption {
     font-weight: bold;
     margin-top: 10px;
-    color:#00AAAD;
+    color: #00AAAD;
 }
 
-.blog-caption:hover{
-    color:#016264;
+.blog-caption:hover {
+    color: #016264;
 }
 
 .blog-text {
@@ -201,7 +202,8 @@
 }
 
 .blog-buttonSmall {
-    width: 100%;
+    width: 90%;
+    margin: auto;
     display: none;
     padding: 5px 0 5px 0;
     background-color: #00AAAD;
@@ -223,7 +225,7 @@
 .blog-container2 {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     /* justify-content: space-between; */
     align-items: center;
     text-align: center;
