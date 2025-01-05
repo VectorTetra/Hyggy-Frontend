@@ -32,4 +32,5 @@ label.form-label {
 
 .body * {
     font-family: var(--font-raleway), sans-serif;
+    user-select: none;
 }
