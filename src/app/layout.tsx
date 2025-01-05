@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={raleway.className} style={{ backgroundColor: "#f3f3f3" }}>
+      <body className={`${raleway.className} body`} style={{ backgroundColor: "#f3f3f3" }}>
         <QueryClientWrapper>{children}</QueryClientWrapper>
         <ToastContainer
           stacked={true}
