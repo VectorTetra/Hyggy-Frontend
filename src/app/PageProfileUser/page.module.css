@@ -100,7 +100,7 @@
 }
 
 .uploadLink:hover {
-  color: red;
+  color: rgba(0, 95, 96, 1);
 }
 
 .fileInput {
