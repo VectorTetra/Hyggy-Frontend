@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "HYGGY Все для дому",
   description: "Все для дому",
   icons: {
-    icon: '/favicon.ico',
+    icon: '/b_favikon.ico',
   },
 };
 

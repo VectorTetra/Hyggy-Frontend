@@ -44,7 +44,7 @@ export default function Content({ rolePermissions }) {
 					{rolePermissions.IsFrameTransfer_Available && activeTab === 'transfers' && <FrameTransfer />}
 					{rolePermissions.IsFrameWriteoff_Available && activeTab === 'writeOffs' && <FrameWriteoff />}
 					{rolePermissions.IsFrameShops_Available && activeTab === 'stores' && <FrameShop rolePermissions={rolePermissions} />}
-					{rolePermissions.IsFrameShops_Button_AddShop_Available || rolePermissions.IsFrameShops_Button_EditShop_Available && activeTab === 'addNewShop' && <NewShop />}
+					{(rolePermissions.IsFrameShops_Button_AddShop_Available || rolePermissions.IsFrameShops_Button_EditShop_Available) && activeTab === 'addNewShop' && <NewShop />}
 					{rolePermissions.IsFrameShopEmployees_Available && activeTab === 'shopEmployees' && <ShopEmployees rolePermissions={rolePermissions} />}
 					{(rolePermissions.IsFrameShopEmployees_Button_AddShopEmployee_Available || rolePermissions.canEditSelf(shopEmployeeId)) && activeTab === 'addShopEmployee' && <NewShopEmployee rolePermissions={rolePermissions} />}
 					{rolePermissions.IsFrameStorageEmployees_Available && activeTab === 'storageEmployees' && <StorageEmployees rolePermissions={rolePermissions} />}

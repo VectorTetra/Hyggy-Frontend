@@ -278,7 +278,8 @@ export const getRolePermissions = () => {
 			const isShopRelatedRole = ["Saler", "Storekeeper", "General Accountant", "Saler", "Accountant"].includes(targetUserRole);
 			return isShopRelatedRole && getDecodedToken()?.storageId == targetUserStorageId.toString();
 		},
-		canEditShopAsAdmin(targetShopStorageId) {
+		canEditShopAsOwnerOrAdmin(targetShopStorageId) {
+			if (IsOwner) return true;
 			if (!IsAdmin) return false;
 			return getDecodedToken()?.storageId == targetShopStorageId.toString();
 		},

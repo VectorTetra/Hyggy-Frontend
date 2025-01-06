@@ -63,7 +63,7 @@ export default function CompletedOrdersUser() {
                         fontWeight: 'bold',
                     }}
                     variant="h4" gutterBottom>
-                    Мої замовлення
+                    Виконані замовлення
                 </Typography>
             </Box>
             {!hasOrders ? ( // Проверка на наличие заказов

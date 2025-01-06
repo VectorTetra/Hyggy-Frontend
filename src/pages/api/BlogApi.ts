@@ -170,8 +170,8 @@ export function useBlogs(params: BlogQueryParams = { SearchParameter: "Query" },
 	return useQuery({
 		queryKey: ['blogs', params],
 		queryFn: () => getBlogs(params),
-		staleTime: Infinity, // Дані завжди актуальні
-		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: 60 * 1000,
+		gcTime: 60 * 1000 * 5,
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 		enabled: isEnabled, // Запит виконується тільки при включеному параметрі isEnabled
 	});

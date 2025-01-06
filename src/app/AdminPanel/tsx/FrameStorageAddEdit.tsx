@@ -1,5 +1,5 @@
 import themeFrame from '@/app/AdminPanel/tsx/ThemeFrame';
-import { getAddresses, useCreateAddress, useUpdateAddress } from '@/pages/api/AddressApi';
+import { useCreateAddress } from '@/pages/api/AddressApi';
 import { getStorages, useCreateStorage, useUpdateStorage } from '@/pages/api/StorageApi';
 import useAdminPanelStore from '@/store/adminPanel';
 import {
@@ -23,9 +23,11 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import { toast } from 'react-toastify';
 import { customIcon } from '../../shops/components/Map';
+import { useDebounce } from 'use-debounce';
 
 const FrameStorageAddEdit = () => {
 	const [address, setAddress] = useState('');
+	const [debouncedAddress] = useDebounce(address, 1500);
 	const [oldAddress, setOldAddress] = useState('');
 	const [AddressStreet, setAddressStreet] = useState('');
 	const [AddressHouseNumber, setAddressHouseNumber] = useState('');
@@ -42,7 +44,6 @@ const FrameStorageAddEdit = () => {
 	const { mutateAsync: createStorage } = useCreateStorage();
 	const { mutateAsync: updateStorage } = useUpdateStorage();
 	const { mutateAsync: createOrFindAddress } = useCreateAddress();
-	const { mutateAsync: updateAddress } = useUpdateAddress();
 	const warehouseId = useAdminPanelStore((state) => state.warehouseId);
 	useEffect(() => {
 		if (warehouseId === null) {
@@ -98,7 +99,9 @@ const FrameStorageAddEdit = () => {
 					addressdetails: 1,
 					limit: 10,
 					countrycodes: 'UA',
-				},
+					'accept-language': 'uk',
+					dedupe: 1
+				}
 			});
 			setSuggestions(response.data);
 		} catch (error) {
@@ -107,6 +110,14 @@ const FrameStorageAddEdit = () => {
 			setLoading(false);
 		}
 	};
+	useEffect(() => {
+		console.log('debouncedAddress:', debouncedAddress);
+		if (debouncedAddress.length > 2) {
+			searchAddress(debouncedAddress); // Виклик API через дебаунс
+		} else {
+			setSuggestions([]); // Якщо введення коротке, очищуємо підказки
+		}
+	}, [debouncedAddress]);
 
 	const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
@@ -181,10 +192,10 @@ const FrameStorageAddEdit = () => {
 				setAddressLatitude(lat);
 				setAddressLongitude(lng);
 
-				// Викликати handleAddressChange з новою адресою
-				handleAddressChange({
-					target: { value: formattedAddress },
-				} as React.ChangeEvent<HTMLInputElement>);
+				// // Викликати handleAddressChange з новою адресою
+				// handleAddressChange({
+				// 	target: { value: formattedAddress },
+				// } as React.ChangeEvent<HTMLInputElement>);
 			}
 		} catch (error) {
 			console.error('Error fetching address from coordinates:', error);
@@ -206,7 +217,6 @@ const FrameStorageAddEdit = () => {
 				Latitude: AddressLatitude ?? null,
 				Longitude: AddressLongitude ?? null,
 			});
-
 			// Створення нового складу
 			if (warehouseId === 0) {
 				newStorageDTOCollection = await handleCreateNewWarehouse(newUpdatedAddressDTO);
@@ -260,7 +270,7 @@ const FrameStorageAddEdit = () => {
 					placeholder="Введіть адресу складу"
 					label="Адреса"
 					value={address}
-					onChange={handleAddressChange}
+					onChange={(e) => setAddress(e.target.value)}
 					fullWidth
 					variant="outlined"
 					autoComplete="off"

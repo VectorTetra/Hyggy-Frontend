@@ -153,8 +153,8 @@ export function useShopEmployees(params: EmployeeQueryPL, isEnabled: boolean = t
     return useQuery({
         queryKey: ['shopEmployees'],
         queryFn: () => getShopEmployees(params),
-        staleTime: Infinity, // Дані завжди актуальні
-        gcTime: Infinity, // Дані залишаються в кеші без очищення
+        staleTime: 60 * 1000,
+        gcTime: 60 * 1000 * 5,
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
         enabled: isEnabled,
     });
@@ -164,8 +164,8 @@ export function useStorageEmployees(params: EmployeeQueryPL, isEnabled: boolean 
     return useQuery({
         queryKey: ['storageEmployees'],
         queryFn: () => getStorageEmployees(params),
-        staleTime: Infinity, // Дані завжди актуальні
-        gcTime: Infinity, // Дані залишаються в кеші без очищення
+        staleTime: 60 * 1000,
+        gcTime: 60 * 1000 * 5,
         refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
         enabled: isEnabled,
     });

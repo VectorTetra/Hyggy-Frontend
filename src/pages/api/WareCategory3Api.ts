@@ -97,8 +97,8 @@ export function useWareCategories3(params: WareCategory3QueryParams = { SearchPa
 	return useQuery({
 		queryKey: ['wareCategories3', params],
 		queryFn: () => getWareCategories3(params),
-		staleTime: Infinity, // Дані завжди актуальні
-		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: 60 * 1000,
+		gcTime: 60 * 1000 * 5,
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 		enabled: isEnabled,
 	});

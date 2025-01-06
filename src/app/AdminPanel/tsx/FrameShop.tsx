@@ -110,7 +110,7 @@ export default function FrameShop({ rolePermissions }) {
       renderCell: (params) => {
         if (rolePermissions.IsFrameShops_Button_EditShop_Available || rolePermissions.IsFrameShops_Button_DeleteShop_Available) {
           return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: "5px", height: "100%" }}>
-            {rolePermissions.IsFrameShops_Button_EditShop_Available && rolePermissions.canEditShopAsAdmin(params.row.id) &&
+            {(rolePermissions.IsFrameShops_Button_EditShop_Available && rolePermissions.canEditShopAsOwnerOrAdmin(params.row.id)) &&
               <Button sx={{ minWidth: "10px", padding: 0, color: "#00AAAD" }} title='Редагувати' variant="outlined" onClick={() => handleEdit(params.row)}>
                 <EditIcon />
               </Button>}

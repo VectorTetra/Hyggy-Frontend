@@ -295,8 +295,8 @@ export function useWares(params: WareQueryParams = { SearchParameter: "Query" },
 	return useQuery({
 		queryKey: ['wares', params],
 		queryFn: () => getWares(params),
-		staleTime: Infinity, // Дані завжди актуальні
-		gcTime: Infinity, // Дані залишаються в кеші без очищення
+		staleTime: 60 * 1000,
+		gcTime: 60 * 1000 * 5,
 		refetchOnWindowFocus: false, // Не робити рефетч при фокусуванні вікна
 		enabled: isEnabled
 	});
