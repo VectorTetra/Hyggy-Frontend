@@ -123,6 +123,10 @@ export default function WareAddEditFrame() {
         if (wareId && wareId !== 0) {
             fetchWareData(wareId);
         }
+        else if (wareId === 0) {
+            clearRows();
+            setWareDetails("");
+        }
     }, [wareId]);
 
     useEffect(() => {
