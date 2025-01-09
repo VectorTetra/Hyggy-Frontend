@@ -19,12 +19,11 @@ import Image from 'next/image';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { useState } from 'react';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
-//import { actionAsyncStorage } from 'next/dist/client/components/action-async-storage-instance';
 import { removeToken, getDecodedToken } from '@/pages/api/TokenApi';
 import Link from 'next/link';
 
 const drawerWidth = 240;
-//const token = getDecodedToken(); // Отримуємо дані токена
+const token = getDecodedToken(); // Отримуємо дані токена
 const MenuItem = ({
 	icon,
 	text,
@@ -223,7 +222,7 @@ export default function Sidebar(props) {
 					</Link>
 				</List>
 			</Box>
-			{/* <Toolbar
+			<Box
 				sx={{
 					padding: '8px 16px',
 					position: 'fixed',
@@ -246,9 +245,9 @@ export default function Sidebar(props) {
 					}}
 				>
 					<Box>{token?.email}</Box>
-					<Box>{token?.role}</Box>
+					<Box>{rolePermissions.translateRole(token?.role)}</Box>
 				</Box>
-			</Toolbar> */}
+			</Box>
 		</div>
 	);
 

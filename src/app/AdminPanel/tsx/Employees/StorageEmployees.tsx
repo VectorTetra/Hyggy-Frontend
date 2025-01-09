@@ -65,6 +65,14 @@ const StorageEmployees = ({ rolePermissions }) => {
         { field: 'email', headerName: 'Пошта', flex: 0.8, },
         { field: 'phoneNumber', headerName: 'Телефон', flex: 0.6, },
         {
+            field: 'roleName', headerName: 'Посада', flex: 1, minWidth: 150,
+            renderCell: (params) => (
+                <Box sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center', gap: "5px", height: "100%" }}>
+                    {rolePermissions.translateRole(params.value)}
+                </Box>
+            )
+        },
+        {
             field: 'actions',
             headerName: '',
             flex: 0,

@@ -290,7 +290,7 @@ const NewShopEmployee = ({ rolePermissions }) => {
                 />
                 {roles.length > 0 && <Autocomplete
                     options={roles}
-                    getOptionLabel={(option: Role) => `${option?.name}`}
+                    getOptionLabel={(option: Role) => `${rolePermissions.translateRole(option?.name)}`}
                     value={selectedRole}
                     onChange={(event, newValue) => setSelectedRole(newValue)}
                     renderInput={(params) => <TextField {...params} label="Виберіть посаду" variant="outlined" fullWidth margin="normal" />}

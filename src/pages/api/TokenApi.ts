@@ -330,6 +330,17 @@ export const getRolePermissions = () => {
 		getAvailableRolesForStorageFrame() {
 			return "Storekeeper";
 		},
+		translateRole(role) {
+			const rolesMap = {
+				'Admin': 'Адміністратор',
+				'Accountant': 'Бухгалтер',
+				'Owner': 'Генеральний директор',
+				'General Accountant': 'Головний бухгалтер',
+				'Storekeeper': 'Комірник',
+				'Saler': 'Продавець',
+			};
+			return rolesMap[role] || role;
+		},
 		// Чи доступні фрейми взагалі
 		IsAdminPanelContent_Available: IsOwner || IsAdmin || IsAccountant || IsGeneralAccountant || IsSaler || IsStorekeeper,
 
