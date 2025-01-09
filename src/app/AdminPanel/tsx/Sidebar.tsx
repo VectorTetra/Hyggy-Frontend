@@ -1,3 +1,4 @@
+import { getDecodedToken, removeToken } from '@/pages/api/TokenApi';
 import useAdminPanelStore from '@/store/adminPanel'; // Імпортуємо Zustand
 import ArticleIcon from '@mui/icons-material/Article';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -16,14 +17,13 @@ import {
 	ListItemIcon, ListItemText, Toolbar
 } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useQueryState } from 'nuqs'; // Імпортуємо nuqs
 import { useState } from 'react';
 import hyggyIcon from '/public/images/AdminPanel/hyggyIcon.png';
-import { removeToken, getDecodedToken } from '@/pages/api/TokenApi';
-import Link from 'next/link';
 
 const drawerWidth = 240;
-const token = getDecodedToken(); // Отримуємо дані токена
+
 const MenuItem = ({
 	icon,
 	text,
@@ -125,6 +125,7 @@ export default function Sidebar(props) {
 	const [openWarehouses, setOpenWarehouses] = useState(false);
 	const [openEmployees, setEmployees] = useState(false);
 	const { setFrameRemainsSidebarVisibility } = useAdminPanelStore();
+	const token = getDecodedToken(); // Отримуємо дані токена
 
 	const { window, rolePermissions } = props;
 
