@@ -31,16 +31,16 @@ export default function FrameOrder() {
     const [activeTab] = useQueryState('at', { defaultValue: 'products', scroll: false, history: 'push', shallow: true });
 
     const statusColors = {
-        'В обробці': { background: '#F5F5F5', text: '#616161' },
-        'Підтверджено': { background: '#C8E6C9', text: '#1B5E20' },
-        'Готується до відправки': { background: '#E3F2FD', text: '#0D47A1' },
-        'Передано кур’єру': { background: '#F3E5F5', text: '#6A1B9A' },
-        'Доставляється': { background: '#FFE0B2', text: '#E65100' },
-        'Доставлено': { background: '#DCEDC8', text: '#388E3C' },
-        'Скасовано': { background: '#FFEBEE', text: '#B71C1C' },
-        'Готується до видачі': { background: '#FFCCBC', text: '#BF360C' },
-        'Готове до видачі': { background: '#B2EBF2', text: '#00796B' },
-        'Видано клієнту': { background: '#F5F5DC', text: '#3E2723' },
+        "В обробці": { background: "#F5F5DC", text: "#6C6644" },
+        "Підтверджено": { background: "#50D755", text: "#305237" },
+        "Готується до відправки": { background: "#F5F5DC", text: "#6C6644" },
+        "Передано кур'єру": { background: "#50D755", text: "#305237" },
+        "Доставляється": { background: "#F5F5DC", text: "#6C6644" },
+        "Доставлено": { background: "#50D755", text: "#305237" },
+        "Скасовано": { background: "#F16969", text: "#750606" },
+        "Готується до видачі": { background: "#F5F5DC", text: "#6C6644" },
+        "Готове до видачі": { background: "#50D755", text: "#305237" },
+        "Видано клієнту": { background: "#50D755", text: "#305237" },
     };
 
     useEffect(() => {
